@@ -31,3 +31,17 @@ class Fluxion:
                             self.test_suites.append(test_suite)
                     except Exception:
                         print(f'Error loading test suite {file}')
+
+    def list_test_suites(self, show_test_vectors=False):
+        print('List of available test suites:\n')
+        for ts in self.test_suites:
+            print(f'{ts.name}\n'
+                  f'  Codec: {ts.codec}\n'
+                  f'  Description: {ts.description}')
+            if show_test_vectors:
+                print('  Test vectors:')
+                for tv in ts.test_vectors:
+                    print(f'    {tv.name}\n'
+                          f'        Source: {tv.source}\n'
+                          f'        Input: {tv.input}\n'
+                          f'        Result: {tv.result}')
