@@ -34,6 +34,10 @@ def list_cmd(args, fluxion):
         fluxion.list_decoders()
 
 
+def run_cmd(args, fluxion):
+    fluxion.run_test_suites(failfast=args.failfast)
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose',
@@ -49,6 +53,12 @@ def parse_args():
     list_parser.add_argument(
         '-d', '--decoders', help='show decoders', action='store_true')
     list_parser.set_defaults(func=list_cmd)
+
+    run_parser = subparsers.add_parser(
+        'run', aliases=['r'], help='run test suites for decoders')
+    run_parser.add_argument(
+        '-ff', '--failfast', help='fail fast', action='store_true')
+    run_parser.set_defaults(func=run_cmd)
 
     return parser.parse_args()
 

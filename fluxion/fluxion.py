@@ -21,10 +21,12 @@ import os
 import os.path
 import json
 import functools
+import unittest
 
 from fluxion.test_suite import TestSuite
 from fluxion.test_vector import TestVector
 from fluxion.decoder import DECODERS
+from fluxion.test import Test
 
 
 def lazy_init(call_func):
@@ -100,3 +102,30 @@ class Fluxion:
             if show_test_vectors:
                 for tv in ts.test_vectors:
                     print(tv)
+
+    def build_test_suite(self, test_suites, decoders):
+        suite = unittest.TestSuite()
+        for dec in decoders:
+            for ts in test_suites:
+                if ts.codec == dec.codec:
+                    for tv in ts.test_vectors:
+                        suite.addTest(Test(dec, tv))
+
+        return suite
+
+    @lazy_init(load_test_suites)
+    @lazy_init(load_decoders)
+    def run_test_suites(self, test_suites=None, decoders=None, failfast=False):
+        test_suites = self.test_suites
+        decoders = []
+        for _, decs in self.decoders.items():
+            decoders += decs
+
+        ts_names = [ts.name for ts in test_suites]
+        dec_names = [dec.name for dec in decoders]
+        print(
+            f'Running test suites {", ".join(ts_names)} for decoders {", ".join(dec_names)}')
+
+        suite = self.build_test_suite(test_suites, decoders)
+        runner = unittest.TextTestRunner(failfast=failfast)
+        runner.run(suite)

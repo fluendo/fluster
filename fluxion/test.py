@@ -17,17 +17,17 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import hashlib
+import unittest
 
-from fluxion.codec import Codec
-from fluxion.decoder import Decoder, register_decoder
+from fluxion.decoder import Decoder
+from fluxion.test_vector import TestVector
 
-
-@register_decoder
-class H264_Dummy(Decoder):
-    name = "H.264 Dummy"
-    codec = Codec.H264
-    description = "This is a dummy implementation for H.264"
-
-    def decode(self, file):
-        return hashlib.md5(file.encode('utf-8')).hexdigest()
+class Test(unittest.TestCase):
+    def __init__(self, decoder, test_vector):
+        super().__init__('test_decode')
+        self.decoder = decoder
+        self.test_vector = test_vector
+    
+    def test_decode(self):
+        result = self.decoder.decode(self.test_vector.input)
+        self.assertEqual(self.test_vector.result, result)
