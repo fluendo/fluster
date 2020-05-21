@@ -8,12 +8,11 @@ TEST_SUITES_DIR = 'test_suites'
 DECODERS_DIR = 'decoders'
 
 
-def testsuite_cmd(args, fluxion):
-    fluxion.list_test_suites(show_test_vectors=args.detail)
-
-
-def decoders_cmd(args, fluxion):
-    fluxion.list_decoders()
+def list_cmd(args, fluxion):
+    if args.testsuites:
+        fluxion.list_test_suites(show_test_vectors=args.testvectors)
+    if args.decoders:
+        fluxion.list_decoders()
 
 
 def parse_args():
@@ -22,15 +21,15 @@ def parse_args():
                         help='increase output verbosity', action='store_true')
     subparsers = parser.add_subparsers(title='subcommands')
 
-    ts_parser = subparsers.add_parser(
-        'testsuites', aliases=['ts'], help='show list of available test suites')
-    ts_parser.add_argument(
-        '-d', '--detail', help='show details of test suites', action='store_true')
-    ts_parser.set_defaults(func=testsuite_cmd)
-
-    decoders_parser = subparsers.add_parser(
-        'decoders', aliases=['d'], help='show list of available decoders')
-    decoders_parser.set_defaults(func=decoders_cmd)
+    list_parser = subparsers.add_parser(
+        'list', aliases=['l'], help='show list of available test suites or decoders')
+    list_parser.add_argument(
+        '-ts', '--testsuites', help='show test suites', action='store_true')
+    list_parser.add_argument(
+        '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
+    list_parser.add_argument(
+        '-d', '--decoders', help='show decoders', action='store_true')
+    list_parser.set_defaults(func=list_cmd)
 
     return parser.parse_args()
 

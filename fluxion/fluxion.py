@@ -67,7 +67,7 @@ class Fluxion:
 
     @lazy_init(load_decoders)
     def list_decoders(self):
-        print('List of available decoders:')
+        print('\nList of available decoders:\n')
         for codec in self.decoders.keys():
             print(f'  {codec}')
             for decoder in self.decoders[codec]:
@@ -75,7 +75,7 @@ class Fluxion:
 
     @lazy_init(load_test_suites)
     def list_test_suites(self, show_test_vectors=False):
-        print('List of available test suites:')
+        print('\nList of available test suites:')
         for ts in self.test_suites:
             print(ts)
             if show_test_vectors:
