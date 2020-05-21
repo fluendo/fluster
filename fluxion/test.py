@@ -22,12 +22,12 @@ import unittest
 from fluxion.decoder import Decoder
 from fluxion.test_vector import TestVector
 
+def test_decode(self, decoder, test_vector):
+    def test():
+        result = decoder.decode(test_vector.input)
+        self.assertEqual(test_vector.result, result)
+    return test
+
 class Test(unittest.TestCase):
-    def __init__(self, decoder, test_vector):
-        super().__init__('test_decode')
-        self.decoder = decoder
-        self.test_vector = test_vector
-    
-    def test_decode(self):
-        result = self.decoder.decode(self.test_vector.input)
-        self.assertEqual(self.test_vector.result, result)
+    def set_name(self, name):
+        super().__init__(name)
