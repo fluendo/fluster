@@ -7,13 +7,13 @@
             "name": "AMP_A",
             "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_A_Samsung_7.zip",
             "input": "AMP_A_Samsung_7/AMP_A_Samsung_7.bin",
-            "result": "93a5875d58072db5539c04e1e943ed9d"
+            "result": "7069572611d4158ebb6ba4ad25aeab92"
         },
         {
             "name": "AMP_B",
             "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_B_Samsung_7.zip",
             "input": "AMP_B_Samsung_7/AMP_B_Samsung_7.bin",
-            "result": "424242342123412341341234"
+            "result": "449df10976e6b2ff4358125143e95a1b"
         }
     ]
 }
