@@ -10,6 +10,5 @@ class H264_Dummy(Decoder):
     codec = Codec.H264
     description = "This is a dummy implementation for H.264"
 
-    @staticmethod
     def decode(self, file):
         return hashlib.md5(file.utf8())

@@ -7,9 +7,11 @@ class Decoder:
     codec = None
     description = None
 
-    @staticmethod
     def decode(self, file):
         return ''
+
+    def __str__(self):
+        return f'    {self.name}: {self.description}'
 
 
 DECODERS = {}
@@ -18,4 +20,4 @@ DECODERS = {}
 def register_decoder(clazz):
     if clazz.codec not in DECODERS:
         DECODERS[clazz.codec] = []
-    DECODERS[clazz.codec].append(clazz)
+    DECODERS[clazz.codec].append(clazz())

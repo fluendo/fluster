@@ -45,14 +45,6 @@ class Fluxion:
                     except Exception as e:
                         print(f'Error loading decoder {file}: {e}')
 
-    @lazy_init(load_decoders)
-    def list_decoders(self):
-        print('List of available decoders:')
-        for codec in self.decoders.keys():
-            print(f'  {codec}')
-            for decoder in self.decoders[codec]:
-                print(f'    {decoder.name}: {decoder.description}')
-
     def load_test_suites(self):
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
@@ -63,25 +55,29 @@ class Fluxion:
                         with open(os.path.join(root, file)) as f:
                             content = json.load(f)
                             test_suite = TestSuite(
-                                content['name'], content['codec'], content['description'])
-                            for tv in content['test_vectors']:
+                                content[TestSuite.NAME], content[TestSuite.CODEC], content[TestSuite.DESCRIPTION])
+                            for tv in content[TestSuite.TEST_VECTORS]:
+                                result_frames = None if not TestVector.RESULT_FRAMES in tv else tv[
+                                    TestVector.RESULT_FRAMES]
                                 test_suite.add_test_vector(TestVector(
-                                    tv['name'], tv['source'], tv['input'], tv['result']))
+                                    tv[TestVector.NAME], tv[TestVector.SOURCE], tv[TestVector.INPUT], tv[TestVector.RESULT], result_frames))
                             self.test_suites.append(test_suite)
                     except Exception as e:
                         print(f'Error loading test suite {file}: {e}')
+
+    @lazy_init(load_decoders)
+    def list_decoders(self):
+        print('List of available decoders:')
+        for codec in self.decoders.keys():
+            print(f'  {codec}')
+            for decoder in self.decoders[codec]:
+                print(decoder)
 
     @lazy_init(load_test_suites)
     def list_test_suites(self, show_test_vectors=False):
         print('List of available test suites:')
         for ts in self.test_suites:
-            print(f'\n{ts.name}\n'
-                  f'  Codec: {ts.codec}\n'
-                  f'  Description: {ts.description}\n'
-                  f'  Test vectors: {len(ts.test_vectors)}')
+            print(ts)
             if show_test_vectors:
                 for tv in ts.test_vectors:
-                    print(f'    {tv.name}\n'
-                          f'        Source: {tv.source}\n'
-                          f'        Input: {tv.input}\n'
-                          f'        Result: {tv.result}')
+                    print(tv)
