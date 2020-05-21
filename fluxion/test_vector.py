@@ -32,10 +32,10 @@ class TestVector:
         self.result_frames = result_frames
 
     def __str__(self):
-        ret = f'    {self.name}\n' \
-            f'        Source: {self.source}\n' \
-            f'        Input: {self.input}\n' \
-            f'        Result: {self.result}'
+        ret = f'        {self.name}\n' \
+            f'            Source: {self.source}\n' \
+            f'            Input: {self.input}\n' \
+            f'            Result: {self.result}'
         if self.result_frames:
-            ret += f'\n        Result frames: {", ".join(self.result_frames)}'
+            ret += f'\n            Result frames: {", ".join(self.result_frames)}'
         return  ret

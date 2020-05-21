@@ -88,7 +88,7 @@ class Fluxion:
     def list_decoders(self):
         print('\nList of available decoders:\n')
         for codec in self.decoders.keys():
-            print(f'  {codec}')
+            print(f'{codec}')
             for decoder in self.decoders[codec]:
                 print(decoder)
 

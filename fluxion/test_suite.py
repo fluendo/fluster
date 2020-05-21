@@ -34,6 +34,6 @@ class TestSuite:
 
     def __str__(self):
         return f'\n{self.name}\n' \
-            f'  Codec: {self.codec}\n' \
-            f'  Description: {self.description}\n' \
-            f'  Test vectors: {len(self.test_vectors)}'
+            f'    Codec: {self.codec}\n' \
+            f'    Description: {self.description}\n' \
+            f'    Test vectors: {len(self.test_vectors)}'
