@@ -1,50 +1,51 @@
 import os
 import os.path
 import json
+import functools
 
 from fluxion.test_suite import TestSuite
 from fluxion.test_vector import TestVector
-
-# Decoders
-from fluxion.decoders.h265_dummy import H265_Dummy
-from fluxion.decoders.h264_dummy import H264_Dummy
-
-DECODERS = [H265_Dummy, H264_Dummy]
+from fluxion.decoder import DECODERS
 
 
-def require_test_suites_loaded(func):
-    def func_wrapper(self, *args, **kwargs):
-        if not self.test_suites_loaded:
-            self.load_test_suites()
-        func(self, *args, **kwargs)
-    return func_wrapper
-
-
-def require_decoders_loaded(func):
-    def func_wrapper(self, *args, **kwargs):
-        if not self.decoders_loaded:
-            self.load_decoders()
-        func(self, *args, **kwargs)
-    return func_wrapper
+def lazy_init(call_func):
+    def decorator_lazy_init(func):
+        @functools.wraps(func)
+        def func_wrapper(self, *args, **kwargs):
+            if not call_func:
+                raise Exception(
+                    'A function needs to be given to the lazy_init decorator')
+            flag_name = call_func.__name__ + '_already_called'
+            if not hasattr(self, flag_name):
+                self.flag_name = False
+            if not self.flag_name:
+                call_func(self)
+            self.flag_name = True
+            func(self, *args, **kwargs)
+        return func_wrapper
+    return decorator_lazy_init
 
 
 class Fluxion:
-    def __init__(self, test_suites_dir, verbose=False):
+    def __init__(self, test_suites_dir, decoders_dir, verbose=False):
         self.test_suites_dir = test_suites_dir
+        self.decoders_dir = decoders_dir
         self.verbose = verbose
         self.test_suites = []
-        self.test_suites_loaded = False
-        self.decoders = {}
-        self.decoders_loaded = False
+        self.decoders = DECODERS
 
     def load_decoders(self):
-        for decoder in DECODERS:
-            if not decoder.codec in self.decoders:
-                self.decoders[decoder.codec] = []
-            self.decoders[decoder.codec].append(decoder)
-        self.decoders_loaded = True
+        for root, _, files in os.walk(self.decoders_dir):
+            for file in files:
+                if os.path.splitext(file)[1] == '.py':
+                    if self.verbose:
+                        print(f'Decoder found: {file}')
+                    try:
+                        exec(open(os.path.join(root, file)).read(), globals())
+                    except Exception as e:
+                        print(f'Error loading decoder {file}: {e}')
 
-    @require_decoders_loaded
+    @lazy_init(load_decoders)
     def list_decoders(self):
         print('List of available decoders:')
         for codec in self.decoders.keys():
@@ -67,11 +68,10 @@ class Fluxion:
                                 test_suite.add_test_vector(TestVector(
                                     tv['name'], tv['source'], tv['input'], tv['result']))
                             self.test_suites.append(test_suite)
-                    except Exception:
-                        print(f'Error loading test suite {file}')
-        self.test_suites_loaded = True
+                    except Exception as e:
+                        print(f'Error loading test suite {file}: {e}')
 
-    @require_test_suites_loaded
+    @lazy_init(load_test_suites)
     def list_test_suites(self, show_test_vectors=False):
         print('List of available test suites:')
         for ts in self.test_suites:

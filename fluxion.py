@@ -5,6 +5,7 @@ import argparse
 from fluxion.fluxion import Fluxion
 
 TEST_SUITES_DIR = 'test_suites'
+DECODERS_DIR = 'decoders'
 
 
 def list_cmd(args, fluxion):
@@ -36,8 +37,8 @@ def parse_args():
 
 def main():
     args = parse_args()
-    fluxion = Fluxion(TEST_SUITES_DIR, verbose=args.verbose)
     if hasattr(args, 'func'):
+        fluxion = Fluxion(TEST_SUITES_DIR, DECODERS_DIR, verbose=args.verbose)
         args.func(args, fluxion)
 
 
