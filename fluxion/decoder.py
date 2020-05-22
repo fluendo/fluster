@@ -25,7 +25,7 @@ class Decoder:
     codec = None
     description = None
 
-    def decode(self, file):
+    def decode(self, filename: str):
         raise Exception('Not implemented')
 
     def __str__(self):

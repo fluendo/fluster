@@ -20,6 +20,7 @@
 # Boston, MA 02111-1307, USA.
 
 import argparse
+
 from fluxion.fluxion import Fluxion
 
 
@@ -83,6 +84,8 @@ class Main:
             '-ts', '--testsuites', help='run only the specific test suites', nargs='+')
         run_parser.add_argument(
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
+        run_parser.add_argument(
+            '-r', '--reference', help='change test suites using decoder as the reference', action='store_true')
         run_parser.set_defaults(func=self.run_cmd)
 
     def add_download_cmd(self, subparsers):
@@ -100,7 +103,8 @@ class Main:
 
     def run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
-                                decoders=args.decoders, failfast=args.failfast, quiet=args.quiet)
+                                decoders=args.decoders, failfast=args.failfast, quiet=args.quiet,
+                                reference=args.reference)
 
     def download_cmd(self, args, fluxion):
         fluxion.download_test_suites(test_suites=args.testsuites)
