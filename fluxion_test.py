@@ -21,7 +21,7 @@
 
 import argparse
 
-from fluxion.fluxion import Fluxion  # pylint: disable=E0611
+from fluxion.fluxion import Fluxion
 
 TEST_SUITES_DIR = 'test_suites'
 DECODERS_DIR = 'decoders'
