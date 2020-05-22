@@ -1,0 +1,1183 @@
+{
+  "name": "JCT-VC-HEVC_V1",
+  "codec": "H.265",
+  "description": "JCT-VC HEVC version 1",
+  "test_vectors": [
+    {
+      "name": "AMP_A_Samsung_7",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_A_Samsung_7.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMP_A_Samsung_7/AMP_A_Samsung_7.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "3b8c7e4f77759351893470d87cd5c8252146ae19523786510914a9e8d5c7e340"
+    },
+    {
+      "name": "AMP_B_Samsung_7",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_B_Samsung_7.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMP_B_Samsung_7/AMP_B_Samsung_7.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ff24fb7455b5b789a2cb7c738aadaba1406267349ac443d3127905b025f19414"
+    },
+    {
+      "name": "AMP_D_Hisilicon_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_D_Hisilicon_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMP_D_Hisilicon_3/AMP_D_Hisilicon.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "0ceb48fd2593f3d298adfb845c09a6aaee377f243583ad980921f48eea97dc92"
+    },
+    {
+      "name": "AMP_E_Hisilicon_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_E_Hisilicon_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMP_E_Hisilicon_3/AMP_E_Hisilicon.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "49a84077b46689de74557ba5393e8364306675226390568aa5bf0273f847d733"
+    },
+    {
+      "name": "AMP_F_Hisilicon_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_F_Hisilicon_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMP_F_Hisilicon_3/AMP_F_Hisilicon_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "2f69f7d7befbc5f7483b18d2640f0aa84304a5778deba659ebf3a40d64162aee"
+    },
+    {
+      "name": "AMVP_A_MTK_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMVP_A_MTK_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMVP_A_MTK_4/AMVP_A_MTK_4/AMVP_A_MTK_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "b89aa3d113bdff9aff61d4c190b9035155db44a9c9b08b5a40df89fde2e6a2c7"
+    },
+    {
+      "name": "AMVP_B_MTK_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMVP_B_MTK_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMVP_B_MTK_4/AMVP_B_MTK_4/AMVP_B_MTK_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7d062666643f319d419a6d133656eba7a774a667f1e1245dea764e030cdfe04a"
+    },
+    {
+      "name": "AMVP_C_Samsung_7",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMVP_C_Samsung_7.zip",
+      "input": "resources/JCT-VC-HEVC_V1/AMVP_C_Samsung_7/AMVP_C_Samsung_7.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "42d4f2f1bf13c3d6fa129608c8cbcac4c41f482ac55a337f0dfd8e6dc4818c9b"
+    },
+    {
+      "name": "BUMPING_A_ericsson_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/BUMPING_A_ericsson_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/BUMPING_A_ericsson_1/BUMPING_A_ericsson_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "3fef73e8e6263fd0f9f1bc6095e2a2cfba3451132e24f7ad08fa7c6510fafe5c"
+    },
+    {
+      "name": "CAINIT_A_SHARP_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_A_SHARP_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_A_SHARP_4/CAINIT_A_SHARP_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "58d66213064bac9444cf13cc2f62d6f044bdb4d8ec9488640fb86090de976b43"
+    },
+    {
+      "name": "CAINIT_B_SHARP_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_B_SHARP_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_B_SHARP_4/CAINIT_B_SHARP_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "5cd1c28961a30bdcae7c3b06b510d2673700474a7bfbaae125a4967bfcfef82d"
+    },
+    {
+      "name": "CAINIT_C_SHARP_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_C_SHARP_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_C_SHARP_3/CAINIT_C_SHARP_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ca0306d6363ea8acc5eeb39cba8c498ed2331fe3abeba741b1a929323329fa10"
+    },
+    {
+      "name": "CAINIT_D_SHARP_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_D_SHARP_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_D_SHARP_3/CAINIT_D_SHARP_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c9e125d79cc775207ea32d1c49eaf0485cfe56066812e1e7c3ad7c57ddef851e"
+    },
+    {
+      "name": "CAINIT_E_SHARP_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_E_SHARP_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_E_SHARP_3/CAINIT_E_SHARP_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "34e460bd10cfef2b7c1d42952f32f45dd117fbe562728efba0d2b64372cf85a6"
+    },
+    {
+      "name": "CAINIT_F_SHARP_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_F_SHARP_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_F_SHARP_3/CAINIT_F_SHARP_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "93e0a9daa7390cf4222ef5100e0998d6ec4558224839e19a19d5b8ff9075c833"
+    },
+    {
+      "name": "CAINIT_G_SHARP_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_G_SHARP_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_G_SHARP_3/CAINIT_G_SHARP_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "2ab24677a332124077e365068a76b029113dce438456e9fe9cdfc6d2381ae36d"
+    },
+    {
+      "name": "CAINIT_H_SHARP_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CAINIT_H_SHARP_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CAINIT_H_SHARP_3/CAINIT_H_SHARP_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "e667eb78ba7cf0a741f73f3d1dbb496c748c6d47ff3eb7990319c75be25e9d87"
+    },
+    {
+      "name": "CIP_A_Panasonic_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CIP_A_Panasonic_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CIP_A_Panasonic_3/CIP_A_Panasonic_3/CIP_A_Panasonic_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "5c55b3594e5c951c9f5312913961750283eb2dadd15844fe35f9beb94a9a548c"
+    },
+    {
+      "name": "cip_B_NEC_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/cip_B_NEC_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/cip_B_NEC_3/cip_B_NEC_3/cip_B_NEC_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "47dfb7ef2b81bb10a0bb5330138211770d179e1ad58af984294cef2518d85187"
+    },
+    {
+      "name": "CIP_C_Panasonic_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CIP_C_Panasonic_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CIP_C_Panasonic_2/CIP_C_Panasonic_2/CIP_C_Panasonic_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "daae3f29cc687ee8181d03b89282dbe539c1f033c2298e2f2cabfeda7d3b9b33"
+    },
+    {
+      "name": "CONFWIN_A_Sony_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/CONFWIN_A_Sony_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/CONFWIN_A_Sony_1/CONFWIN_A_Sony_1/CONFWIN_A_Sony_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c3c823ffb9e526f5d9506ba2f1239b1f0323572850789230d762f4e4678fc298"
+    },
+    {
+      "name": "DBLK_A_MAIN10_VIXS_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_A_MAIN10_VIXS_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_A_MAIN10_VIXS_4/DBLK_A_MAIN10_VIXS_4/DBLK_A_MAIN10_VIXS_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d86ec87f98fccbcec3758954a7cf430e8af8cf021d347dfbbed2f1d5dbb00f25"
+    },
+    {
+      "name": "DBLK_A_SONY_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_A_SONY_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_A_SONY_3/DBLK_A_SONY_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ce18cd42375359b9ff293d12a95793cc6b56eb75d899ad012c68e25dfa54dfbf"
+    },
+    {
+      "name": "DBLK_B_SONY_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_B_SONY_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_B_SONY_3/DBLK_B_SONY_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "cfdfab2f022aa13d218ba96c1315626c27b68e4f38107f05cbe158f39ab4e409"
+    },
+    {
+      "name": "DBLK_C_SONY_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_C_SONY_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_C_SONY_3/DBLK_C_SONY_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d7dd1e3707cd3b3d9c69dea1a1307c8c43e8e2794f47bc4843f0039c839bab6c"
+    },
+    {
+      "name": "DBLK_D_VIXS_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_D_VIXS_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_D_VIXS_2/DBLK_D_VIXS_2/DBLK_D_VIXS_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1b9c3dec3685760cac19fd8667510b34fdeaaccfb5b137803ea859233a2bdd7e"
+    },
+    {
+      "name": "DBLK_E_VIXS_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_E_VIXS_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_E_VIXS_2/DBLK_E_VIXS_2/DBLK_E_VIXS_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "5415d67db3d190bf363825ef2f259bbbc635551f94ced6f8cf965ff8d72b285b"
+    },
+    {
+      "name": "DBLK_F_VIXS_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_F_VIXS_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_F_VIXS_2/DBLK_F_VIXS_2/DBLK_F_VIXS_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "8f62f346aaf0716162c5ca4c85b3e213a0104d666680f620f81d92be676ca5aa"
+    },
+    {
+      "name": "DBLK_G_VIXS_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DBLK_G_VIXS_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DBLK_G_VIXS_2/DBLK_G_VIXS_2/DBLK_G_VIXS_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "f87570664f9e0b88a843ea545dd8909584dd1bb31ce121e00aba9ee609a12675"
+    },
+    {
+      "name": "DELTAQP_A_BRCM_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DELTAQP_A_BRCM_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DELTAQP_A_BRCM_4/DELTAQP_A_BRCM_4/DELTAQP_A_BRCM_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "63abbbaf43d334d7952eab7bbc5b3e34b4ad0259eddcd63cdb164dbcf9a36ca6"
+    },
+    {
+      "name": "DELTAQP_B_SONY_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DELTAQP_B_SONY_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DELTAQP_B_SONY_3/DELTAQP_B_SONY_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "67ac96be5c1917b93e3736b790af62405b738357d8b307947dfe9a97263f3574"
+    },
+    {
+      "name": "DELTAQP_C_SONY_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DELTAQP_C_SONY_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DELTAQP_C_SONY_3/DELTAQP_C_SONY_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "826387887ef919bb05934379ab057b859c746a62f692e575b5be931cfbf37ae7"
+    },
+    {
+      "name": "DSLICE_A_HHI_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DSLICE_A_HHI_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DSLICE_A_HHI_5/DSLICE_A_HHI_5/DSLICE_A_HHI_5.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c41c1a1e1e700af201eaf4cb0d11d4361b41ba0828e80c78d1835d1de187f80c"
+    },
+    {
+      "name": "DSLICE_B_HHI_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DSLICE_B_HHI_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DSLICE_B_HHI_5/DSLICE_B_HHI_5/DSLICE_B_HHI_5.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "993b933ac6801899b6f04ae5dd2c20fbc2498fd9710a924611e66de2f690716b"
+    },
+    {
+      "name": "DSLICE_C_HHI_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/DSLICE_C_HHI_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/DSLICE_C_HHI_5/DSLICE_C_HHI_5/DSLICE_C_HHI_5.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "6836566f0a4465775b4757b84d7a89f453b635eba2b941ae07132f7c7268c116"
+    },
+    {
+      "name": "ENTP_A_QUALCOMM_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ENTP_A_QUALCOMM_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ENTP_A_QUALCOMM_1/ENTP_A_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "66abdf60455ece468acf160274316c51dca3858d93a8ffce93646cbb5568fe43"
+    },
+    {
+      "name": "ENTP_B_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ENTP_B_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ENTP_B_Qualcomm_1/ENTP_B_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "6d5a455d70e245c463b66945ce34cbeff26dc826665334def407a29b2c0db722"
+    },
+    {
+      "name": "ENTP_C_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ENTP_C_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ENTP_C_Qualcomm_1/ENTP_C_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "6cfdfe2f6ba8e1a860909550e5a486e7bf712fed00674869f45c1d82d05833f5"
+    },
+    {
+      "name": "EXT_A_ericsson_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/EXT_A_ericsson_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/EXT_A_ericsson_4/EXT_A_ericsson_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "a70af63f710753f4157bc5de33e29c1a6622e823f50549c83a62a605fb2d7f66"
+    },
+    {
+      "name": "FILLER_A_Sony_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/FILLER_A_Sony_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/FILLER_A_Sony_1/FILLER_A_Sony_1/FILLER_A_Sony_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "abf6cd7525378d2e1c8f32b67af01c594553c342c21dcd36ab677c3c77b528db"
+    },
+    {
+      "name": "HRD_A_Fujitsu_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/HRD_A_Fujitsu_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/HRD_A_Fujitsu_3/HRD_A_Fujitsu_3.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7241c304d8326ae182ae245b83eb4f95e299d0f4fe254e0e8844c56ee5d37aee"
+    },
+    {
+      "name": "INITQP_A_Sony_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/INITQP_A_Sony_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/INITQP_A_Sony_1/INITQP_A_Sony_1/INITQP_A_Sony_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "38b1d9396bab068fa701b08db73c3a900e893ef4cd00c82fc7b4d2b150a2f749"
+    },
+    {
+      "name": "INITQP_B_Main10_Sony_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/INITQP_B_Main10_Sony_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/INITQP_B_Main10_Sony_1/INITQP_B_Main10_Sony_1/INITQP_B_Main10_Sony_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c3f87037640953691dee02d4c9f28cd6a3b99de43e30bdcfdf583888191fa23e"
+    },
+    {
+      "name": "ipcm_A_NEC_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_A_NEC_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ipcm_A_NEC_3/ipcm_A_NEC_3/ipcm_A_NEC_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "89a71f4b9b7e22c481378f83bacc5aac6c8f204999691d3fa21f2804337e84c9"
+    },
+    {
+      "name": "ipcm_B_NEC_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_B_NEC_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ipcm_B_NEC_3/ipcm_B_NEC_3/ipcm_B_NEC_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "36486e9b9cf21ccdd2f1c49cfd6e2806915b732b84e94940553ef501fd197ce6"
+    },
+    {
+      "name": "ipcm_C_NEC_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_C_NEC_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ipcm_C_NEC_3/ipcm_C_NEC_3/ipcm_C_NEC_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "12da972f8fcf2d75825535022b7a437d95b1c8272af0b738dc651f34e94c2175"
+    },
+    {
+      "name": "ipcm_D_NEC_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_D_NEC_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ipcm_D_NEC_3/ipcm_D_NEC_3/ipcm_D_NEC_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "4ef6cdc8fd330d339e1e9e9e04487ba84a21e40a02d111b2ee10c28549bddc94"
+    },
+    {
+      "name": "ipcm_E_NEC_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_E_NEC_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/ipcm_E_NEC_2/ipcm_E_NEC_2/ipcm_E_NEC_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1d6f8f5d1f08c9bc3f12179bcd6b28a56a7e18500f2c1dfd9799d8b407e78607"
+    },
+    {
+      "name": "IPRED_A_docomo_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/IPRED_A_docomo_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/IPRED_A_docomo_2/IPRED_A_docomo_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "5ee6e90cbcbf0547e43e72536ab39af1d831363f95c368c175267d6e48d264da"
+    },
+    {
+      "name": "IPRED_B_Nokia_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/IPRED_B_Nokia_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/IPRED_B_Nokia_3/IPRED_B_Nokia_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "738e35af4ced173e8ccb558464dc6a1b8b791fb1bb957c073633aa6037288cd0"
+    },
+    {
+      "name": "IPRED_C_Mitsubishi_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/IPRED_C_Mitsubishi_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/IPRED_C_Mitsubishi_3/IPRED_C_Mitsubishi_3/IPRED_C_Mitsubishi_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "0121352acf8ee0a90c1a61de2c621368b6199e1344d13c5a8cca7d219c8a44ac"
+    },
+    {
+      "name": "LS_A_Orange_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/LS_A_Orange_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/LS_A_Orange_2/LS_A_Orange_2/LS_A_Orange_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "4fe01633a4748338939713ea33d8cf82d64a1601255e71aef36f8d676e835d50"
+    },
+    {
+      "name": "LS_B_Orange_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/LS_B_Orange_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/LS_B_Orange_4/LS_B_Orange_4/LS_B_Orange_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "8f6b9111ca7a1f968ff705c09157974f5f347aaeb6591925c07c29493d65cbfe"
+    },
+    {
+      "name": "LTRPSPS_A_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/LTRPSPS_A_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/LTRPSPS_A_Qualcomm_1/LTRPSPS_A_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ddab4ef4b919ada1185a1abe0ac843077073bcdd7dc5b9380f8a8f50aebde2b0"
+    },
+    {
+      "name": "MAXBINS_A_TI_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MAXBINS_A_TI_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MAXBINS_A_TI_5/MAXBINS_A_TI_5/MAXBINS_A_TI_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "a6d1ed217b232aec8faff836c180a3368e5dd8ed3f8bf912c3527297ee89d498"
+    },
+    {
+      "name": "MAXBINS_B_TI_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MAXBINS_B_TI_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MAXBINS_B_TI_5/MAXBINS_B_TI_5/MAXBINS_B_TI_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "9963fb4ff680764c828b6255286a61e8af7578ca9e894e998799d34c6262643a"
+    },
+    {
+      "name": "MAXBINS_C_TI_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MAXBINS_C_TI_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MAXBINS_C_TI_5/MAXBINS_C_TI_5/MAXBINS_C_TI_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d65eff1cf251777315fd75045f561f1e5a10dae6c24d3eedcd434dc22d2f9f44"
+    },
+    {
+      "name": "MERGE_A_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_A_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_A_TI_3/MERGE_A_TI_3/MERGE_A_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "b38d58301c0a8bd41ce982e40552850eabe9f140d2ff6ceca3375f9f5abc8a65"
+    },
+    {
+      "name": "MERGE_B_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_B_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_B_TI_3/MERGE_B_TI_3/MERGE_B_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "3caadff6efe206a4916fc77b00dee960a4abf7c0c318bc74567e978990ad6f4a"
+    },
+    {
+      "name": "MERGE_C_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_C_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_C_TI_3/MERGE_C_TI_3/MERGE_C_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "8eb22636f0df729f172e86bd76c9dacb1baf5e1732ec82b70163479150c4eaf8"
+    },
+    {
+      "name": "MERGE_D_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_D_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_D_TI_3/MERGE_D_TI_3/MERGE_D_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "210a72652b522927306daf64c536b503bce3e96136a9174f737edbb0796e461e"
+    },
+    {
+      "name": "MERGE_E_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_E_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_E_TI_3/MERGE_E_TI_3/MERGE_E_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "e993282028a10dd1acb2acf2ef288cf722a45afdf6f38be2e14aa4ac4e2c9313"
+    },
+    {
+      "name": "MERGE_F_MTK_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_F_MTK_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_F_MTK_4/MERGE_F_MTK_4/MERGE_F_MTK_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "e6362acba9b420abbeca1e6dfceb7097d0ef67c52eacaf620b6837eb70de39ad"
+    },
+    {
+      "name": "MERGE_G_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MERGE_G_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MERGE_G_HHI_4/MERGE_G_HHI_4/MERGE_G_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "a373946851412a3aab96bfc8d7e9fdb28f1bd3f0cfdd7296aaf2caf1aa9d6367"
+    },
+    {
+      "name": "MVCLIP_A_qualcomm_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MVCLIP_A_qualcomm_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MVCLIP_A_qualcomm_3/MVCLIP_A_qualcomm_3/MVCLIP_A_qualcomm_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "59362bb9db5ead0245ec7ff1e40d2ddd80eb81d03bb5cceb6d4a971210888221"
+    },
+    {
+      "name": "MVDL1ZERO_A_docomo_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MVDL1ZERO_A_docomo_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MVDL1ZERO_A_docomo_4/MVDL1ZERO_A_docomo_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "2b65608d995b143c71ff22da120b5dab5863c75d324906c6f4fc64c1340669cd"
+    },
+    {
+      "name": "MVEDGE_A_qualcomm_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/MVEDGE_A_qualcomm_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/MVEDGE_A_qualcomm_3/MVEDGE_A_qualcomm_3/MVEDGE_A_qualcomm_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "077887906b30e89aec88d09ff99e549fa1c99067a4f66a264a0ef03fd5f57f5e"
+    },
+    {
+      "name": "NoOutPrior_A_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/NoOutPrior_A_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/NoOutPrior_A_Qualcomm_1/NoOutPrior_A_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "f1d17de98fc0d69bc28793f74d5b31c5c113ba2c72983bfad03413459b95a07f"
+    },
+    {
+      "name": "NoOutPrior_B_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/NoOutPrior_B_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/NoOutPrior_B_Qualcomm_1/NoOutPrior_B_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c1fc9cc8681f762a121db670dde6f75bf158139ed80c6d7895c38ba9a0ffbbd0"
+    },
+    {
+      "name": "NUT_A_ericsson_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/NUT_A_ericsson_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/NUT_A_ericsson_5/NUT_A_ericsson_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "caabf3005c37b5ad7497b110f30f04ffb603fc154250058edc23da95b7c73d88"
+    },
+    {
+      "name": "OPFLAG_A_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/OPFLAG_A_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/OPFLAG_A_Qualcomm_1/OPFLAG_A_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c48c1f9d0553a26d06d9c3090cc61e7e0f14c48c0d718d3b30eaab8872f6b8af"
+    },
+    {
+      "name": "OPFLAG_B_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/OPFLAG_B_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/OPFLAG_B_Qualcomm_1/OPFLAG_B_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7b20964afbe404b42d142fa9f3d3673c4a795a6424fc621a2eb3f4e67dd3517a"
+    },
+    {
+      "name": "OPFLAG_C_Qualcomm_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/OPFLAG_C_Qualcomm_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/OPFLAG_C_Qualcomm_1/OPFLAG_C_Qualcomm_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "032c38a4fd9f35838040e00cc60ef7786937362edce86c174a621e2d3d72d563"
+    },
+    {
+      "name": "PICSIZE_A_Bossen_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PICSIZE_A_Bossen_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PICSIZE_A_Bossen_1/PICSIZE_A_Bossen_1/PICSIZE_A_Bossen_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ffdffecff6ba03ce0220eb89e83bc3043af5953ab6864ad6acefee382e49ee7c"
+    },
+    {
+      "name": "PICSIZE_B_Bossen_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PICSIZE_B_Bossen_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PICSIZE_B_Bossen_1/PICSIZE_B_Bossen_1/PICSIZE_B_Bossen_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "aa3d40fa418873793110bbff17890781586b391d69cd91a3973f0dbfd9144b3f"
+    },
+    {
+      "name": "PICSIZE_C_Bossen_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PICSIZE_C_Bossen_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PICSIZE_C_Bossen_1/PICSIZE_C_Bossen_1/PICSIZE_C_Bossen_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d9a3e925af1c1eabc634bdb04a8cc0a48076956b92e1c22e65a89e154309d2ee"
+    },
+    {
+      "name": "PICSIZE_D_Bossen_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PICSIZE_D_Bossen_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PICSIZE_D_Bossen_1/PICSIZE_D_Bossen_1/PICSIZE_D_Bossen_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "bb63815e8817b5a58aefaf235a7b144b3664e4cc3b4f7b7807a9371222356f67"
+    },
+    {
+      "name": "PMERGE_A_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PMERGE_A_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PMERGE_A_TI_3/PMERGE_A_TI_3/PMERGE_A_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7d3c8f4c07c56b2f3ac943f8d93b4f68f6ef8f6f4b5ce9df6967f1162c596dfe"
+    },
+    {
+      "name": "PMERGE_B_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PMERGE_B_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PMERGE_B_TI_3/PMERGE_B_TI_3/PMERGE_B_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "9e50bf7b5b04a143dfecb216010c5f7f5d1af62c787d0f93715ec69deff3f1c3"
+    },
+    {
+      "name": "PMERGE_C_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PMERGE_C_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PMERGE_C_TI_3/PMERGE_C_TI_3/PMERGE_C_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "6daafac8aaca517e83bc7c1443adbc0360f3397a31bef373e1f3fb2617e7525e"
+    },
+    {
+      "name": "PMERGE_D_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PMERGE_D_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PMERGE_D_TI_3/PMERGE_D_TI_3/PMERGE_D_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "dc9b99198683ded041acdde73e77a259a24b262aac8aabdb048d84b6db116fc8"
+    },
+    {
+      "name": "PMERGE_E_TI_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PMERGE_E_TI_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PMERGE_E_TI_3/PMERGE_E_TI_3/PMERGE_E_TI_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "28e5e7a0eb72c1f51dabb9fde6f33c683cb197392c879aeafeeebfca689292a3"
+    },
+    {
+      "name": "POC_A_Bossen_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/POC_A_Bossen_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/POC_A_Bossen_3/POC_A_Bossen_3/POC_A_Bossen_3.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "aec93a088b81d68d87eda99e4a0e64bed7012b571158c8a2242223d1f9db8ccd"
+    },
+    {
+      "name": "PPS_A_qualcomm_7",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PPS_A_qualcomm_7.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PPS_A_qualcomm_7/PPS_A_qualcomm_7/PPS_A_qualcomm_7.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "39058b857df8d60c92135e1ae32a5e09b1ee76be6ed06e19014d2dc18c6df778"
+    },
+    {
+      "name": "PS_B_VIDYO_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/PS_B_VIDYO_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/PS_B_VIDYO_3/PS_B_VIDYO_3/PS_B_VIDYO_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "df6adc3d47b8c2b80404f5b892b2f24071731be97a1ea4604205f6a914cd9ba7"
+    },
+    {
+      "name": "RAP_A_docomo_6",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RAP_A_docomo_6.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RAP_A_docomo_6/RAP_A_docomo_6.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "5031bac0b1520ed826bf3112d000e59c76677c01dee706738af0d206cde031be"
+    },
+    {
+      "name": "RAP_B_Bossen_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RAP_B_Bossen_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RAP_B_Bossen_2/RAP_B_Bossen_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "162e16fa34535085f58a3128782a820ae41430281508ab0a7ef036a0d7cf4707"
+    },
+    {
+      "name": "RPLM_A_qualcomm_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPLM_A_qualcomm_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPLM_A_qualcomm_4/RPLM_A_qualcomm_4/RPLM_A_qualcomm_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d085cf26bc0e2f903071cdf2c2aae04c1ea6dc19628004c402ed19a1a32beb58"
+    },
+    {
+      "name": "RPLM_B_qualcomm_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPLM_B_qualcomm_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPLM_B_qualcomm_4/RPLM_B_qualcomm_4/RPLM_B_qualcomm_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "00cc75255e2ec35010cb635daac2bfa0217feb9b14f353d01645a2528a2f57cf"
+    },
+    {
+      "name": "RPS_A_docomo_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPS_A_docomo_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPS_A_docomo_5/RPS_A_docomo_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "45427f66400a033e7a47cc6ca9b21d456e9e06450db6ca8d8fa92c438125324b"
+    },
+    {
+      "name": "RPS_B_qualcomm_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPS_B_qualcomm_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPS_B_qualcomm_5/RPS_B_qualcomm_5/RPS_B_qualcomm_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1925e1a9867b5380395af9b2b52a4b1f2c0ccfa5c62abb330c481fa26aca5307"
+    },
+    {
+      "name": "RPS_C_ericsson_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPS_C_ericsson_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPS_C_ericsson_5/RPS_C_ericsson_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "72eaf0e85d1f5809a1b1ebe2051a171c4361ae39fa206e198b69eb9972795459"
+    },
+    {
+      "name": "RPS_D_ericsson_6",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPS_D_ericsson_6.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPS_D_ericsson_6/RPS_D_ericsson_6.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ad3a34befc07b88538442859c2c7a4faa96ad8e48875f0189b93875bb7fef302"
+    },
+    {
+      "name": "RPS_E_qualcomm_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPS_E_qualcomm_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPS_E_qualcomm_5/RPS_E_qualcomm_5/RPS_E_qualcomm_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "74f59448bb458875bc8081bd724de999902e7422fd77b74a7ca1c48381d9e96a"
+    },
+    {
+      "name": "RPS_F_docomo_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RPS_F_docomo_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RPS_F_docomo_2/RPS_F_docomo_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "db62853318f3a7bc5af8b3fb193fbc1f7e2384353dfe184c75dd678e7543b2f1"
+    },
+    {
+      "name": "RQT_A_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_A_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_A_HHI_4/RQT_A_HHI_4/RQT_A_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "958d958baedbe4f2c864f5d9b3b87e69884170db403b4e190d1d33a0490ec3c6"
+    },
+    {
+      "name": "RQT_B_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_B_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_B_HHI_4/RQT_B_HHI_4/RQT_B_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "901a5697989fd5dca6e6f780e33008e17a1fe501752daa15643a6ed8f2a51f13"
+    },
+    {
+      "name": "RQT_C_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_C_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_C_HHI_4/RQT_C_HHI_4/RQT_C_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "64c05810393d2eea2d3aa3da2e88eb8a7a15d18dc3773649609dd3633daf5c66"
+    },
+    {
+      "name": "RQT_D_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_D_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_D_HHI_4/RQT_D_HHI_4/RQT_D_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "b388926a52db194ffd5850f19881daa4d9cdac05defedf22d0effd23ddedd4ea"
+    },
+    {
+      "name": "RQT_E_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_E_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_E_HHI_4/RQT_E_HHI_4/RQT_E_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "025675b85ef5e10fa8ca7f995ed8cecf93ef9cc35e348d5d1b47a4d389b5d866"
+    },
+    {
+      "name": "RQT_F_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_F_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_F_HHI_4/RQT_F_HHI_4/RQT_F_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1c83c4de3818e827e106083c381aa4f8ed179a086f928e3f139605be74df9e03"
+    },
+    {
+      "name": "RQT_G_HHI_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/RQT_G_HHI_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/RQT_G_HHI_4/RQT_G_HHI_4/RQT_G_HHI_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "43f05990af976fbd49ee454bc6fcc8c872cff1d9e424bef16a775b98e4133912"
+    },
+    {
+      "name": "SAO_A_MediaTek_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_A_MediaTek_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_A_MediaTek_4/SAO_A_MediaTek_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "e0b5c8f4ab4fb592971f06469db630d9e7ef72b4d37d729604e2fdaa9df706c9"
+    },
+    {
+      "name": "SAO_B_MediaTek_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_B_MediaTek_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_B_MediaTek_5/SAO_B_MediaTek_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "f8d4c91e443b02d13ee180c5ca02769048766a338993bb90d97fbe683cbb979f"
+    },
+    {
+      "name": "SAO_C_Samsung_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_C_Samsung_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_C_Samsung_5/SAO_C_Samsung_5/SAO_C_Samsung_5.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "6152998e7dfa1aa0933437201b5abbc319d949cf13411d60ae324f2f407ef243"
+    },
+    {
+      "name": "SAO_D_Samsung_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_D_Samsung_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_D_Samsung_5/SAO_D_Samsung_5/SAO_D_Samsung_5.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "9dec8b2172d0b07babdfd866abd783c344b328ebf83af826cf76da1ae2e9cd77"
+    },
+    {
+      "name": "SAO_E_Canon_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_E_Canon_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_E_Canon_4/SAO_E_Canon_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "a6c7a169386ad20bfc4b249d152c5426e5cd17b906e213993f86c4c2fc55b47e"
+    },
+    {
+      "name": "SAO_F_Canon_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_F_Canon_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_F_Canon_3/SAO_F_Canon_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "9bc5e53214261ea3cefc035327b6c110096d8d933f0ed82fff6fcf8270de5e7c"
+    },
+    {
+      "name": "SAO_G_Canon_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_G_Canon_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_G_Canon_3/SAO_G_Canon_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7a7566dcf043a9adf6007b1d15182d82d998566e243c8f64bec76917653923e2"
+    },
+    {
+      "name": "SAO_H_Parabola_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAO_H_Parabola_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAO_H_Parabola_1/SAO_H_Parabola_1.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c823ce5b11e759970b0e5996f05f8d2e8bd0fa65b461f40dd74df1d9a74ac7c6"
+    },
+    {
+      "name": "SAODBLK_A_MainConcept_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAODBLK_A_MainConcept_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAODBLK_A_MainConcept_4/SAODBLK_A_MainConcept_4/SAODBLK_A_MainConcept_4.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "2ca335887ff3262f4a1a2653b5feaa34d2fd313e0f268966ce316549e654e1e0"
+    },
+    {
+      "name": "SAODBLK_B_MainConcept_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SAODBLK_B_MainConcept_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SAODBLK_B_MainConcept_4/SAODBLK_B_MainConcept_4/SAODBLK_B_MainConcept_4.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "575165fe6d0a474abdbfb2a628e8c1c2399827fca9f9f47c11aaf71976b51441"
+    },
+    {
+      "name": "SDH_A_Orange_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SDH_A_Orange_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SDH_A_Orange_4/SDH_A_Orange_4/SDH_A_Orange_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ddf41877f10b47bad946712954e4a4b35cae435bac187d8c404c6bcfcb4acad0"
+    },
+    {
+      "name": "SLICES_A_Rovi_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SLICES_A_Rovi_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SLICES_A_Rovi_3/SLICES_A_Rovi_3.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d0141e111c1c854930eb16430cc5d3e5b82ccfa1458805fce20dd410b08c61ad"
+    },
+    {
+      "name": "SLIST_A_Sony_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SLIST_A_Sony_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SLIST_A_Sony_5/SLIST_A_Sony_5/SLIST_A_Sony_5.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c51997394e58293b6bedbc5493056fee1b0e7fd41e266468d6a4664b1699b568"
+    },
+    {
+      "name": "SLIST_B_Sony_9",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SLIST_B_Sony_9.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SLIST_B_Sony_9/SLIST_B_Sony_9/SLIST_B_Sony_9.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7d449a938659d1588662f8dfd88aa060ca34457209282b72a93d3f63719cc404"
+    },
+    {
+      "name": "SLIST_C_Sony_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SLIST_C_Sony_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SLIST_C_Sony_4/SLIST_C_Sony_4/SLIST_C_Sony_4.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "0af7bda8eae57ab56e96e6d9796c5dbe449036229fd177657147eb5ee6be1369"
+    },
+    {
+      "name": "SLIST_D_Sony_9",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SLIST_D_Sony_9.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SLIST_D_Sony_9/SLIST_D_Sony_9/str.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "81c28ef25fd48762dc92f510a216404bd2275971b66377f1f04b4e5b5cc007a4"
+    },
+    {
+      "name": "SLPPLP_A_VIDYO_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/SLPPLP_A_VIDYO_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/SLPPLP_A_VIDYO_2/SLPPLP_A_VIDYO_2/SLPPLP_A_VIDYO_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "05e36c3313678556e498cfeb3c4f3f73786f9608b8cd3c8b79ddf65c1ee42b4f"
+    },
+    {
+      "name": "STRUCT_A_Samsung_7",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/STRUCT_A_Samsung_7.zip",
+      "input": "resources/JCT-VC-HEVC_V1/STRUCT_A_Samsung_7/STRUCT_A_Samsung_7.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "56a83b66b9e20dbfb20b196797c8136a9c19d3df39d4c1142e0b96e0159b617b"
+    },
+    {
+      "name": "STRUCT_B_Samsung_7",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/STRUCT_B_Samsung_7.zip",
+      "input": "resources/JCT-VC-HEVC_V1/STRUCT_B_Samsung_7/STRUCT_B_Samsung_7.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "d2ddaebfefdd2e6189030f75d88b351c027aaabed3cd71ce6752b44f120f2078"
+    },
+    {
+      "name": "TILES_A_Cisco_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TILES_A_Cisco_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TILES_A_Cisco_2/TILES_A_Cisco_2/TILES_A_Cisco_2.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "bd63079966105a3bdac764979cb82b708f586cc7c34859a1d466e18cc6a5c345"
+    },
+    {
+      "name": "TILES_B_Cisco_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TILES_B_Cisco_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TILES_B_Cisco_1/TILES_B_Cisco_1/TILES_B_Cisco_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "75b3c9b2981cda59d497750322cde7ca23d6cef39fa9a8e11f36926758b7f83b"
+    },
+    {
+      "name": "TMVP_A_MS_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TMVP_A_MS_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TMVP_A_MS_3/TMVP_A_MS_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "78fa4422f42adda3f8d7ef1f9b3b92d9428af3140bbfb52bafd9bf3dc129c4c2"
+    },
+    {
+      "name": "TSCL_A_VIDYO_5",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TSCL_A_VIDYO_5.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TSCL_A_VIDYO_5/TSCL_A_VIDYO_5/TSCL_A_VIDYO_5.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "987ff999aac9b3c9828763b9aeb67a393ef32dede683356f2702f2686c905313"
+    },
+    {
+      "name": "TSCL_B_VIDYO_4",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TSCL_B_VIDYO_4.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TSCL_B_VIDYO_4/TSCL_B_VIDYO_4/TSCL_B_VIDYO_4.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "2a2bcebdc2ca70ad1124d9f95c95f3ea89cab05df194b88296e65b31131e16bf"
+    },
+    {
+      "name": "TSKIP_A_MS_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TSKIP_A_MS_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TSKIP_A_MS_3/TSKIP_A_MS_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "7f09bd323228975260b14c1b8e92cb15341771b29addd71cc0c2471d5e070a80"
+    },
+    {
+      "name": "TSUNEQBD_A_MAIN10_Technicolor_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TSUNEQBD_A_MAIN10_Technicolor_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TSUNEQBD_A_MAIN10_Technicolor_2/TSUNEQBD_A_MAIN10_Technicolor_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "615696a911a824988da0d883ab573fb673fd72bf45275d75549abc763602f814"
+    },
+    {
+      "name": "TUSIZE_A_Samsung_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/TUSIZE_A_Samsung_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/TUSIZE_A_Samsung_1/TUSIZE_A_Samsung_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "f4d82ace7374c115c17ae8759994393a9353cd4902520bea20f6d3f864c60b2c"
+    },
+    {
+      "name": "VPSID_A_VIDYO_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/VPSID_A_VIDYO_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/VPSID_A_VIDYO_2/VPSID_A_VIDYO_2/VPSID_A_VIDYO_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "c7fe4e7c81b22146930b3840cf11eef02d8da4328ea2428d9107d8dd53dd75aa"
+    },
+    {
+      "name": "VPSSPSPPS_A_MainConcept_1",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/VPSSPSPPS_A_MainConcept_1.zip",
+      "input": "resources/JCT-VC-HEVC_V1/VPSSPSPPS_A_MainConcept_1/VPSSPSPPS_A_MainConcept_1.bin",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "fcbe56da7f4fcf1d870736ddf4ce0a3d572f53f78d418e49b5adc376e1cb04df"
+    },
+    {
+      "name": "WP_A_MAIN10_Toshiba_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WP_A_MAIN10_Toshiba_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WP_A_MAIN10_Toshiba_3/WP_A_MAIN10_Toshiba_3/WP_A_MAIN10_Toshiba_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "26b3bc442265222032c1960cc02fe2bd55121fe933e70e5039521785073d33b2"
+    },
+    {
+      "name": "WP_A_Toshiba_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WP_A_Toshiba_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WP_A_Toshiba_3/WP_A_Toshiba_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1eb0245131b15b10e671eff84e9c04e1f7413136908cf2120a8eac4ae2e2a1a2"
+    },
+    {
+      "name": "WP_B_Toshiba_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WP_B_Toshiba_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WP_B_Toshiba_3/WP_B_Toshiba_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1138929b7df554d07e61052a222a8a501611fcdea520fb89519a0356a3ff76ad"
+    },
+    {
+      "name": "WP_MAIN10_B_Toshiba_3",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WP_MAIN10_B_Toshiba_3.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WP_MAIN10_B_Toshiba_3/WP_MAIN10_B_Toshiba_3.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "9e54d047e0e3ee79724d64d6fbc09c3ea25f01c45e34797d8640c64f31f97e01"
+    },
+    {
+      "name": "WPP_A_ericsson_MAIN10_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_A_ericsson_MAIN10_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_A_ericsson_MAIN10_2/WPP_A_ericsson_MAIN10_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "1827b7111a9ce76f6c04332b61cd24d9daf818fd203aa1d0b7d1087b9b83a6aa"
+    },
+    {
+      "name": "WPP_A_ericsson_MAIN_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_A_ericsson_MAIN_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_A_ericsson_MAIN_2/WPP_A_ericsson_MAIN_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "81c601e9301ba5f562ebf9918e73d1c7153e0a6fe8fa4509f61035a212188216"
+    },
+    {
+      "name": "WPP_B_ericsson_MAIN10_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_B_ericsson_MAIN10_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_B_ericsson_MAIN10_2/WPP_B_ericsson_MAIN10_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "ecc6e54eb2f37f2398d3eedafde156969e684ed343a73a70b143e557ad8d9f5f"
+    },
+    {
+      "name": "WPP_B_ericsson_MAIN_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_B_ericsson_MAIN_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_B_ericsson_MAIN_2/WPP_B_ericsson_MAIN_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "57bfa7dc2417976825187b43829f1e107d87ebe661cfa4a02087efae3bd1148e"
+    },
+    {
+      "name": "WPP_C_ericsson_MAIN10_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_C_ericsson_MAIN10_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_C_ericsson_MAIN10_2/WPP_C_ericsson_MAIN10_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "97e267a3593dab465c137a349188b2bde024b3c6339c1e49195944a79680b2cf"
+    },
+    {
+      "name": "WPP_C_ericsson_MAIN_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_C_ericsson_MAIN_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_C_ericsson_MAIN_2/WPP_C_ericsson_MAIN_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "4d1f3e7fc1b05e22f2c53fabc670a3db9a642bb511004c4d785b49582890bdf2"
+    },
+    {
+      "name": "WPP_D_ericsson_MAIN10_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_D_ericsson_MAIN10_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_D_ericsson_MAIN10_2/WPP_D_ericsson_MAIN10_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "0c365aa50f6bcdabb72e62349e45a02a5cdbcb93f52d02764a1cb04890f1eb1e"
+    },
+    {
+      "name": "WPP_D_ericsson_MAIN_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_D_ericsson_MAIN_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_D_ericsson_MAIN_2/WPP_D_ericsson_MAIN_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "04c166df6e6d68584910fce77055f6c16428fc5c907bb1befd10bbf40c16b939"
+    },
+    {
+      "name": "WPP_E_ericsson_MAIN10_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_E_ericsson_MAIN10_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_E_ericsson_MAIN10_2/WPP_E_ericsson_MAIN10_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "79df12a77f9c2369c94bf68d3c550e0965adf364ae82bd67e7b612c624020e9c"
+    },
+    {
+      "name": "WPP_E_ericsson_MAIN_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_E_ericsson_MAIN_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_E_ericsson_MAIN_2/WPP_E_ericsson_MAIN_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "10f4a50870f763d7ccbd975adce20176022a1b9712664244a94c069322534faf"
+    },
+    {
+      "name": "WPP_F_ericsson_MAIN10_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_F_ericsson_MAIN10_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_F_ericsson_MAIN10_2/WPP_F_ericsson_MAIN10_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "08ec305637fb1dd9731f1befd882f44e19f2bc54d1b6faca662d9c191c2c0b65"
+    },
+    {
+      "name": "WPP_F_ericsson_MAIN_2",
+      "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/WPP_F_ericsson_MAIN_2.zip",
+      "input": "resources/JCT-VC-HEVC_V1/WPP_F_ericsson_MAIN_2/WPP_F_ericsson_MAIN_2.bit",
+      "result": "",
+      "result_frames": null,
+      "source_hash": "39f5ffaa4c273c800b4e05715e2d4002e31b3bbe39505ea59b08c5fdabe6af21"
+    }
+  ]
+}
