@@ -32,10 +32,9 @@ class Decoder:
         return f'    {self.name}: {self.description}'
 
 
-DECODERS = {}
+DECODERS = []
 
 
 def register_decoder(clazz):
-    if clazz.codec not in DECODERS:
-        DECODERS[clazz.codec] = []
-    DECODERS[clazz.codec].append(clazz())
+    global DECODERS
+    DECODERS.append(clazz())

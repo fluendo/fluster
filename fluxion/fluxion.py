@@ -89,9 +89,15 @@ class Fluxion:
     @lazy_init(load_decoders)
     def list_decoders(self):
         print('\nList of available decoders:\n')
-        for codec in self.decoders.keys():
+        decoders_dict = {}
+        for dec in self.decoders:
+            if dec.codec not in decoders_dict:
+                decoders_dict[dec.codec] = []
+            decoders_dict[dec.codec].append(dec)
+
+        for codec in decoders_dict.keys():
             print(f'{codec}')
-            for decoder in self.decoders[codec]:
+            for decoder in decoders_dict[codec]:
                 print(decoder)
 
     @lazy_init(load_test_suites)
@@ -125,16 +131,42 @@ class Fluxion:
     @lazy_init(load_test_suites)
     @lazy_init(load_decoders)
     def run_test_suites(self, test_suites=None, decoders=None, failfast=False):
-        test_suites = self.test_suites
-        decoders = []
-        for _, decs in self.decoders.items():
-            decoders += decs
+        def find_names_in_collection(text, names, collection):
+            ret = []
+            for name in names:
+                found = False
+                for entry in collection:
+                    if entry.name.lower() == name.lower():
+                        ret.append(entry)
+                        found = True
+                        break
+                if not found:
+                    raise Exception(f'Error: {text} "{name}" not found')
+            return ret
 
-        ts_names = [ts.name for ts in test_suites]
-        dec_names = [dec.name for dec in decoders]
+        try:
+            run_test_suites = []
+            if test_suites:
+                run_test_suites = find_names_in_collection('Test suite',
+                                                           test_suites, self.test_suites)
+            else:
+                run_test_suites = self.test_suites
+
+            run_decoders = []
+            if decoders:
+                run_decoders = find_names_in_collection('Decoder',
+                                                           decoders, self.decoders)
+            else:
+                run_decoders = self.decoders
+        except Exception as e:
+            print(f'Error: {e}')
+            return
+
+        ts_names = [ts.name for ts in run_test_suites]
+        dec_names = [dec.name for dec in run_decoders]
         print(
             f'Running test suites {", ".join(ts_names)} for decoders {", ".join(dec_names)}')
 
-        suite = self.build_test_suite(test_suites, decoders)
+        suite = self.build_test_suite(run_test_suites, run_decoders)
         runner = unittest.TextTestRunner(failfast=failfast)
         runner.run(suite)

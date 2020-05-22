@@ -17,6 +17,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+
 class TestVector:
     NAME = 'name'
     SOURCE = 'source'
@@ -38,4 +39,4 @@ class TestVector:
             f'            Result: {self.result}'
         if self.result_frames:
             ret += f'\n            Result frames: {", ".join(self.result_frames)}'
-        return  ret
+        return ret

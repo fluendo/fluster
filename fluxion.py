@@ -35,7 +35,8 @@ def list_cmd(args, fluxion):
 
 
 def run_cmd(args, fluxion):
-    fluxion.run_test_suites(failfast=args.failfast)
+    fluxion.run_test_suites(test_suites=args.testsuites,
+                            decoders=args.decoders, failfast=args.failfast)
 
 
 def parse_args():
@@ -58,6 +59,10 @@ def parse_args():
         'run', aliases=['r'], help='run test suites for decoders')
     run_parser.add_argument(
         '-ff', '--failfast', help='fail fast', action='store_true')
+    run_parser.add_argument(
+        '-ts', '--testsuites', help='run only the specific test suites', nargs='+')
+    run_parser.add_argument(
+        '-d', '--decoders', help='run only the specific decoders', nargs='+')
     run_parser.set_defaults(func=run_cmd)
 
     return parser.parse_args()
