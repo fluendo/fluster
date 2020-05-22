@@ -20,7 +20,7 @@
 
 class TestVector:
 
-    def __init__(self, name: str, source: str, input: str, result:str, result_frames=None):
+    def __init__(self, name: str, source: str, input: str, result: str, result_frames=None):
         self.name = name
         self.source = source
         self.input = input

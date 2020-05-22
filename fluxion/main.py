@@ -33,7 +33,8 @@ class Main:
     def run(self):
         args = self.parse_args()
         if hasattr(args, 'func'):
-            fluxion = Fluxion(self.test_suites_dir, self.decoders_dir, verbose=args.verbose)
+            fluxion = Fluxion(self.test_suites_dir,
+                              self.decoders_dir, verbose=args.verbose)
             args.func(args, fluxion)
         else:
             self.parser.print_help()

@@ -39,7 +39,8 @@ class TestSuite:
     def from_json_file(cls, filename: str):
         with open(filename) as f:
             data = json.load(f)
-            data['test_vectors'] = list(map(TestVector.from_json, data["test_vectors"]))
+            data['test_vectors'] = list(
+                map(TestVector.from_json, data["test_vectors"]))
             return cls(**data)
 
     def to_json_file(self, filename: str):
