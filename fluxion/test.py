@@ -23,13 +23,20 @@ from fluxion.decoder import Decoder
 from fluxion.test_vector import TestVector
 
 
-def test_decode(self, decoder, test_vector):
-    def test():
-        result = decoder.decode(test_vector.input)
-        self.assertEqual(test_vector.result, result)
-    return test
-
-
 class Test(unittest.TestCase):
-    def set_name(self, name):
-        super().__init__(name)
+
+    def __init__(self, decoder, test_suite, test_vector):
+        test_name = ''
+        for c in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
+            if c.isalnum():
+                test_name += c
+            else:
+                test_name += '_'
+        setattr(self, test_name, self._gen_test_func(decoder, test_vector))
+        super().__init__(test_name)
+
+    def _gen_test_func(self, decoder, test_vector):
+        def test():
+            result = decoder.decode(test_vector.input)
+            self.assertEqual(test_vector.result, result)
+        return test

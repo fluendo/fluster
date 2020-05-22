@@ -24,7 +24,7 @@ import unittest
 
 from fluxion.test_suite import TestSuite
 from fluxion.decoder import DECODERS
-from fluxion.test import Test, test_decode
+from fluxion.test import Test
 
 
 def lazy_init(call_func):
@@ -105,16 +105,7 @@ class Fluxion:
             for ts in test_suites:
                 if ts.codec == dec.codec:
                     for tv in ts.test_vectors:
-                        test_name = ''
-                        for c in f'{dec.name}_{ts.name}_{tv.name}':
-                            if c.isalnum():
-                                test_name += c
-                            else:
-                                test_name += '_'
-                        test = Test()
-                        setattr(test, test_name, test_decode(test, dec, tv))
-                        test.set_name(test_name)
-                        suite.addTest(test)
+                        suite.addTest(Test(dec, ts, tv))
 
         return suite
 
