@@ -6,6 +6,7 @@
         {
             "name": "AMP_A",
             "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_A_Samsung_7.zip",
+            "source_hash": "",
             "input": "AMP_A_Samsung_7/AMP_A_Samsung_7.bin",
             "result": "7069572611d4158ebb6ba4ad25aeab92",
             "result_frames": [
