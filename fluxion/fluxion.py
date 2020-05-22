@@ -46,9 +46,10 @@ def lazy_init(call_func):
 
 
 class Fluxion:
-    def __init__(self, test_suites_dir, decoders_dir, verbose=False):
+    def __init__(self, test_suites_dir, decoders_dir, resources_dir, verbose=False):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
+        self.resources_dir = resources_dir
         self.verbose = verbose
         self.test_suites = []
         self.decoders = DECODERS
@@ -155,3 +156,13 @@ class Fluxion:
         runner = unittest.TextTestRunner(
             failfast=failfast, verbosity=1 if quiet else 2)
         runner.run(suite)
+
+    @lazy_init(load_test_suites)
+    def download_test_suites(self, test_suites):
+        if not test_suites:
+            test_suites = self.test_suites
+        else:
+            test_suites = [
+                t for t in self.test_suites if t.name in test_suites]
+        for t in test_suites:
+            t.download(self.resources_dir, True)

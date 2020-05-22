@@ -25,16 +25,19 @@ from fluxion.fluxion import Fluxion
 
 class Main:
 
-    def __init__(self, test_suites_dir, decoders_dir):
+    def __init__(self, test_suites_dir, decoders_dir, resources_dir):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
+        self.resources_dir = resources_dir
         self.parser = self.create_parser()
 
     def run(self):
         args = self.parse_args()
         if hasattr(args, 'func'):
             fluxion = Fluxion(self.test_suites_dir,
-                              self.decoders_dir, verbose=args.verbose)
+                              self.decoders_dir,
+                              self.resources_dir,
+                              verbose=args.verbose)
             args.func(args, fluxion)
         else:
             self.parser.print_help()
@@ -55,6 +58,7 @@ class Main:
         subparsers = parser.add_subparsers(title='subcommands')
         self.add_list_cmd(subparsers)
         self.add_run_cmd(subparsers)
+        self.add_download_cmd(subparsers)
         return parser.parse_args()
 
     def add_list_cmd(self, subparsers):
@@ -81,6 +85,13 @@ class Main:
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
         run_parser.set_defaults(func=self.run_cmd)
 
+    def add_download_cmd(self, subparsers):
+        download_parser = subparsers.add_parser(
+            'download', aliases=['d'], help='downloads test suites resources')
+        download_parser.add_argument(
+            'testsuites', help='list of testsuites to donwload', nargs='*')
+        download_parser.set_defaults(func=self.download_cmd)
+
     def list_cmd(self, args, fluxion):
         if args.testsuites:
             fluxion.list_test_suites(show_test_vectors=args.testvectors)
@@ -90,3 +101,6 @@ class Main:
     def run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
                                 decoders=args.decoders, failfast=args.failfast, quiet=args.quiet)
+
+    def download_cmd(self, args, fluxion):
+        fluxion.download_test_suites(test_suites=args.testsuites)

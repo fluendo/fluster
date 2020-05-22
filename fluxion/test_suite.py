@@ -20,7 +20,9 @@
 import os.path
 import json
 
+
 from fluxion.test_vector import TestVector
+from fluxion import utils
 
 
 class TestSuite:
@@ -45,7 +47,32 @@ class TestSuite:
 
     def to_json_file(self, filename: str):
         with open(filename, 'w') as f:
-            json.dump(self, f)
+            data = self.__dict__.copy()
+            data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
+            json.dump(data, f, indent=2)
+
+    def download(self, out_dir: str, verify: bool):
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        print("Downloading test suite {}".format(self.name))
+        for test_vector in self.test_vectors:
+            dest_dir = os.path.join(out_dir, self.name, test_vector.name)
+            dest_path = os.path.join(
+                dest_dir, test_vector.source.split('/')[-1])
+            if not os.path.exists(dest_dir):
+                os.makedirs(dest_dir)
+            file_downloaded = os.path.exists(dest_path)
+            if file_downloaded and verify:
+                if test_vector.source_hash != utils.file_sha256(dest_path):
+                    file_downloaded = False
+            if not file_downloaded:
+                print(
+                    "\tDownloading test vector {} from {}".format(test_vector.name, test_vector.source))
+                utils.download(test_vector.source, dest_dir)
+            if utils.is_extractable(dest_path):
+                print(
+                    "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
+                utils.extract(dest_path, dest_dir)
 
     def __str__(self):
         return f'\n{self.name}\n' \
