@@ -17,6 +17,11 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+import os.path
+import json
+
+from fluxion.test_vector import TestVector
+
 
 class TestSuite:
     NAME = 'name'
@@ -32,6 +37,19 @@ class TestSuite:
 
     def add_test_vector(self, test_vector):
         self.test_vectors.append(test_vector)
+
+    @staticmethod
+    def from_json_file(filename):
+        with open(filename) as f:
+            content = json.load(f)
+            test_suite = TestSuite(
+                content[TestSuite.NAME], content[TestSuite.CODEC], content[TestSuite.DESCRIPTION])
+            for tv in content[TestSuite.TEST_VECTORS]:
+                result_frames = None if not TestVector.RESULT_FRAMES in tv else tv[
+                    TestVector.RESULT_FRAMES]
+                test_suite.add_test_vector(TestVector(
+                    tv[TestVector.NAME], tv[TestVector.SOURCE], tv[TestVector.INPUT], tv[TestVector.RESULT], result_frames))
+            return test_suite
 
     def __str__(self):
         return f'\n{self.name}\n' \

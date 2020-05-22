@@ -19,12 +19,10 @@
 
 import os
 import os.path
-import json
 import functools
 import unittest
 
 from fluxion.test_suite import TestSuite
-from fluxion.test_vector import TestVector
 from fluxion.decoder import DECODERS
 from fluxion.test import Test, test_decode
 
@@ -73,16 +71,8 @@ class Fluxion:
                     if self.verbose:
                         print(f'Test suite found: {file}')
                     try:
-                        with open(os.path.join(root, file)) as f:
-                            content = json.load(f)
-                            test_suite = TestSuite(
-                                content[TestSuite.NAME], content[TestSuite.CODEC], content[TestSuite.DESCRIPTION])
-                            for tv in content[TestSuite.TEST_VECTORS]:
-                                result_frames = None if not TestVector.RESULT_FRAMES in tv else tv[
-                                    TestVector.RESULT_FRAMES]
-                                test_suite.add_test_vector(TestVector(
-                                    tv[TestVector.NAME], tv[TestVector.SOURCE], tv[TestVector.INPUT], tv[TestVector.RESULT], result_frames))
-                            self.test_suites.append(test_suite)
+                        ts = TestSuite.from_json_file(os.path.join(root, file))
+                        self.test_suites.append(ts)
                     except Exception as e:
                         print(f'Error loading test suite {file}: {e}')
 
