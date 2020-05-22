@@ -21,61 +21,12 @@
 
 import argparse
 
-from fluxion.fluxion import Fluxion
+from fluxion.main import Main
 
 TEST_SUITES_DIR = 'test_suites'
 DECODERS_DIR = 'decoders'
 
 
-def list_cmd(args, fluxion):
-    if args.testsuites:
-        fluxion.list_test_suites(show_test_vectors=args.testvectors)
-    if args.decoders:
-        fluxion.list_decoders()
-
-
-def run_cmd(args, fluxion):
-    fluxion.run_test_suites(test_suites=args.testsuites,
-                            decoders=args.decoders, failfast=args.failfast, quiet=args.quiet)
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose',
-                        help='increase output verbosity', action='store_true')
-    subparsers = parser.add_subparsers(title='subcommands')
-
-    list_parser = subparsers.add_parser(
-        'list', aliases=['l'], help='show list of available test suites or decoders')
-    list_parser.add_argument(
-        '-ts', '--testsuites', help='show test suites', action='store_true')
-    list_parser.add_argument(
-        '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
-    list_parser.add_argument(
-        '-d', '--decoders', help='show decoders', action='store_true')
-    list_parser.set_defaults(func=list_cmd)
-
-    run_parser = subparsers.add_parser(
-        'run', aliases=['r'], help='run test suites for decoders')
-    run_parser.add_argument(
-        '-ff', '--failfast', help='stop after first fail', action='store_true')
-    run_parser.add_argument(
-        '-q', '--quiet', help="don't show every test run", action='store_true')
-    run_parser.add_argument(
-        '-ts', '--testsuites', help='run only the specific test suites', nargs='+')
-    run_parser.add_argument(
-        '-d', '--decoders', help='run only the specific decoders', nargs='+')
-    run_parser.set_defaults(func=run_cmd)
-
-    return parser.parse_args()
-
-
-def main():
-    args = parse_args()
-    if hasattr(args, 'func'):
-        fluxion = Fluxion(TEST_SUITES_DIR, DECODERS_DIR, verbose=args.verbose)
-        args.func(args, fluxion)
-
-
 if __name__ == "__main__":
-    main()
+    main = Main(TEST_SUITES_DIR, DECODERS_DIR)
+    main.run()
