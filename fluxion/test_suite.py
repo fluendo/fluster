@@ -44,7 +44,13 @@ class TestSuite:
 
     def to_json_file(self, filename: str):
         with open(filename, 'w') as f:
+<<<<<<< HEAD
             json.dump(self, f)
+=======
+            data = self.__dict__.copy()
+            data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
+            json.dump(data, f, indent=2)
+>>>>>>> Simplify test suites serialization
 
     def __str__(self):
         return f'\n{self.name}\n' \
