@@ -110,21 +110,7 @@ class Fluxion:
                             suite.addTest(Test(dec, ts, tv))
                         else:
                             suite.addTest(TestReference(dec, ts, tv))
-
         return suite
-
-    def _find_names_in_collection(self, text: str, names: list, collection: list):
-        ret = []
-        for name in names:
-            found = False
-            for entry in collection:
-                if entry.name.lower() == name.lower():
-                    ret.append(entry)
-                    found = True
-                    break
-            if not found:
-                raise Exception(f'Error: {text} "{name}" not found')
-        return ret
 
     @lazy_init(load_test_suites)
     @lazy_init(load_decoders)
@@ -132,15 +118,17 @@ class Fluxion:
         try:
             run_test_suites = []
             if test_suites:
-                run_test_suites = self._find_names_in_collection('Test suite',
-                                                                 test_suites, self.test_suites)
+                run_test_suites = [t for t in self.test_suites if t.name in test_suites]
+                if not run_test_suites:
+                    raise Exception("No test suite found matching {}".format(test_suites))
             else:
                 run_test_suites = self.test_suites
 
             run_decoders = []
             if decoders:
-                run_decoders = self._find_names_in_collection('Decoder',
-                                                              decoders, self.decoders)
+                run_decoders = [d for d in self.decoders if d.name in decoders]
+                if not run_decoders:
+                    raise Exception("No decoders found matching {}".format(decoders))
             else:
                 run_decoders = self.decoders
 
