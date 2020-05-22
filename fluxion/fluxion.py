@@ -130,7 +130,7 @@ class Fluxion:
 
     @lazy_init(load_test_suites)
     @lazy_init(load_decoders)
-    def run_test_suites(self, test_suites=None, decoders=None, failfast=False):
+    def run_test_suites(self, test_suites=None, decoders=None, failfast=False, quiet=False):
         def find_names_in_collection(text, names, collection):
             ret = []
             for name in names:
@@ -155,7 +155,7 @@ class Fluxion:
             run_decoders = []
             if decoders:
                 run_decoders = find_names_in_collection('Decoder',
-                                                           decoders, self.decoders)
+                                                        decoders, self.decoders)
             else:
                 run_decoders = self.decoders
         except Exception as e:
@@ -165,8 +165,12 @@ class Fluxion:
         ts_names = [ts.name for ts in run_test_suites]
         dec_names = [dec.name for dec in run_decoders]
         print(
-            f'Running test suites {", ".join(ts_names)} for decoders {", ".join(dec_names)}')
+            f'Running test suites\n'
+            f'{", ".join(ts_names)}\n\n'
+            f'With decoders\n'
+            f'{", ".join(dec_names)}\n')
 
         suite = self.build_test_suite(run_test_suites, run_decoders)
-        runner = unittest.TextTestRunner(failfast=failfast)
+        runner = unittest.TextTestRunner(
+            failfast=failfast, verbosity=1 if quiet else 2)
         runner.run(suite)
