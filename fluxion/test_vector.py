@@ -19,18 +19,17 @@
 
 
 class TestVector:
-    NAME = 'name'
-    SOURCE = 'source'
-    INPUT = 'input'
-    RESULT = 'result'
-    RESULT_FRAMES = 'result_frames'
 
-    def __init__(self, name, source, input, result, result_frames=None):
+    def __init__(self, name: str, source: str, input: str, result:str, result_frames=None):
         self.name = name
         self.source = source
         self.input = input
         self.result = result
         self.result_frames = result_frames
+
+    @classmethod
+    def from_json(cls, data: dict):
+        return cls(**data)
 
     def __str__(self):
         ret = f'        {self.name}\n' \

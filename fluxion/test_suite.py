@@ -29,27 +29,22 @@ class TestSuite:
     DESCRIPTION = 'description'
     TEST_VECTORS = 'test_vectors'
 
-    def __init__(self, name, codec, description):
+    def __init__(self, name: str, codec: str, description: str, test_vectors: list):
         self.name = name
         self.codec = codec
         self.description = description
-        self.test_vectors = []
+        self.test_vectors = test_vectors
 
-    def add_test_vector(self, test_vector):
-        self.test_vectors.append(test_vector)
-
-    @staticmethod
-    def from_json_file(filename):
+    @classmethod
+    def from_json_file(cls, filename: str):
         with open(filename) as f:
-            content = json.load(f)
-            test_suite = TestSuite(
-                content[TestSuite.NAME], content[TestSuite.CODEC], content[TestSuite.DESCRIPTION])
-            for tv in content[TestSuite.TEST_VECTORS]:
-                result_frames = None if not TestVector.RESULT_FRAMES in tv else tv[
-                    TestVector.RESULT_FRAMES]
-                test_suite.add_test_vector(TestVector(
-                    tv[TestVector.NAME], tv[TestVector.SOURCE], tv[TestVector.INPUT], tv[TestVector.RESULT], result_frames))
-            return test_suite
+            data = json.load(f)
+            data['test_vectors'] = list(map(TestVector.from_json, data["test_vectors"]))
+            return cls(**data)
+
+    def to_json_file(self, filename: str):
+        with open(filename, 'w') as f:
+            json.dump(self, f)
 
     def __str__(self):
         return f'\n{self.name}\n' \
