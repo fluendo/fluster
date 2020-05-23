@@ -6,6 +6,9 @@ check:
 	echo "Running pylint..."
 	PYTHONPATH=. pylint $(PY_FILES) --fail-under=10
 	echo "Running dummy test..."
+	./fluxion.py list -ts
+	./fluxion.py list -d
+	./fluxion.py download dummy
 	./fluxion.py run -ts dummy
 
 format:
