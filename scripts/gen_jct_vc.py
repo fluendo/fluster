@@ -62,8 +62,8 @@ class JCTVTGenerator:
             dest_path = os.path.join(
                 dest_dir, test_vector.source.split('/')[-1])
             test_vector.input = self._find_input(dest_dir)
-            test_vector.source_hash = utils.file_sha256(dest_path)
-            test_vector.result = utils.file_sha256(test_vector.input)
+            test_vector.source_hash = utils.file_checksum(dest_path)
+            test_vector.result = utils.file_checksum(test_vector.input)
 
         test_suite.to_json_file(os.path.join(test_suite.name + '.json'))
         print("Generate new test suite: " + test_suite.name + '.json')

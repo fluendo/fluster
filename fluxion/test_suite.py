@@ -68,7 +68,7 @@ class TestSuite:
                 os.makedirs(dest_dir)
             file_downloaded = os.path.exists(dest_path)
             if file_downloaded and verify:
-                if test_vector.source_hash != utils.file_sha256(dest_path):
+                if test_vector.source_hash != utils.file_checksum(dest_path):
                     file_downloaded = False
             if not file_downloaded:
                 print(

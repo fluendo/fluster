@@ -35,8 +35,8 @@ def download(url: str, dest_dir: str):
             shutil.copyfileobj(response, dest)
 
 
-def file_sha256(path: str):
-    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+def file_checksum(path: str):
+    return hashlib.md5(open(path, 'rb').read()).hexdigest()
 
 
 def is_extractable(filepath: str):
