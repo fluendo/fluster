@@ -30,6 +30,8 @@ from fluxion import utils
 
 
 class TestSuite:
+    '''Test suite class'''
+
     def __init__(self, filename: str, name: str, codec: Codec, description: str, test_vectors: list):
         # Not included in JSON
         self.filename = filename
@@ -42,21 +44,24 @@ class TestSuite:
 
     @classmethod
     def from_json_file(cls, filename: str):
-        with open(filename) as f:
-            data = json.load(f)
+        '''Creates a TestSuite instance from a file'''
+        with open(filename) as json_file:
+            data = json.load(json_file)
             data['test_vectors'] = list(
                 map(TestVector.from_json, data["test_vectors"]))
             data['codec'] = Codec(data['codec'])
             return cls(filename, **data)
 
     def to_json_file(self, filename: str):
-        with open(filename, 'w') as f:
+        '''Serialize the test suite to a file'''
+        with open(filename, 'w') as json_file:
             data = self.__dict__.copy()
             data.pop('filename')
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
-            json.dump(data, f, indent=4)
+            json.dump(data, json_file, indent=4)
 
     def download(self, out_dir: str, verify: bool):
+        '''Download the test suite'''
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         print("Downloading test suite {}".format(self.name))
@@ -80,6 +85,7 @@ class TestSuite:
                 utils.extract(dest_path, dest_dir)
 
     def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False):
+        '''Run the test suite'''
         print('*' * 100 + '\n')
         print(f'Running test suite {self.name} with decoder {decoder.name}\n')
         print('*' * 100 + '\n')

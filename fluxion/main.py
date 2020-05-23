@@ -25,16 +25,18 @@ from fluxion.fluxion import Fluxion
 
 
 class Main:
+    '''Main class for Fluxion'''
 
     def __init__(self, test_suites_dir, decoders_dir, resources_dir, results_dir):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
         self.results_dir = results_dir
-        self.parser = self.create_parser()
+        self.parser = self._create_parser()
 
     def run(self):
-        args = self.parse_args()
+        '''Runs Fluxion'''
+        args = self.parser.parse_args()
         if hasattr(args, 'func'):
             fluxion = Fluxion(self.test_suites_dir,
                               self.decoders_dir,
@@ -45,26 +47,17 @@ class Main:
         else:
             self.parser.print_help()
 
-    def create_parser(self):
+    def _create_parser(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-v', '--verbose',
                             help='increase output verbosity', action='store_true')
         subparsers = parser.add_subparsers(title='subcommands')
-        self.add_list_cmd(subparsers)
-        self.add_run_cmd(subparsers)
+        self._add_list_cmd(subparsers)
+        self._add_run_cmd(subparsers)
+        self._add_download_cmd(subparsers)
         return parser
 
-    def parse_args(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument('-v', '--verbose',
-                            help='increase output verbosity', action='store_true')
-        subparsers = parser.add_subparsers(title='subcommands')
-        self.add_list_cmd(subparsers)
-        self.add_run_cmd(subparsers)
-        self.add_download_cmd(subparsers)
-        return parser.parse_args()
-
-    def add_list_cmd(self, subparsers):
+    def _add_list_cmd(self, subparsers):
         list_parser = subparsers.add_parser(
             'list', aliases=['l'], help='show list of available test suites or decoders')
         list_parser.add_argument(
@@ -73,9 +66,9 @@ class Main:
             '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
         list_parser.add_argument(
             '-d', '--decoders', help='show decoders', action='store_true')
-        list_parser.set_defaults(func=self.list_cmd)
+        list_parser.set_defaults(func=self._list_cmd)
 
-    def add_run_cmd(self, subparsers):
+    def _add_run_cmd(self, subparsers):
         run_parser = subparsers.add_parser(
             'run', aliases=['r'], help='run test suites for decoders')
         run_parser.add_argument(
@@ -88,25 +81,27 @@ class Main:
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
         run_parser.add_argument(
             '-r', '--reference', help='change test suites using decoder as the reference', action='store_true')
-        run_parser.set_defaults(func=self.run_cmd)
+        run_parser.set_defaults(func=self._run_cmd)
 
-    def add_download_cmd(self, subparsers):
+    def _add_download_cmd(self, subparsers):
         download_parser = subparsers.add_parser(
             'download', aliases=['d'], help='downloads test suites resources')
         download_parser.add_argument(
             'testsuites', help='list of testsuites to donwload', nargs='*')
-        download_parser.set_defaults(func=self.download_cmd)
+        download_parser.set_defaults(func=self._download_cmd)
 
-    def list_cmd(self, args, fluxion):
+    def _list_cmd(self, args, fluxion):
         if args.testsuites:
             fluxion.list_test_suites(show_test_vectors=args.testvectors)
         if args.decoders:
             fluxion.list_decoders()
 
-    def run_cmd(self, args, fluxion):
+    def _run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
-                                decoders=args.decoders, failfast=args.failfast, quiet=args.quiet,
+                                decoders=args.decoders,
+                                failfast=args.failfast,
+                                quiet=args.quiet,
                                 reference=args.reference)
 
-    def download_cmd(self, args, fluxion):
+    def _download_cmd(self, args, fluxion):
         fluxion.download_test_suites(test_suites=args.testsuites)

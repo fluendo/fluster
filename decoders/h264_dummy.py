@@ -24,7 +24,8 @@ from fluxion.decoder import Decoder, register_decoder
 
 
 @register_decoder
-class H264_Dummy(Decoder):
+class H264Dummy(Decoder):
+    '''H.264 dummy decoder implementation'''
     name = "H.264Dummy"
     codec = Codec.H264
     description = "This is a dummy implementation for H.264"

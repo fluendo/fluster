@@ -40,5 +40,7 @@ DECODERS = []
 
 def register_decoder(clazz):
     '''Register a new decoder implementation'''
+    # pylint: disable=global-statement
     global DECODERS
+    # pylint: enable=global-statement
     DECODERS.append(clazz())

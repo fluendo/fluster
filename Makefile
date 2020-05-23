@@ -4,7 +4,7 @@ check:
 	echo "Checking style with autopep8..."
 	autopep8 --exit-code --diff -r $(PY_FILES)
 	echo "Running pylint..."
-	PYTHONPATH=. pylint -j 4 -E $(PY_FILES)
+	PYTHONPATH=. pylint $(PY_FILES) --fail-under=10
 	echo "Running dummy test..."
 	./fluxion.py run -ts dummy
 

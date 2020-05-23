@@ -24,6 +24,7 @@ from fluxion.test_vector import TestVector
 
 
 class Test(unittest.TestCase):
+    '''Test suite for decoder tests'''
 
     def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str):
         self.decoder = decoder
@@ -31,9 +32,9 @@ class Test(unittest.TestCase):
         self.test_vector = test_vector
         self.results_dir = results_dir
         test_name = ''
-        for c in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
-            if c.isalnum():
-                test_name += c
+        for char in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
+            if char.isalnum():
+                test_name += char
             else:
                 test_name += '_'
         setattr(self, test_name, self._gen_test_func())
@@ -54,11 +55,13 @@ class Test(unittest.TestCase):
 
 
 class TestReference(Test):
+    '''Test suite for reference tests'''
+
     def _gen_test_func(self):
         def test():
             result = self.decoder.decode(self.test_vector.input)
-            for tv in self.test_suite.test_vectors:
-                if tv.name == self.test_vector.name:
-                    tv.result = result
+            for test_vector in self.test_suite.test_vectors:
+                if test_vector.name == self.test_vector.name:
+                    test_vector.result = result
             self.test_suite.modified = True
         return test
