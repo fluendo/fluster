@@ -9,4 +9,4 @@ echo "Running pylint..."
 find $root -iname '*.py' | xargs pylint -E
 
 echo "Running dummy test..."
-$root/fluxion_test.py run -ts dummy
+$root/fluxion.py run -ts dummy

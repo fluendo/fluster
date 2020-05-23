@@ -26,17 +26,31 @@ from fluxion.test_vector import TestVector
 class Test(unittest.TestCase):
 
     def __init__(self, decoder, test_suite, test_vector):
+        self.decoder = decoder
+        self.test_suite = test_suite
+        self.test_vector = test_vector
         test_name = ''
         for c in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
             if c.isalnum():
                 test_name += c
             else:
                 test_name += '_'
-        setattr(self, test_name, self._gen_test_func(decoder, test_vector))
+        setattr(self, test_name, self._gen_test_func())
         super().__init__(test_name)
 
-    def _gen_test_func(self, decoder, test_vector):
+    def _gen_test_func(self):
         def test():
-            result = decoder.decode(test_vector.input)
-            self.assertEqual(test_vector.result, result)
+            result = self.decoder.decode(self.test_vector.input)
+            self.assertEqual(self.test_vector.result, result)
+        return test
+
+
+class TestReference(Test):
+    def _gen_test_func(self):
+        def test():
+            result = self.decoder.decode(self.test_vector.input)
+            for tv in self.test_suite.test_vectors:
+                if tv.name == self.test_vector.name:
+                    tv.result = result
+            self.test_suite.modified = True
         return test

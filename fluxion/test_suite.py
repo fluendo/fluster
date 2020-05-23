@@ -22,16 +22,17 @@ import json
 
 
 from fluxion.test_vector import TestVector
+from fluxion.codec import Codec
 from fluxion import utils
 
 
 class TestSuite:
-    NAME = 'name'
-    CODEC = 'codec'
-    DESCRIPTION = 'description'
-    TEST_VECTORS = 'test_vectors'
+    def __init__(self, filename: str, name: str, codec: Codec, description: str, test_vectors: list):
+        # Not included in JSON
+        self.filename = filename
+        self.modified = False
 
-    def __init__(self, name: str, codec: str, description: str, test_vectors: list):
+        # JSON members
         self.name = name
         self.codec = codec
         self.description = description
@@ -43,13 +44,16 @@ class TestSuite:
             data = json.load(f)
             data['test_vectors'] = list(
                 map(TestVector.from_json, data["test_vectors"]))
-            return cls(**data)
+            data['codec'] = Codec(data['codec'])
+            return cls(filename, **data)
 
     def to_json_file(self, filename: str):
         with open(filename, 'w') as f:
             data = self.__dict__.copy()
+            data.pop('filename')
+            data.pop('modified')
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
-            json.dump(data, f, indent=2)
+            json.dump(data, f, indent=4)
 
     def download(self, out_dir: str, verify: bool):
         if not os.path.exists(out_dir):
