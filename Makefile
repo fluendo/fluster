@@ -1,5 +1,18 @@
+PY_FILES=fluxion decoders scripts fluxion.py
+
 check:
-	scripts/check.sh
+	echo "Checking style with autopep8..."
+	autopep8 --exit-code --diff -r $(PY_FILES)
+	echo "Running pylint..."
+	PYTHONPATH=. pylint -j 4 -E $(PY_FILES)
+	echo "Running dummy test..."
+	./fluxion.py run -ts dummy
+
+format:
+	autopep8 -j4 -i -r fluxion decoders scripts
+
+lint:
+	PYTHONPATH=. pylint $(PY_FILES)
 
 h265_reference_decoder:
 	git clone https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git | true
