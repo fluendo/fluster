@@ -19,10 +19,13 @@
 
 import os.path
 import json
+import unittest
 
 
 from fluxion.test_vector import TestVector
 from fluxion.codec import Codec
+from fluxion.decoder import Decoder
+from fluxion.test import Test, TestReference
 from fluxion import utils
 
 
@@ -30,7 +33,6 @@ class TestSuite:
     def __init__(self, filename: str, name: str, codec: Codec, description: str, test_vectors: list):
         # Not included in JSON
         self.filename = filename
-        self.modified = False
 
         # JSON members
         self.name = name
@@ -51,7 +53,6 @@ class TestSuite:
         with open(filename, 'w') as f:
             data = self.__dict__.copy()
             data.pop('filename')
-            data.pop('modified')
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
             json.dump(data, f, indent=4)
 
@@ -77,6 +78,26 @@ class TestSuite:
                 print(
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
                 utils.extract(dest_path, dest_dir)
+
+    def run(self, decoder: Decoder, failfast: bool, quiet: bool, reference: bool = False):
+        print('*' * 100 + '\n')
+        print(f'Running test suite {self.name} with decoder {decoder.name}\n')
+        print('*' * 100 + '\n')
+        suite = self._gen_testing_suite(decoder, reference)
+        runner = unittest.TextTestRunner(
+            failfast=failfast, verbosity=1 if quiet else 2)
+        runner.run(suite)
+        if reference:
+            self.to_json_file(self.filename)
+
+    def _gen_testing_suite(self, decoder: Decoder, reference: bool):
+        suite = unittest.TestSuite()
+        for test_vector in self.test_vectors:
+            if not reference:
+                suite.addTest(Test(decoder, self, test_vector))
+            else:
+                suite.addTest(TestReference(decoder, self, test_vector))
+        return suite
 
     def __str__(self):
         return f'\n{self.name}\n' \

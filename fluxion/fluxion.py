@@ -100,27 +100,17 @@ class Fluxion:
                 for tv in ts.test_vectors:
                     print(tv)
 
-    def _build_test_suite(self, test_suites: list, decoders: list, reference=False):
-        suite = unittest.TestSuite()
-        for dec in decoders:
-            for ts in test_suites:
-                if ts.codec == dec.codec:
-                    for tv in ts.test_vectors:
-                        if not reference:
-                            suite.addTest(Test(dec, ts, tv))
-                        else:
-                            suite.addTest(TestReference(dec, ts, tv))
-        return suite
-
     @lazy_init(load_test_suites)
     @lazy_init(load_decoders)
     def run_test_suites(self, test_suites=None, decoders=None, failfast=False, quiet=False, reference=False):
         try:
             run_test_suites = []
             if test_suites:
-                run_test_suites = [t for t in self.test_suites if t.name in test_suites]
+                run_test_suites = [
+                    t for t in self.test_suites if t.name in test_suites]
                 if not run_test_suites:
-                    raise Exception("No test suite found matching {}".format(test_suites))
+                    raise Exception(
+                        "No test suite found matching {}".format(test_suites))
             else:
                 run_test_suites = self.test_suites
 
@@ -128,11 +118,11 @@ class Fluxion:
             if decoders:
                 run_decoders = [d for d in self.decoders if d.name in decoders]
                 if not run_decoders:
-                    raise Exception("No decoders found matching {}".format(decoders))
+                    raise Exception(
+                        "No decoders found matching {}".format(decoders))
             else:
                 run_decoders = self.decoders
 
-            ts_names = [ts.name for ts in run_test_suites]
             dec_names = [dec.name for dec in run_decoders]
 
             if reference and (not run_decoders or len(run_decoders) > 1):
@@ -142,24 +132,14 @@ class Fluxion:
             print(f'Error! {e}')
             return
 
-        print(
-            f'Running test suites:\n'
-            f'{", ".join(ts_names)}\n\n'
-            f'With decoders:\n'
-            f'{", ".join(dec_names)}\n')
-
         if reference:
             print('Reference mode')
 
-        suite = self._build_test_suite(
-            run_test_suites, run_decoders, reference=reference)
-        runner = unittest.TextTestRunner(
-            failfast=failfast, verbosity=1 if quiet else 2)
-        runner.run(suite)
-        if reference:
-            for ts in run_test_suites:
-                if ts.modified:
-                    ts.to_json_file(ts.filename)
+        for test_suite in run_test_suites:
+            for decoder in run_decoders:
+                if decoder.codec != test_suite.codec:
+                    continue
+                test_suite.run(decoder, failfast, quiet, reference)
 
     @lazy_init(load_test_suites)
     def download_test_suites(self, test_suites):
