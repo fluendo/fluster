@@ -29,25 +29,29 @@ TARBALL_EXTS = ('tar.gz', 'tgz', 'tar.bz2', 'tbz2', 'tar.xz')
 
 
 def download(url: str, dest_dir: str):
+    '''Downloads a file to a directory'''
     with urllib.request.urlopen(url) as response:
         dest_path = os.path.join(dest_dir, url.split('/')[-1])
         with open(dest_path, 'wb') as dest:
             shutil.copyfileobj(response, dest)
 
 
-def file_sha256(path: str):
-    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+def file_checksum(path: str):
+    '''Calculates the checksum of a file'''
+    return hashlib.md5(open(path, 'rb').read()).hexdigest()
 
 
 def is_extractable(filepath: str):
+    '''Checks is a file can be extracted from the its extension'''
     return filepath.endswith(TARBALL_EXTS) or filepath.endswith('.zip')
 
 
 def extract(filepath: str, output_dir: str):
+    '''Extracts a file to a directory'''
     if filepath.endswith(TARBALL_EXTS):
-        subprocess.run(['tar', '-C', output_dir, '-xf', filepath])
+        subprocess.run(['tar', '-C', output_dir, '-xf', filepath], check=True)
     elif filepath.endswith('.zip'):
-        zf = zipfile.ZipFile(filepath, "r")
-        zf.extractall(path=output_dir)
+        zip_file = zipfile.ZipFile(filepath, "r")
+        zip_file.extractall(path=output_dir)
     else:
         raise Exception("Unknown tarball format %s" % filepath)

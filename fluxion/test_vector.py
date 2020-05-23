@@ -19,7 +19,9 @@
 
 
 class TestVector:
+    '''Test vector'''
 
+    # pylint: disable=redefined-builtin
     def __init__(self, name: str, source: str, source_hash: str, input: str,
                  result: str, result_frames=None):
         self.name = name
@@ -28,9 +30,11 @@ class TestVector:
         self.input = input
         self.result = result
         self.result_frames = result_frames
+    # pylint: enable=redefined-builtin
 
     @classmethod
     def from_json(cls, data: dict):
+        '''Desrialize an instance of TestVector from a json file'''
         return cls(**data)
 
     def __str__(self):

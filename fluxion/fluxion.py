@@ -20,14 +20,13 @@
 import os
 import os.path
 import functools
-import unittest
 
 from fluxion.test_suite import TestSuite
 from fluxion.decoder import DECODERS
-from fluxion.test import Test, TestReference
 
 
 def lazy_init(call_func):
+    '''Initialize lazily a function'''
     def decorator_lazy_init(func):
         @functools.wraps(func)
         def func_wrapper(self, *args, **kwargs):
@@ -44,41 +43,51 @@ def lazy_init(call_func):
         return func_wrapper
     return decorator_lazy_init
 
+# pylint: disable=broad-except
+
 
 class Fluxion:
-    def __init__(self, test_suites_dir: str, decoders_dir: str, resources_dir: str, verbose: bool = False):
+    '''Main class for Fluxion'''
+
+    def __init__(self, test_suites_dir: str, decoders_dir: str, resources_dir: str,
+                 results_dir: str, verbose: bool = False):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
+        self.results_dir = results_dir
         self.verbose = verbose
         self.test_suites = []
         self.decoders = DECODERS
 
-    def load_decoders(self):
+    def _load_decoders(self):
         for root, _, files in os.walk(self.decoders_dir):
             for file in files:
                 if os.path.splitext(file)[1] == '.py':
                     if self.verbose:
                         print(f'Decoder found: {file}')
                     try:
+                        # pylint: disable=exec-used
                         exec(open(os.path.join(root, file)).read(), globals())
-                    except Exception as e:
-                        print(f'Error loading decoder {file}: {e}')
+                        # pylint: enable=exec-used
+                    except Exception as ex:
+                        print(f'Error loading decoder {file}: {ex}')
 
-    def load_test_suites(self):
+    def _load_test_suites(self):
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
                 if os.path.splitext(file)[1] == '.json':
                     if self.verbose:
                         print(f'Test suite found: {file}')
                     try:
-                        ts = TestSuite.from_json_file(os.path.join(root, file))
-                        self.test_suites.append(ts)
-                    except Exception as e:
-                        print(f'Error loading test suite {file}: {e}')
+                        test_suite = TestSuite.from_json_file(
+                            os.path.join(root, file))
+                        self.test_suites.append(test_suite)
+                    except Exception as ex:
+                        print(f'Error loading test suite {file}: {ex}')
 
-    @lazy_init(load_decoders)
+    @lazy_init(_load_decoders)
     def list_decoders(self):
+        '''List all the available decoders'''
         print('\nList of available decoders:\n')
         decoders_dict = {}
         for dec in self.decoders:
@@ -86,87 +95,68 @@ class Fluxion:
                 decoders_dict[dec.codec] = []
             decoders_dict[dec.codec].append(dec)
 
-        for codec in decoders_dict.keys():
+        for codec in decoders_dict:
             print(f'{codec}')
             for decoder in decoders_dict[codec]:
                 print(decoder)
 
-    @lazy_init(load_test_suites)
+    @lazy_init(_load_test_suites)
     def list_test_suites(self, show_test_vectors=False):
+        '''List all test suites'''
         print('\nList of available test suites:')
-        for ts in self.test_suites:
-            print(ts)
+        for test_suite in self.test_suites:
+            print(test_suite)
             if show_test_vectors:
-                for tv in ts.test_vectors:
-                    print(tv)
+                for test_vector in test_suite.test_vectors:
+                    print(test_vector)
 
-    def _build_test_suite(self, test_suites: list, decoders: list, reference=False):
-        suite = unittest.TestSuite()
-        for dec in decoders:
-            for ts in test_suites:
-                if ts.codec == dec.codec:
-                    for tv in ts.test_vectors:
-                        if not reference:
-                            suite.addTest(Test(dec, ts, tv))
-                        else:
-                            suite.addTest(TestReference(dec, ts, tv))
-        return suite
-
-    @lazy_init(load_test_suites)
-    @lazy_init(load_decoders)
+    @lazy_init(_load_test_suites)
+    @lazy_init(_load_decoders)
     def run_test_suites(self, test_suites=None, decoders=None, failfast=False, quiet=False, reference=False):
-        try:
-            run_test_suites = []
-            if test_suites:
-                run_test_suites = [t for t in self.test_suites if t.name in test_suites]
-                if not run_test_suites:
-                    raise Exception("No test suite found matching {}".format(test_suites))
-            else:
-                run_test_suites = self.test_suites
-
-            run_decoders = []
-            if decoders:
-                run_decoders = [d for d in self.decoders if d.name in decoders]
-                if not run_decoders:
-                    raise Exception("No decoders found matching {}".format(decoders))
-            else:
-                run_decoders = self.decoders
-
-            ts_names = [ts.name for ts in run_test_suites]
-            dec_names = [dec.name for dec in run_decoders]
-
-            if reference and (not run_decoders or len(run_decoders) > 1):
+        '''Run a group of test suites'''
+        run_test_suites = []
+        if test_suites:
+            run_test_suites = [
+                test_suite for test_suite in self.test_suites if test_suite.name in test_suites]
+            if not run_test_suites:
                 raise Exception(
-                    f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
-        except Exception as e:
-            print(f'Error! {e}')
-            return
+                    "No test suite found matching {}".format(test_suites))
+        else:
+            run_test_suites = self.test_suites
 
-        print(
-            f'Running test suites:\n'
-            f'{", ".join(ts_names)}\n\n'
-            f'With decoders:\n'
-            f'{", ".join(dec_names)}\n')
+        run_decoders = []
+        if decoders:
+            run_decoders = [
+                dec for dec in self.decoders if dec.name in decoders]
+            if not run_decoders:
+                raise Exception(
+                    "No decoders found matching {}".format(decoders))
+        else:
+            run_decoders = self.decoders
+
+        dec_names = [dec.name for dec in run_decoders]
+
+        if reference and (not run_decoders or len(run_decoders) > 1):
+            raise Exception(
+                f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
 
         if reference:
             print('Reference mode')
 
-        suite = self._build_test_suite(
-            run_test_suites, run_decoders, reference=reference)
-        runner = unittest.TextTestRunner(
-            failfast=failfast, verbosity=1 if quiet else 2)
-        runner.run(suite)
-        if reference:
-            for ts in run_test_suites:
-                if ts.modified:
-                    ts.to_json_file(ts.filename)
+        for test_suite in run_test_suites:
+            for decoder in run_decoders:
+                if decoder.codec != test_suite.codec:
+                    continue
+                test_suite.run(decoder, failfast, quiet,
+                               self.results_dir, reference)
 
-    @lazy_init(load_test_suites)
+    @lazy_init(_load_test_suites)
     def download_test_suites(self, test_suites):
+        '''Download a group of test suites'''
         if not test_suites:
             test_suites = self.test_suites
         else:
             test_suites = [
                 t for t in self.test_suites if t.name in test_suites]
-        for t in test_suites:
-            t.download(self.resources_dir, True)
+        for test_suite in test_suites:
+            test_suite.download(self.resources_dir, True)

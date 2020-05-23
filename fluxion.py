@@ -19,15 +19,14 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import argparse
-
 from fluxion.main import Main
 
 TEST_SUITES_DIR = 'test_suites'
 DECODERS_DIR = 'decoders'
 RESOURCES_DIR = 'resources'
+RESULTS_DIR = 'resources'
 
 
 if __name__ == "__main__":
-    main = Main(TEST_SUITES_DIR, DECODERS_DIR, RESOURCES_DIR)
+    main = Main(TEST_SUITES_DIR, DECODERS_DIR, RESOURCES_DIR, RESULTS_DIR)
     main.run()

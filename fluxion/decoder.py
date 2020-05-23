@@ -17,15 +17,18 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import functools
+from abc import ABC, abstractmethod
 
 
-class Decoder:
+class Decoder(ABC):
+    '''Base class for decoders'''
     name = None
     codec = None
     description = None
 
-    def decode(self, filename: str):
+    @abstractmethod
+    def decode(self, input_filepath: str, output_filepath: str):
+        '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 
     def __str__(self):
@@ -36,5 +39,8 @@ DECODERS = []
 
 
 def register_decoder(clazz):
+    '''Register a new decoder implementation'''
+    # pylint: disable=global-statement
     global DECODERS
+    # pylint: enable=global-statement
     DECODERS.append(clazz())

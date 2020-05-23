@@ -24,10 +24,11 @@ from fluxion.decoder import Decoder, register_decoder
 
 
 @register_decoder
-class H264_Dummy(Decoder):
+class H264Dummy(Decoder):
+    '''H.264 dummy decoder implementation'''
     name = "H.264Dummy"
     codec = Codec.H264
     description = "This is a dummy implementation for H.264"
 
-    def decode(self, filename: str):
-        return hashlib.md5(filename.encode('utf-8')).hexdigest()
+    def decode(self, input_filepath: str, output_filepath: str):
+        return hashlib.md5(input_filepath.encode('utf-8')).hexdigest()

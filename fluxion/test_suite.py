@@ -19,18 +19,22 @@
 
 import os.path
 import json
+import unittest
 
 
 from fluxion.test_vector import TestVector
 from fluxion.codec import Codec
+from fluxion.decoder import Decoder
+from fluxion.test import Test, TestReference
 from fluxion import utils
 
 
 class TestSuite:
+    '''Test suite class'''
+
     def __init__(self, filename: str, name: str, codec: Codec, description: str, test_vectors: list):
         # Not included in JSON
         self.filename = filename
-        self.modified = False
 
         # JSON members
         self.name = name
@@ -40,22 +44,24 @@ class TestSuite:
 
     @classmethod
     def from_json_file(cls, filename: str):
-        with open(filename) as f:
-            data = json.load(f)
+        '''Creates a TestSuite instance from a file'''
+        with open(filename) as json_file:
+            data = json.load(json_file)
             data['test_vectors'] = list(
                 map(TestVector.from_json, data["test_vectors"]))
             data['codec'] = Codec(data['codec'])
             return cls(filename, **data)
 
     def to_json_file(self, filename: str):
-        with open(filename, 'w') as f:
+        '''Serialize the test suite to a file'''
+        with open(filename, 'w') as json_file:
             data = self.__dict__.copy()
             data.pop('filename')
-            data.pop('modified')
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
-            json.dump(data, f, indent=4)
+            json.dump(data, json_file, indent=4)
 
     def download(self, out_dir: str, verify: bool):
+        '''Download the test suite'''
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         print("Downloading test suite {}".format(self.name))
@@ -67,7 +73,7 @@ class TestSuite:
                 os.makedirs(dest_dir)
             file_downloaded = os.path.exists(dest_path)
             if file_downloaded and verify:
-                if test_vector.source_hash != utils.file_sha256(dest_path):
+                if test_vector.source_hash != utils.file_checksum(dest_path):
                     file_downloaded = False
             if not file_downloaded:
                 print(
@@ -77,6 +83,28 @@ class TestSuite:
                 print(
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
                 utils.extract(dest_path, dest_dir)
+
+    def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False):
+        '''Run the test suite'''
+        print('*' * 100 + '\n')
+        print(f'Running test suite {self.name} with decoder {decoder.name}\n')
+        print('*' * 100 + '\n')
+        suite = self._gen_testing_suite(decoder, results_dir, reference)
+        runner = unittest.TextTestRunner(
+            failfast=failfast, verbosity=1 if quiet else 2)
+        runner.run(suite)
+        if reference:
+            self.to_json_file(self.filename)
+
+    def _gen_testing_suite(self, decoder: Decoder, results_dir: str, reference: bool):
+        suite = unittest.TestSuite()
+        for test_vector in self.test_vectors:
+            if not reference:
+                suite.addTest(Test(decoder, self, test_vector, results_dir))
+            else:
+                suite.addTest(TestReference(
+                    decoder, self, test_vector, results_dir))
+        return suite
 
     def __str__(self):
         return f'\n{self.name}\n' \
