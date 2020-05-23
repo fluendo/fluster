@@ -1,0 +1,19 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.8'
+
+- script: |
+    make install_deps
+  displayName: 'Install deps'
+
+- script: |
+    make check
+  displayName: 'Check'
