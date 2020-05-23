@@ -1,5 +1,8 @@
 PY_FILES=fluxion decoders scripts fluxion.py
 
+install_deps:
+	python3 -m pip install -r requirements.txt
+
 check:
 	echo "Checking style with autopep8..."
 	autopep8 --exit-code --diff -r $(PY_FILES)
