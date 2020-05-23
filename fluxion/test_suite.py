@@ -79,24 +79,25 @@ class TestSuite:
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
                 utils.extract(dest_path, dest_dir)
 
-    def run(self, decoder: Decoder, failfast: bool, quiet: bool, reference: bool = False):
+    def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False):
         print('*' * 100 + '\n')
         print(f'Running test suite {self.name} with decoder {decoder.name}\n')
         print('*' * 100 + '\n')
-        suite = self._gen_testing_suite(decoder, reference)
+        suite = self._gen_testing_suite(decoder, results_dir, reference)
         runner = unittest.TextTestRunner(
             failfast=failfast, verbosity=1 if quiet else 2)
         runner.run(suite)
         if reference:
             self.to_json_file(self.filename)
 
-    def _gen_testing_suite(self, decoder: Decoder, reference: bool):
+    def _gen_testing_suite(self, decoder: Decoder, results_dir: str, reference: bool):
         suite = unittest.TestSuite()
         for test_vector in self.test_vectors:
             if not reference:
-                suite.addTest(Test(decoder, self, test_vector))
+                suite.addTest(Test(decoder, self, test_vector, results_dir))
             else:
-                suite.addTest(TestReference(decoder, self, test_vector))
+                suite.addTest(TestReference(
+                    decoder, self, test_vector, results_dir))
         return suite
 
     def __str__(self):

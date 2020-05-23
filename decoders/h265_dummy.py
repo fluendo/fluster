@@ -29,5 +29,5 @@ class H265_Dummy(Decoder):
     codec = Codec.H265
     description = "This is a dummy implementation for H.265"
 
-    def decode(self, filename: str):
-        return hashlib.md5(filename.encode('utf-8')).hexdigest()
+    def decode(self, input_filepath: str, output_filepath: str):
+        return hashlib.md5(input_filepath.encode('utf-8')).hexdigest()

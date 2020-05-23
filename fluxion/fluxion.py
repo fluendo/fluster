@@ -46,10 +46,11 @@ def lazy_init(call_func):
 
 
 class Fluxion:
-    def __init__(self, test_suites_dir: str, decoders_dir: str, resources_dir: str, verbose: bool = False):
+    def __init__(self, test_suites_dir: str, decoders_dir: str, resources_dir: str, results_dir: str, verbose: bool = False):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
+        self.results_dir = results_dir
         self.verbose = verbose
         self.test_suites = []
         self.decoders = DECODERS
@@ -139,7 +140,8 @@ class Fluxion:
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                test_suite.run(decoder, failfast, quiet, reference)
+                test_suite.run(decoder, failfast, quiet,
+                               self.results_dir, reference)
 
     @lazy_init(load_test_suites)
     def download_test_suites(self, test_suites):

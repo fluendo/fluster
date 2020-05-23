@@ -26,10 +26,11 @@ from fluxion.fluxion import Fluxion
 
 class Main:
 
-    def __init__(self, test_suites_dir, decoders_dir, resources_dir):
+    def __init__(self, test_suites_dir, decoders_dir, resources_dir, results_dir):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
+        self.results_dir = results_dir
         self.parser = self.create_parser()
 
     def run(self):
@@ -38,6 +39,7 @@ class Main:
             fluxion = Fluxion(self.test_suites_dir,
                               self.decoders_dir,
                               self.resources_dir,
+                              self.results_dir,
                               verbose=args.verbose)
             args.func(args, fluxion)
         else:
