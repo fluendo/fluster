@@ -39,7 +39,8 @@ class JCTVTGenerator:
         self.description = description
 
     def generate(self):
-        test_suite = TestSuite(
+        output_filepath = os.path.join(self.suite_name + '.json')
+        test_suite = TestSuite(output_filepath,
             self.suite_name, self.codec, self.description, list())
 
         parser = HREFParser()
@@ -65,7 +66,7 @@ class JCTVTGenerator:
             test_vector.source_hash = utils.file_checksum(dest_path)
             test_vector.result = utils.file_checksum(test_vector.input)
 
-        test_suite.to_json_file(os.path.join(test_suite.name + '.json'))
+        test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + '.json')
 
     def _find_input(self, dest_dir):
