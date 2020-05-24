@@ -24,14 +24,14 @@ from fluxion.utils import file_checksum
 
 
 @register_decoder
-class H265JCTVTDecoder(Decoder):
-    '''JCT-VT H.265 / HEVC reference decoder implementation'''
-    name = "JCT-VT-H265"
-    description = "JCT-VT H.265 / HEVC reference decoder"
-    codec = Codec.H265
+class H264JCTVTDecoder(Decoder):
+    '''JCT-VT H.264 / HEVC reference decoder implementation'''
+    name = "JCT-VT-H264"
+    description = "JCT-VT H.264 / HEVC reference decoder"
+    codec = Codec.H264
 
     def decode(self, input_filepath: str, output_filepath: str):
         '''Decodes input_filepath in output_filepath'''
-        subprocess.run(['HM/bin/TAppDecoder', '-b', input_filepath,
+        subprocess.run(['JM/bin/ldecod', '-s', '-i', input_filepath,
                         '-o', output_filepath], stdout=subprocess.DEVNULL, check=True)
         return file_checksum(output_filepath)
