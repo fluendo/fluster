@@ -73,7 +73,7 @@ class FluendoH265Gst010Decoder(GStreamer010):
 
 
 @register_decoder
-class FluendoH265Gst10Decoder(GStreamer10):
+class CommunityVaapiH265Gst10Decoder(GStreamer10):
     '''Community H.265 VAAPI decoder implementation for GStreamer 1.0'''
     name = 'GStreamer-H265-VAAPI-Gst10'
     description = "Community H.265 VAAPI decoder implementation for GStreamer 1.0"
