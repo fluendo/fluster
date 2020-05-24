@@ -28,13 +28,21 @@ PIPELINE_TPL = "{} filesrc location={} ! {} ! {} ! filesink location={}"
 
 class GStreamer(Decoder):
     '''Base class for GStreamer decoders'''
-    decoder_element = None
+    decoder_bin = None
     cmd = None
     caps = None
+    gst_api = None
+    api = None
+    provider = None
+
+    def __init__(self):
+        super().__init__()
+        self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
+        self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
 
     def decode(self, input_filepath: str, output_filepath: str):
         pipeline = PIPELINE_TPL.format(self.cmd, input_filepath,
-                                       self.decoder_element, self.caps, output_filepath)
+                                       self.decoder_bin, self.caps, output_filepath)
         subprocess.run(shlex.split(pipeline),
                        stdout=subprocess.DEVNULL, check=True)
         return file_checksum(output_filepath)
@@ -42,49 +50,49 @@ class GStreamer(Decoder):
 
 class GStreamer10(GStreamer):
     '''Base class for GStreamer 1.x decoders'''
-    decoder_element = None
     cmd = 'gst-launch-1.0'
     caps = 'video/x-raw'
+    gst_api = "1.0"
 
 
 class GStreamer010(GStreamer):
     '''Base class for GStreamer 0.10 decoders'''
-    decoder_element = None
     cmd = 'gst-launch-0.10'
     caps = 'video/x-raw-yuv'
+    gst_api = "0.10"
 
 
 @register_decoder
 class FluendoH265Gst10Decoder(GStreamer10):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
-    name = 'Fluendo-H265-SW-Gst10'
-    description = "Fluendo H.265 software decoder for GStreamer 1.0"
     codec = Codec.H265
-    decoder_element = ' h265parse ! fluh265dec '
+    decoder_bin = ' h265parse ! fluh265dec '
+    provider = "Fluendo"
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH265Gst010Decoder(GStreamer010):
     '''Fluendo H.265 software decoder implementation for GStreamer 0.10'''
-    name = 'Fluendo-H265-SW-Gst010'
-    description = "Fluendo H.265 software decoder for GStreamer 0.10"
     codec = Codec.H265
-    decoder_element = ' h265parse ! fluh265dec '
+    decoder_bin = ' h265parse ! fluh265dec '
+    provider = "Fluendo"
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH264Gst10Decoder(GStreamer10):
     '''Fluendo H.264 software decoder implementation for GStreamer 1.0'''
-    name = 'Fluendo-H264-SW-Gst10'
-    description = "Fluendo H.264 software decoder for GStreamer 1.0"
     codec = Codec.H264
-    decoder_element = ' h264parse ! fluh264dec '
+    decoder_bin = ' h264parse ! fluh264dec '
+    provider = "Fluendo"
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH264Gst010Decoder(GStreamer010):
     '''Fluendo H.264 software decoder implementation for GStreamer 0.10'''
-    name = 'Fluendo-H264-SW-Gst010'
-    description = "Fluendo H.264 software decoder for GStreamer 0.10"
     codec = Codec.H264
-    decoder_element = ' fluh264dec '
+    decoder_bin = ' fluh264dec '
+    provider = "Fluendo"
+    api = 'SW'
