@@ -70,3 +70,21 @@ class FluendoH265Gst010Decoder(GStreamer010):
     description = "Fluendo H.265 software decoder for GStreamer 0.10"
     codec = Codec.H265
     decoder_element = ' h265parse ! fluh265dec '
+
+
+@register_decoder
+class FluendoH264Gst10Decoder(GStreamer10):
+    '''Fluendo H.264 software decoder implementation for GStreamer 1.0'''
+    name = 'Fluendo-H264-SW-Gst10'
+    description = "Fluendo H.264 software decoder for GStreamer 1.0"
+    codec = Codec.H264
+    decoder_element = ' h264parse ! fluh264dec '
+
+
+@register_decoder
+class FluendoH264Gst010Decoder(GStreamer010):
+    '''Fluendo H.264 software decoder implementation for GStreamer 0.10'''
+    name = 'Fluendo-H264-SW-Gst010'
+    description = "Fluendo H.264 software decoder for GStreamer 0.10"
+    codec = Codec.H264
+    decoder_element = ' fluh264dec '
