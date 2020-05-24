@@ -44,3 +44,4 @@ def register_decoder(clazz):
     global DECODERS
     # pylint: enable=global-statement
     DECODERS.append(clazz())
+    DECODERS.sort(key=lambda dec: dec.name)
