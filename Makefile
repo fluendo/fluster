@@ -12,7 +12,7 @@ check:
 	./fluxion.py list -ts
 	./fluxion.py list -d
 	./fluxion.py download dummy
-	./fluxion.py run -ts dummy
+	./fluxion.py run -ts dummy -d H.264Dummy
 
 format:
 	autopep8 -j4 -i -r $(PY_FILES)
