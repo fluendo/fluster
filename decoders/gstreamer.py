@@ -70,3 +70,13 @@ class FluendoH265Gst010Decoder(GStreamer010):
     description = "Fluendo H.265 software decoder for GStreamer 0.10"
     codec = Codec.H265
     decoder_element = ' h265parse ! fluh265dec '
+
+
+@register_decoder
+class FluendoH265Gst10Decoder(GStreamer10):
+    '''Community H.265 VAAPI decoder implementation for GStreamer 1.0'''
+    name = 'GStreamer-H265-VAAPI-Gst10'
+    description = "Community H.265 VAAPI decoder implementation for GStreamer 1.0"
+    codec = Codec.H265
+    decoder_element = ' h265parse ! vaapih265dec '
+    caps = 'video/x-raw,format=I420'
