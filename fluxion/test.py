@@ -50,7 +50,8 @@ class Test(unittest.TestCase):
                 output_dir, self.test_vector.name + '.yuv')
             result = self.decoder.decode(
                 self.test_vector.input, output_filepath)
-            self.assertEqual(self.test_vector.result.upper(), result.upper())
+            self.assertEqual(self.test_vector.result.upper(), result.upper(),
+                             f'{self.test_vector.input}')
         return test
 
 
