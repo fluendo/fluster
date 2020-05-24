@@ -26,7 +26,7 @@ from fluxion.utils import file_checksum
 @register_decoder
 class H265JCTVTDecoder(Decoder):
     '''JCT-VT H.265 / HEVC reference decoder implementation'''
-    name = "JCT-VT"
+    name = "JCT-VT-H265"
     description = "JCT-VT H.265 / HEVC reference decoder"
     codec = Codec.H265
 

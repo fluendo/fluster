@@ -57,6 +57,7 @@ class TestSuite:
         with open(filename, 'w') as json_file:
             data = self.__dict__.copy()
             data.pop('filename')
+            data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
             json.dump(data, json_file, indent=4)
 
