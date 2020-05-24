@@ -15,7 +15,7 @@ check:
 	./fluxion.py run -ts dummy
 
 format:
-	autopep8 -j4 -i -r fluxion decoders scripts
+	autopep8 -j4 -i -r $(PY_FILES)
 
 lint:
 	PYTHONPATH=. pylint $(PY_FILES)
