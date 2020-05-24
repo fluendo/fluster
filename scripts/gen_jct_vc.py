@@ -20,6 +20,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+import argparse
 from html.parser import HTMLParser
 import os
 import sys
@@ -28,12 +29,18 @@ import urllib.request
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from fluxion import utils
+from fluxion.codec import Codec
 from fluxion.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
-JCT_VT_SITE_BASE_URL = "https://www.itu.int/"
-JCT_VT_SITE_URL = JCT_VT_SITE_BASE_URL + \
-    "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
+BASE_URL = "https://www.itu.int/"
+H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
+H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
+BITSTREAM_EXTS = ('.bin', '.bit', '.264', '.h264',
+                  '.jvc', '.jsv', '.jvt', '.avc', '.26l')
+MD5_EXTS = ('yuv.md5', '.md5', 'md5.txt')
+MD5_EXCLUDES = ('__MACOSX', '.bin.md5', 'bit.md5')
+RAW_EXTS = ('.yuv', '.qcif')
 
 
 class HREFParser(HTMLParser):
@@ -50,55 +57,71 @@ class HREFParser(HTMLParser):
             for name, value in attrs:
                 # If href is defined, print it.
                 if name == "href":
-                    self.links.append(JCT_VT_SITE_BASE_URL + value)
+                    self.links.append(BASE_URL + value)
 
 
 class JCTVTGenerator:
-    '''Generates a test suite from the JCT-VT site'''
+    '''Generates a test suite from the conformance bitstreams'''
 
-    def __init__(self, name, suite_name, codec, description):
+    def __init__(self, name: str, suite_name: str, codec: Codec, description: str, site: str):
         self.name = name
         self.suite_name = suite_name
         self.codec = codec
         self.description = description
+        self.site = site
 
-    def generate(self):
+    def generate(self, download):
         '''Generates the test suite and saves it to a file'''
         output_filepath = os.path.join(self.suite_name + '.json')
         test_suite = TestSuite(output_filepath,
                                self.suite_name, self.codec, self.description, list())
 
-        parser = HREFParser()
-        with urllib.request.urlopen(JCT_VT_SITE_URL + self.name) as resp:
+        hparser = HREFParser()
+        print(f"Download list of bitstreams from {self.site + self.name}")
+        with urllib.request.urlopen(self.site + self.name) as resp:
             data = str(resp.read())
-            parser.feed(data)
+            hparser.feed(data)
 
-        for url in parser.links[1:]:
+        for url in hparser.links[1:]:
+            # The first item in the AVCv1 list is a readme file
+            if '00readme_H' in url:
+                continue
             file_url = url.split('/')[-1]
             name = file_url.split('.')[0]
             file_input = "{name}.bin".format(name=name)
             test_vector = TestVector(name, url, "", file_input, "")
             test_suite.test_vectors.append(test_vector)
 
-        test_suite.download('resources', verify=False)
+        if download:
+            test_suite.download('resources', verify=False)
 
         for test_vector in test_suite.test_vectors:
             dest_dir = os.path.join(
                 'resources', test_suite.name, test_vector.name)
             dest_path = os.path.join(
                 dest_dir, test_vector.source.split('/')[-1])
-            test_vector.input = self._find_by_ext(dest_dir, ('.bin', '.bit'))
+            test_vector.input = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
+            if not test_vector.input:
+                raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_hash = utils.file_checksum(dest_path)
-            self._fill_checksum(test_vector, dest_dir)
+            if self.codec == Codec.H265:
+                self._fill_checksum_h265(test_vector, dest_dir)
+            elif self.codec == Codec.H264:
+                self._fill_checksum_h264(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + '.json')
 
-    def _fill_checksum(self, test_vector, dest_dir):
-        checksum_file = self._find_by_ext(dest_dir, ('yuv.md5', '.md5', 'md5.txt'),
-                                          ('__MACOSX', '.bin.md5', 'bit.md5'))
+    def _fill_checksum_h264(self, test_vector, dest_dir):
+        raw_file = self._find_by_ext(dest_dir, RAW_EXTS)
+        if raw_file is None:
+            raise Exception(f"RAW file not found in {dest_dir}")
+        test_vector.result = utils.file_checksum(raw_file)
+
+    def _fill_checksum_h265(self, test_vector, dest_dir):
+        checksum_file = self._find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
         if checksum_file is None:
-            return
+            raise Exception("MD5 not found")
         with open(checksum_file, 'r') as checksum_file:
             # The md5 is in several formats
             # Example 1
@@ -136,6 +159,13 @@ class JCTVTGenerator:
 
 
 if __name__ == "__main__":
-    generator = JCTVTGenerator("HEVC_v1", "JCT-VC-HEVC_V1", "H.265",
-                               "JCT-VC HEVC version 1")
-    generator.generate()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--skip-download', help='skip extracting tarball',
+                        action='store_true', default=False)
+    args = parser.parse_args()
+    generator = JCTVTGenerator("HEVC_v1", "JCT-VC-HEVC_V1", Codec.H265,
+                               "JCT-VC HEVC version 1", H265_URL)
+    generator.generate(not args.skip_download)
+    generator = JCTVTGenerator("AVCv1", "JVT-AVC_V1", Codec.H264,
+                               "JVT AVC version 1", H264_URL)
+    generator.generate(not args.skip_download)
