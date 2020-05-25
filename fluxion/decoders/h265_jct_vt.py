@@ -29,9 +29,10 @@ class H265JCTVTDecoder(Decoder):
     name = "JCT-VT-H265"
     description = "JCT-VT H.265 / HEVC reference decoder"
     codec = Codec.H265
+    binary = 'TAppDecoder'
 
     def decode(self, input_filepath: str, output_filepath: str):
         '''Decodes input_filepath in output_filepath'''
-        subprocess.run(['HM/bin/TAppDecoder', '-b', input_filepath,
+        subprocess.run([self.binary, '-b', input_filepath,
                         '-o', output_filepath], stdout=subprocess.DEVNULL, check=True)
         return file_checksum(output_filepath)

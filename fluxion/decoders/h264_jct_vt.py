@@ -17,7 +17,9 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
+
 import subprocess
+
 from fluxion.codec import Codec
 from fluxion.decoder import Decoder, register_decoder
 from fluxion.utils import file_checksum
@@ -29,9 +31,10 @@ class H264JCTVTDecoder(Decoder):
     name = "JCT-VT-H264"
     description = "JCT-VT H.264/AVC reference decoder"
     codec = Codec.H264
+    binary = 'ldecod'
 
     def decode(self, input_filepath: str, output_filepath: str):
         '''Decodes input_filepath in output_filepath'''
-        subprocess.run(['JM/bin/ldecod', '-s', '-i', input_filepath,
+        subprocess.run([self.binary, '-s', '-i', input_filepath,
                         '-o', output_filepath], stdout=subprocess.DEVNULL, check=True)
         return file_checksum(output_filepath)

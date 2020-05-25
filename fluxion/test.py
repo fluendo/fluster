@@ -26,11 +26,12 @@ from fluxion.test_vector import TestVector
 class Test(unittest.TestCase):
     '''Test suite for decoder tests'''
 
-    def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str):
+    def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str, reference: bool):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
         self.results_dir = results_dir
+        self.reference = reference
         test_name = ''
         for char in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
             if char.isalnum():
@@ -50,19 +51,11 @@ class Test(unittest.TestCase):
                 output_dir, self.test_vector.name + '.yuv')
             result = self.decoder.decode(
                 self.test_vector.input, output_filepath)
-            self.assertEqual(self.test_vector.result.upper(), result.upper(),
-                             f'{self.test_vector.input}')
-        return test
-
-
-class TestReference(Test):
-    '''Test suite for reference tests'''
-
-    def _gen_test_func(self):
-        def test():
-            result = self.decoder.decode(self.test_vector.input)
-            for test_vector in self.test_suite.test_vectors:
-                if test_vector.name == self.test_vector.name:
-                    test_vector.result = result
-            self.test_suite.modified = True
+            if not self.reference:
+                self.assertEqual(self.test_vector.result.upper(), result.upper(),
+                                 f'{self.test_vector.input}')
+            else:
+                for test_vector in self.test_suite.test_vectors:
+                    if test_vector.name == self.test_vector.name:
+                        test_vector.result = result
         return test

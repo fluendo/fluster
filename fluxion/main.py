@@ -20,6 +20,7 @@
 # Boston, MA 02111-1307, USA.
 
 import argparse
+import os
 
 from fluxion.fluxion import Fluxion
 
@@ -33,6 +34,10 @@ class Main:
         self.resources_dir = resources_dir
         self.results_dir = results_dir
         self.parser = self._create_parser()
+
+        # Prepend to the PATH the decoders_dir so that we can run them
+        # without having to set the env for every single command
+        os.environ['PATH'] = decoders_dir + ':' + os.environ['PATH']
 
     def run(self):
         '''Runs Fluxion'''
@@ -55,53 +60,65 @@ class Main:
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
         self._add_download_cmd(subparsers)
+        self._add_reference_cmd(subparsers)
         return parser
 
     def _add_list_cmd(self, subparsers):
-        list_parser = subparsers.add_parser(
+        subparser = subparsers.add_parser(
             'list', aliases=['l'], help='show list of available test suites or decoders')
-        list_parser.add_argument(
-            '-ts', '--testsuites', help='show test suites', action='store_true')
-        list_parser.add_argument(
+        subparser.add_argument(
             '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
-        list_parser.add_argument(
-            '-d', '--decoders', help='show decoders', action='store_true')
-        list_parser.set_defaults(func=self._list_cmd)
+        subparser.add_argument(
+            '-c', '--check',
+            help='check which decoders can be run successfully. Reports \U00002714 or \U00002715', action='store_true')
+        subparser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers):
-        run_parser = subparsers.add_parser(
+        subparser = subparsers.add_parser(
             'run', aliases=['r'], help='run test suites for decoders')
-        run_parser.add_argument(
+        subparser.add_argument(
             '-ff', '--failfast', help='stop after first fail', action='store_true')
-        run_parser.add_argument(
+        subparser.add_argument(
             '-q', '--quiet', help="don't show every test run", action='store_true')
-        run_parser.add_argument(
+        subparser.add_argument(
             '-ts', '--testsuites', help='run only the specific test suites', nargs='+')
-        run_parser.add_argument(
+        subparser.add_argument(
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
-        run_parser.add_argument(
-            '-r', '--reference', help='change test suites using decoder as the reference', action='store_true')
-        run_parser.set_defaults(func=self._run_cmd)
+        subparser.set_defaults(func=self._run_cmd)
 
     def _add_download_cmd(self, subparsers):
-        download_parser = subparsers.add_parser(
+        subparser = subparsers.add_parser(
             'download', aliases=['d'], help='downloads test suites resources')
-        download_parser.add_argument(
-            'testsuites', help='list of testsuites to donwload', nargs='*')
-        download_parser.set_defaults(func=self._download_cmd)
+        subparser.add_argument(
+            'testsuites', help='list of testsuites to download', nargs='*')
+        subparser.set_defaults(func=self._download_cmd)
+
+    def _add_reference_cmd(self, subparsers):
+        subparser = subparsers.add_parser(
+            'reference', aliases=['d'], help='use a specific decoder as the reference for the test suites given')
+        subparser.add_argument(
+            'decoder', help='decoder to run', nargs=1)
+        subparser.add_argument(
+            'testsuites', help='list of testsuites to run the decoder with', nargs='+')
+        subparser.add_argument(
+            '-q', '--quiet', help="don't show every test run", action='store_true')
+        subparser.set_defaults(func=self._reference_cmd)
 
     def _list_cmd(self, args, fluxion):
-        if args.testsuites:
-            fluxion.list_test_suites(show_test_vectors=args.testvectors)
-        if args.decoders:
-            fluxion.list_decoders()
+        fluxion.list_test_suites(show_test_vectors=args.testvectors)
+        fluxion.list_decoders(check_run=args.check)
 
     def _run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
                                 decoders=args.decoders,
                                 failfast=args.failfast,
-                                quiet=args.quiet,
-                                reference=args.reference)
+                                quiet=args.quiet)
 
     def _download_cmd(self, args, fluxion):
         fluxion.download_test_suites(test_suites=args.testsuites)
+
+    def _reference_cmd(self, args, fluxion):
+        fluxion.run_test_suites(test_suites=args.testsuites,
+                                decoders=args.decoder,
+                                quiet=args.quiet,
+                                reference=True)

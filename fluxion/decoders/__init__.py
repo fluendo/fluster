@@ -16,3 +16,10 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
+
+import glob
+import os.path
+
+modules = glob.glob(os.path.join(os.path.dirname(__file__), "*.py"))
+__all__ = [os.path.basename(os.path.splitext(f)[0])
+           for f in modules if os.path.isfile(f) and not f.endswith('__init__.py')]

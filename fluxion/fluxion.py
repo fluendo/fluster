@@ -19,29 +19,15 @@
 
 import os
 import os.path
-import functools
+from functools import lru_cache
+
+# Import decoders that will auto-register
+# pylint: disable=wildcard-import, unused-wildcard-import
+from fluxion.decoders import *
+# pylint: enable=wildcard-import, unused-wildcard-import
 
 from fluxion.test_suite import TestSuite
 from fluxion.decoder import DECODERS
-
-
-def lazy_init(call_func):
-    '''Initialize lazily a function'''
-    def decorator_lazy_init(func):
-        @functools.wraps(func)
-        def func_wrapper(self, *args, **kwargs):
-            if not call_func:
-                raise Exception(
-                    'A function needs to be given to the lazy_init decorator')
-            flag_name = call_func.__name__ + '_already_called'
-            if not hasattr(self, flag_name):
-                self.flag_name = False
-            if not self.flag_name:
-                call_func(self)
-            self.flag_name = True
-            func(self, *args, **kwargs)
-        return func_wrapper
-    return decorator_lazy_init
 
 # pylint: disable=broad-except
 
@@ -59,19 +45,7 @@ class Fluxion:
         self.test_suites = []
         self.decoders = DECODERS
 
-    def _load_decoders(self):
-        for root, _, files in os.walk(self.decoders_dir):
-            for file in files:
-                if os.path.splitext(file)[1] == '.py':
-                    if self.verbose:
-                        print(f'Decoder found: {file}')
-                    try:
-                        # pylint: disable=exec-used
-                        exec(open(os.path.join(root, file)).read(), globals())
-                        # pylint: enable=exec-used
-                    except Exception as ex:
-                        print(f'Error loading decoder {file}: {ex}')
-
+    @lru_cache(maxsize=1)
     def _load_test_suites(self):
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
@@ -85,8 +59,7 @@ class Fluxion:
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')
 
-    @lazy_init(_load_decoders)
-    def list_decoders(self):
+    def list_decoders(self, check_run: bool = False):
         '''List all the available decoders'''
         print('\nList of available decoders:\n')
         decoders_dict = {}
@@ -98,11 +71,14 @@ class Fluxion:
         for codec in decoders_dict:
             print(f'{codec}')
             for decoder in decoders_dict[codec]:
-                print(decoder)
+                string = f'{decoder}'
+                if check_run:
+                    string += ' \U00002714 ' if decoder.check_run() else ' \U00002715 '
+                print(string)
 
-    @lazy_init(_load_test_suites)
-    def list_test_suites(self, show_test_vectors=False):
+    def list_test_suites(self, show_test_vectors: bool = False):
         '''List all test suites'''
+        self._load_test_suites()
         print('\nList of available test suites:')
         for test_suite in self.test_suites:
             print(test_suite)
@@ -110,10 +86,10 @@ class Fluxion:
                 for test_vector in test_suite.test_vectors:
                     print(test_vector)
 
-    @lazy_init(_load_test_suites)
-    @lazy_init(_load_decoders)
-    def run_test_suites(self, test_suites=None, decoders=None, failfast=False, quiet=False, reference=False):
+    def run_test_suites(self, test_suites: list = None, decoders: list = None, failfast: bool = False,
+                        quiet: bool = False, reference: bool = False):
         '''Run a group of test suites'''
+        self._load_test_suites()
         run_test_suites = []
         if test_suites:
             run_test_suites = [
@@ -150,9 +126,9 @@ class Fluxion:
                 test_suite.run(decoder, failfast, quiet,
                                self.results_dir, reference)
 
-    @lazy_init(_load_test_suites)
-    def download_test_suites(self, test_suites):
+    def download_test_suites(self, test_suites: list):
         '''Download a group of test suites'''
+        self._load_test_suites()
         if not test_suites:
             test_suites = self.test_suites
         else:

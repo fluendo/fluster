@@ -25,7 +25,7 @@ import unittest
 from fluxion.test_vector import TestVector
 from fluxion.codec import Codec
 from fluxion.decoder import Decoder
-from fluxion.test import Test, TestReference
+from fluxion.test import Test
 from fluxion import utils
 
 
@@ -100,11 +100,9 @@ class TestSuite:
     def _gen_testing_suite(self, decoder: Decoder, results_dir: str, reference: bool):
         suite = unittest.TestSuite()
         for test_vector in self.test_vectors:
-            if not reference:
-                suite.addTest(Test(decoder, self, test_vector, results_dir))
-            else:
-                suite.addTest(TestReference(
-                    decoder, self, test_vector, results_dir))
+            suite.addTest(
+                Test(decoder, self, test_vector, results_dir, reference))
+
         return suite
 
     def __str__(self):
