@@ -21,9 +21,13 @@ import os
 import os.path
 import functools
 
+# Import decoders that will auto-register
+# pylint: disable=wildcard-import, unused-wildcard-import
+from fluxion.decoders import *
+# pylint: enable=wildcard-import, unused-wildcard-import
+
 from fluxion.test_suite import TestSuite
 from fluxion.decoder import DECODERS
-from fluxion.decoders import *
 
 
 def lazy_init(call_func):
