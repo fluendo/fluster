@@ -61,11 +61,7 @@ class Main:
         list_parser = subparsers.add_parser(
             'list', aliases=['l'], help='show list of available test suites or decoders')
         list_parser.add_argument(
-            '-ts', '--testsuites', help='show test suites', action='store_true')
-        list_parser.add_argument(
             '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
-        list_parser.add_argument(
-            '-d', '--decoders', help='show decoders', action='store_true')
         list_parser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers):
@@ -87,14 +83,12 @@ class Main:
         download_parser = subparsers.add_parser(
             'download', aliases=['d'], help='downloads test suites resources')
         download_parser.add_argument(
-            'testsuites', help='list of testsuites to donwload', nargs='*')
+            'testsuites', help='list of testsuites to download', nargs='*')
         download_parser.set_defaults(func=self._download_cmd)
 
     def _list_cmd(self, args, fluxion):
-        if args.testsuites:
-            fluxion.list_test_suites(show_test_vectors=args.testvectors)
-        if args.decoders:
-            fluxion.list_decoders()
+        fluxion.list_test_suites(show_test_vectors=args.testvectors)
+        fluxion.list_decoders()
 
     def _run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
