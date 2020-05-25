@@ -23,6 +23,7 @@ import functools
 
 from fluxion.test_suite import TestSuite
 from fluxion.decoder import DECODERS
+from fluxion.decoders import *
 
 
 def lazy_init(call_func):
@@ -59,19 +60,6 @@ class Fluxion:
         self.test_suites = []
         self.decoders = DECODERS
 
-    def _load_decoders(self):
-        for root, _, files in os.walk(self.decoders_dir):
-            for file in files:
-                if os.path.splitext(file)[1] == '.py':
-                    if self.verbose:
-                        print(f'Decoder found: {file}')
-                    try:
-                        # pylint: disable=exec-used
-                        exec(open(os.path.join(root, file)).read(), globals())
-                        # pylint: enable=exec-used
-                    except Exception as ex:
-                        print(f'Error loading decoder {file}: {ex}')
-
     def _load_test_suites(self):
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
@@ -85,7 +73,6 @@ class Fluxion:
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')
 
-    @lazy_init(_load_decoders)
     def list_decoders(self):
         '''List all the available decoders'''
         print('\nList of available decoders:\n')
@@ -111,7 +98,6 @@ class Fluxion:
                     print(test_vector)
 
     @lazy_init(_load_test_suites)
-    @lazy_init(_load_decoders)
     def run_test_suites(self, test_suites=None, decoders=None, failfast=False, quiet=False, reference=False):
         '''Run a group of test suites'''
         run_test_suites = []
