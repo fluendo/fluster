@@ -53,6 +53,7 @@ class GStreamer10(GStreamer):
     cmd = 'gst-launch-1.0'
     caps = 'video/x-raw'
     gst_api = "1.0"
+    provider = "GStreamer"
 
 
 class GStreamer010(GStreamer):
@@ -60,6 +61,25 @@ class GStreamer010(GStreamer):
     cmd = 'gst-launch-0.10'
     caps = 'video/x-raw-yuv'
     gst_api = "0.10"
+    provider = "GStreamer"
+
+
+@register_decoder
+class GStreamerVaapiH265Gst10Decoder(GStreamer10):
+    '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vaapih265dec '
+    caps = 'video/x-raw,format=I420'
+    api = "VA-API"
+
+
+@register_decoder
+class GStreamerVaapiH265Gst010Decoder(GStreamer010):
+    '''GStreamer H.265 VAAPI decoder implementation for GStreamer 0.10'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vaapih265dec '
+    caps = 'video/x-raw,format=I420'
+    api = "VA-API"
 
 
 @register_decoder
@@ -78,16 +98,6 @@ class FluendoH265Gst010Decoder(GStreamer010):
     decoder_bin = ' h265parse ! fluh265dec '
     provider = "Fluendo"
     api = 'SW'
-
-
-@register_decoder
-class CommunityVaapiH265Gst10Decoder(GStreamer10):
-    '''Community H.265 VAAPI decoder implementation for GStreamer 1.0'''
-    name = 'GStreamer-H265-VAAPI-Gst10'
-    description = "Community H.265 VAAPI decoder implementation for GStreamer 1.0"
-    codec = Codec.H265
-    decoder_element = ' h265parse ! vaapih265dec '
-    caps = 'video/x-raw,format=I420'
 
 
 @register_decoder
