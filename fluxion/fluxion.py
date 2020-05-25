@@ -59,7 +59,7 @@ class Fluxion:
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')
 
-    def list_decoders(self):
+    def list_decoders(self, check_run: bool = False):
         '''List all the available decoders'''
         print('\nList of available decoders:\n')
         decoders_dict = {}
@@ -71,9 +71,12 @@ class Fluxion:
         for codec in decoders_dict:
             print(f'{codec}')
             for decoder in decoders_dict[codec]:
-                print(decoder)
+                string = f'{decoder}'
+                if check_run:
+                    string += ' \U00002714 ' if decoder.check_run() else ' \U00002715 '
+                print(string)
 
-    def list_test_suites(self, show_test_vectors=False):
+    def list_test_suites(self, show_test_vectors: bool = False):
         '''List all test suites'''
         self._load_test_suites()
         print('\nList of available test suites:')
@@ -83,7 +86,8 @@ class Fluxion:
                 for test_vector in test_suite.test_vectors:
                     print(test_vector)
 
-    def run_test_suites(self, test_suites=None, decoders=None, failfast=False, quiet=False, reference=False):
+    def run_test_suites(self, test_suites: list = None, decoders: list = None, failfast: bool = False,
+                        quiet: bool = False, reference: bool = False):
         '''Run a group of test suites'''
         self._load_test_suites()
         run_test_suites = []
@@ -122,7 +126,7 @@ class Fluxion:
                 test_suite.run(decoder, failfast, quiet,
                                self.results_dir, reference)
 
-    def download_test_suites(self, test_suites):
+    def download_test_suites(self, test_suites: list):
         '''Download a group of test suites'''
         self._load_test_suites()
         if not test_suites:

@@ -20,6 +20,7 @@
 # Boston, MA 02111-1307, USA.
 
 import argparse
+import os
 
 from fluxion.fluxion import Fluxion
 
@@ -33,6 +34,10 @@ class Main:
         self.resources_dir = resources_dir
         self.results_dir = results_dir
         self.parser = self._create_parser()
+
+        # Prepend to the PATH the decoders_dir so that we can run them
+        # without having to set the env for every single command
+        os.environ['PATH'] = decoders_dir + ':' + os.environ['PATH']
 
     def run(self):
         '''Runs Fluxion'''
@@ -63,6 +68,9 @@ class Main:
             'list', aliases=['l'], help='show list of available test suites or decoders')
         subparser.add_argument(
             '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
+        subparser.add_argument(
+            '-c', '--check',
+            help='check which decoders can be run successfully. Reports \U00002714 or \U00002715', action='store_true')
         subparser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers):
@@ -98,7 +106,7 @@ class Main:
 
     def _list_cmd(self, args, fluxion):
         fluxion.list_test_suites(show_test_vectors=args.testvectors)
-        fluxion.list_decoders()
+        fluxion.list_decoders(check_run=args.check)
 
     def _run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,

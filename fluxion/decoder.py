@@ -17,7 +17,10 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+import subprocess
 from abc import ABC, abstractmethod
+
+# pylint: disable=broad-except
 
 
 class Decoder(ABC):
@@ -25,11 +28,23 @@ class Decoder(ABC):
     name = None
     codec = None
     description = None
+    binary = None
 
     @abstractmethod
     def decode(self, input_filepath: str, output_filepath: str):
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
+
+    def check_run(self):
+        '''Checks whether the decoder can be run'''
+        if hasattr(self, 'binary') and self.binary:
+            try:
+                subprocess.run(['which', self.binary],
+                               stdout=subprocess.DEVNULL, check=True)
+                return True
+            except Exception:
+                return False
+        return True
 
     def __str__(self):
         return f'    {self.name}: {self.description}'
