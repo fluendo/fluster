@@ -89,11 +89,19 @@ class Fluxion:
     def run_test_suites(self, test_suites: list = None, decoders: list = None, failfast: bool = False,
                         quiet: bool = False, reference: bool = False):
         '''Run a group of test suites'''
+        # pylint: disable=too-many-branches
         self._load_test_suites()
         run_test_suites = []
+
+        # Convert all test suites and decoders to lowercase to make the filter greedy
+        if test_suites:
+            test_suites = [x.lower() for x in test_suites]
+        if decoders:
+            decoders = [x.lower() for x in decoders]
+
         if test_suites:
             run_test_suites = [
-                test_suite for test_suite in self.test_suites if test_suite.name in test_suites]
+                test_suite for test_suite in self.test_suites if test_suite.name.lower() in test_suites]
             if not run_test_suites:
                 raise Exception(
                     "No test suite found matching {}".format(test_suites))
@@ -103,7 +111,7 @@ class Fluxion:
         run_decoders = []
         if decoders:
             run_decoders = [
-                dec for dec in self.decoders if dec.name in decoders]
+                dec for dec in self.decoders if dec.name.lower() in decoders]
             if not run_decoders:
                 raise Exception(
                     "No decoders found matching {}".format(decoders))
