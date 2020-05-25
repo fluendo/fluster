@@ -85,21 +85,28 @@ class TestSuite:
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
                 utils.extract(dest_path, dest_dir)
 
-    def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False):
+    def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False,
+            test_vectors: list = None):
         '''Run the test suite'''
         print('*' * 100 + '\n')
-        print(f'Running test suite {self.name} with decoder {decoder.name}\n')
+        string = f'Running test suite {self.name} with decoder {decoder.name}'
+        string += f' and test vectors {", ".join(test_vectors)}\n' if test_vectors else '\n'
+        print(string)
         print('*' * 100 + '\n')
-        suite = self._gen_testing_suite(decoder, results_dir, reference)
+        suite = self._gen_testing_suite(
+            decoder, results_dir, reference, test_vectors=test_vectors)
         runner = unittest.TextTestRunner(
             failfast=failfast, verbosity=1 if quiet else 2)
         runner.run(suite)
         if reference:
             self.to_json_file(self.filename)
 
-    def _gen_testing_suite(self, decoder: Decoder, results_dir: str, reference: bool):
+    def _gen_testing_suite(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list = None):
         suite = unittest.TestSuite()
         for test_vector in self.test_vectors:
+            if test_vectors:
+                if test_vector.name.lower() not in test_vectors:
+                    continue
             suite.addTest(
                 Test(decoder, self, test_vector, results_dir, reference))
 

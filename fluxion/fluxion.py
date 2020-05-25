@@ -76,18 +76,23 @@ class Fluxion:
                     string += ' \U00002714 ' if decoder.check_run() else ' \U00002715 '
                 print(string)
 
-    def list_test_suites(self, show_test_vectors: bool = False):
+    def list_test_suites(self, show_test_vectors: bool = False, test_suites: list = None):
         '''List all test suites'''
         self._load_test_suites()
         print('\nList of available test suites:')
+        if test_suites:
+            test_suites = [x.lower() for x in test_suites]
         for test_suite in self.test_suites:
+            if test_suites:
+                if test_suite.name.lower() not in test_suites:
+                    continue
             print(test_suite)
             if show_test_vectors:
                 for test_vector in test_suite.test_vectors:
                     print(test_vector)
 
-    def run_test_suites(self, test_suites: list = None, decoders: list = None, failfast: bool = False,
-                        quiet: bool = False, reference: bool = False):
+    def run_test_suites(self, test_suites: list = None, decoders: list = None, test_vectors: list = None,
+                        failfast: bool = False, quiet: bool = False, reference: bool = False):
         '''Run a group of test suites'''
         # pylint: disable=too-many-branches
         self._load_test_suites()
@@ -98,6 +103,8 @@ class Fluxion:
             test_suites = [x.lower() for x in test_suites]
         if decoders:
             decoders = [x.lower() for x in decoders]
+        if test_vectors:
+            test_vectors = [x.lower() for x in test_vectors]
 
         if test_suites:
             run_test_suites = [
@@ -132,7 +139,7 @@ class Fluxion:
                 if decoder.codec != test_suite.codec:
                     continue
                 test_suite.run(decoder, failfast, quiet,
-                               self.results_dir, reference)
+                               self.results_dir, reference, test_vectors)
 
     def download_test_suites(self, test_suites: list):
         '''Download a group of test suites'''

@@ -12,8 +12,9 @@ check:
 	PYTHONPATH=. pylint -j0 $(PY_FILES) --fail-under=10
 	@echo "Running dummy test..."
 	./fluxion.py list
+	./fluxion.py list -ts dummy -tv
 	./fluxion.py download dummy
-	./fluxion.py run -ts dummy -d H.264Dummy
+	./fluxion.py run -ts dummy -d H.264Dummy -tv AMP_A
 
 format:
 	autopep8 -i -j0 -r $(PY_FILES)
