@@ -23,7 +23,7 @@ from fluxion.codec import Codec
 from fluxion.decoder import Decoder, register_decoder
 from fluxion.utils import file_checksum
 
-PIPELINE_TPL = "{} filesrc location={} ! {} ! {} ! filesink location={}"
+PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! filesink location={}'
 
 
 class GStreamer(Decoder):
@@ -52,14 +52,34 @@ class GStreamer10(GStreamer):
     '''Base class for GStreamer 1.x decoders'''
     cmd = 'gst-launch-1.0'
     caps = 'video/x-raw'
-    gst_api = "1.0"
+    gst_api = '1.0'
+    provider = 'GStreamer'
 
 
 class GStreamer010(GStreamer):
     '''Base class for GStreamer 0.10 decoders'''
     cmd = 'gst-launch-0.10'
     caps = 'video/x-raw-yuv'
-    gst_api = "0.10"
+    gst_api = '0.10'
+    provider = 'GStreamer'
+
+
+@register_decoder
+class GStreamerVaapiH265Gst10Decoder(GStreamer10):
+    '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vaapih265dec '
+    caps = 'video/x-raw,format=I420'
+    api = 'VA-API'
+
+
+@register_decoder
+class GStreamerVaapiH265Gst010Decoder(GStreamer010):
+    '''GStreamer H.265 VAAPI decoder implementation for GStreamer 0.10'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vaapih265dec '
+    caps = 'video/x-raw,format=I420'
+    api = 'VA-API'
 
 
 @register_decoder
@@ -67,7 +87,7 @@ class FluendoH265Gst10Decoder(GStreamer10):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
     decoder_bin = ' h265parse ! fluh265dec '
-    provider = "Fluendo"
+    provider = 'Fluendo'
     api = 'SW'
 
 
@@ -76,7 +96,7 @@ class FluendoH265Gst010Decoder(GStreamer010):
     '''Fluendo H.265 software decoder implementation for GStreamer 0.10'''
     codec = Codec.H265
     decoder_bin = ' h265parse ! fluh265dec '
-    provider = "Fluendo"
+    provider = 'Fluendo'
     api = 'SW'
 
 
@@ -85,7 +105,7 @@ class FluendoH264Gst10Decoder(GStreamer10):
     '''Fluendo H.264 software decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
     decoder_bin = ' h264parse ! fluh264dec '
-    provider = "Fluendo"
+    provider = 'Fluendo'
     api = 'SW'
 
 
@@ -94,5 +114,5 @@ class FluendoH264Gst010Decoder(GStreamer010):
     '''Fluendo H.264 software decoder implementation for GStreamer 0.10'''
     codec = Codec.H264
     decoder_bin = ' fluh264dec '
-    provider = "Fluendo"
+    provider = 'Fluendo'
     api = 'SW'
