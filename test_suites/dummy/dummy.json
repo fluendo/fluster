@@ -1,0 +1,15 @@
+{
+    "name": "dummy",
+    "codec": "Dummy",
+    "description": "This is a brief description of the test suite",
+    "test_vectors": [
+        {
+            "name": "one",
+            "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_Sony_D.zip",
+            "source_checksum": "afa9e2d49d589f631ceb65695d25b69f",
+            "input_file": "BA1_Sony_D.jsv",
+            "result": "7466ed721dacfe77ba015d47a2e2439d",
+            "result_frames": null
+        }
+    ]
+}

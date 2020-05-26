@@ -54,7 +54,7 @@ class Fluxion:
                         print(f'Test suite found: {file}')
                     try:
                         test_suite = TestSuite.from_json_file(
-                            os.path.join(root, file))
+                            os.path.join(root, file), self.resources_dir)
                         self.test_suites.append(test_suite)
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')
@@ -69,7 +69,7 @@ class Fluxion:
             decoders_dict[dec.codec].append(dec)
 
         for codec in decoders_dict:
-            print(f'{codec}')
+            print(f'{codec}'.split('.')[1])
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check_run:
@@ -141,7 +141,7 @@ class Fluxion:
                 test_suite.run(decoder, failfast, quiet,
                                self.results_dir, reference, test_vectors)
 
-    def download_test_suites(self, test_suites: list):
+    def download_test_suites(self, test_suites: list, keep_file: bool):
         '''Download a group of test suites'''
         self._load_test_suites()
         if not test_suites:
@@ -150,4 +150,4 @@ class Fluxion:
             test_suites = [
                 t for t in self.test_suites if t.name in test_suites]
         for test_suite in test_suites:
-            test_suite.download(self.resources_dir, True)
+            test_suite.download(self.resources_dir, True, keep_file=keep_file)

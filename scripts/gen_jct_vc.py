@@ -39,13 +39,16 @@ H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = ('.bin', '.bit', '.264', '.h264',
                   '.jvc', '.jsv', '.jvt', '.avc', '.26l')
 MD5_EXTS = ('yuv.md5', '.md5', 'md5.txt')
-MD5_EXCLUDES = ('__MACOSX', '.bin.md5', 'bit.md5')
-RAW_EXTS = ('.yuv', '.qcif')
+MD5_EXCLUDES = ('.bin.md5', 'bit.md5')
+RAW_EXTS = ('nogray.yuv', '.yuv', '.qcif')
 
 
 class HREFParser(HTMLParser):
     '''Custom parser to find href links'''
-    links = []
+
+    def __init__(self):
+        self.links = []
+        super().__init__()
 
     def error(self, message):
         print(message)
@@ -73,7 +76,7 @@ class JCTVTGenerator:
     def generate(self, download):
         '''Generates the test suite and saves it to a file'''
         output_filepath = os.path.join(self.suite_name + '.json')
-        test_suite = TestSuite(output_filepath,
+        test_suite = TestSuite(output_filepath, 'resources',
                                self.suite_name, self.codec, self.description, list())
 
         hparser = HREFParser()
@@ -86,24 +89,28 @@ class JCTVTGenerator:
             # The first item in the AVCv1 list is a readme file
             if '00readme_H' in url:
                 continue
-            file_url = url.split('/')[-1]
-            name = file_url.split('.')[0]
+            file_url = os.path.basename(url)
+            name = os.path.splitext(file_url)[0]
             file_input = "{name}.bin".format(name=name)
             test_vector = TestVector(name, url, "", file_input, "")
             test_suite.test_vectors.append(test_vector)
 
         if download:
-            test_suite.download('resources', verify=False)
+            test_suite.download(test_suite.resources_dir, verify=False,
+                                extract_all=True, keep_file=True)
 
         for test_vector in test_suite.test_vectors:
             dest_dir = os.path.join(
-                'resources', test_suite.name, test_vector.name)
+                test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(
-                dest_dir, test_vector.source.split('/')[-1])
-            test_vector.input = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
-            if not test_vector.input:
+                dest_dir, os.path.basename(test_vector.source))
+            test_vector.input_file = self._find_by_ext(
+                dest_dir, BITSTREAM_EXTS)
+            test_vector.input_file = test_vector.input_file.replace(os.path.join(
+                test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep, '')
+            if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
-            test_vector.source_hash = utils.file_checksum(dest_path)
+            test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
             elif self.codec == Codec.H264:
@@ -137,23 +144,25 @@ class JCTVTGenerator:
                 if line.startswith(('#', '\n')):
                     continue
                 if '=' in line:
-                    test_vector.result = line.split('=')[-1].strip().upper()
+                    test_vector.result = line.split('=')[-1].strip().lower()
                 else:
                     test_vector.result = line.split(
-                        ' ')[0].split('\n')[0].upper()
+                        ' ')[0].split('\n')[0].lower()
                 break
 
     def _find_by_ext(self, dest_dir, exts, excludes=None):
         excludes = excludes or []
-        for subdir, _, files in os.walk(dest_dir):
-            for filename in files:
-                filepath = subdir + os.sep + filename
-                excluded = False
-                for excl in excludes:
-                    if excl in filepath:
-                        excluded = True
-                        break
-                if not excluded and filepath.endswith(exts):
+
+        # Respect the priority for extensions
+        for ext in exts:
+            for subdir, _, files in os.walk(dest_dir):
+                for filename in files:
+                    filepath = subdir + os.sep + filename
+                    if not filepath.endswith(ext) or '__MACOSX' in filepath:
+                        continue
+                    for excl in excludes:
+                        if excl in filepath:
+                            continue
                     return filepath
         return None
 

@@ -32,9 +32,11 @@ from fluxion import utils
 class TestSuite:
     '''Test suite class'''
 
-    def __init__(self, filename: str, name: str, codec: Codec, description: str, test_vectors: list):
+    def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
+                 test_vectors: list):
         # Not included in JSON
         self.filename = filename
+        self.resources_dir = resources_dir
 
         # JSON members
         self.name = name
@@ -43,25 +45,26 @@ class TestSuite:
         self.test_vectors = test_vectors
 
     @classmethod
-    def from_json_file(cls, filename: str):
+    def from_json_file(cls, filename: str, resources_dir: str):
         '''Creates a TestSuite instance from a file'''
         with open(filename) as json_file:
             data = json.load(json_file)
             data['test_vectors'] = list(
                 map(TestVector.from_json, data["test_vectors"]))
             data['codec'] = Codec(data['codec'])
-            return cls(filename, **data)
+            return cls(filename, resources_dir, **data)
 
     def to_json_file(self, filename: str):
         '''Serialize the test suite to a file'''
         with open(filename, 'w') as json_file:
             data = self.__dict__.copy()
+            data.pop('resources_dir')
             data.pop('filename')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
             json.dump(data, json_file, indent=4)
 
-    def download(self, out_dir: str, verify: bool):
+    def download(self, out_dir: str, verify: bool, extract_all: bool = False, keep_file: bool = False):
         '''Download the test suite'''
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
@@ -69,12 +72,12 @@ class TestSuite:
         for test_vector in self.test_vectors:
             dest_dir = os.path.join(out_dir, self.name, test_vector.name)
             dest_path = os.path.join(
-                dest_dir, test_vector.source.split('/')[-1])
+                dest_dir, os.path.basename(test_vector.source))
             if not os.path.exists(dest_dir):
                 os.makedirs(dest_dir)
             file_downloaded = os.path.exists(dest_path)
             if file_downloaded and verify:
-                if test_vector.source_hash != utils.file_checksum(dest_path):
+                if test_vector.source_checksum != utils.file_checksum(dest_path):
                     file_downloaded = False
             if not file_downloaded:
                 print(
@@ -83,7 +86,10 @@ class TestSuite:
             if utils.is_extractable(dest_path):
                 print(
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
-                utils.extract(dest_path, dest_dir)
+                utils.extract(
+                    dest_path, dest_dir, file=test_vector.input_file if not extract_all else None)
+                if not keep_file:
+                    os.remove(dest_path)
 
     def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False,
             test_vectors: list = None):
@@ -93,6 +99,9 @@ class TestSuite:
         string += f' and test vectors {", ".join(test_vectors)}\n' if test_vectors else '\n'
         print(string)
         print('*' * 100 + '\n')
+        if not decoder.check_run():
+            print(f'Skipping decoder {decoder.name} because it cannot be run')
+            return
         suite = self._gen_testing_suite(
             decoder, results_dir, reference, test_vectors=test_vectors)
         runner = unittest.TextTestRunner(

@@ -17,7 +17,7 @@ check: ## check that very basic tests run
 	./fluxion.py list
 	./fluxion.py list -ts dummy -tv
 	./fluxion.py download dummy
-	./fluxion.py run -ts dummy -d H.264Dummy -tv AMP_A
+	./fluxion.py run -ts dummy -tv one
 
 format: ## format Python code using autopep8
 	autopep8 -i -j0 -r $(PY_FILES)
