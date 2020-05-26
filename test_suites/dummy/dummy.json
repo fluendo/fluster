@@ -4,7 +4,7 @@
     "description": "This is a brief description of the test suite",
     "test_vectors": [
         {
-            "name": "AUD_MW_E",
+            "name": "one",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
             "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
             "input": "resources/JVT-AVC_V1/AUD_MW_E/AUD_MW_E.264",
@@ -12,11 +12,11 @@
             "result_frames": null
         },
         {
-            "name": "BA1_FT_C",
-            "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_FT_C.zip",
-            "source_checksum": "1de5194e1c030948a60cdc1d0de9285a",
-            "input": "resources/JVT-AVC_V1/BA1_FT_C/BA1_FT_C.264",
-            "result": "702F67D4D0DEA7956E5DDF6328BED4CA",
+            "name": "two",
+            "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
+            "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
+            "input": "resources/JVT-AVC_V1/AUD_MW_E/AUD_MW_E.264",
+            "result": "FF11BD87BC97D968E9B1D2270A4802D2",
             "result_frames": null
         }
     ]

@@ -69,7 +69,7 @@ class Fluxion:
             decoders_dict[dec.codec].append(dec)
 
         for codec in decoders_dict:
-            print(f'{codec}')
+            print(f'{codec}'.split('.')[1])
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check_run:
