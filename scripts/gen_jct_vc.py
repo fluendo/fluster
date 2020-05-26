@@ -86,8 +86,8 @@ class JCTVTGenerator:
             # The first item in the AVCv1 list is a readme file
             if '00readme_H' in url:
                 continue
-            file_url = url.split('/')[-1]
-            name = file_url.split('.')[0]
+            file_url = os.path.basename(url)
+            name = os.path.splitext(file_url)[0]
             file_input = "{name}.bin".format(name=name)
             test_vector = TestVector(name, url, "", file_input, "")
             test_suite.test_vectors.append(test_vector)
@@ -99,7 +99,7 @@ class JCTVTGenerator:
             dest_dir = os.path.join(
                 'resources', test_suite.name, test_vector.name)
             dest_path = os.path.join(
-                dest_dir, test_vector.source.split('/')[-1])
+                dest_dir, os.path.basename(test_vector.source))
             test_vector.input = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
             if not test_vector.input:
                 raise Exception(f"Bitstream file not found in {dest_dir}")

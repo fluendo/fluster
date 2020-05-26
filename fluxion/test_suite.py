@@ -72,7 +72,7 @@ class TestSuite:
         for test_vector in self.test_vectors:
             dest_dir = os.path.join(out_dir, self.name, test_vector.name)
             dest_path = os.path.join(
-                dest_dir, test_vector.source.split('/')[-1])
+                dest_dir, os.path.basename(test_vector.source))
             if not os.path.exists(dest_dir):
                 os.makedirs(dest_dir)
             file_downloaded = os.path.exists(dest_path)
@@ -86,7 +86,8 @@ class TestSuite:
             if utils.is_extractable(dest_path):
                 print(
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
-                utils.extract(dest_path, dest_dir)
+                utils.extract(dest_path, test_vector.input, dest_dir)
+                os.remove(dest_path)
 
     def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False,
             test_vectors: list = None):
