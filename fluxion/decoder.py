@@ -19,6 +19,7 @@
 
 import subprocess
 from abc import ABC, abstractmethod
+from functools import lru_cache
 
 # pylint: disable=broad-except
 
@@ -35,6 +36,7 @@ class Decoder(ABC):
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 
+    @lru_cache
     def check_run(self):
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:

@@ -99,6 +99,9 @@ class TestSuite:
         string += f' and test vectors {", ".join(test_vectors)}\n' if test_vectors else '\n'
         print(string)
         print('*' * 100 + '\n')
+        if not decoder.check_run():
+            print(f'Skipping decoder {decoder.name} because it cannot be run')
+            return
         suite = self._gen_testing_suite(
             decoder, results_dir, reference, test_vectors=test_vectors)
         runner = unittest.TextTestRunner(
