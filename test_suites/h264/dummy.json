@@ -15,6 +15,19 @@
                 "93a5875d58072db5539c04e1e943ed9d",
                 "93a5875d58072db5539c04e1e943ed9d"
             ]
+        },
+        {
+            "name": "AMP_B",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_B_Samsung_7.zip",
+            "source_hash": "",
+            "input": "AMP_B_Samsung_7/AMP_B_Samsung_7.bin",
+            "result": "449DF10976E6B2FF4358125143E95A1B",
+            "result_frames": [
+                "449DF10976E6B2FF4358125143E95A1B",
+                "449DF10976E6B2FF4358125143E95A1B",
+                "449DF10976E6B2FF4358125143E95A1B",
+                "449DF10976E6B2FF4358125143E95A1B"
+            ]
         }
     ]
 }

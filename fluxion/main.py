@@ -67,6 +67,8 @@ class Main:
         subparser = subparsers.add_parser(
             'list', aliases=['l'], help='show list of available test suites or decoders')
         subparser.add_argument(
+            '-ts', '--testsuites', help='show only the test suites given', nargs='+')
+        subparser.add_argument(
             '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
         subparser.add_argument(
             '-c', '--check',
@@ -82,6 +84,8 @@ class Main:
             '-q', '--quiet', help="don't show every test run", action='store_true')
         subparser.add_argument(
             '-ts', '--testsuites', help='run only the specific test suites', nargs='+')
+        subparser.add_argument(
+            '-tv', '--testvectors', help='run only the specific test vectors', nargs='+')
         subparser.add_argument(
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
         subparser.set_defaults(func=self._run_cmd)
@@ -105,12 +109,14 @@ class Main:
         subparser.set_defaults(func=self._reference_cmd)
 
     def _list_cmd(self, args, fluxion):
-        fluxion.list_test_suites(show_test_vectors=args.testvectors)
+        fluxion.list_test_suites(
+            show_test_vectors=args.testvectors, test_suites=args.testsuites)
         fluxion.list_decoders(check_run=args.check)
 
     def _run_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
                                 decoders=args.decoders,
+                                test_vectors=args.testvectors,
                                 failfast=args.failfast,
                                 quiet=args.quiet)
 
