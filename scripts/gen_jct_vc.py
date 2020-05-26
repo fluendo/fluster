@@ -103,7 +103,7 @@ class JCTVTGenerator:
             test_vector.input = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
             if not test_vector.input:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
-            test_vector.source_hash = utils.file_checksum(dest_path)
+            test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
             elif self.codec == Codec.H264:

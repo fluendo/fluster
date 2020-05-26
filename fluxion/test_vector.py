@@ -22,11 +22,11 @@ class TestVector:
     '''Test vector'''
 
     # pylint: disable=redefined-builtin
-    def __init__(self, name: str, source: str, source_hash: str, input: str,
+    def __init__(self, name: str, source: str, source_checksum: str, input: str,
                  result: str, result_frames=None):
         self.name = name
         self.source = source
-        self.source_hash = source_hash
+        self.source_checksum = source_checksum
         self.input = input
         self.result = result
         self.result_frames = result_frames
