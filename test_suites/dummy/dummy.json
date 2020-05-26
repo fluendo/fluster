@@ -8,7 +8,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
             "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
             "input": "resources/JVT-AVC_V1/AUD_MW_E/AUD_MW_E.264",
-            "result": "FF11BD87BC97D968E9B1D2270A4802D2",
+            "result": "ff11bd87bc97d968e9b1d2270a4802d2",
             "result_frames": null
         },
         {
@@ -16,7 +16,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
             "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
             "input": "resources/JVT-AVC_V1/AUD_MW_E/AUD_MW_E.264",
-            "result": "FF11BD87BC97D968E9B1D2270A4802D2",
+            "result": "ff11bd87bc97d968e9b1d2270a4802d2",
             "result_frames": null
         }
     ]

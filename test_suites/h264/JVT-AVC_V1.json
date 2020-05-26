@@ -16,7 +16,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_FT_C.zip",
             "source_checksum": "1de5194e1c030948a60cdc1d0de9285a",
             "input": "resources/JVT-AVC_V1/BA1_FT_C/BA1_FT_C.264",
-            "result": "d41d8cd98f00b204e9800998ecf8427e",
+            "result": "4f2da01d1d1ae7b99bea3fe1fb9e8ef4",
             "result_frames": null
         },
         {
@@ -536,7 +536,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVFC1_Sony_C.zip",
             "source_checksum": "fa863d521768ea4654b51f8025213f43",
             "input": "resources/JVT-AVC_V1/CVFC1_Sony_C/CVFC1_Sony_C.jsv",
-            "result": "90bca6748d05bc34fd567c659c49292a",
+            "result": "9fdb17e17d332b5d9752362c9c7ff9b0",
             "result_frames": null
         },
         {
@@ -696,7 +696,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVSE3_Sony_H.zip",
             "source_checksum": "066de9699dc5f858014a2af2094ed578",
             "input": "resources/JVT-AVC_V1/CVSE3_Sony_H/CVSE3_Sony_H.jsv",
-            "result": "31d0c6cec97c0689d0bc348b53b8334b",
+            "result": "66ab90e408e469bdb9814e9e741d60de",
             "result_frames": null
         },
         {
@@ -704,7 +704,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVSEFDFT3_Sony_E.zip",
             "source_checksum": "fc4a8c6f27fdbd264308e75c8d818542",
             "input": "resources/JVT-AVC_V1/CVSEFDFT3_Sony_E/CVSEFDFT3_Sony_E.jsv",
-            "result": "ba1937ed47d2787aff51b5562901d0b0",
+            "result": "f44e4059d056aa3796f384a11c894821",
             "result_frames": null
         },
         {
@@ -1016,7 +1016,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SP1_BT_A.zip",
             "source_checksum": "23c47c4535e838cb2ac4e98eb05c9238",
             "input": "resources/JVT-AVC_V1/SP1_BT_A/sp1_bt_a.h264",
-            "result": "ca0b3580f448cc1e07f81a4756273b59",
+            "result": "c086a2dd4a002734ee4d385a797a3536",
             "result_frames": null
         },
         {
@@ -1024,7 +1024,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/sp2_bt_b.zip",
             "source_checksum": "c1601a80dabffd65a1c3416635b6e862",
             "input": "resources/JVT-AVC_V1/sp2_bt_b/H26L/BitstreamExchange/sp2_bt_b.h264",
-            "result": "77fef826070d3d17174529b16765bb24",
+            "result": "6de46a828ea40399b0741efd0bdfea11",
             "result_frames": null
         },
         {

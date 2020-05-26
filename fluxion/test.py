@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
             result = self.decoder.decode(
                 self.test_vector.input, output_filepath)
             if not self.reference:
-                self.assertEqual(self.test_vector.result.upper(), result.upper(),
+                self.assertEqual(self.test_vector.result.lower(), result.lower(),
                                  f'{self.test_vector.input}')
             else:
                 for test_vector in self.test_suite.test_vectors:
