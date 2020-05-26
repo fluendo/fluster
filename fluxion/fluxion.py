@@ -73,7 +73,7 @@ class Fluxion:
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check_run:
-                    string += ' \U00002714 ' if decoder.check_run() else ' \U00002715 '
+                    string += ' ✔️' if decoder.check_run() else ' ❌'
                 print(string)
 
     def list_test_suites(self, show_test_vectors: bool = False, test_suites: list = None):
