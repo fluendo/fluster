@@ -32,9 +32,11 @@ from fluxion import utils
 class TestSuite:
     '''Test suite class'''
 
-    def __init__(self, filename: str, name: str, codec: Codec, description: str, test_vectors: list):
+    def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
+                 test_vectors: list):
         # Not included in JSON
         self.filename = filename
+        self.resources_dir = resources_dir
 
         # JSON members
         self.name = name
@@ -43,19 +45,20 @@ class TestSuite:
         self.test_vectors = test_vectors
 
     @classmethod
-    def from_json_file(cls, filename: str):
+    def from_json_file(cls, filename: str, resources_dir: str):
         '''Creates a TestSuite instance from a file'''
         with open(filename) as json_file:
             data = json.load(json_file)
             data['test_vectors'] = list(
                 map(TestVector.from_json, data["test_vectors"]))
             data['codec'] = Codec(data['codec'])
-            return cls(filename, **data)
+            return cls(filename, resources_dir, **data)
 
     def to_json_file(self, filename: str):
         '''Serialize the test suite to a file'''
         with open(filename, 'w') as json_file:
             data = self.__dict__.copy()
+            data.pop('resources_dir')
             data.pop('filename')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]

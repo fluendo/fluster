@@ -16,6 +16,7 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
+
 import os
 import unittest
 
@@ -30,6 +31,7 @@ class Test(unittest.TestCase):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
+        self.resources_dir = self.test_suite.resources_dir
         self.results_dir = results_dir
         self.reference = reference
         test_name = ''
@@ -50,7 +52,7 @@ class Test(unittest.TestCase):
             output_filepath = os.path.join(
                 output_dir, self.test_vector.name + '.yuv')
             result = self.decoder.decode(
-                self.test_vector.input, output_filepath)
+                os.path.join(self.resources_dir, self.test_vector.input), output_filepath)
             if not self.reference:
                 self.assertEqual(self.test_vector.result.lower(), result.lower(),
                                  f'{self.test_vector.input}')

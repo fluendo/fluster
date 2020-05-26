@@ -54,7 +54,7 @@ class Fluxion:
                         print(f'Test suite found: {file}')
                     try:
                         test_suite = TestSuite.from_json_file(
-                            os.path.join(root, file))
+                            os.path.join(root, file), self.resources_dir)
                         self.test_suites.append(test_suite)
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')

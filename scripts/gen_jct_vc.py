@@ -73,7 +73,7 @@ class JCTVTGenerator:
     def generate(self, download):
         '''Generates the test suite and saves it to a file'''
         output_filepath = os.path.join(self.suite_name + '.json')
-        test_suite = TestSuite(output_filepath,
+        test_suite = TestSuite(output_filepath, 'resources',
                                self.suite_name, self.codec, self.description, list())
 
         hparser = HREFParser()
