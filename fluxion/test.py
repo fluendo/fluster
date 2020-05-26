@@ -53,11 +53,11 @@ class Test(unittest.TestCase):
                 output_dir, self.test_vector.name + '.yuv')
             result = self.decoder.decode(
                 os.path.join(self.resources_dir, self.test_suite.name,
-                             self.test_vector.name, self.test_vector.input),
+                             self.test_vector.name, self.test_vector.input_file),
                 output_filepath)
             if not self.reference:
                 self.assertEqual(self.test_vector.result.lower(), result.lower(),
-                                 f'{self.test_vector.input}')
+                                 f'{self.test_vector.input_file}')
             else:
                 for test_vector in self.test_suite.test_vectors:
                     if test_vector.name == self.test_vector.name:

@@ -87,7 +87,7 @@ class TestSuite:
                 print(
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
                 utils.extract(
-                    dest_path, dest_dir, file=test_vector.input if not extract_all else None)
+                    dest_path, dest_dir, file=test_vector.input_file if not extract_all else None)
                 if not keep_file:
                     os.remove(dest_path)
 

@@ -104,10 +104,11 @@ class JCTVTGenerator:
                 test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(
                 dest_dir, os.path.basename(test_vector.source))
-            test_vector.input = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
-            test_vector.input = test_vector.input.replace(os.path.join(
+            test_vector.input_file = self._find_by_ext(
+                dest_dir, BITSTREAM_EXTS)
+            test_vector.input_file = test_vector.input_file.replace(os.path.join(
                 test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep, '')
-            if not test_vector.input:
+            if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.codec == Codec.H265:
