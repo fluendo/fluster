@@ -7,16 +7,16 @@
             "name": "one",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
             "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
-            "input": "JVT-AVC_V1/AUD_MW_E/AUD_MW_E.264",
-            "result": "ff11bd87bc97d968e9b1d2270a4802d2",
+            "input": "AUD_MW_E/AUD_MW_E.264",
+            "result": "6c81fcdb3966208b9f40b383b7a71dbd",
             "result_frames": null
         },
         {
             "name": "two",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
             "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
-            "input": "JVT-AVC_V1/AUD_MW_E/AUD_MW_E.264",
-            "result": "ff11bd87bc97d968e9b1d2270a4802d2",
+            "input": "AUD_MW_E/AUD_MW_E.264",
+            "result": "6c81fcdb3966208b9f40b383b7a71dbd",
             "result_frames": null
         }
     ]

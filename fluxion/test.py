@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
             output_filepath = os.path.join(
                 output_dir, self.test_vector.name + '.yuv')
             result = self.decoder.decode(
-                os.path.join(self.resources_dir, self.test_vector.input), output_filepath)
+                os.path.join(self.resources_dir, self.test_suite.name, self.test_vector.input), output_filepath)
             if not self.reference:
                 self.assertEqual(self.test_vector.result.lower(), result.lower(),
                                  f'{self.test_vector.input}')
