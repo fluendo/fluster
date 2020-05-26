@@ -64,7 +64,7 @@ class TestSuite:
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
             json.dump(data, json_file, indent=4)
 
-    def download(self, out_dir: str, verify: bool):
+    def download(self, out_dir: str, verify: bool, extract_all: bool = False, keep_file: bool = False):
         '''Download the test suite'''
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
@@ -86,8 +86,10 @@ class TestSuite:
             if utils.is_extractable(dest_path):
                 print(
                     "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
-                utils.extract(dest_path, test_vector.input, dest_dir)
-                os.remove(dest_path)
+                utils.extract(
+                    dest_path, dest_dir, file=test_vector.input if not extract_all else None)
+                if not keep_file:
+                    os.remove(dest_path)
 
     def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False,
             test_vectors: list = None):

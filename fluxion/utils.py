@@ -46,13 +46,16 @@ def is_extractable(filepath: str):
     return filepath.endswith(TARBALL_EXTS) or filepath.endswith('.zip')
 
 
-def extract(filepath: str, file: str, output_dir: str):
+def extract(filepath: str, output_dir: str, file: str = None):
     '''Extracts a file to a directory'''
     if filepath.endswith(TARBALL_EXTS):
         subprocess.run(['tar', '-C', output_dir, '-xf',
                         filepath, file], check=True)
     elif filepath.endswith('.zip'):
         zip_file = zipfile.ZipFile(filepath, "r")
-        zip_file.extract(file, path=output_dir)
+        if file:
+            zip_file.extract(file, path=output_dir)
+        else:
+            zip_file.extractall(path=output_dir)
     else:
         raise Exception("Unknown tarball format %s" % filepath)

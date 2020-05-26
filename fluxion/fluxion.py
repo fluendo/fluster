@@ -141,7 +141,7 @@ class Fluxion:
                 test_suite.run(decoder, failfast, quiet,
                                self.results_dir, reference, test_vectors)
 
-    def download_test_suites(self, test_suites: list):
+    def download_test_suites(self, test_suites: list, keep_file: bool):
         '''Download a group of test suites'''
         self._load_test_suites()
         if not test_suites:
@@ -150,4 +150,4 @@ class Fluxion:
             test_suites = [
                 t for t in self.test_suites if t.name in test_suites]
         for test_suite in test_suites:
-            test_suite.download(self.resources_dir, True)
+            test_suite.download(self.resources_dir, True, keep_file=keep_file)

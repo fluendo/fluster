@@ -39,12 +39,13 @@ H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = ('.bin', '.bit', '.264', '.h264',
                   '.jvc', '.jsv', '.jvt', '.avc', '.26l')
 MD5_EXTS = ('yuv.md5', '.md5', 'md5.txt')
-MD5_EXCLUDES = ('__MACOSX', '.bin.md5', 'bit.md5')
-RAW_EXTS = ('.yuv', '.qcif')
+MD5_EXCLUDES = ('.bin.md5', 'bit.md5')
+RAW_EXTS = ('nogray.yuv', '.yuv', '.qcif')
 
 
 class HREFParser(HTMLParser):
     '''Custom parser to find href links'''
+
     def __init__(self):
         self.links = []
         super().__init__()
@@ -150,15 +151,17 @@ class JCTVTGenerator:
 
     def _find_by_ext(self, dest_dir, exts, excludes=None):
         excludes = excludes or []
-        for subdir, _, files in os.walk(dest_dir):
-            for filename in files:
-                filepath = subdir + os.sep + filename
-                excluded = False
-                for excl in excludes:
-                    if excl in filepath:
-                        excluded = True
-                        break
-                if not excluded and filepath.endswith(exts):
+
+        # Respect the priority for extensions
+        for ext in exts:
+            for subdir, _, files in os.walk(dest_dir):
+                for filename in files:
+                    filepath = subdir + os.sep + filename
+                    if not filepath.endswith(ext) or '__MACOSX' in filepath:
+                        continue
+                    for excl in excludes:
+                        if excl in filepath:
+                            continue
                     return filepath
         return None
 

@@ -1016,7 +1016,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SP1_BT_A.zip",
             "source_checksum": "23c47c4535e838cb2ac4e98eb05c9238",
             "input": "sp1_bt_a.h264",
-            "result": "c086a2dd4a002734ee4d385a797a3536",
+            "result": "ca0b3580f448cc1e07f81a4756273b59",
             "result_frames": null
         },
         {
@@ -1024,7 +1024,7 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/sp2_bt_b.zip",
             "source_checksum": "c1601a80dabffd65a1c3416635b6e862",
             "input": "H26L/BitstreamExchange/sp2_bt_b.h264",
-            "result": "6de46a828ea40399b0741efd0bdfea11",
+            "result": "77fef826070d3d17174529b16765bb24",
             "result_frames": null
         },
         {

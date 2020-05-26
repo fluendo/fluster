@@ -94,6 +94,8 @@ class Main:
         subparser = subparsers.add_parser(
             'download', aliases=['d'], help='downloads test suites resources')
         subparser.add_argument(
+            '-k', '--keep', help="keep downloaded file after extracting", action='store_true', default=False)
+        subparser.add_argument(
             'testsuites', help='list of testsuites to download', nargs='*')
         subparser.set_defaults(func=self._download_cmd)
 
@@ -121,7 +123,8 @@ class Main:
                                 quiet=args.quiet)
 
     def _download_cmd(self, args, fluxion):
-        fluxion.download_test_suites(test_suites=args.testsuites)
+        fluxion.download_test_suites(
+            test_suites=args.testsuites, keep_file=args.keep)
 
     def _reference_cmd(self, args, fluxion):
         fluxion.run_test_suites(test_suites=args.testsuites,
