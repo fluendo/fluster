@@ -20,13 +20,25 @@
 import os.path
 import json
 import unittest
-
+from multiprocessing import Pool
+from dataclasses import dataclass
 
 from fluxion.test_vector import TestVector
 from fluxion.codec import Codec
 from fluxion.decoder import Decoder
 from fluxion.test import Test
 from fluxion import utils
+
+
+@dataclass
+class Download:
+    '''Context to pass to each download worker'''
+    out_dir: str
+    verify: bool
+    extract_all: bool
+    keep_file: bool
+    test_suite_name: str
+    test_vector: TestVector
 
 
 class TestSuite:
@@ -64,32 +76,43 @@ class TestSuite:
             data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
             json.dump(data, json_file, indent=4)
 
-    def download(self, out_dir: str, verify: bool, extract_all: bool = False, keep_file: bool = False):
+    def download_worker(self, download: Download):
+        '''Download and extract a test vector'''
+        test_vector = download.test_vector
+        dest_dir = os.path.join(
+            download.out_dir, download.test_suite_name, test_vector.name)
+        dest_path = os.path.join(
+            dest_dir, os.path.basename(test_vector.source))
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+        file_downloaded = os.path.exists(dest_path)
+        if file_downloaded and download.verify:
+            if test_vector.source_checksum != utils.file_checksum(dest_path):
+                file_downloaded = False
+        print(f'\tDownloading test vector {test_vector.name} from {dest_dir}')
+        utils.download(test_vector.source, dest_dir)
+        if utils.is_extractable(dest_path):
+            print(
+                f'\tExtracting test vector {test_vector.name} to {dest_dir}')
+            utils.extract(
+                dest_path, dest_dir, file=test_vector.input_file if not download.extract_all else None)
+            if not download.keep_file:
+                os.remove(dest_path)
+
+    def download(self, jobs: int, out_dir: str, verify: bool, extract_all: bool = False, keep_file: bool = False):
         '''Download the test suite'''
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
-        print("Downloading test suite {}".format(self.name))
+        print(f'Downloading test suite {self.name} using {jobs} parallel jobs')
+        download_tasks = []
         for test_vector in self.test_vectors:
-            dest_dir = os.path.join(out_dir, self.name, test_vector.name)
-            dest_path = os.path.join(
-                dest_dir, os.path.basename(test_vector.source))
-            if not os.path.exists(dest_dir):
-                os.makedirs(dest_dir)
-            file_downloaded = os.path.exists(dest_path)
-            if file_downloaded and verify:
-                if test_vector.source_checksum != utils.file_checksum(dest_path):
-                    file_downloaded = False
-            if not file_downloaded:
-                print(
-                    "\tDownloading test vector {} from {}".format(test_vector.name, test_vector.source))
-                utils.download(test_vector.source, dest_dir)
-            if utils.is_extractable(dest_path):
-                print(
-                    "\tExtracting test vector {} to {}".format(test_vector.name, dest_dir))
-                utils.extract(
-                    dest_path, dest_dir, file=test_vector.input_file if not extract_all else None)
-                if not keep_file:
-                    os.remove(dest_path)
+            download_tasks.append(
+                Download(out_dir, verify, extract_all, keep_file, self.name, test_vector))
+
+        with Pool(jobs) as pool:
+            pool.map(self.download_worker, download_tasks, chunksize=1)
+
+        print('All downloads finished')
 
     def run(self, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False,
             test_vectors: list = None):

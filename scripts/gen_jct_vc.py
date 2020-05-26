@@ -25,6 +25,7 @@ from html.parser import HTMLParser
 import os
 import sys
 import urllib.request
+import multiprocessing
 
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
@@ -73,7 +74,7 @@ class JCTVTGenerator:
         self.description = description
         self.site = site
 
-    def generate(self, download):
+    def generate(self, download, jobs):
         '''Generates the test suite and saves it to a file'''
         output_filepath = os.path.join(self.suite_name + '.json')
         test_suite = TestSuite(output_filepath, 'resources',
@@ -96,7 +97,7 @@ class JCTVTGenerator:
             test_suite.test_vectors.append(test_vector)
 
         if download:
-            test_suite.download(test_suite.resources_dir, verify=False,
+            test_suite.download(jobs=jobs, out_dir=test_suite.resources_dir, verify=False,
                                 extract_all=True, keep_file=True)
 
         for test_vector in test_suite.test_vectors:
@@ -171,10 +172,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--skip-download', help='skip extracting tarball',
                         action='store_true', default=False)
+    parser.add_argument(
+        '-j', '--jobs', help="number of parallel jobs to use. 2x logical cores by default",
+        type=int, default=2 * multiprocessing.cpu_count())
     args = parser.parse_args()
     generator = JCTVTGenerator("HEVC_v1", "JCT-VC-HEVC_V1", Codec.H265,
                                "JCT-VC HEVC version 1", H265_URL)
-    generator.generate(not args.skip_download)
+    generator.generate(not args.skip_download, args.jobs)
     generator = JCTVTGenerator("AVCv1", "JVT-AVC_V1", Codec.H264,
                                "JVT AVC version 1", H264_URL)
-    generator.generate(not args.skip_download)
+    generator.generate(not args.skip_download, args.jobs)
