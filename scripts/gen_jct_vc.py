@@ -45,7 +45,9 @@ RAW_EXTS = ('.yuv', '.qcif')
 
 class HREFParser(HTMLParser):
     '''Custom parser to find href links'''
-    links = []
+    def __init__(self):
+        self.links = []
+        super().__init__()
 
     def error(self, message):
         print(message)
@@ -93,14 +95,17 @@ class JCTVTGenerator:
             test_suite.test_vectors.append(test_vector)
 
         if download:
-            test_suite.download('resources', verify=False)
+            test_suite.download(test_suite.resources_dir, verify=False,
+                                extract_all=True, keep_file=True)
 
         for test_vector in test_suite.test_vectors:
             dest_dir = os.path.join(
-                'resources', test_suite.name, test_vector.name)
+                test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(
                 dest_dir, os.path.basename(test_vector.source))
             test_vector.input = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
+            test_vector.input = test_vector.input.replace(os.path.join(
+                test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep, '')
             if not test_vector.input:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
@@ -137,10 +142,10 @@ class JCTVTGenerator:
                 if line.startswith(('#', '\n')):
                     continue
                 if '=' in line:
-                    test_vector.result = line.split('=')[-1].strip().upper()
+                    test_vector.result = line.split('=')[-1].strip().lower()
                 else:
                     test_vector.result = line.split(
-                        ' ')[0].split('\n')[0].upper()
+                        ' ')[0].split('\n')[0].lower()
                 break
 
     def _find_by_ext(self, dest_dir, exts, excludes=None):
