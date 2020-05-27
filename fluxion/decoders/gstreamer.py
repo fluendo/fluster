@@ -17,8 +17,11 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
+
 import subprocess
 import shlex
+from functools import lru_cache
+
 from fluxion.codec import Codec
 from fluxion.decoder import Decoder, register_decoder
 from fluxion.utils import file_checksum
@@ -46,6 +49,20 @@ class GStreamer(Decoder):
         subprocess.run(shlex.split(pipeline),
                        stdout=subprocess.DEVNULL, check=True)
         return file_checksum(output_filepath)
+
+    @lru_cache
+    def check_run(self):
+        # pylint: disable=broad-except
+        elements = self.decoder_bin.split('!')
+        gst_inspect = f'gst-inspect-{self.gst_api}'
+        for element in elements:
+            element = element.strip().split()[0]
+            try:
+                subprocess.run([gst_inspect, element], stdout=subprocess.DEVNULL,
+                               stderr=subprocess.DEVNULL, check=True)
+            except Exception:
+                return False
+        return True
 
 
 class GStreamer10(GStreamer):
