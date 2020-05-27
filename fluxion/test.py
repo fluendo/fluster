@@ -40,26 +40,24 @@ class Test(unittest.TestCase):
                 test_name += char
             else:
                 test_name += '_'
-        setattr(self, test_name, self._gen_test_func())
+        setattr(self, test_name, self._test)
         super().__init__(test_name)
 
-    def _gen_test_func(self):
-        def test():
-            output_dir = os.path.join(
-                self.results_dir, self.test_suite.name, str(self.test_suite.codec))
-            if not os.path.exists(output_dir):
-                os.makedirs(output_dir)
-            output_filepath = os.path.join(
-                output_dir, self.test_vector.name + '.yuv')
-            result = self.decoder.decode(
-                os.path.join(self.resources_dir, self.test_suite.name,
-                             self.test_vector.name, self.test_vector.input_file),
-                output_filepath)
-            if not self.reference:
-                self.assertEqual(self.test_vector.result.lower(), result.lower(),
-                                 f'{self.test_vector.input_file}')
-            else:
-                for test_vector in self.test_suite.test_vectors:
-                    if test_vector.name == self.test_vector.name:
-                        test_vector.result = result
-        return test
+    def _test(self):
+        output_dir = os.path.join(
+            self.results_dir, self.test_suite.name, str(self.test_suite.codec))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        output_filepath = os.path.join(
+            output_dir, self.test_vector.name + '.yuv')
+        result = self.decoder.decode(
+            os.path.join(self.resources_dir, self.test_suite.name,
+                         self.test_vector.name, self.test_vector.input_file),
+            output_filepath)
+        if not self.reference:
+            self.assertEqual(self.test_vector.result.lower(), result.lower(),
+                             f'{self.test_vector.input_file}')
+        else:
+            for test_vector in self.test_suite.test_vectors:
+                if test_vector.name == self.test_vector.name:
+                    test_vector.result = result

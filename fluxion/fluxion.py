@@ -91,7 +91,7 @@ class Fluxion:
                 for test_vector in test_suite.test_vectors:
                     print(test_vector)
 
-    def run_test_suites(self, test_suites: list = None, decoders: list = None, test_vectors: list = None,
+    def run_test_suites(self, jobs: int, test_suites: list = None, decoders: list = None, test_vectors: list = None,
                         failfast: bool = False, quiet: bool = False, reference: bool = False):
         '''Run a group of test suites'''
         # pylint: disable=too-many-branches
@@ -138,7 +138,7 @@ class Fluxion:
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                test_suite.run(decoder, failfast, quiet,
+                test_suite.run(jobs, decoder, failfast, quiet,
                                self.results_dir, reference, test_vectors)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):

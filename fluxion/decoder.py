@@ -28,6 +28,7 @@ class Decoder(ABC):
     '''Base class for decoders'''
     name = None
     codec = None
+    hw_acceleration = False
     description = None
     binary = None
 
