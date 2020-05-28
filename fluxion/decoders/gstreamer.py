@@ -47,7 +47,7 @@ class GStreamer(Decoder):
         pipeline = PIPELINE_TPL.format(self.cmd, input_filepath,
                                        self.decoder_bin, self.caps, output_filepath)
         subprocess.run(shlex.split(pipeline),
-                       stdout=subprocess.DEVNULL, check=True)
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True, timeout=5)
         return file_checksum(output_filepath)
 
     @lru_cache
@@ -132,3 +132,13 @@ class FluendoH264Gst010Decoder(GStreamer010):
     decoder_bin = ' fluh264dec '
     provider = 'Fluendo'
     api = 'SW'
+
+
+@register_decoder
+class FluendoH265VAGst10Decoder(GStreamer10):
+    '''Fluendo H.265 hardware decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! fluvadec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
