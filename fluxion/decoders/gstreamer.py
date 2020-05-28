@@ -53,15 +53,12 @@ class GStreamer(Decoder):
     @lru_cache
     def check_run(self):
         # pylint: disable=broad-except
-        elements = self.decoder_bin.split('!')
-        gst_inspect = f'gst-inspect-{self.gst_api}'
-        for element in elements:
-            element = element.strip().split()[0]
-            try:
-                subprocess.run([gst_inspect, element], stdout=subprocess.DEVNULL,
-                               stderr=subprocess.DEVNULL, check=True)
-            except Exception:
-                return False
+        try:
+            pipeline = f'gst-launch-{self.gst_api} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
+            subprocess.run(shlex.split(
+                pipeline), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        except Exception:
+            return False
         return True
 
 
