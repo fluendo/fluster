@@ -20,6 +20,7 @@
 import os
 import os.path
 from functools import lru_cache
+import sys
 
 # Import decoders that will auto-register
 # pylint: disable=wildcard-import, unused-wildcard-import
@@ -134,12 +135,19 @@ class Fluxion:
         if reference:
             print('Reference mode')
 
+        error = False
         for test_suite in run_test_suites:
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                test_suite.run(jobs, decoder, failfast, quiet,
-                               self.results_dir, reference, test_vectors)
+                success = test_suite.run(jobs, decoder, failfast, quiet,
+                                         self.results_dir, reference, test_vectors)
+                if not success:
+                    if failfast:
+                        sys.exit(1)
+                    error = True
+        if error:
+            sys.exit(1)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):
         '''Download a group of test suites'''

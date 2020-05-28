@@ -24,7 +24,6 @@ from multiprocessing import Pool
 from dataclasses import dataclass
 from unittest.result import TestResult
 from time import perf_counter
-import sys
 
 from fluxion.test_vector import TestVector
 from fluxion.codec import Codec
@@ -185,7 +184,7 @@ class TestSuite:
         print('*' * 100 + '\n')
         if not decoder.check_run():
             print(f'Skipping decoder {decoder.name} because it cannot be run')
-            return
+            return True
         tests = self._gen_tests(
             decoder, results_dir, reference, test_vectors=test_vectors)
 
@@ -198,7 +197,7 @@ class TestSuite:
         if reference:
             self.to_json_file(self.filename)
 
-        sys.exit(0 if test_success else 1)
+        return test_success
 
     def _gen_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list = None):
         tests = []
