@@ -55,10 +55,11 @@ class Decoder(ABC):
 DECODERS = []
 
 
-def register_decoder(clazz):
+def register_decoder(cls):
     '''Register a new decoder implementation'''
     # pylint: disable=global-statement
     global DECODERS
     # pylint: enable=global-statement
-    DECODERS.append(clazz())
+    DECODERS.append(cls())
     DECODERS.sort(key=lambda dec: dec.name)
+    return cls
