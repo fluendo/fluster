@@ -20,6 +20,7 @@
 import os
 import os.path
 from functools import lru_cache
+import sys
 
 # Import decoders that will auto-register
 # pylint: disable=wildcard-import, unused-wildcard-import
@@ -45,7 +46,7 @@ class Fluxion:
         self.test_suites = []
         self.decoders = DECODERS
 
-    @lru_cache(maxsize=1)
+    @lru_cache(maxsize=None)
     def _load_test_suites(self):
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
@@ -91,10 +92,11 @@ class Fluxion:
                 for test_vector in test_suite.test_vectors:
                     print(test_vector)
 
-    def run_test_suites(self, test_suites: list = None, decoders: list = None, test_vectors: list = None,
-                        failfast: bool = False, quiet: bool = False, reference: bool = False):
+    def run_test_suites(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
+                        test_vectors: list = None, failfast: bool = False, quiet: bool = False,
+                        reference: bool = False):
         '''Run a group of test suites'''
-        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-branches,too-many-locals
         self._load_test_suites()
         run_test_suites = []
 
@@ -134,12 +136,19 @@ class Fluxion:
         if reference:
             print('Reference mode')
 
+        error = False
         for test_suite in run_test_suites:
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                test_suite.run(decoder, failfast, quiet,
-                               self.results_dir, reference, test_vectors)
+                success = test_suite.run(jobs, decoder, timeout, failfast, quiet,
+                                         self.results_dir, reference, test_vectors)
+                if not success:
+                    if failfast:
+                        sys.exit(1)
+                    error = True
+        if error:
+            sys.exit(1)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):
         '''Download a group of test suites'''

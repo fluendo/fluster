@@ -28,15 +28,16 @@ class Decoder(ABC):
     '''Base class for decoders'''
     name = None
     codec = None
+    hw_acceleration = False
     description = None
     binary = None
 
     @abstractmethod
-    def decode(self, input_filepath: str, output_filepath: str):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 
-    @lru_cache
+    @lru_cache(maxsize=None)
     def check_run(self):
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:

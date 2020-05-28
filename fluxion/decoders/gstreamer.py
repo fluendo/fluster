@@ -43,14 +43,14 @@ class GStreamer(Decoder):
         self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
 
-    def decode(self, input_filepath: str, output_filepath: str):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
         pipeline = PIPELINE_TPL.format(self.cmd, input_filepath,
                                        self.decoder_bin, self.caps, output_filepath)
         subprocess.run(shlex.split(pipeline),
-                       stdout=subprocess.DEVNULL, check=True)
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True, timeout=timeout)
         return file_checksum(output_filepath)
 
-    @lru_cache
+    @lru_cache(maxsize=None)
     def check_run(self):
         # pylint: disable=broad-except
         try:
@@ -85,15 +85,7 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
     decoder_bin = ' h265parse ! vaapih265dec '
     caps = 'video/x-raw,format=I420'
     api = 'VA-API'
-
-
-@register_decoder
-class GStreamerVaapiH265Gst010Decoder(GStreamer010):
-    '''GStreamer H.265 VAAPI decoder implementation for GStreamer 0.10'''
-    codec = Codec.H265
-    decoder_bin = ' h265parse ! vaapih265dec '
-    caps = 'video/x-raw,format=I420'
-    api = 'VA-API'
+    hw_acceleration = True
 
 
 @register_decoder
@@ -130,3 +122,13 @@ class FluendoH264Gst010Decoder(GStreamer010):
     decoder_bin = ' fluh264dec '
     provider = 'Fluendo'
     api = 'SW'
+
+
+@register_decoder
+class FluendoH265VAGst10Decoder(GStreamer10):
+    '''Fluendo H.265 hardware decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! fluvadec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
