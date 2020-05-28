@@ -1,4 +1,4 @@
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
@@ -20,8 +20,8 @@
 import os
 import unittest
 
-from fluxion.decoder import Decoder
-from fluxion.test_vector import TestVector
+from fluster.decoder import Decoder
+from fluster.test_vector import TestVector
 
 
 class Test(unittest.TestCase):

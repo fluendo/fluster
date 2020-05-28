@@ -1,4 +1,4 @@
-PY_FILES=fluxion scripts fluxion.py
+PY_FILES=fluster scripts fluster.py
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 
@@ -14,10 +14,10 @@ check: ## check that very basic tests run
 	@echo "Running pylint..."
 	PYTHONPATH=. pylint -j0 $(PY_FILES) --fail-under=10
 	@echo "Running dummy test..."
-	./fluxion.py list
-	./fluxion.py list -ts dummy -tv
-	./fluxion.py download dummy
-	./fluxion.py run -ts dummy -tv one
+	./fluster.py list
+	./fluster.py list -ts dummy -tv
+	./fluster.py download dummy
+	./fluster.py run -ts dummy -tv one
 
 format: ## format Python code using autopep8
 	autopep8 -i -j0 -r $(PY_FILES)

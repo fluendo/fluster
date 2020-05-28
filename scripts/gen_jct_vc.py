@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
@@ -29,9 +29,9 @@ import multiprocessing
 
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from fluxion import utils
-from fluxion.codec import Codec
-from fluxion.test_suite import TestSuite, TestVector
+from fluster import utils
+from fluster.codec import Codec
+from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://www.itu.int/"

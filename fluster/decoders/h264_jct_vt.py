@@ -1,6 +1,7 @@
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
+#  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -17,11 +18,23 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from enum import Enum
+import subprocess
+
+from fluster.codec import Codec
+from fluster.decoder import Decoder, register_decoder
+from fluster.utils import file_checksum
 
 
-class Codec(Enum):
-    '''Codec type'''
-    Dummy = 'Dummy'
-    H264 = 'H.264'
-    H265 = 'H.265'
+@register_decoder
+class H264JCTVTDecoder(Decoder):
+    '''JCT-VT H.264/AVC  reference decoder implementation'''
+    name = "JCT-VT-H264"
+    description = "JCT-VT H.264/AVC reference decoder"
+    codec = Codec.H264
+    binary = 'ldecod'
+
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
+        '''Decodes input_filepath in output_filepath'''
+        subprocess.run([self.binary, '-s', '-i', input_filepath,
+                        '-o', output_filepath], stdout=subprocess.DEVNULL, check=True)
+        return file_checksum(output_filepath)
