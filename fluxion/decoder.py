@@ -33,7 +33,7 @@ class Decoder(ABC):
     binary = None
 
     @abstractmethod
-    def decode(self, input_filepath: str, output_filepath: str):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 

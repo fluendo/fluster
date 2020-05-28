@@ -33,7 +33,7 @@ class H264JCTVTDecoder(Decoder):
     codec = Codec.H264
     binary = 'ldecod'
 
-    def decode(self, input_filepath: str, output_filepath: str):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
         '''Decodes input_filepath in output_filepath'''
         subprocess.run([self.binary, '-s', '-i', input_filepath,
                         '-o', output_filepath], stdout=subprocess.DEVNULL, check=True)

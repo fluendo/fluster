@@ -92,10 +92,11 @@ class Fluxion:
                 for test_vector in test_suite.test_vectors:
                     print(test_vector)
 
-    def run_test_suites(self, jobs: int, test_suites: list = None, decoders: list = None, test_vectors: list = None,
-                        failfast: bool = False, quiet: bool = False, reference: bool = False):
+    def run_test_suites(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
+                        test_vectors: list = None, failfast: bool = False, quiet: bool = False,
+                        reference: bool = False):
         '''Run a group of test suites'''
-        # pylint: disable=too-many-branches
+        # pylint: disable=too-many-branches,too-many-locals
         self._load_test_suites()
         run_test_suites = []
 
@@ -140,7 +141,7 @@ class Fluxion:
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                success = test_suite.run(jobs, decoder, failfast, quiet,
+                success = test_suite.run(jobs, decoder, timeout, failfast, quiet,
                                          self.results_dir, reference, test_vectors)
                 if not success:
                     if failfast:

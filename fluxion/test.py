@@ -27,13 +27,15 @@ from fluxion.test_vector import TestVector
 class Test(unittest.TestCase):
     '''Test suite for decoder tests'''
 
-    def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str, reference: bool):
+    def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str,
+                 reference: bool, timeout: int):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
         self.resources_dir = self.test_suite.resources_dir
         self.results_dir = results_dir
         self.reference = reference
+        self.timeout = timeout
         test_name = ''
         for char in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
             if char.isalnum():
@@ -53,7 +55,7 @@ class Test(unittest.TestCase):
         result = self.decoder.decode(
             os.path.join(self.resources_dir, self.test_suite.name,
                          self.test_vector.name, self.test_vector.input_file),
-            output_filepath)
+            output_filepath, self.timeout)
         if not self.reference:
             self.assertEqual(self.test_vector.result.lower(), result.lower(),
                              f'{self.test_vector.input_file}')

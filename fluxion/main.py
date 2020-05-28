@@ -83,6 +83,8 @@ class Main:
             '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
             '0 means all logical cores',
             type=int, default=multiprocessing.cpu_count())
+        subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 5 secs',
+                               type=int, default=5)
         subparser.add_argument(
             '-ff', '--failfast', help='stop after first fail', action='store_true')
         subparser.add_argument(
@@ -94,6 +96,23 @@ class Main:
         subparser.add_argument(
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
         subparser.set_defaults(func=self._run_cmd)
+
+    def _add_reference_cmd(self, subparsers):
+        subparser = subparsers.add_parser(
+            'reference', aliases=['d'], help='use a specific decoder as the reference for the test suites given')
+        subparser.add_argument(
+            '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
+            '0 means all logical cores',
+            type=int, default=multiprocessing.cpu_count())
+        subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 5 secs',
+                               type=int, default=5)
+        subparser.add_argument(
+            'decoder', help='decoder to run', nargs=1)
+        subparser.add_argument(
+            'testsuites', help='list of testsuites to run the decoder with', nargs='+')
+        subparser.add_argument(
+            '-q', '--quiet', help="don't show every test run", action='store_true')
+        subparser.set_defaults(func=self._reference_cmd)
 
     def _add_download_cmd(self, subparsers):
         subparser = subparsers.add_parser(
@@ -108,21 +127,6 @@ class Main:
             'testsuites', help='list of testsuites to download', nargs='*')
         subparser.set_defaults(func=self._download_cmd)
 
-    def _add_reference_cmd(self, subparsers):
-        subparser = subparsers.add_parser(
-            'reference', aliases=['d'], help='use a specific decoder as the reference for the test suites given')
-        subparser.add_argument(
-            '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
-            '0 means all logical cores',
-            type=int, default=multiprocessing.cpu_count())
-        subparser.add_argument(
-            'decoder', help='decoder to run', nargs=1)
-        subparser.add_argument(
-            'testsuites', help='list of testsuites to run the decoder with', nargs='+')
-        subparser.add_argument(
-            '-q', '--quiet', help="don't show every test run", action='store_true')
-        subparser.set_defaults(func=self._reference_cmd)
-
     def _list_cmd(self, args, fluxion):
         fluxion.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites)
@@ -132,23 +136,25 @@ class Main:
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         if args.jobs > 1 and args.failfast:
             print(f'Error: failfast is not compatible with running {args.jobs} parallel jobs.'
-                  ' Please use only one job if you want to use failfast')
+                  ' Please use -j1 if you want to use failfast')
             return
         fluxion.run_test_suites(jobs=args.jobs,
                                 test_suites=args.testsuites,
+                                timeout=args.timeout,
                                 decoders=args.decoders,
                                 test_vectors=args.testvectors,
                                 failfast=args.failfast,
                                 quiet=args.quiet)
 
-    def _download_cmd(self, args, fluxion):
-        args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
-        fluxion.download_test_suites(
-            test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep)
-
     def _reference_cmd(self, args, fluxion):
         fluxion.run_test_suites(jobs=args.jobs,
+                                timeout=args.timeout,
                                 test_suites=args.testsuites,
                                 decoders=args.decoder,
                                 quiet=args.quiet,
                                 reference=True)
+
+    def _download_cmd(self, args, fluxion):
+        args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
+        fluxion.download_test_suites(
+            test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep)

@@ -158,8 +158,8 @@ class TestSuite:
                 f'Ran {success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
             return success == len(test_results)
 
-    def run(self, jobs: int, decoder: Decoder, failfast: bool, quiet: bool, results_dir: str, reference: bool = False,
-            test_vectors: list = None):
+    def run(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
+            reference: bool = False, test_vectors: list = None):
         '''Run the test suite'''
         # pylint: disable=too-many-locals
 
@@ -181,7 +181,7 @@ class TestSuite:
             print(f'Skipping decoder {decoder.name} because it cannot be run')
             return True
         tests = self._gen_tests(
-            decoder, results_dir, reference, test_vectors=test_vectors)
+            decoder, results_dir, reference, test_vectors, timeout)
 
         test_success = False
         if jobs == 1:
@@ -194,14 +194,14 @@ class TestSuite:
 
         return test_success
 
-    def _gen_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list = None):
+    def _gen_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list, timeout: int):
         tests = []
         for test_vector in self.test_vectors:
             if test_vectors:
                 if test_vector.name.lower() not in test_vectors:
                     continue
             tests.append(
-                Test(decoder, self, test_vector, results_dir, reference))
+                Test(decoder, self, test_vector, results_dir, reference, timeout))
         return tests
 
     def __str__(self):
