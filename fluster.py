@@ -1,7 +1,8 @@
-# fluxion - testing framework for codecs
+#!/usr/bin/env python3
+
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
-#  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -18,23 +19,14 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import subprocess
+from fluster.main import Main
 
-from fluxion.codec import Codec
-from fluxion.decoder import Decoder, register_decoder
-from fluxion.utils import file_checksum
+TEST_SUITES_DIR = 'test_suites'
+DECODERS_DIR = 'decoders'
+RESOURCES_DIR = 'resources'
+RESULTS_DIR = 'resources'
 
 
-@register_decoder
-class H264JCTVTDecoder(Decoder):
-    '''JCT-VT H.264/AVC  reference decoder implementation'''
-    name = "JCT-VT-H264"
-    description = "JCT-VT H.264/AVC reference decoder"
-    codec = Codec.H264
-    binary = 'ldecod'
-
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
-        '''Decodes input_filepath in output_filepath'''
-        subprocess.run([self.binary, '-s', '-i', input_filepath,
-                        '-o', output_filepath], stdout=subprocess.DEVNULL, check=True)
-        return file_checksum(output_filepath)
+if __name__ == "__main__":
+    main = Main(TEST_SUITES_DIR, DECODERS_DIR, RESOURCES_DIR, RESULTS_DIR)
+    main.run()

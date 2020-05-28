@@ -1,4 +1,4 @@
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
@@ -24,17 +24,17 @@ import sys
 
 # Import decoders that will auto-register
 # pylint: disable=wildcard-import, unused-wildcard-import
-from fluxion.decoders import *
+from fluster.decoders import *
 # pylint: enable=wildcard-import, unused-wildcard-import
 
-from fluxion.test_suite import TestSuite
-from fluxion.decoder import DECODERS
+from fluster.test_suite import TestSuite
+from fluster.decoder import DECODERS
 
 # pylint: disable=broad-except
 
 
-class Fluxion:
-    '''Main class for Fluxion'''
+class Fluster:
+    '''Main class for fluster'''
 
     def __init__(self, test_suites_dir: str, decoders_dir: str, resources_dir: str,
                  results_dir: str, verbose: bool = False):

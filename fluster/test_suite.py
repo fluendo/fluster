@@ -1,4 +1,4 @@
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
@@ -24,11 +24,11 @@ from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
 
-from fluxion.test_vector import TestVector
-from fluxion.codec import Codec
-from fluxion.decoder import Decoder
-from fluxion.test import Test
-from fluxion import utils
+from fluster.test_vector import TestVector
+from fluster.codec import Codec
+from fluster.decoder import Decoder
+from fluster.test import Test
+from fluster import utils
 
 
 class DownloadWork:

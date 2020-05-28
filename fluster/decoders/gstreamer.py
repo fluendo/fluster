@@ -1,4 +1,4 @@
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
@@ -22,9 +22,9 @@ import subprocess
 import shlex
 from functools import lru_cache
 
-from fluxion.codec import Codec
-from fluxion.decoder import Decoder, register_decoder
-from fluxion.utils import file_checksum
+from fluster.codec import Codec
+from fluster.decoder import Decoder, register_decoder
+from fluster.utils import file_checksum
 
 PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! filesink location={}'
 

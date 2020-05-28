@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
@@ -19,14 +17,9 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from fluxion.main import Main
+import glob
+import os.path
 
-TEST_SUITES_DIR = 'test_suites'
-DECODERS_DIR = 'decoders'
-RESOURCES_DIR = 'resources'
-RESULTS_DIR = 'resources'
-
-
-if __name__ == "__main__":
-    main = Main(TEST_SUITES_DIR, DECODERS_DIR, RESOURCES_DIR, RESULTS_DIR)
-    main.run()
+modules = glob.glob(os.path.join(os.path.dirname(__file__), "*.py"))
+__all__ = [os.path.basename(os.path.splitext(f)[0])
+           for f in modules if os.path.isfile(f) and not f.endswith('__init__.py')]

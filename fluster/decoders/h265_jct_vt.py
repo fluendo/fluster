@@ -1,4 +1,4 @@
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
@@ -18,9 +18,9 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 import subprocess
-from fluxion.codec import Codec
-from fluxion.decoder import Decoder, register_decoder
-from fluxion.utils import file_checksum
+from fluster.codec import Codec
+from fluster.decoder import Decoder, register_decoder
+from fluster.utils import file_checksum
 
 
 @register_decoder

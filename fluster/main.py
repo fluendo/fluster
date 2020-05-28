@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# fluxion - testing framework for codecs
+# fluster - testing framework for codecs
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
@@ -23,11 +23,11 @@ import argparse
 import os
 import multiprocessing
 
-from fluxion.fluxion import Fluxion
+from fluster.fluster import Fluster
 
 
 class Main:
-    '''Main class for Fluxion'''
+    '''Main class for Fluster'''
 
     def __init__(self, test_suites_dir, decoders_dir, resources_dir, results_dir):
         self.test_suites_dir = test_suites_dir
@@ -41,15 +41,15 @@ class Main:
         os.environ['PATH'] = decoders_dir + ':' + os.environ['PATH']
 
     def run(self):
-        '''Runs Fluxion'''
+        '''Runs Fluster'''
         args = self.parser.parse_args()
         if hasattr(args, 'func'):
-            fluxion = Fluxion(self.test_suites_dir,
+            fluster = Fluster(self.test_suites_dir,
                               self.decoders_dir,
                               self.resources_dir,
                               self.results_dir,
                               verbose=args.verbose)
-            args.func(args, fluxion)
+            args.func(args, fluster)
         else:
             self.parser.print_help()
 
@@ -127,18 +127,18 @@ class Main:
             'testsuites', help='list of testsuites to download', nargs='*')
         subparser.set_defaults(func=self._download_cmd)
 
-    def _list_cmd(self, args, fluxion):
-        fluxion.list_test_suites(
+    def _list_cmd(self, args, fluster):
+        fluster.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites)
-        fluxion.list_decoders(check_run=args.check)
+        fluster.list_decoders(check_run=args.check)
 
-    def _run_cmd(self, args, fluxion):
+    def _run_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         if args.jobs > 1 and args.failfast:
             print(f'Error: failfast is not compatible with running {args.jobs} parallel jobs.'
                   ' Please use -j1 if you want to use failfast')
             return
-        fluxion.run_test_suites(jobs=args.jobs,
+        fluster.run_test_suites(jobs=args.jobs,
                                 test_suites=args.testsuites,
                                 timeout=args.timeout,
                                 decoders=args.decoders,
@@ -146,15 +146,15 @@ class Main:
                                 failfast=args.failfast,
                                 quiet=args.quiet)
 
-    def _reference_cmd(self, args, fluxion):
-        fluxion.run_test_suites(jobs=args.jobs,
+    def _reference_cmd(self, args, fluster):
+        fluster.run_test_suites(jobs=args.jobs,
                                 timeout=args.timeout,
                                 test_suites=args.testsuites,
                                 decoders=args.decoder,
                                 quiet=args.quiet,
                                 reference=True)
 
-    def _download_cmd(self, args, fluxion):
+    def _download_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
-        fluxion.download_test_suites(
+        fluster.download_test_suites(
             test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep)
