@@ -37,7 +37,7 @@ class Decoder(ABC):
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 
-    @lru_cache
+    @lru_cache(maxsize=None)
     def check_run(self):
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:

@@ -21,7 +21,6 @@ import os.path
 import json
 import unittest
 from multiprocessing import Pool
-from dataclasses import dataclass
 from unittest.result import TestResult
 from time import perf_counter
 
@@ -32,21 +31,18 @@ from fluxion.test import Test
 from fluxion import utils
 
 
-@dataclass
 class DownloadWork:
     '''Context to pass to each download worker'''
-    out_dir: str
-    verify: bool
-    extract_all: bool
-    keep_file: bool
-    test_suite_name: str
-    test_vector: TestVector
+    # pylint: disable=too-few-public-methods
 
-
-@dataclass
-class RunWork:
-    '''Context to pass to each run worker'''
-    test: Test
+    def __init__(self, out_dir: str, verify: bool, extract_all: bool, keep_file: bool,
+                 test_suite_name: str, test_vector: TestVector):
+        self.out_dir = out_dir
+        self.verify = verify
+        self.extract_all = extract_all
+        self.keep_file = keep_file
+        self.test_suite_name = test_suite_name
+        self.test_vector = test_vector
 
 
 class TestSuite:
@@ -122,15 +118,15 @@ class TestSuite:
 
         print('All downloads finished')
 
-    def _run_worker(self, context: RunWork):
+    def _run_worker(self, test: Test):
         '''Run one unit test returning the test_vector and the result'''
         test_result = TestResult()
-        context.test(test_result)
+        test(test_result)
         line = '.'
         if not test_result.wasSuccessful():
             line = 'x'
         print(line, end='', flush=True)
-        return (context.test.test_vector, test_result.failures)
+        return (test.test_vector, test_result.failures)
 
     def _run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
         suite = unittest.TestSuite()
@@ -141,10 +137,9 @@ class TestSuite:
         return res.wasSuccessful()
 
     def _run_test_suite_in_parallel(self, jobs: int, tests: list):
-        run_tasks = [RunWork(test) for test in tests]
         with Pool(jobs) as pool:
             start = perf_counter()
-            test_results = pool.map(self._run_worker, run_tasks)
+            test_results = pool.map(self._run_worker, tests)
             print('\n')
             end = perf_counter()
             success = 0

@@ -50,7 +50,7 @@ class GStreamer(Decoder):
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True, timeout=5)
         return file_checksum(output_filepath)
 
-    @lru_cache
+    @lru_cache(maxsize=None)
     def check_run(self):
         # pylint: disable=broad-except
         try:

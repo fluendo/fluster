@@ -46,7 +46,7 @@ class Fluxion:
         self.test_suites = []
         self.decoders = DECODERS
 
-    @lru_cache(maxsize=1)
+    @lru_cache(maxsize=None)
     def _load_test_suites(self):
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
