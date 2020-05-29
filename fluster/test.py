@@ -26,9 +26,10 @@ from fluster.test_vector import TestVector
 
 class Test(unittest.TestCase):
     '''Test suite for decoder tests'''
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str,
-                 reference: bool, timeout: int):
+                 reference: bool, timeout: int, keep_files: bool):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
@@ -36,6 +37,7 @@ class Test(unittest.TestCase):
         self.results_dir = results_dir
         self.reference = reference
         self.timeout = timeout
+        self.keep_files = keep_files
         test_name = ''
         for char in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
             if char.isalnum():
@@ -46,16 +48,16 @@ class Test(unittest.TestCase):
         super().__init__(test_name)
 
     def _test(self):
-        output_dir = os.path.join(
-            self.results_dir, self.test_suite.name, str(self.test_suite.codec))
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
         output_filepath = os.path.join(
-            output_dir, self.test_vector.name + '.yuv')
+            self.results_dir, self.test_vector.name + '.yuv')
         result = self.decoder.decode(
             os.path.join(self.resources_dir, self.test_suite.name,
                          self.test_vector.name, self.test_vector.input_file),
             output_filepath, self.timeout)
+        if not self.keep_files and os.path.exists(output_filepath) and \
+                os.path.isfile(output_filepath):
+            os.remove(output_filepath)
+
         if not self.reference:
             self.assertEqual(self.test_vector.result.lower(), result.lower(),
                              f'{self.test_vector.input_file}')

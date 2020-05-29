@@ -95,6 +95,10 @@ class Main:
             '-tv', '--testvectors', help='run only the specific test vectors', nargs='+')
         subparser.add_argument(
             '-d', '--decoders', help='run only the specific decoders', nargs='+')
+        subparser.add_argument(
+            '-s', '--summary', help='generate a summary in Markdown format for each test suite', action='store_true')
+        subparser.add_argument(
+            '-k', '--keep', help="keep output files generated during the test", action='store_true')
         subparser.set_defaults(func=self._run_cmd)
 
     def _add_reference_cmd(self, subparsers):
@@ -122,7 +126,7 @@ class Main:
             '0 means all logical cores',
             type=int, default=2 * multiprocessing.cpu_count())
         subparser.add_argument(
-            '-k', '--keep', help="keep downloaded file after extracting", action='store_true', default=False)
+            '-k', '--keep', help="keep downloaded file after extracting", action='store_true')
         subparser.add_argument(
             'testsuites', help='list of testsuites to download', nargs='*')
         subparser.set_defaults(func=self._download_cmd)
@@ -144,7 +148,9 @@ class Main:
                                 decoders=args.decoders,
                                 test_vectors=args.testvectors,
                                 failfast=args.failfast,
-                                quiet=args.quiet)
+                                quiet=args.quiet,
+                                summary=args.summary,
+                                keep_files=args.keep)
 
     def _reference_cmd(self, args, fluster):
         fluster.run_test_suites(jobs=args.jobs,

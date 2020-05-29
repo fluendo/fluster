@@ -24,6 +24,7 @@ import copy
 from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
+from shutil import rmtree
 
 from fluster.test_vector import TestVector
 from fluster.codec import Codec
@@ -176,7 +177,7 @@ class TestSuite:
                 f'Ran {success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
 
     def run(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
-            reference: bool = False, test_vectors: list = None):
+            reference: bool = False, test_vectors: list = None, keep_files: bool = False):
         '''
         Run the test suite.
         Returns a new copy of the test suite with the result of the test
@@ -199,11 +200,15 @@ class TestSuite:
         print('*' * 100 + '\n')
         if not decoder.check_run():
             print(f'Skipping decoder {decoder.name} because it cannot be run')
-            return True
+            return None
+
+        results_dir = os.path.join(results_dir, self.name, 'test_results')
+        if not os.path.exists(results_dir):
+            os.makedirs(results_dir)
 
         test_suite = self.clone()
         tests = test_suite.generate_tests(
-            decoder, results_dir, reference, test_vectors, timeout)
+            decoder, results_dir, reference, test_vectors, timeout, keep_files)
 
         if jobs == 1:
             test_suite.run_test_suite_sequentially(
@@ -214,9 +219,13 @@ class TestSuite:
         if reference:
             test_suite.to_json_file(test_suite.filename)
 
+        if not keep_files and os.path.isdir(results_dir):
+            rmtree(results_dir)
+
         return test_suite
 
-    def generate_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list, timeout: int):
+    def generate_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list,
+                       timeout: int, keep_files: bool):
         '''Generate the tests for a decoder'''
         tests = []
         for test_vector in self.test_vectors:
@@ -224,7 +233,7 @@ class TestSuite:
                 if test_vector.name.lower() not in test_vectors:
                     continue
             tests.append(
-                Test(decoder, self, test_vector, results_dir, reference, timeout))
+                Test(decoder, self, test_vector, results_dir, reference, timeout, keep_files))
         return tests
 
     def __str__(self):
