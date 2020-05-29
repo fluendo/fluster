@@ -18,6 +18,7 @@ check: ## check that very basic tests run
 	./fluster.py list -ts dummy -tv
 	./fluster.py download dummy
 	./fluster.py run -ts dummy -tv one
+	./fluster.py run -ts dummy -tv one -j1
 
 format: ## format Python code using autopep8
 	autopep8 -i -j0 -r $(PY_FILES)

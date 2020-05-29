@@ -94,7 +94,7 @@ class Fluster:
 
     def run_test_suites(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
                         test_vectors: list = None, failfast: bool = False, quiet: bool = False,
-                        reference: bool = False):
+                        reference: bool = False, summary: bool = False, keep_files: bool = False):
         '''Run a group of test suites'''
         # pylint: disable=too-many-branches,too-many-locals
         self._load_test_suites()
@@ -138,17 +138,48 @@ class Fluster:
 
         error = False
         for test_suite in run_test_suites:
+            results = []
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                success = test_suite.run(jobs, decoder, timeout, failfast, quiet,
-                                         self.results_dir, reference, test_vectors)
-                if not success:
-                    if failfast:
-                        sys.exit(1)
-                    error = True
+                test_suite_res = test_suite.run(jobs, decoder, timeout, failfast, quiet,
+                                                self.results_dir, reference, test_vectors, keep_files)
+
+                if test_suite_res:
+                    results.append((decoder, test_suite_res))
+                    success = True
+                    for test_vector in test_suite_res.test_vectors:
+                        if test_vector.failure:
+                            success = False
+                            break
+
+                    if not success:
+                        if failfast:
+                            sys.exit(1)
+                        error = True
+
+            if summary and results:
+                self._generate_summary(results)
         if error:
             sys.exit(1)
+
+    def _generate_summary(self, results: tuple):
+        test_suite_name = results[0][1].name
+        decoder_names = [decoder.name for decoder, _ in results]
+        print(
+            f'Generating summary for test suite {test_suite_name} and decoders {", ".join(decoder_names)}:\n')
+        output = '|Test|'
+        for decoder, _ in results:
+            output += f'{decoder.name}|'
+        output += f'\n|-|{"-|" * len(results)}'
+        for test_vector in results[0][1].test_vectors:
+            output += f'\n|{test_vector.name}|'
+            for result in results:
+                for tvector in result[1].test_vectors:
+                    if tvector.name == test_vector.name:
+                        output += '✔️|' if not tvector.failure else '❌|'
+                        break
+        print(output)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):
         '''Download a group of test suites'''

@@ -29,11 +29,18 @@ class TestVector:
         self.input_file = input_file
         self.result = result
         self.result_frames = result_frames
+        self.failure = None
 
     @classmethod
     def from_json(cls, data: dict):
-        '''Desrialize an instance of TestVector from a json file'''
+        '''Deserialize an instance of TestVector from a json file'''
         return cls(**data)
+
+    def data_to_serialize(self):
+        '''Return the data to be serialized'''
+        data = self.__dict__.copy()
+        data.pop('failure')
+        return data
 
     def __str__(self):
         ret = f'        {self.name}\n' \
