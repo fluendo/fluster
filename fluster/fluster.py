@@ -149,7 +149,7 @@ class Fluster:
                     results.append((decoder, test_suite_res))
                     success = True
                     for test_vector in test_suite_res.test_vectors:
-                        if test_vector.failure:
+                        if test_vector.errors:
                             success = False
                             break
 
@@ -177,7 +177,7 @@ class Fluster:
             for result in results:
                 for tvector in result[1].test_vectors:
                     if tvector.name == test_vector.name:
-                        output += '✔️|' if not tvector.failure else '❌|'
+                        output += '✔️|' if not tvector.errors else '❌|'
                         break
         print(output)
 

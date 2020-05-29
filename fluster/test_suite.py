@@ -126,14 +126,17 @@ class TestSuite:
         print('All downloads finished')
 
     def _run_worker(self, test: Test):
-        '''Run one unit test returning the test_vector and the result'''
+        '''Run one unit test returning the TestVector'''
         test_result = TestResult()
         test(test_result)
         line = '.'
         if not test_result.wasSuccessful():
             line = 'x'
         print(line, end='', flush=True)
-        test.test_vector.failures = test_result.failures
+        if test_result.failures:
+            test.test_vector.errors += test_result.failures
+        if test_result.errors:
+            test.test_vector.errors += test_result.errors
         return test.test_vector
 
     def run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
@@ -144,10 +147,13 @@ class TestSuite:
             failfast=failfast, verbosity=1 if quiet else 2)
         res = runner.run(suite)
 
-        # Collect all TestResults to add the failures into the test vectors
+        # Collect all TestResults with error to add them into the test vectors
         for test_result in res.failures:
             test_vector = test_result[0].test_vector
-            test_vector.failure = test_result[1]
+            test_vector.errors.append(test_result[1])
+        for test_result in res.errors:
+            test_vector = test_result[0].test_vector
+            test_vector.errors.append(test_result[1])
 
     def run_test_suite_in_parallel(self, jobs: int, tests: list):
         '''Run the test suite in parallel'''
@@ -158,8 +164,8 @@ class TestSuite:
             end = perf_counter()
             success = 0
             for test_vector_res in test_results:
-                if test_vector_res.failures:
-                    for failure in test_vector_res.failures:
+                if test_vector_res.errors:
+                    for failure in test_vector_res.errors:
                         for line in failure:
                             print(line)
                 else:
@@ -170,8 +176,8 @@ class TestSuite:
                 for tvector in self.test_vectors:
                     if tvector.name == test_vector_res.name:
                         tvector.result = test_vector_res.result
-                        if test_vector_res.failures:
-                            tvector.failure = test_vector_res.failures[0][1]
+                        if test_vector_res.errors:
+                            tvector.errors = test_vector_res.errors
                         break
             print(
                 f'Ran {success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
@@ -228,12 +234,15 @@ class TestSuite:
                        timeout: int, keep_files: bool):
         '''Generate the tests for a decoder'''
         tests = []
+        test_vectors_run = []
         for test_vector in self.test_vectors:
             if test_vectors:
                 if test_vector.name.lower() not in test_vectors:
                     continue
             tests.append(
                 Test(decoder, self, test_vector, results_dir, reference, timeout, keep_files))
+            test_vectors_run.append(test_vector)
+        self.test_vectors = test_vectors_run
         return tests
 
     def __str__(self):
