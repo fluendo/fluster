@@ -20,6 +20,7 @@
 import os.path
 import json
 import unittest
+import copy
 from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
@@ -60,9 +61,13 @@ class TestSuite:
         self.description = description
         self.test_vectors = test_vectors
 
+    def clone(self):
+        '''Create a deep copy of the object'''
+        return copy.deepcopy(self)
+
     @classmethod
     def from_json_file(cls, filename: str, resources_dir: str):
-        '''Creates a TestSuite instance from a file'''
+        '''Create a TestSuite instance from a file'''
         with open(filename) as json_file:
             data = json.load(json_file)
             data['test_vectors'] = list(
@@ -77,7 +82,8 @@ class TestSuite:
             data.pop('resources_dir')
             data.pop('filename')
             data['codec'] = str(self.codec.value)
-            data['test_vectors'] = [tv.__dict__ for tv in self.test_vectors]
+            data['test_vectors'] = [tv.data_to_serialize()
+                                    for tv in self.test_vectors]
             json.dump(data, json_file, indent=4)
 
     def _download_worker(self, context: DownloadWork):
@@ -126,41 +132,55 @@ class TestSuite:
         if not test_result.wasSuccessful():
             line = 'x'
         print(line, end='', flush=True)
-        return (test.test_vector, test_result.failures)
+        test.test_vector.failures = test_result.failures
+        return test.test_vector
 
-    def _run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
+    def run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
+        '''Run the test suite sequentially'''
         suite = unittest.TestSuite()
         suite.addTests(tests)
         runner = unittest.TextTestRunner(
             failfast=failfast, verbosity=1 if quiet else 2)
         res = runner.run(suite)
-        return res.wasSuccessful()
 
-    def _run_test_suite_in_parallel(self, jobs: int, tests: list):
+        # Collect all TestResults to add the failures into the test vectors
+        for test_result in res.failures:
+            test_vector = test_result[0].test_vector
+            test_vector.failure = test_result[1]
+
+    def run_test_suite_in_parallel(self, jobs: int, tests: list):
+        '''Run the test suite in parallel'''
         with Pool(jobs) as pool:
             start = perf_counter()
             test_results = pool.map(self._run_worker, tests)
             print('\n')
             end = perf_counter()
             success = 0
-            for test_vector, result in test_results:
-                if result:
-                    for failure in result:
+            for test_vector_res in test_results:
+                if test_vector_res.failures:
+                    for failure in test_vector_res.failures:
                         for line in failure:
                             print(line)
                 else:
                     success += 1
+
+                # Collect the test vector results and failures since they come
+                # from a different process
                 for tvector in self.test_vectors:
-                    if tvector.name == test_vector.name:
-                        tvector.result = test_vector.result
+                    if tvector.name == test_vector_res.name:
+                        tvector.result = test_vector_res.result
+                        if test_vector_res.failures:
+                            tvector.failure = test_vector_res.failures[0][1]
                         break
             print(
                 f'Ran {success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
-            return success == len(test_results)
 
     def run(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
             reference: bool = False, test_vectors: list = None):
-        '''Run the test suite'''
+        '''
+        Run the test suite.
+        Returns a new copy of the test suite with the result of the test
+        '''
         # pylint: disable=too-many-locals
 
         # decoders using hardware acceleration cannot be easily parallelized
@@ -180,21 +200,24 @@ class TestSuite:
         if not decoder.check_run():
             print(f'Skipping decoder {decoder.name} because it cannot be run')
             return True
-        tests = self._gen_tests(
+
+        test_suite = self.clone()
+        tests = test_suite.generate_tests(
             decoder, results_dir, reference, test_vectors, timeout)
 
-        test_success = False
         if jobs == 1:
-            test_success = self._run_test_suite_sequentially(
+            test_suite.run_test_suite_sequentially(
                 tests, failfast, quiet)
         else:
-            test_success = self._run_test_suite_in_parallel(jobs, tests)
+            test_suite.run_test_suite_in_parallel(jobs, tests)
+
         if reference:
-            self.to_json_file(self.filename)
+            test_suite.to_json_file(test_suite.filename)
 
-        return test_success
+        return test_suite
 
-    def _gen_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list, timeout: int):
+    def generate_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list, timeout: int):
+        '''Generate the tests for a decoder'''
         tests = []
         for test_vector in self.test_vectors:
             if test_vectors:

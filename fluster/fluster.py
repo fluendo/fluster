@@ -141,8 +141,15 @@ class Fluster:
             for decoder in run_decoders:
                 if decoder.codec != test_suite.codec:
                     continue
-                success = test_suite.run(jobs, decoder, timeout, failfast, quiet,
-                                         self.results_dir, reference, test_vectors)
+                test_suite_res = test_suite.run(jobs, decoder, timeout, failfast, quiet,
+                                                self.results_dir, reference, test_vectors)
+
+                success = True
+                for test_vector in test_suite_res.test_vectors:
+                    if test_vector.failure:
+                        success = False
+                        break
+
                 if not success:
                     if failfast:
                         sys.exit(1)
