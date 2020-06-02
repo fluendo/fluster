@@ -47,14 +47,32 @@ class DownloadWork:
         self.test_vector = test_vector
 
 
+class Context:
+    '''Context for TestSuite'''
+    # pylint: disable=too-few-public-methods, too-many-instance-attributes
+
+    def __init__(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
+                 reference: bool = False, test_vectors: list = None, keep_files: bool = False):
+        self.jobs = jobs
+        self.decoder = decoder
+        self.timeout = timeout
+        self.failfast = failfast
+        self.quiet = quiet
+        self.results_dir = results_dir
+        self.reference = reference
+        self.test_vectors = test_vectors
+        self.keep_files = keep_files
+
+
 class TestSuite:
     '''Test suite class'''
 
     def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
-                 test_vectors: list):
+                 test_vectors: dict):
         # Not included in JSON
         self.filename = filename
         self.resources_dir = resources_dir
+        self.test_vectors_success = 0
 
         # JSON members
         self.name = name
@@ -71,7 +89,7 @@ class TestSuite:
         '''Create a TestSuite instance from a file'''
         with open(filename) as json_file:
             data = json.load(json_file)
-            data['test_vectors'] = list(
+            data['test_vectors'] = dict(
                 map(TestVector.from_json, data["test_vectors"]))
             data['codec'] = Codec(data['codec'])
             return cls(filename, resources_dir, **data)
@@ -82,9 +100,10 @@ class TestSuite:
             data = self.__dict__.copy()
             data.pop('resources_dir')
             data.pop('filename')
+            data.pop('test_vectors_success')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.data_to_serialize()
-                                    for tv in self.test_vectors]
+                                    for tv in self.test_vectors.values()]
             json.dump(data, json_file, indent=4)
 
     def _download_worker(self, context: DownloadWork):
@@ -116,7 +135,7 @@ class TestSuite:
             os.makedirs(out_dir)
         print(f'Downloading test suite {self.name} using {jobs} parallel jobs')
         download_tasks = []
-        for test_vector in self.test_vectors:
+        for test_vector in self.test_vectors.values():
             download_tasks.append(
                 DownloadWork(out_dir, verify, extract_all, keep_file, self.name, test_vector))
 
@@ -155,6 +174,11 @@ class TestSuite:
             test_vector = test_result[0].test_vector
             test_vector.errors.append(test_result[1])
 
+        self.test_vectors_success = 0
+        for test_vector in self.test_vectors.values():
+            if not test_vector.errors:
+                self.test_vectors_success += 1
+
     def run_test_suite_in_parallel(self, jobs: int, tests: list):
         '''Run the test suite in parallel'''
         with Pool(jobs) as pool:
@@ -162,28 +186,22 @@ class TestSuite:
             test_results = pool.map(self._run_worker, tests)
             print('\n')
             end = perf_counter()
-            success = 0
+            self.test_vectors_success = 0
             for test_vector_res in test_results:
                 if test_vector_res.errors:
-                    for failure in test_vector_res.errors:
-                        for line in failure:
+                    for error in test_vector_res.errors:
+                        for line in error:
                             print(line)
                 else:
-                    success += 1
+                    self.test_vectors_success += 1
 
                 # Collect the test vector results and failures since they come
                 # from a different process
-                for tvector in self.test_vectors:
-                    if tvector.name == test_vector_res.name:
-                        tvector.result = test_vector_res.result
-                        if test_vector_res.errors:
-                            tvector.errors = test_vector_res.errors
-                        break
+                self.test_vectors[test_vector_res.name] = test_vector_res
             print(
-                f'Ran {success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
+                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
 
-    def run(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
-            reference: bool = False, test_vectors: list = None, keep_files: bool = False):
+    def run(self, ctx: Context):
         '''
         Run the test suite.
         Returns a new copy of the test suite with the result of the test
@@ -192,56 +210,55 @@ class TestSuite:
 
         # decoders using hardware acceleration cannot be easily parallelized
         # reliably and may case issues. Thus, we execute them sequentially
-        if decoder.hw_acceleration and jobs > 1:
-            jobs = 1
+        if ctx.decoder.hw_acceleration and ctx.jobs > 1:
+            ctx.jobs = 1
             print(
-                f'Decoder {decoder.name} uses hardware acceleration, using 1 job automatically')
+                f'Decoder {ctx.decoder.name} uses hardware acceleration, using 1 job automatically')
 
         print('*' * 100 + '\n')
-        string = f'Running test suite {self.name} with decoder {decoder.name}'
-        if test_vectors:
-            string += f' and test vectors {", ".join(test_vectors)}'
-        string += f' using {jobs} parallel jobs'
+        string = f'Running test suite {self.name} with decoder {ctx.decoder.name}'
+        if ctx.test_vectors:
+            string += f' and test vectors {", ".join(ctx.test_vectors)}'
+        string += f' using {ctx.jobs} parallel jobs'
         print(string)
         print('*' * 100 + '\n')
-        if not decoder.check_run():
-            print(f'Skipping decoder {decoder.name} because it cannot be run')
+        if not ctx.decoder.check_run():
+            print(
+                f'Skipping decoder {ctx.decoder.name} because it cannot be run')
             return None
 
-        results_dir = os.path.join(results_dir, self.name, 'test_results')
+        results_dir = os.path.join(ctx.results_dir, self.name, 'test_results')
         if not os.path.exists(results_dir):
             os.makedirs(results_dir)
 
         test_suite = self.clone()
-        tests = test_suite.generate_tests(
-            decoder, results_dir, reference, test_vectors, timeout, keep_files)
+        tests = test_suite.generate_tests(ctx)
 
-        if jobs == 1:
+        if ctx.jobs == 1:
             test_suite.run_test_suite_sequentially(
-                tests, failfast, quiet)
+                tests, ctx.failfast, ctx.quiet)
         else:
-            test_suite.run_test_suite_in_parallel(jobs, tests)
+            test_suite.run_test_suite_in_parallel(ctx.jobs, tests)
 
-        if reference:
+        if ctx.reference:
             test_suite.to_json_file(test_suite.filename)
 
-        if not keep_files and os.path.isdir(results_dir):
+        if not ctx.keep_files and os.path.isdir(results_dir):
             rmtree(results_dir)
 
         return test_suite
 
-    def generate_tests(self, decoder: Decoder, results_dir: str, reference: bool, test_vectors: list,
-                       timeout: int, keep_files: bool):
+    def generate_tests(self, ctx: Context):
         '''Generate the tests for a decoder'''
         tests = []
-        test_vectors_run = []
-        for test_vector in self.test_vectors:
-            if test_vectors:
-                if test_vector.name.lower() not in test_vectors:
+        test_vectors_run = dict()
+        for name, test_vector in self.test_vectors.items():
+            if ctx.test_vectors:
+                if test_vector.name.lower() not in ctx.test_vectors:
                     continue
             tests.append(
-                Test(decoder, self, test_vector, results_dir, reference, timeout, keep_files))
-            test_vectors_run.append(test_vector)
+                Test(ctx.decoder, self, test_vector, ctx.results_dir, ctx.reference, ctx.timeout, ctx.keep_files))
+            test_vectors_run[name] = test_vector
         self.test_vectors = test_vectors_run
         return tests
 

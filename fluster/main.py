@@ -23,7 +23,7 @@ import argparse
 import os
 import multiprocessing
 
-from fluster.fluster import Fluster
+from fluster.fluster import Fluster, Context
 
 
 class Main:
@@ -103,7 +103,7 @@ class Main:
 
     def _add_reference_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'reference', aliases=['d'], help='use a specific decoder as the reference for the test suites given')
+            'reference', aliases=['r'], help='use a specific decoder as the reference for the test suites given')
         subparser.add_argument(
             '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
             '0 means all logical cores',
@@ -142,23 +142,25 @@ class Main:
             print(f'Error: failfast is not compatible with running {args.jobs} parallel jobs.'
                   ' Please use -j1 if you want to use failfast')
             return
-        fluster.run_test_suites(jobs=args.jobs,
-                                test_suites=args.testsuites,
-                                timeout=args.timeout,
-                                decoders=args.decoders,
-                                test_vectors=args.testvectors,
-                                failfast=args.failfast,
-                                quiet=args.quiet,
-                                summary=args.summary,
-                                keep_files=args.keep)
+        context = Context(jobs=args.jobs,
+                          test_suites=args.testsuites,
+                          timeout=args.timeout,
+                          decoders=args.decoders,
+                          test_vectors=args.testvectors,
+                          failfast=args.failfast,
+                          quiet=args.quiet,
+                          summary=args.summary,
+                          keep_files=args.keep)
+        fluster.run_test_suites(context)
 
     def _reference_cmd(self, args, fluster):
-        fluster.run_test_suites(jobs=args.jobs,
-                                timeout=args.timeout,
-                                test_suites=args.testsuites,
-                                decoders=args.decoder,
-                                quiet=args.quiet,
-                                reference=True)
+        context = Context(jobs=args.jobs,
+                          timeout=args.timeout,
+                          test_suites=args.testsuites,
+                          decoders=args.decoder,
+                          quiet=args.quiet,
+                          reference=True)
+        fluster.run_test_suites(context)
 
     def _download_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()

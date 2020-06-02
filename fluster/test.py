@@ -62,6 +62,4 @@ class Test(unittest.TestCase):
             self.assertEqual(self.test_vector.result.lower(), result.lower(),
                              f'{self.test_vector.input_file}')
         else:
-            for test_vector in self.test_suite.test_vectors:
-                if test_vector.name == self.test_vector.name:
-                    test_vector.result = result
+            self.test_suite.test_vectors[self.test_vector.name].result = result
