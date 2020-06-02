@@ -119,6 +119,16 @@ class Fluster:
                 for test_vector in test_suite.test_vectors.values():
                     print(test_vector)
 
+    def _get_run_param(self, in_list: list, check_list: list, name: str):
+        if in_list:
+            run = [x for x in check_list if x.name.lower() in in_list]
+            if not run:
+                raise Exception(
+                    f'No {name} found matching {in_list}')
+        else:
+            run = check_list
+        return run
+
     def _normalize_context(self, ctx: Context):
         # Convert all test suites and decoders to lowercase to make the filter greedy
         if ctx.test_suites:
@@ -127,36 +137,18 @@ class Fluster:
             ctx.decoders = [x.lower() for x in ctx.decoders]
         if ctx.test_vectors:
             ctx.test_vectors = [x.lower() for x in ctx.test_vectors]
+        ctx.test_suites = self._get_run_param(
+            ctx.test_suites, self.test_suites, 'test suite')
+        ctx.decoders = self._get_run_param(
+            ctx.decoders, self.decoders, 'decoders')
 
     def run_test_suites(self, ctx: Context):
         '''Run a group of test suites'''
-        # pylint: disable=too-many-branches
         self._load_test_suites()
-        run_test_suites = []
         self._normalize_context(ctx)
 
-        if ctx.test_suites:
-            run_test_suites = [
-                test_suite for test_suite in self.test_suites if test_suite.name.lower() in ctx.test_suites]
-            if not run_test_suites:
-                raise Exception(
-                    "No test suite found matching {}".format(ctx.test_suites))
-        else:
-            run_test_suites = self.test_suites
-
-        run_decoders = []
-        if ctx.decoders:
-            run_decoders = [
-                dec for dec in self.decoders if dec.name.lower() in ctx.decoders]
-            if not run_decoders:
-                raise Exception(
-                    "No decoders found matching {}".format(ctx.decoders))
-        else:
-            run_decoders = self.decoders
-
-        dec_names = [dec.name for dec in run_decoders]
-
-        if ctx.reference and (not run_decoders or len(run_decoders) > 1):
+        if ctx.reference and (not ctx.decoders or len(ctx.decoders) > 1):
+            dec_names = [dec.name for dec in ctx.decoders]
             raise Exception(
                 f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
 
@@ -164,9 +156,9 @@ class Fluster:
             print('Reference mode')
 
         error = False
-        for ctx.test_suite in run_test_suites:
+        for ctx.test_suite in ctx.test_suites:
             results = []
-            for decoder in run_decoders:
+            for decoder in ctx.decoders:
                 if decoder.codec != ctx.test_suite.codec:
                     continue
                 test_suite_res = ctx.test_suite.run(
