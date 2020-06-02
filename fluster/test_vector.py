@@ -34,7 +34,7 @@ class TestVector:
     @classmethod
     def from_json(cls, data: dict):
         '''Deserialize an instance of TestVector from a json file'''
-        return cls(**data)
+        return (data['name'], cls(**data))
 
     def data_to_serialize(self):
         '''Return the data to be serialized'''

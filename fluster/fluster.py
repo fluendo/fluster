@@ -89,7 +89,7 @@ class Fluster:
                     continue
             print(test_suite)
             if show_test_vectors:
-                for test_vector in test_suite.test_vectors:
+                for test_vector in test_suite.test_vectors.values():
                     print(test_vector)
 
     def run_test_suites(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
@@ -148,7 +148,7 @@ class Fluster:
                 if test_suite_res:
                     results.append((decoder, test_suite_res))
                     success = True
-                    for test_vector in test_suite_res.test_vectors:
+                    for test_vector in test_suite_res.test_vectors.values():
                         if test_vector.errors:
                             success = False
                             break
@@ -173,13 +173,11 @@ class Fluster:
         for decoder, _ in results:
             output += f'{decoder.name}|'
         output += f'\n|-|{"-|" * len(results)}'
-        for test_vector in results[0][1].test_vectors:
+        for test_vector in results[0][1].test_vectors.values():
             output += f'\n|{test_vector.name}|'
             for test_suite in test_suites:
-                for tvector in test_suite.test_vectors:
-                    if tvector.name == test_vector.name:
-                        output += '✔️|' if not tvector.errors else '❌|'
-                        break
+                tvector = test_suite.test_vectors[test_vector.name]
+                output += '✔️|' if not tvector.errors else '❌|'
         output += '\n|TOTAL|'
         for test_suite in test_suites:
             output += f'{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|'

@@ -51,7 +51,7 @@ class TestSuite:
     '''Test suite class'''
 
     def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
-                 test_vectors: list):
+                 test_vectors: dict):
         # Not included in JSON
         self.filename = filename
         self.resources_dir = resources_dir
@@ -72,7 +72,7 @@ class TestSuite:
         '''Create a TestSuite instance from a file'''
         with open(filename) as json_file:
             data = json.load(json_file)
-            data['test_vectors'] = list(
+            data['test_vectors'] = dict(
                 map(TestVector.from_json, data["test_vectors"]))
             data['codec'] = Codec(data['codec'])
             return cls(filename, resources_dir, **data)
@@ -86,7 +86,7 @@ class TestSuite:
             data.pop('test_vectors_success')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.data_to_serialize()
-                                    for tv in self.test_vectors]
+                                    for tv in self.test_vectors.values()]
             json.dump(data, json_file, indent=4)
 
     def _download_worker(self, context: DownloadWork):
@@ -118,7 +118,7 @@ class TestSuite:
             os.makedirs(out_dir)
         print(f'Downloading test suite {self.name} using {jobs} parallel jobs')
         download_tasks = []
-        for test_vector in self.test_vectors:
+        for test_vector in self.test_vectors.values():
             download_tasks.append(
                 DownloadWork(out_dir, verify, extract_all, keep_file, self.name, test_vector))
 
@@ -158,7 +158,7 @@ class TestSuite:
             test_vector.errors.append(test_result[1])
 
         self.test_vectors_success = 0
-        for test_vector in self.test_vectors:
+        for test_vector in self.test_vectors.values():
             if not test_vector.errors:
                 self.test_vectors_success += 1
 
@@ -180,12 +180,7 @@ class TestSuite:
 
                 # Collect the test vector results and failures since they come
                 # from a different process
-                for tvector in self.test_vectors:
-                    if tvector.name == test_vector_res.name:
-                        tvector.result = test_vector_res.result
-                        if test_vector_res.errors:
-                            tvector.errors = test_vector_res.errors
-                        break
+                self.test_vectors[test_vector_res.name] = test_vector_res
             print(
                 f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
 
@@ -241,14 +236,14 @@ class TestSuite:
                        timeout: int, keep_files: bool):
         '''Generate the tests for a decoder'''
         tests = []
-        test_vectors_run = []
-        for test_vector in self.test_vectors:
+        test_vectors_run = dict()
+        for name, test_vector in self.test_vectors.items():
             if test_vectors:
                 if test_vector.name.lower() not in test_vectors:
                     continue
             tests.append(
                 Test(decoder, self, test_vector, results_dir, reference, timeout, keep_files))
-            test_vectors_run.append(test_vector)
+            test_vectors_run[name] = test_vector
         self.test_vectors = test_vectors_run
         return tests
 
