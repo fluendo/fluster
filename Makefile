@@ -15,10 +15,13 @@ check: ## check that very basic tests run
 	PYTHONPATH=. pylint -j0 $(PY_FILES) --fail-under=10
 	@echo "Running dummy test..."
 	./fluster.py list
+	./fluster.py list -c
 	./fluster.py list -ts dummy -tv
 	./fluster.py download dummy
 	./fluster.py run -ts dummy -tv one
 	./fluster.py run -ts dummy -tv one -j1
+	./fluster.py run -ts dummy -s
+	./fluster.py run -ts dummy -j1 -s
 
 format: ## format Python code using autopep8
 	autopep8 -i -j0 -r $(PY_FILES)
