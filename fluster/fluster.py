@@ -166,6 +166,7 @@ class Fluster:
     def _generate_summary(self, results: tuple):
         test_suite_name = results[0][1].name
         decoder_names = [decoder.name for decoder, _ in results]
+        test_suites = [res[1] for res in results]
         print(
             f'Generating summary for test suite {test_suite_name} and decoders {", ".join(decoder_names)}:\n')
         output = '|Test|'
@@ -174,11 +175,14 @@ class Fluster:
         output += f'\n|-|{"-|" * len(results)}'
         for test_vector in results[0][1].test_vectors:
             output += f'\n|{test_vector.name}|'
-            for result in results:
-                for tvector in result[1].test_vectors:
+            for test_suite in test_suites:
+                for tvector in test_suite.test_vectors:
                     if tvector.name == test_vector.name:
                         output += '✔️|' if not tvector.errors else '❌|'
                         break
+        output += '\n|TOTAL|'
+        for test_suite in test_suites:
+            output += f'{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|'
         print(output)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):

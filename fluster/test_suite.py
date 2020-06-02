@@ -55,6 +55,7 @@ class TestSuite:
         # Not included in JSON
         self.filename = filename
         self.resources_dir = resources_dir
+        self.test_vectors_success = 0
 
         # JSON members
         self.name = name
@@ -82,6 +83,7 @@ class TestSuite:
             data = self.__dict__.copy()
             data.pop('resources_dir')
             data.pop('filename')
+            data.pop('test_vectors_success')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.data_to_serialize()
                                     for tv in self.test_vectors]
@@ -155,6 +157,11 @@ class TestSuite:
             test_vector = test_result[0].test_vector
             test_vector.errors.append(test_result[1])
 
+        self.test_vectors_success = 0
+        for test_vector in self.test_vectors:
+            if not test_vector.errors:
+                self.test_vectors_success += 1
+
     def run_test_suite_in_parallel(self, jobs: int, tests: list):
         '''Run the test suite in parallel'''
         with Pool(jobs) as pool:
@@ -162,14 +169,14 @@ class TestSuite:
             test_results = pool.map(self._run_worker, tests)
             print('\n')
             end = perf_counter()
-            success = 0
+            self.test_vectors_success = 0
             for test_vector_res in test_results:
                 if test_vector_res.errors:
-                    for failure in test_vector_res.errors:
-                        for line in failure:
+                    for error in test_vector_res.errors:
+                        for line in error:
                             print(line)
                 else:
-                    success += 1
+                    self.test_vectors_success += 1
 
                 # Collect the test vector results and failures since they come
                 # from a different process
@@ -180,7 +187,7 @@ class TestSuite:
                             tvector.errors = test_vector_res.errors
                         break
             print(
-                f'Ran {success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
+                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
 
     def run(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
             reference: bool = False, test_vectors: list = None, keep_files: bool = False):
