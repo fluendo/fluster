@@ -78,7 +78,7 @@ class JCTVTGenerator:
         '''Generates the test suite and saves it to a file'''
         output_filepath = os.path.join(self.suite_name + '.json')
         test_suite = TestSuite(output_filepath, 'resources',
-                               self.suite_name, self.codec, self.description, list())
+                               self.suite_name, self.codec, self.description, dict())
 
         hparser = HREFParser()
         print(f"Download list of bitstreams from {self.site + self.name}")

@@ -28,9 +28,36 @@ from fluster.decoders import *
 # pylint: enable=wildcard-import, unused-wildcard-import
 
 from fluster.test_suite import TestSuite
+from fluster.test_suite import Context as TestSuiteContext
 from fluster.decoder import DECODERS
 
 # pylint: disable=broad-except
+
+
+class Context:
+    '''Context for run and reference command'''
+    # pylint: disable=too-few-public-methods, too-many-instance-attributes
+
+    def __init__(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
+                 test_vectors: list = None, failfast: bool = False, quiet: bool = False,
+                 reference: bool = False, summary: bool = False, keep_files: bool = False):
+        self.jobs = jobs
+        self.timeout = timeout
+        self.test_suites = test_suites
+        self.decoders = decoders
+        self.test_vectors = test_vectors
+        self.failfast = failfast
+        self.quiet = quiet
+        self.reference = reference
+        self.summary = summary
+        self.keep_files = keep_files
+
+    def to_test_suite_context(self, decoder, results_dir, test_vectors):
+        '''Create a TestSuite's Context from this'''
+        ts_context = TestSuiteContext(jobs=self.jobs, decoder=decoder, timeout=self.timeout, failfast=self.failfast,
+                                      quiet=self.quiet, results_dir=results_dir, reference=self.reference,
+                                      test_vectors=test_vectors, keep_files=self.keep_files)
+        return ts_context
 
 
 class Fluster:
@@ -92,58 +119,58 @@ class Fluster:
                 for test_vector in test_suite.test_vectors.values():
                     print(test_vector)
 
-    def run_test_suites(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
-                        test_vectors: list = None, failfast: bool = False, quiet: bool = False,
-                        reference: bool = False, summary: bool = False, keep_files: bool = False):
+    def _normalize_context(self, ctx: Context):
+        # Convert all test suites and decoders to lowercase to make the filter greedy
+        if ctx.test_suites:
+            ctx.test_suites = [x.lower() for x in ctx.test_suites]
+        if ctx.decoders:
+            ctx.decoders = [x.lower() for x in ctx.decoders]
+        if ctx.test_vectors:
+            ctx.test_vectors = [x.lower() for x in ctx.test_vectors]
+
+    def run_test_suites(self, ctx: Context):
         '''Run a group of test suites'''
-        # pylint: disable=too-many-branches,too-many-locals
+        # pylint: disable=too-many-branches
         self._load_test_suites()
         run_test_suites = []
+        self._normalize_context(ctx)
 
-        # Convert all test suites and decoders to lowercase to make the filter greedy
-        if test_suites:
-            test_suites = [x.lower() for x in test_suites]
-        if decoders:
-            decoders = [x.lower() for x in decoders]
-        if test_vectors:
-            test_vectors = [x.lower() for x in test_vectors]
-
-        if test_suites:
+        if ctx.test_suites:
             run_test_suites = [
-                test_suite for test_suite in self.test_suites if test_suite.name.lower() in test_suites]
+                test_suite for test_suite in self.test_suites if test_suite.name.lower() in ctx.test_suites]
             if not run_test_suites:
                 raise Exception(
-                    "No test suite found matching {}".format(test_suites))
+                    "No test suite found matching {}".format(ctx.test_suites))
         else:
             run_test_suites = self.test_suites
 
         run_decoders = []
-        if decoders:
+        if ctx.decoders:
             run_decoders = [
-                dec for dec in self.decoders if dec.name.lower() in decoders]
+                dec for dec in self.decoders if dec.name.lower() in ctx.decoders]
             if not run_decoders:
                 raise Exception(
-                    "No decoders found matching {}".format(decoders))
+                    "No decoders found matching {}".format(ctx.decoders))
         else:
             run_decoders = self.decoders
 
         dec_names = [dec.name for dec in run_decoders]
 
-        if reference and (not run_decoders or len(run_decoders) > 1):
+        if ctx.reference and (not run_decoders or len(run_decoders) > 1):
             raise Exception(
                 f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
 
-        if reference:
+        if ctx.reference:
             print('Reference mode')
 
         error = False
-        for test_suite in run_test_suites:
+        for ctx.test_suite in run_test_suites:
             results = []
             for decoder in run_decoders:
-                if decoder.codec != test_suite.codec:
+                if decoder.codec != ctx.test_suite.codec:
                     continue
-                test_suite_res = test_suite.run(jobs, decoder, timeout, failfast, quiet,
-                                                self.results_dir, reference, test_vectors, keep_files)
+                test_suite_res = ctx.test_suite.run(
+                    ctx.to_test_suite_context(decoder, self.results_dir, ctx.test_vectors))
 
                 if test_suite_res:
                     results.append((decoder, test_suite_res))
@@ -154,11 +181,11 @@ class Fluster:
                             break
 
                     if not success:
-                        if failfast:
+                        if ctx.failfast:
                             sys.exit(1)
                         error = True
 
-            if summary and results:
+            if ctx.summary and results:
                 self._generate_summary(results)
         if error:
             sys.exit(1)
