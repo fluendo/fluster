@@ -103,7 +103,7 @@ class Main:
 
     def _add_reference_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'reference', aliases=['d'], help='use a specific decoder as the reference for the test suites given')
+            'reference', aliases=['r'], help='use a specific decoder as the reference for the test suites given')
         subparser.add_argument(
             '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
             '0 means all logical cores',
