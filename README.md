@@ -30,6 +30,7 @@ easily extended to add more decoders and test suites.
     - [How can I create a new test suite?](#how-can-i-create-a-new-test-suite)
     - [How can I contribute?](#how-can-i-contribute)
     - [How can I report an issue?](#how-can-i-report-an-issue)
+  - [License](#license)
 
 ## Description
 
@@ -286,3 +287,28 @@ In case you find any problem or want to report something, don't hesitate to
 search for similar [issues](issues). Only when the issue can't be found, a new
 one should be created. Please try to provide as many details and context as
 possible to help us diagnose it.
+
+## License
+
+**LGPLv3**
+
+```none
+Fluster - testing framework for decoders conformance
+Copyright (C) 2020, Fluendo, S.A.
+Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the
+Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+```

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# fluster - testing framework for codecs
+# Fluster - testing framework for decoders conformance
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.

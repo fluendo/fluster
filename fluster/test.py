@@ -1,4 +1,4 @@
-# fluster - testing framework for codecs
+# Fluster - testing framework for decoders conformance
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
