@@ -7,7 +7,7 @@ is composed of a [CLI](https://en.wikipedia.org/wiki/Command-line_interface)
 application that runs a number of test suites with the supported decoders. Its
 purpose is to check different decoder implementations against known test suites
 with known and tested results. It has been originally designed to check the
-conformance of H.265/HECV decoders, but it also supports H.264/AVC and can be
+conformance of H.265/HEVC decoders, but it also supports H.264/AVC and can be
 easily extended to add more decoders and test suites.
 
 ## Table of Contents
@@ -67,7 +67,7 @@ to be collected first.
    files. You can change the number of parallel processes used with `-j`. It
    defaults to 2x number of logical cores.
 
-2. (Optional) Build the reference decoders for H.264/AVC and H.265/HECV running
+2. (Optional) Build the reference decoders for H.264/AVC and H.265/HEVC running
    `make decoders`. It assumes you have CMake and a native compiler such as gcc
    or clang installed so that they can be built. The resulting binaries will be
    moved to a new `decoders` directory in the root.
@@ -122,34 +122,34 @@ H265
     - `./fluster.py run` runs all test suites for all decoders available that
       match each test suite's codec
     - `./fluster.py run -ts JCT-VC-HEVC_V1` runs the *JCT-VC-HEVC_V1* test
-      suite for all decoders that support H.265/HECV
+      suite for all decoders that support H.265/HEVC
     - `./fluster.py run -ts JCT-VC-HEVC_V1 -tv AMP_A_Samsung_7` runs only the
       test vector *AMP_A_Samsung_7* of the *JCT-VC-HEVC_V1* test suite
     - `./fluster.py run -d ffmpeg-H265` runs the *ffmpeg-H265* decoder on all
-      test suites for H.265/HECV
+      test suites for H.265/HEVC
     - `./fluster.py run -d ffmpeg-H265 -j1` runs the *ffmpeg-H265* decoder on all
-      test suites for H.265/HECV using one job
+      test suites for H.265/HEVC using one job
 
 ## Test Suites
 
 - [H.264/AVC](https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/)
-- [H.265/HECV](https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/)
+- [H.265/HEVC](https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/)
 - Dummy test suite for testing purposes
 
 ## Decoders
 
 - [JCT-VT H.264/AVC](https://vcgit.hhi.fraunhofer.de/jct-vc/JM) as reference
   decoder for H.264/AVC
-- [JCT-VT H.265/HECV](https://vcgit.hhi.fraunhofer.de/jct-vc/HM) as reference
-  decoder for H.265/HECV
+- [JCT-VT H.265/HEVC](https://vcgit.hhi.fraunhofer.de/jct-vc/HM) as reference
+  decoder for H.265/HEVC
 - GStreamer's
   [vaapih265dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih265dec.html)
-  for H.265/HECV
+  for H.265/HEVC
 - GStreamer's
   [vaapih264dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih264dec.html)
   for H.264/AVC
 - [ffmpeg's H.265](https://ffmpeg.org)
-- Fluendo's propietary decoders for H.264/AVC and H.265/HECV that are included
+- Fluendo's propietary decoders for H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/)
 - Dummy decoder for testing purposes
