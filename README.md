@@ -148,7 +148,8 @@ H265
 - GStreamer's
   [vaapih264dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih264dec.html)
   for H.264/AVC
-- [ffmpeg's H.265](https://ffmpeg.org)
+- [ffmpeg's](https://ffmpeg.org) H.265/HEVC
+- [ffmpeg's](https://ffmpeg.org) H.264/AVC
 - Fluendo's propietary decoders for H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/)
