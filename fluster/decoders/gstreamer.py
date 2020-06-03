@@ -89,6 +89,16 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerVaapiH264Gst10Decoder(GStreamer10):
+    '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! vaapih264dec '
+    caps = 'video/x-raw,format=I420'
+    api = 'VA-API'
+    hw_acceleration = True
+
+
+@register_decoder
 class FluendoH265Gst10Decoder(GStreamer10):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
