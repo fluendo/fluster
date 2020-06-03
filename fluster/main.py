@@ -134,7 +134,7 @@ class Main:
     def _list_cmd(self, args, fluster):
         fluster.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites)
-        fluster.list_decoders(check_run=args.check)
+        fluster.list_decoders(check=args.check)
 
     def _run_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()

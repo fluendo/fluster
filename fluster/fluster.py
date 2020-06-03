@@ -87,7 +87,7 @@ class Fluster:
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')
 
-    def list_decoders(self, check_run: bool = False):
+    def list_decoders(self, check: bool = False):
         '''List all the available decoders'''
         print('\nList of available decoders:\n')
         decoders_dict = {}
@@ -100,8 +100,8 @@ class Fluster:
             print(f'{codec}'.split('.')[1])
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
-                if check_run:
-                    string += ' ✔️' if decoder.check_run() else ' ❌'
+                if check:
+                    string += ' ✔️' if decoder.check() else ' ❌'
                 print(string)
 
     def list_test_suites(self, show_test_vectors: bool = False, test_suites: list = None):

@@ -51,7 +51,7 @@ class GStreamer(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check_run(self):
+    def check(self):
         # pylint: disable=broad-except
         try:
             pipeline = f'gst-launch-{self.gst_api} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'

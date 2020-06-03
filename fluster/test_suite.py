@@ -222,7 +222,7 @@ class TestSuite:
         string += f' using {ctx.jobs} parallel jobs'
         print(string)
         print('*' * 100 + '\n')
-        if not ctx.decoder.check_run():
+        if not ctx.decoder.check():
             print(
                 f'Skipping decoder {ctx.decoder.name} because it cannot be run')
             return None
