@@ -295,7 +295,8 @@ possible to help us diagnose it.
 ```none
 Fluster - testing framework for decoders conformance
 Copyright (C) 2020, Fluendo, S.A.
-Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
+  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
+  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Library General Public
