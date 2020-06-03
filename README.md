@@ -142,12 +142,16 @@ H265
   decoder for H.264/AVC
 - [JCT-VT H.265/HECV](https://vcgit.hhi.fraunhofer.de/jct-vc/HM) as reference
   decoder for H.265/HECV
-- [GStreamer's
-  vaapih265dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih265dec.html)
+- GStreamer's
+  [vaapih265dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih265dec.html)
   for H.265/HECV
+- GStreamer's
+  [vaapih264dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih264dec.html)
+  for H.264/AVC
 - [ffmpeg's H.265](https://ffmpeg.org)
 - Fluendo's propietary decoders for H.264/AVC and H.265/HECV that are included
-  in [Fluendo Codec Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/)
+  in [Fluendo Codec
+  Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/)
 - Dummy decoder for testing purposes
 
 ## CLI usage
