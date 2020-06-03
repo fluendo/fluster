@@ -38,7 +38,7 @@ class Decoder(ABC):
         raise Exception('Not implemented')
 
     @lru_cache(maxsize=None)
-    def check_run(self):
+    def check(self):
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:
             try:

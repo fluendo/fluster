@@ -66,7 +66,7 @@ class Main:
 
     def _add_list_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'list', aliases=['l'], help='show list of available test suites or decoders')
+            'list', aliases=['l'], help='show list of available test suites and decoders')
         subparser.add_argument(
             '-ts', '--testsuites', help='show only the test suites given', nargs='+')
         subparser.add_argument(
@@ -103,7 +103,7 @@ class Main:
 
     def _add_reference_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'reference', aliases=['r'], help='use a specific decoder as the reference for the test suites given')
+            'reference', aliases=['r'], help='use a specific decoder to set its results for the test suites given')
         subparser.add_argument(
             '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
             '0 means all logical cores',
@@ -134,7 +134,7 @@ class Main:
     def _list_cmd(self, args, fluster):
         fluster.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites)
-        fluster.list_decoders(check_run=args.check)
+        fluster.list_decoders(check=args.check)
 
     def _run_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()

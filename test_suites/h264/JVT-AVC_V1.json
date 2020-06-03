@@ -8,1080 +8,1080 @@
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
             "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
             "input_file": "AUD_MW_E.264",
-            "result": "e96fe5054de0329a8868d06003375cdb",
-            "result_frames": null
+            "result": "e96fe5054de0329a8868d06003375cdb"
+
         },
         {
             "name": "BA1_FT_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_FT_C.zip",
             "source_checksum": "1de5194e1c030948a60cdc1d0de9285a",
             "input_file": "BA1_FT_C.264",
-            "result": "4f2da01d1d1ae7b99bea3fe1fb9e8ef4",
-            "result_frames": null
+            "result": "4f2da01d1d1ae7b99bea3fe1fb9e8ef4"
+
         },
         {
             "name": "BA1_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_Sony_D.zip",
             "source_checksum": "afa9e2d49d589f631ceb65695d25b69f",
             "input_file": "BA1_Sony_D.jsv",
-            "result": "114d1cf94a2fcaffda0cf1b49964bf3d",
-            "result_frames": null
+            "result": "114d1cf94a2fcaffda0cf1b49964bf3d"
+
         },
         {
             "name": "BA2_Sony_F",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA2_Sony_F.zip",
             "source_checksum": "39a5c8fab1fa9fdea76add5c4879f67e",
             "input_file": "BA2_Sony_F.jsv",
-            "result": "124d28307b05702812a374cfc9aad615",
-            "result_frames": null
+            "result": "124d28307b05702812a374cfc9aad615"
+
         },
         {
             "name": "BA3_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA3_SVA_C.zip",
             "source_checksum": "6db22f9357baa51e2757fbdd4cd327de",
             "input_file": "BA3_SVA_C.264",
-            "result": "7518b0f80c079db0a51aa4e0c84aea95",
-            "result_frames": null
+            "result": "7518b0f80c079db0a51aa4e0c84aea95"
+
         },
         {
             "name": "BA_MW_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA_MW_D.zip",
             "source_checksum": "848e640bcf309bc8d4d71992d25488bd",
             "input_file": "BA_MW_D.264",
-            "result": "7d5d351ad061640294bf43a43150fbca",
-            "result_frames": null
+            "result": "7d5d351ad061640294bf43a43150fbca"
+
         },
         {
             "name": "BAMQ1_JVC_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BAMQ1_JVC_C.zip",
             "source_checksum": "4999b321178e425986ac4d33133c08b4",
             "input_file": "BAMQ1_JVC_C.264",
-            "result": "bad372deef52c08fc1e384ecd1a43137",
-            "result_frames": null
+            "result": "bad372deef52c08fc1e384ecd1a43137"
+
         },
         {
             "name": "BAMQ2_JVC_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BAMQ2_JVC_C.zip",
             "source_checksum": "15f5a3091b68633299e9e5bf08de3f5d",
             "input_file": "BAMQ2_JVC_C.264",
-            "result": "e3f5d5b0774b55370745f2d04f009575",
-            "result_frames": null
+            "result": "e3f5d5b0774b55370745f2d04f009575"
+
         },
         {
             "name": "BANM_MW_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BANM_MW_D.zip",
             "source_checksum": "bfab5baee947e086ff5d7047211933fa",
             "input_file": "BANM_MW_D.264",
-            "result": "e637d38ed004df3540218e3d84b43e42",
-            "result_frames": null
+            "result": "e637d38ed004df3540218e3d84b43e42"
+
         },
         {
             "name": "BASQP1_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BASQP1_Sony_C.zip",
             "source_checksum": "6de7545618e229fb8bb0f4ab03742966",
             "input_file": "BASQP1_Sony_C.jsv",
-            "result": "9e9c06cfc882a3f618b6ad40811c1331",
-            "result_frames": null
+            "result": "9e9c06cfc882a3f618b6ad40811c1331"
+
         },
         {
             "name": "CABA1_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA1_Sony_D.zip",
             "source_checksum": "e172aa0ddb58d96e81bffd881025263c",
             "input_file": "CABA1_Sony_D.jsv",
-            "result": "24b155a400dc10d11d45a3aadf61ae25",
-            "result_frames": null
+            "result": "24b155a400dc10d11d45a3aadf61ae25"
+
         },
         {
             "name": "CABA1_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA1_SVA_B.zip",
             "source_checksum": "36794ebfaa463982dc38072ff3b75943",
             "input_file": "CABA1_SVA_B.264",
-            "result": "2f5cabd5bb4954c0386cafd8a9aa782a",
-            "result_frames": null
+            "result": "2f5cabd5bb4954c0386cafd8a9aa782a"
+
         },
         {
             "name": "CABA2_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA2_Sony_E.zip",
             "source_checksum": "81efd316b49ad9ad3985a57aa0593362",
             "input_file": "CABA2_Sony_E.jsv",
-            "result": "3731f0f1ace3ad9176093a7b46347cea",
-            "result_frames": null
+            "result": "3731f0f1ace3ad9176093a7b46347cea"
+
         },
         {
             "name": "CABA2_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA2_SVA_B.zip",
             "source_checksum": "5754cfb913156693f6b0f85c170e7b46",
             "input_file": "CABA2_SVA_B.264",
-            "result": "6d4277a7fc70ed1fbe3c5f10b0a70671",
-            "result_frames": null
+            "result": "6d4277a7fc70ed1fbe3c5f10b0a70671"
+
         },
         {
             "name": "CABA3_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA3_Sony_C.zip",
             "source_checksum": "6eda0e9dcfc5a39d044375124cbcde45",
             "input_file": "CABA3_Sony_C.jsv",
-            "result": "28c778fdcf189aff70095db52572456b",
-            "result_frames": null
+            "result": "28c778fdcf189aff70095db52572456b"
+
         },
         {
             "name": "CABA3_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA3_SVA_B.zip",
             "source_checksum": "2079cb2a3b73a33bde38fbf281d70fd8",
             "input_file": "CABA3_SVA_B.264",
-            "result": "63a0f8fdcbb87b0dff330acdd10905c0",
-            "result_frames": null
+            "result": "63a0f8fdcbb87b0dff330acdd10905c0"
+
         },
         {
             "name": "CABA3_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABA3_TOSHIBA_E.zip",
             "source_checksum": "0b92eed51bce2b92278d6619a29a8854",
             "input_file": "CABA3_TOSHIBA_E.264",
-            "result": "13651d01c5b533e6b7aa132bae7669ed",
-            "result_frames": null
+            "result": "13651d01c5b533e6b7aa132bae7669ed"
+
         },
         {
             "name": "cabac_mot_fld0_full",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cabac_mot_fld0_full.zip",
             "source_checksum": "14fc0427e00bfeb617b9ce9213833a55",
             "input_file": "camp_mot_fld0_full.26l",
-            "result": "46a58bb66c0c4b1bc94a2561e7f5cc47",
-            "result_frames": null
+            "result": "46a58bb66c0c4b1bc94a2561e7f5cc47"
+
         },
         {
             "name": "cabac_mot_frm0_full",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cabac_mot_frm0_full.zip",
             "source_checksum": "7eaf257582542ea6ae5c0c0140e7c0ea",
             "input_file": "camp_mot_frm0_full.26l",
-            "result": "1b518423b2136df333f33124b574fb94",
-            "result_frames": null
+            "result": "1b518423b2136df333f33124b574fb94"
+
         },
         {
             "name": "cabac_mot_mbaff0_full",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cabac_mot_mbaff0_full.zip",
             "source_checksum": "c2abf195c9a792757643f52bb2ddc220",
             "input_file": "camp_mot_mbaff0_full.26l",
-            "result": "3fe977ce8ce2f1a4c29867d9034f8408",
-            "result_frames": null
+            "result": "3fe977ce8ce2f1a4c29867d9034f8408"
+
         },
         {
             "name": "cabac_mot_picaff0_full",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cabac_mot_picaff0_full.zip",
             "source_checksum": "c003d30c0f2313349b2723d482cb3831",
             "input_file": "camp_mot_picaff0_full.26l",
-            "result": "2b6fbe1cf21e3034bf59fb9c1a96b1a4",
-            "result_frames": null
+            "result": "2b6fbe1cf21e3034bf59fb9c1a96b1a4"
+
         },
         {
             "name": "CABACI3_Sony_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABACI3_Sony_B.zip",
             "source_checksum": "9f215fe71bcd7edd88395290d8e2f20e",
             "input_file": "CABACI3_Sony_B.jsv",
-            "result": "095fc22b46f0822be4699dcc47d912c1",
-            "result_frames": null
+            "result": "095fc22b46f0822be4699dcc47d912c1"
+
         },
         {
             "name": "CABAST3_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABAST3_Sony_E.zip",
             "source_checksum": "0aa3c231850d34e160f539c0e4dc3907",
             "input_file": "CABAST3_Sony_E.jsv",
-            "result": "e95f27c3779af519c1a317adb2f699a5",
-            "result_frames": null
+            "result": "e95f27c3779af519c1a317adb2f699a5"
+
         },
         {
             "name": "CABASTBR3_Sony_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABASTBR3_Sony_B.zip",
             "source_checksum": "8ef5c7dc1b7813ce9ee10b34da2b3843",
             "input_file": "CABASTBR3_Sony_B.jsv",
-            "result": "71d8c963c6c5216d75567b3b47d054d6",
-            "result_frames": null
+            "result": "71d8c963c6c5216d75567b3b47d054d6"
+
         },
         {
             "name": "CABREF3_Sand_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CABREF3_Sand_D.zip",
             "source_checksum": "03d635baff50ccd55217bddcdec4bd3a",
             "input_file": "CABREF3_Sand_D.264",
-            "result": "afad28e67263aab63678c4759e9f689a",
-            "result_frames": null
+            "result": "afad28e67263aab63678c4759e9f689a"
+
         },
         {
             "name": "CACQP3_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CACQP3_Sony_D.zip",
             "source_checksum": "ab8fe2fdcfba464782c5b336573a7612",
             "input_file": "CACQP3_Sony_D.jsv",
-            "result": "dfc2c76e559e61c0e3e2922005dc805e",
-            "result_frames": null
+            "result": "dfc2c76e559e61c0e3e2922005dc805e"
+
         },
         {
             "name": "CAFI1_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAFI1_SVA_C.zip",
             "source_checksum": "0e38d2569bf991ae51f6bf69f7698bf4",
             "input_file": "CAFI1_SVA_C.264",
-            "result": "8f249706ddaeda94c4899c1f3954476e",
-            "result_frames": null
+            "result": "8f249706ddaeda94c4899c1f3954476e"
+
         },
         {
             "name": "CAMA1_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMA1_Sony_C.zip",
             "source_checksum": "33e187a192c248aa0ec8592547f2d58f",
             "input_file": "CAMA1_Sony_C.jsv",
-            "result": "c234cc1b862b5b2ef958622fce77b7f5",
-            "result_frames": null
+            "result": "c234cc1b862b5b2ef958622fce77b7f5"
+
         },
         {
             "name": "CAMA1_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMA1_TOSHIBA_B.zip",
             "source_checksum": "7ae208a47893ae598e0336a7402d99bf",
             "input_file": "CAMA1_TOSHIBA_B.264",
-            "result": "583824378a02646355fe52318ffeb58c",
-            "result_frames": null
+            "result": "583824378a02646355fe52318ffeb58c"
+
         },
         {
             "name": "cama1_vtc_c",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cama1_vtc_c.zip",
             "source_checksum": "9c135b46fdff831726602c662ce25d6a",
             "input_file": "cama1_vtc_c.avc",
-            "result": "9e3e565497977759d97d169cd13b842a",
-            "result_frames": null
+            "result": "9e3e565497977759d97d169cd13b842a"
+
         },
         {
             "name": "cama2_vtc_b",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cama2_vtc_b.zip",
             "source_checksum": "eea0358149d68a7084941f9501f29a20",
             "input_file": "cama2_vtc_b.avc",
-            "result": "ec33975ec4d2fccc55485da3f37a755b",
-            "result_frames": null
+            "result": "ec33975ec4d2fccc55485da3f37a755b"
+
         },
         {
             "name": "CAMA3_Sand_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMA3_Sand_E.zip",
             "source_checksum": "538943a87152b06139c28d6547e2067d",
             "input_file": "CAMA3_Sand_E.264",
-            "result": "44ed473e4749ef88e040573cbb236381",
-            "result_frames": null
+            "result": "44ed473e4749ef88e040573cbb236381"
+
         },
         {
             "name": "cama3_vtc_b",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cama3_vtc_b.zip",
             "source_checksum": "87becd4962e4c5fd8f2f706d01a5241d",
             "input_file": "cama3_vtc_b.avc",
-            "result": "2c38362c0c84e7084527a7f1ef8c900d",
-            "result_frames": null
+            "result": "2c38362c0c84e7084527a7f1ef8c900d"
+
         },
         {
             "name": "CAMACI3_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMACI3_Sony_C.zip",
             "source_checksum": "2f024594dc72fad8602be179d8b1290b",
             "input_file": "CAMACI3_Sony_C.jsv",
-            "result": "0f3edb4f003b8fb4838f6a35c572fe70",
-            "result_frames": null
+            "result": "0f3edb4f003b8fb4838f6a35c572fe70"
+
         },
         {
             "name": "CAMANL1_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMANL1_TOSHIBA_B.zip",
             "source_checksum": "de6b53b71c25b7d53dbefc8d598e045b",
             "input_file": "CAMANL1_TOSHIBA_B.264",
-            "result": "ead6f461d3dfcb968386ac0a2443b35a",
-            "result_frames": null
+            "result": "ead6f461d3dfcb968386ac0a2443b35a"
+
         },
         {
             "name": "CAMANL2_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMANL2_TOSHIBA_B.zip",
             "source_checksum": "af4772d7b23009717f3c7a6c58ea4c40",
             "input_file": "CAMANL2_TOSHIBA_B.264",
-            "result": "720f536ecad1dc22125e90c0f79ed165",
-            "result_frames": null
+            "result": "720f536ecad1dc22125e90c0f79ed165"
+
         },
         {
             "name": "CAMANL3_Sand_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMANL3_Sand_E.zip",
             "source_checksum": "c62b501d559927a9257bae892cb6a64d",
             "input_file": "CAMANL3_Sand_E.264",
-            "result": "b28485ca9c269690e785fe0914dd51d9",
-            "result_frames": null
+            "result": "b28485ca9c269690e785fe0914dd51d9"
+
         },
         {
             "name": "CAMASL3_Sony_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMASL3_Sony_B.zip",
             "source_checksum": "d0b3203d783c8e3a556279ac3c8b0a18",
             "input_file": "CAMASL3_Sony_B.jsv",
-            "result": "d95dc479f23791df4f166145e5c011a4",
-            "result_frames": null
+            "result": "d95dc479f23791df4f166145e5c011a4"
+
         },
         {
             "name": "CAMP_MOT_MBAFF_L30",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMP_MOT_MBAFF_L30.zip",
             "source_checksum": "6f03e6e0fbb4e89ce8c6ddb62804f58b",
             "input_file": "CAMP_MOT_MBAFF_L30.26l",
-            "result": "b360d7c05677d545fea9f35862aca50c",
-            "result_frames": null
+            "result": "b360d7c05677d545fea9f35862aca50c"
+
         },
         {
             "name": "CAMP_MOT_MBAFF_L31",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAMP_MOT_MBAFF_L31.zip",
             "source_checksum": "58875831f97a414bde478a15cac5c595",
             "input_file": "CAMP_MOT_MBAFF_L31.26l",
-            "result": "249f8b52b757de13d53d13cbbe017a41",
-            "result_frames": null
+            "result": "249f8b52b757de13d53d13cbbe017a41"
+
         },
         {
             "name": "CANL1_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL1_Sony_E.zip",
             "source_checksum": "11df3f4c91367550239c550ff2ecd265",
             "input_file": "CANL1_Sony_E.jsv",
-            "result": "27f1d5d389e110fc320788bf78006db0",
-            "result_frames": null
+            "result": "27f1d5d389e110fc320788bf78006db0"
+
         },
         {
             "name": "CANL1_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL1_SVA_B.zip",
             "source_checksum": "4218b5581b6c0d9af99ae9c1046277c5",
             "input_file": "CANL1_SVA_B.264",
-            "result": "b02defcb741c0e982313c5749f2008ed",
-            "result_frames": null
+            "result": "b02defcb741c0e982313c5749f2008ed"
+
         },
         {
             "name": "CANL1_TOSHIBA_G",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL1_TOSHIBA_G.zip",
             "source_checksum": "b250b5a2734922097489d665cc992913",
             "input_file": "CANL1_TOSHIBA_G.264",
-            "result": "afa072746b16bd96f3152b45e2f2881e",
-            "result_frames": null
+            "result": "afa072746b16bd96f3152b45e2f2881e"
+
         },
         {
             "name": "CANL2_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL2_Sony_E.zip",
             "source_checksum": "1a6b35357d0c00b3fd31746c5b153bb0",
             "input_file": "CANL2_Sony_E.jsv",
-            "result": "3a28438e3e0795deaed795fcfefbc833",
-            "result_frames": null
+            "result": "3a28438e3e0795deaed795fcfefbc833"
+
         },
         {
             "name": "CANL2_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL2_SVA_B.zip",
             "source_checksum": "560172a4fcdd3fdab09067f83c1570fa",
             "input_file": "CANL2_SVA_B.264",
-            "result": "b02defcb741c0e982313c5749f2008ed",
-            "result_frames": null
+            "result": "b02defcb741c0e982313c5749f2008ed"
+
         },
         {
             "name": "CANL3_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL3_Sony_C.zip",
             "source_checksum": "93c6f3dd659fd43f6e909007e6e7ca78",
             "input_file": "CANL3_Sony_C.jsv",
-            "result": "d8ce9d2faa54ce3294ad1553c440cde9",
-            "result_frames": null
+            "result": "d8ce9d2faa54ce3294ad1553c440cde9"
+
         },
         {
             "name": "CANL3_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL3_SVA_B.zip",
             "source_checksum": "9beb491ac879072f69c6d45f62cdebb9",
             "input_file": "CANL3_SVA_B.264",
-            "result": "04a6de984ef88d1b8c1b26fc8f33a425",
-            "result_frames": null
+            "result": "04a6de984ef88d1b8c1b26fc8f33a425"
+
         },
         {
             "name": "CANL4_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANL4_SVA_B.zip",
             "source_checksum": "27680cd7c1602aa9929113dd6bad95b1",
             "input_file": "CANL4_SVA_B.264",
-            "result": "cf398be00ac522c5d35b11869a05ef35",
-            "result_frames": null
+            "result": "cf398be00ac522c5d35b11869a05ef35"
+
         },
         {
             "name": "CANLMA2_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANLMA2_Sony_C.zip",
             "source_checksum": "0a799b12924e2cfbba716ef5e6951d28",
             "input_file": "CANLMA2_Sony_C.jsv",
-            "result": "90fb51566be306a77895e11cd275fcac",
-            "result_frames": null
+            "result": "90fb51566be306a77895e11cd275fcac"
+
         },
         {
             "name": "CANLMA3_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CANLMA3_Sony_C.zip",
             "source_checksum": "3d9e81574df71a3bf9486aecf112e6c0",
             "input_file": "CANLMA3_Sony_C.jsv",
-            "result": "2575cc432e6df0e4abb28aeb337c8527",
-            "result_frames": null
+            "result": "2575cc432e6df0e4abb28aeb337c8527"
+
         },
         {
             "name": "CAPA1_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAPA1_TOSHIBA_B.zip",
             "source_checksum": "6d59058789ee067605cf15a51eff8eac",
             "input_file": "CAPA1_TOSHIBA_B.264",
-            "result": "7dbd6d91d6768a238450890a9013f65a",
-            "result_frames": null
+            "result": "7dbd6d91d6768a238450890a9013f65a"
+
         },
         {
             "name": "CAPAMA3_Sand_F",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAPAMA3_Sand_F.zip",
             "source_checksum": "5d29009c25444bcb46a538b00f3435e7",
             "input_file": "CAPAMA3_Sand_F.264",
-            "result": "44d78296fb12c2e523cf02886e3ee4ad",
-            "result_frames": null
+            "result": "44d78296fb12c2e523cf02886e3ee4ad"
+
         },
         {
             "name": "CAPCM1_Sand_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAPCM1_Sand_E.zip",
             "source_checksum": "0ab00c4eba1bc20f7a79e8a9f0ffa3ec",
             "input_file": "CAPCM1_Sand_E.264",
-            "result": "ca073ca106e70d5cd51f67485846a5b1",
-            "result_frames": null
+            "result": "ca073ca106e70d5cd51f67485846a5b1"
+
         },
         {
             "name": "CAPCMNL1_Sand_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAPCMNL1_Sand_E.zip",
             "source_checksum": "439f71b4a4497b32e2b4fd78eb68dedc",
             "input_file": "CAPCMNL1_Sand_E.264",
-            "result": "ee9968eeefe935f045c6b70be51691eb",
-            "result_frames": null
+            "result": "ee9968eeefe935f045c6b70be51691eb"
+
         },
         {
             "name": "CAPM3_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAPM3_Sony_D.zip",
             "source_checksum": "a8d32cd25d21d47f9a29e689e8ee07f6",
             "input_file": "CAPM3_Sony_D.jsv",
-            "result": "9ecc3bf5ff7cac9a068a5ba57bc87cb7",
-            "result_frames": null
+            "result": "9ecc3bf5ff7cac9a068a5ba57bc87cb7"
+
         },
         {
             "name": "CAQP1_Sony_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAQP1_Sony_B.zip",
             "source_checksum": "1106b7e8688be9665d1dd5131e8c4239",
             "input_file": "CAQP1_Sony_B.jsv",
-            "result": "cac07eaabd141764d64cf9de0230a92e",
-            "result_frames": null
+            "result": "cac07eaabd141764d64cf9de0230a92e"
+
         },
         {
             "name": "cavlc_mot_fld0_full_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cavlc_mot_fld0_full_B.zip",
             "source_checksum": "3991b434ca939b8c4b638724dd8af77b",
             "input_file": "cvmp_mot_fld0_full_B.26l",
-            "result": "12fe884fd61346d2f10be36d15513eb6",
-            "result_frames": null
+            "result": "12fe884fd61346d2f10be36d15513eb6"
+
         },
         {
             "name": "cavlc_mot_frm0_full_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cavlc_mot_frm0_full_B.zip",
             "source_checksum": "4be102088846abca8af5da51c066386b",
             "input_file": "cvmp_mot_frm0_full_B.26l",
-            "result": "efa256f7c334b65a9c74b638a6b94667",
-            "result_frames": null
+            "result": "efa256f7c334b65a9c74b638a6b94667"
+
         },
         {
             "name": "cavlc_mot_mbaff0_full_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cavlc_mot_mbaff0_full_B.zip",
             "source_checksum": "ce6a2e2ed9d0ab5d3094ad7cf8f41b4f",
             "input_file": "cvmp_mot_mbaff0_full_B.26l",
-            "result": "094404fcc9683ba6c1b33f352f19a229",
-            "result_frames": null
+            "result": "094404fcc9683ba6c1b33f352f19a229"
+
         },
         {
             "name": "cavlc_mot_picaff0_full_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/cavlc_mot_picaff0_full_B.zip",
             "source_checksum": "4373f1bdde46f56ca1a35a837a000923",
             "input_file": "cvmp_mot_picaff0_full_B.26l",
-            "result": "bc470e9c5cd1f0e31719d1078f0678bc",
-            "result_frames": null
+            "result": "bc470e9c5cd1f0e31719d1078f0678bc"
+
         },
         {
             "name": "CAWP1_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAWP1_TOSHIBA_E.zip",
             "source_checksum": "1af2954658942650e5189644445768ae",
             "input_file": "CAWP1_TOSHIBA_E/CAWP1_TOSHIBA_E.264",
-            "result": "87946607d1d774c2da8ec8632710c84a",
-            "result_frames": null
+            "result": "87946607d1d774c2da8ec8632710c84a"
+
         },
         {
             "name": "CAWP5_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CAWP5_TOSHIBA_E.zip",
             "source_checksum": "4de19be6b83d45d33fde061bd76860b4",
             "input_file": "CAWP5_TOSHIBA_E/CAWP5_TOSHIBA_E.264",
-            "result": "9663da55e5ef516c8bf0ca0bcc0abbb8",
-            "result_frames": null
+            "result": "9663da55e5ef516c8bf0ca0bcc0abbb8"
+
         },
         {
             "name": "CI1_FT_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CI1_FT_B.zip",
             "source_checksum": "64ea92172ae5d514b63505906f9a1e23",
             "input_file": "CI1_FT_B.264",
-            "result": "6832762976b6d48719bb6cb603acd988",
-            "result_frames": null
+            "result": "6832762976b6d48719bb6cb603acd988"
+
         },
         {
             "name": "CI_MW_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CI_MW_D.zip",
             "source_checksum": "48ebbcfca8ee3a64bb77968270198c24",
             "input_file": "CI_MW_D.264",
-            "result": "037becca5bc836b869aba825293d39a3",
-            "result_frames": null
+            "result": "037becca5bc836b869aba825293d39a3"
+
         },
         {
             "name": "CVBS3_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVBS3_Sony_C.zip",
             "source_checksum": "77ef6fd4ad2a9941b2b6cf66c4095512",
             "input_file": "CVBS3_Sony_C.jsv",
-            "result": "e3c1632988100491e8431c3c88ed4096",
-            "result_frames": null
+            "result": "e3c1632988100491e8431c3c88ed4096"
+
         },
         {
             "name": "CVCANLMA2_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVCANLMA2_Sony_C.zip",
             "source_checksum": "919cff8f5040d1c0b0a59bceecf71013",
             "input_file": "CVCANLMA2_Sony_C.jsv",
-            "result": "90fb51566be306a77895e11cd275fcac",
-            "result_frames": null
+            "result": "90fb51566be306a77895e11cd275fcac"
+
         },
         {
             "name": "CVFC1_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVFC1_Sony_C.zip",
             "source_checksum": "fa863d521768ea4654b51f8025213f43",
             "input_file": "CVFC1_Sony_C.jsv",
-            "result": "9fdb17e17d332b5d9752362c9c7ff9b0",
-            "result_frames": null
+            "result": "9fdb17e17d332b5d9752362c9c7ff9b0"
+
         },
         {
             "name": "CVFI1_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVFI1_Sony_D.zip",
             "source_checksum": "72e03210357929343e5095bde738d3be",
             "input_file": "CVFI1_Sony_D.jsv",
-            "result": "4d9f97dca797af1e1d8f2660cef97f04",
-            "result_frames": null
+            "result": "4d9f97dca797af1e1d8f2660cef97f04"
+
         },
         {
             "name": "CVFI1_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVFI1_SVA_C.zip",
             "source_checksum": "3c95b3f134db61cdf20a060d84eade2d",
             "input_file": "CVFI1_SVA_C.264",
-            "result": "af3086f97e7316670af7a4bdf3d53fea",
-            "result_frames": null
+            "result": "af3086f97e7316670af7a4bdf3d53fea"
+
         },
         {
             "name": "CVFI2_Sony_H",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVFI2_Sony_H.zip",
             "source_checksum": "88686a5a93b9b25ac79e005a7d9386bf",
             "input_file": "CVFI2_Sony_H.jsv",
-            "result": "ae30d20c4c56cd64921eafcee959fbdb",
-            "result_frames": null
+            "result": "ae30d20c4c56cd64921eafcee959fbdb"
+
         },
         {
             "name": "CVFI2_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVFI2_SVA_C.zip",
             "source_checksum": "afe041091c98010b6130cd713c7a7161",
             "input_file": "CVFI2_SVA_C.264",
-            "result": "c8a88bb26229196ee85ffc3b019c7554",
-            "result_frames": null
+            "result": "c8a88bb26229196ee85ffc3b019c7554"
+
         },
         {
             "name": "CVMA1_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMA1_Sony_D.zip",
             "source_checksum": "ad0a2d293d7d2b4a283af1c9ad4ddcf5",
             "input_file": "CVMA1_Sony_D.jsv",
-            "result": "c234cc1b862b5b2ef958622fce77b7f5",
-            "result_frames": null
+            "result": "c234cc1b862b5b2ef958622fce77b7f5"
+
         },
         {
             "name": "CVMA1_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMA1_TOSHIBA_B.zip",
             "source_checksum": "09053ea094b5a6ef429e0a7233d6895e",
             "input_file": "CVMA1_TOSHIBA_B.264",
-            "result": "583824378a02646355fe52318ffeb58c",
-            "result_frames": null
+            "result": "583824378a02646355fe52318ffeb58c"
+
         },
         {
             "name": "CVMANL1_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMANL1_TOSHIBA_B.zip",
             "source_checksum": "bcaf4824a09d9d729c3e9c502accea82",
             "input_file": "CVMANL1_TOSHIBA_B.264",
-            "result": "ead6f461d3dfcb968386ac0a2443b35a",
-            "result_frames": null
+            "result": "ead6f461d3dfcb968386ac0a2443b35a"
+
         },
         {
             "name": "CVMANL2_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMANL2_TOSHIBA_B.zip",
             "source_checksum": "650777518e0f642a420f54c2289c6145",
             "input_file": "CVMANL2_TOSHIBA_B.264",
-            "result": "720f536ecad1dc22125e90c0f79ed165",
-            "result_frames": null
+            "result": "720f536ecad1dc22125e90c0f79ed165"
+
         },
         {
             "name": "CVMAPAQP3_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMAPAQP3_Sony_E.zip",
             "source_checksum": "d524dc4660481aa9c6af2a4fd3015d91",
             "input_file": "CVMAPAQP3_Sony_E.jsv",
-            "result": "1c5c11c8b920acbd8ba3d72b5079d959",
-            "result_frames": null
+            "result": "1c5c11c8b920acbd8ba3d72b5079d959"
+
         },
         {
             "name": "CVMAQP2_Sony_G",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMAQP2_Sony_G.zip",
             "source_checksum": "df3c1256585ca16054c868ac3abf5981",
             "input_file": "CVMAQP2_Sony_G.jsv",
-            "result": "b1523085074c91e17c4a1db47c318929",
-            "result_frames": null
+            "result": "b1523085074c91e17c4a1db47c318929"
+
         },
         {
             "name": "CVMAQP3_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMAQP3_Sony_D.zip",
             "source_checksum": "7be0637efa56ebac059fc480b3045b4f",
             "input_file": "CVMAQP3_Sony_D.jsv",
-            "result": "fa8cf12561c04bbf68f93769ae2d1443",
-            "result_frames": null
+            "result": "fa8cf12561c04bbf68f93769ae2d1443"
+
         },
         {
             "name": "CVMP_MOT_FLD_L30_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMP_MOT_FLD_L30_B.zip",
             "source_checksum": "b77be505335f504b854a0c6b8e3e1974",
             "input_file": "CVMP_MOT_FLD_L30_B.26l",
-            "result": "7a2ff88bf2a85190b690db602323124f",
-            "result_frames": null
+            "result": "7a2ff88bf2a85190b690db602323124f"
+
         },
         {
             "name": "CVMP_MOT_FRM_L31_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVMP_MOT_FRM_L31_B.zip",
             "source_checksum": "b55e858fbc17a1587aa2ba6f5e1e091c",
             "input_file": "CVMP_MOT_FRM_L31_B.26l",
-            "result": "e55e41c7ed89a78ab338faabdd1abff1",
-            "result_frames": null
+            "result": "e55e41c7ed89a78ab338faabdd1abff1"
+
         },
         {
             "name": "CVNLFI1_Sony_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVNLFI1_Sony_C.zip",
             "source_checksum": "70d89a93f27cd840af0ec30cf52e9477",
             "input_file": "CVNLFI1_Sony_C.jsv",
-            "result": "f76dfe9a73a69f25106b940b21c436ce",
-            "result_frames": null
+            "result": "f76dfe9a73a69f25106b940b21c436ce"
+
         },
         {
             "name": "CVNLFI2_Sony_H",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVNLFI2_Sony_H.zip",
             "source_checksum": "edb23aa4582278818d4e8fb968b88967",
             "input_file": "CVNLFI2_Sony_H.jsv",
-            "result": "c9d048ee4281ad2f7e41be1da0f9c210",
-            "result_frames": null
+            "result": "c9d048ee4281ad2f7e41be1da0f9c210"
+
         },
         {
             "name": "CVPA1_TOSHIBA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVPA1_TOSHIBA_B.zip",
             "source_checksum": "8973aff7dbf3a2b2ba0d61d4400d2a2a",
             "input_file": "CVPA1_TOSHIBA_B.264",
-            "result": "6c1d64160a6a4d81a3c8176e7ba304c4",
-            "result_frames": null
+            "result": "6c1d64160a6a4d81a3c8176e7ba304c4"
+
         },
         {
             "name": "CVPCMNL1_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVPCMNL1_SVA_C.zip",
             "source_checksum": "7a446d7fab82cb91e56fe8853c98000c",
             "input_file": "CVPCMNL1_SVA_C.264",
-            "result": "5c1fd0f68e875200711febf1d683e58f",
-            "result_frames": null
+            "result": "5c1fd0f68e875200711febf1d683e58f"
+
         },
         {
             "name": "CVPCMNL2_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVPCMNL2_SVA_C.zip",
             "source_checksum": "88748eb136dbbddad7d750feb2cfdca7",
             "input_file": "CVPCMNL2_SVA_C.264",
-            "result": "af1f1dbe1dd6569cb02271f053217d88",
-            "result_frames": null
+            "result": "af1f1dbe1dd6569cb02271f053217d88"
+
         },
         {
             "name": "CVSE2_Sony_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVSE2_Sony_B.zip",
             "source_checksum": "c628cb879b504a3a712adfcb974cb7d2",
             "input_file": "CVSE2_Sony_B.jsv",
-            "result": "dd660fb407feb42ecd3af06b42fda90d",
-            "result_frames": null
+            "result": "dd660fb407feb42ecd3af06b42fda90d"
+
         },
         {
             "name": "CVSE3_Sony_H",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVSE3_Sony_H.zip",
             "source_checksum": "066de9699dc5f858014a2af2094ed578",
             "input_file": "CVSE3_Sony_H.jsv",
-            "result": "66ab90e408e469bdb9814e9e741d60de",
-            "result_frames": null
+            "result": "66ab90e408e469bdb9814e9e741d60de"
+
         },
         {
             "name": "CVSEFDFT3_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVSEFDFT3_Sony_E.zip",
             "source_checksum": "fc4a8c6f27fdbd264308e75c8d818542",
             "input_file": "CVSEFDFT3_Sony_E.jsv",
-            "result": "f44e4059d056aa3796f384a11c894821",
-            "result_frames": null
+            "result": "f44e4059d056aa3796f384a11c894821"
+
         },
         {
             "name": "CVWP1_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVWP1_TOSHIBA_E.zip",
             "source_checksum": "929a73d33a914d3ff2a52c552b7bb0d5",
             "input_file": "CVWP1_TOSHIBA_E/CVWP1_TOSHIBA_E.264",
-            "result": "e8868ca5e934ad779132cdb3c71be000",
-            "result_frames": null
+            "result": "e8868ca5e934ad779132cdb3c71be000"
+
         },
         {
             "name": "CVWP2_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVWP2_TOSHIBA_E.zip",
             "source_checksum": "22a5c6aa043f9545acd6dfbba6fb5ea9",
             "input_file": "CVWP2_TOSHIBA_E/CVWP2_TOSHIBA_E.264",
-            "result": "7616ccc1e4cc89805cf5ae11e4437533",
-            "result_frames": null
+            "result": "7616ccc1e4cc89805cf5ae11e4437533"
+
         },
         {
             "name": "CVWP3_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVWP3_TOSHIBA_E.zip",
             "source_checksum": "8ac3de6d4154f8b6593c23a301ffbfe0",
             "input_file": "CVWP3_TOSHIBA_E/CVWP3_TOSHIBA_E.264",
-            "result": "8eb5c239e3ea1da0b5c9220593a46674",
-            "result_frames": null
+            "result": "8eb5c239e3ea1da0b5c9220593a46674"
+
         },
         {
             "name": "CVWP5_TOSHIBA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/CVWP5_TOSHIBA_E.zip",
             "source_checksum": "5a1999f11e047b6caeaf18faf48dec2a",
             "input_file": "CVWP5_TOSHIBA_E/CVWP5_TOSHIBA_E.264",
-            "result": "9663da55e5ef516c8bf0ca0bcc0abbb8",
-            "result_frames": null
+            "result": "9663da55e5ef516c8bf0ca0bcc0abbb8"
+
         },
         {
             "name": "FI1_Sony_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/FI1_Sony_E.zip",
             "source_checksum": "49555315fca952578ddf7918c706f833",
             "input_file": "FI1_Sony_E.jsv",
-            "result": "e56dee215cec5912300406975ffdc56c",
-            "result_frames": null
+            "result": "e56dee215cec5912300406975ffdc56c"
+
         },
         {
             "name": "FM1_BT_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/FM1_BT_B.zip",
             "source_checksum": "43da4cb7e244219d4ca423419d27cde8",
             "input_file": "FM1_BT_B.h264",
-            "result": "f21ad956409cfa237099f7ac28390614",
-            "result_frames": null
+            "result": "f21ad956409cfa237099f7ac28390614"
+
         },
         {
             "name": "FM1_FT_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/FM1_FT_E.zip",
             "source_checksum": "3644489dab877ffbf5497594098f63e2",
             "input_file": "FM1_FT_E.264",
-            "result": "bf2d60e2a0140368e087580a8565fc99",
-            "result_frames": null
+            "result": "bf2d60e2a0140368e087580a8565fc99"
+
         },
         {
             "name": "FM2_SVA_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/FM2_SVA_C.zip",
             "source_checksum": "b3081d2ddd3ae7b5fbf5fc6e113703c1",
             "input_file": "FM2_SVA_C.264",
-            "result": "2ca2331ff02689d0cc036935a7f0d4bf",
-            "result_frames": null
+            "result": "2ca2331ff02689d0cc036935a7f0d4bf"
+
         },
         {
             "name": "HCBP1_HHI_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/HCBP1_HHI_A.zip",
             "source_checksum": "71d413cdd406c30df18ffcf8856573b5",
             "input_file": "HCBP1_HHI_A.264",
-            "result": "13022e7970d78f1de4aaf1f7bd0e440b",
-            "result_frames": null
+            "result": "13022e7970d78f1de4aaf1f7bd0e440b"
+
         },
         {
             "name": "HCBP2_HHI_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/HCBP2_HHI_A.zip",
             "source_checksum": "5614b31c2720aa25f3880e0a339e90a8",
             "input_file": "HCBP2_HHI_A.264",
-            "result": "6c689d1541f97dcc1a17f5bdb6569cf1",
-            "result_frames": null
+            "result": "6c689d1541f97dcc1a17f5bdb6569cf1"
+
         },
         {
             "name": "HCMP1_HHI_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/HCMP1_HHI_A.zip",
             "source_checksum": "e10ce6bd382720ebfe3480a49bf3fbb8",
             "input_file": "HCMP1_HHI_A.264",
-            "result": "adb6ad8345fd8a8f90330f1fa2f5a17f",
-            "result_frames": null
+            "result": "adb6ad8345fd8a8f90330f1fa2f5a17f"
+
         },
         {
             "name": "LS_SVA_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/LS_SVA_D.zip",
             "source_checksum": "77b96ac457125d453b45a2ee172ba2c5",
             "input_file": "LS_SVA_D.264",
-            "result": "9c53be4b1dedcd4598d30293f01c7bfe",
-            "result_frames": null
+            "result": "9c53be4b1dedcd4598d30293f01c7bfe"
+
         },
         {
             "name": "MIDR_MW_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MIDR_MW_D.zip",
             "source_checksum": "8091eb5e8e7487424e42b43e60e2d08a",
             "input_file": "MIDR_MW_D.264",
-            "result": "d87bff88b2c5b96ccb291ef68a45bbc2",
-            "result_frames": null
+            "result": "d87bff88b2c5b96ccb291ef68a45bbc2"
+
         },
         {
             "name": "MPS_MW_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MPS_MW_A.zip",
             "source_checksum": "78c0d3b815df95efb71c774a799530a5",
             "input_file": "MPS_MW_A.264",
-            "result": "88bb5a513bd7f3cc8190c7c03688ab22",
-            "result_frames": null
+            "result": "88bb5a513bd7f3cc8190c7c03688ab22"
+
         },
         {
             "name": "MR1_BT_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR1_BT_A.zip",
             "source_checksum": "777d1495dd44bf61315e14ce791cc911",
             "input_file": "MR1_BT_A.h264",
-            "result": "6ea31a214aadd8bdc8e7d37195d91c81",
-            "result_frames": null
+            "result": "6ea31a214aadd8bdc8e7d37195d91c81"
+
         },
         {
             "name": "MR1_MW_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR1_MW_A.zip",
             "source_checksum": "12b97c959ee3a80b3a4861dd7d7b429e",
             "input_file": "MR1_MW_A.264",
-            "result": "8c03b4a5b27a6f594d917d6fee1d86e6",
-            "result_frames": null
+            "result": "8c03b4a5b27a6f594d917d6fee1d86e6"
+
         },
         {
             "name": "MR2_MW_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR2_MW_A.zip",
             "source_checksum": "af272969268ef2da76a3d2c27d16ae35",
             "input_file": "MR2_MW_A.264",
-            "result": "20e66bac06e537fb1d2fa949b28046cd",
-            "result_frames": null
+            "result": "20e66bac06e537fb1d2fa949b28046cd"
+
         },
         {
             "name": "MR2_TANDBERG_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR2_TANDBERG_E.zip",
             "source_checksum": "1190405746a7d916a1a8e3a88050933b",
             "input_file": "MR2_TANDBERG_E.264",
-            "result": "d154bf9264960fecc6d2cf72be4cf8cc",
-            "result_frames": null
+            "result": "d154bf9264960fecc6d2cf72be4cf8cc"
+
         },
         {
             "name": "MR3_TANDBERG_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR3_TANDBERG_B.zip",
             "source_checksum": "143a1d8b36918dc1b3425cd49ebf856d",
             "input_file": "MR3_TANDBERG_B.264",
-            "result": "dd1091f75ac15d3ae70485295b0a116e",
-            "result_frames": null
+            "result": "dd1091f75ac15d3ae70485295b0a116e"
+
         },
         {
             "name": "MR4_TANDBERG_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR4_TANDBERG_C.zip",
             "source_checksum": "8c651e2557feb22cc6828cd72cad58a0",
             "input_file": "MR4_TANDBERG_C.264",
-            "result": "5f5f14beca549172487bb74c4d3ba8f9",
-            "result_frames": null
+            "result": "5f5f14beca549172487bb74c4d3ba8f9"
+
         },
         {
             "name": "MR5_TANDBERG_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR5_TANDBERG_C.zip",
             "source_checksum": "b02455a119c1ca187718b5771e4c93b1",
             "input_file": "MR5_TANDBERG_C.264",
-            "result": "5f5f14beca549172487bb74c4d3ba8f9",
-            "result_frames": null
+            "result": "5f5f14beca549172487bb74c4d3ba8f9"
+
         },
         {
             "name": "MR6_BT_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR6_BT_B.zip",
             "source_checksum": "f680279a4cb28173359c0ae232e550c5",
             "input_file": "MR6_BT_B.h264",
-            "result": "d2ef83e72a57df1cc5266a0be646463f",
-            "result_frames": null
+            "result": "d2ef83e72a57df1cc5266a0be646463f"
+
         },
         {
             "name": "MR7_BT_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR7_BT_B.zip",
             "source_checksum": "8eb9e11a436d7c37a555d54b521c28f5",
             "input_file": "MR7_BT_B.h264",
-            "result": "3ee7ae943bf21f309a6fe438f832d1b8",
-            "result_frames": null
+            "result": "3ee7ae943bf21f309a6fe438f832d1b8"
+
         },
         {
             "name": "MR8_BT_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR8_BT_B.zip",
             "source_checksum": "a5a4c8ea4ca9379734695a4a8ec93f2a",
             "input_file": "MR8_BT_B.h264",
-            "result": "1ed4829bf27262147b12ee16cd6ce5db",
-            "result_frames": null
+            "result": "1ed4829bf27262147b12ee16cd6ce5db"
+
         },
         {
             "name": "MR9_BT_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MR9_BT_B.zip",
             "source_checksum": "90efbbd00f6bac598012097e22e96c18",
             "input_file": "MR9_BT_B.h264",
-            "result": "c1ae4e809894d01cc4f5e6b0bb8df99e",
-            "result_frames": null
+            "result": "c1ae4e809894d01cc4f5e6b0bb8df99e"
+
         },
         {
             "name": "MV1_BRCM_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/MV1_BRCM_D.zip",
             "source_checksum": "168d590631159296f3d8ed457e08903b",
             "input_file": "src19td.IBP.264",
-            "result": "8e6fd7278f458c16b0af78e9581dcd64",
-            "result_frames": null
+            "result": "8e6fd7278f458c16b0af78e9581dcd64"
+
         },
         {
             "name": "NL1_Sony_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/NL1_Sony_D.zip",
             "source_checksum": "8d55f3b997ed89a667c0a5599a9904ff",
             "input_file": "NL1_Sony_D.jsv",
-            "result": "d4bb8d980c1377ee45515763ae7989fd",
-            "result_frames": null
+            "result": "d4bb8d980c1377ee45515763ae7989fd"
+
         },
         {
             "name": "NL2_Sony_H",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/NL2_Sony_H.zip",
             "source_checksum": "226a79c550a188893b0770e4e96a4a67",
             "input_file": "NL2_Sony_H.jsv",
-            "result": "48d8380cdb7eff52116c1aaddbc583f5",
-            "result_frames": null
+            "result": "48d8380cdb7eff52116c1aaddbc583f5"
+
         },
         {
             "name": "NL3_SVA_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/NL3_SVA_E.zip",
             "source_checksum": "88f13d1c9ea4b6073a131cdec822f566",
             "input_file": "NL3_SVA_E.264",
-            "result": "c90ce3fa732df9f7e25f110233f0f466",
-            "result_frames": null
+            "result": "c90ce3fa732df9f7e25f110233f0f466"
+
         },
         {
             "name": "NLMQ1_JVC_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/NLMQ1_JVC_C.zip",
             "source_checksum": "d165d58446bd0cecbb8d5864a634e811",
             "input_file": "NLMQ1_JVC_C.264",
-            "result": "5c4a2f6b39385805f480a3a4432873b2",
-            "result_frames": null
+            "result": "5c4a2f6b39385805f480a3a4432873b2"
+
         },
         {
             "name": "NLMQ2_JVC_C",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/NLMQ2_JVC_C.zip",
             "source_checksum": "c0f5b7d9baff28d811ae6cc9aa5f3443",
             "input_file": "NLMQ2_JVC_C.264",
-            "result": "90b70fbaa5ca679ec9bf5e011ddba8f9",
-            "result_frames": null
+            "result": "90b70fbaa5ca679ec9bf5e011ddba8f9"
+
         },
         {
             "name": "NRF_MW_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/NRF_MW_E.zip",
             "source_checksum": "d4223b4fae1f06f6f2053556298e84f1",
             "input_file": "NRF_MW_E.264",
-            "result": "a8635615b50c5a16decc555a3c6c81c8",
-            "result_frames": null
+            "result": "a8635615b50c5a16decc555a3c6c81c8"
+
         },
         {
             "name": "Sharp_MP_Field_1_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/Sharp_MP_Field_1_B.zip",
             "source_checksum": "b1095ff29ad6a3feeef73e20757c3f76",
             "input_file": "Sharp_MP_Field_1_B.jvt",
-            "result": "069ca95648563a3d0d78121588b506ee",
-            "result_frames": null
+            "result": "069ca95648563a3d0d78121588b506ee"
+
         },
         {
             "name": "Sharp_MP_Field_2_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/Sharp_MP_Field_2_B.zip",
             "source_checksum": "b992383697fd0e34de9f374dc661443e",
             "input_file": "Sharp_MP_Field_2_B.jvt",
-            "result": "6025cbdf791a3881c371774d3674b471",
-            "result_frames": null
+            "result": "6025cbdf791a3881c371774d3674b471"
+
         },
         {
             "name": "Sharp_MP_Field_3_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/Sharp_MP_Field_3_B.zip",
             "source_checksum": "3f26557fda6e85e7e0f04f4b926ed800",
             "input_file": "Sharp_MP_Field_3_B.jvt",
-            "result": "01c63ee764a75a5100e3f720954f65f5",
-            "result_frames": null
+            "result": "01c63ee764a75a5100e3f720954f65f5"
+
         },
         {
             "name": "Sharp_MP_PAFF_1r2",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/Sharp_MP_PAFF_1r2.zip",
             "source_checksum": "1422bbedf0c98ceb703d6ca514260783",
             "input_file": "Sharp_MP_PAFF_1r2.jvt",
-            "result": "e31b7df5a2e5dde2b5c8ede9d3aec16d",
-            "result_frames": null
+            "result": "e31b7df5a2e5dde2b5c8ede9d3aec16d"
+
         },
         {
             "name": "Sharp_MP_PAFF_2r",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/Sharp_MP_PAFF_2r.zip",
             "source_checksum": "b9a2f52d0fc6c45e8040dc5bf654826f",
             "input_file": "Sharp_MP_PAFF_2.jvt",
-            "result": "8edf56f61f81162c1f7a795029aca26f",
-            "result_frames": null
+            "result": "8edf56f61f81162c1f7a795029aca26f"
+
         },
         {
             "name": "SL1_SVA_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SL1_SVA_B.zip",
             "source_checksum": "00aca6047265e9f042c6500374140688",
             "input_file": "SL1_SVA_B.264",
-            "result": "acd9cb061e651a37839eb5683fbe811a",
-            "result_frames": null
+            "result": "acd9cb061e651a37839eb5683fbe811a"
+
         },
         {
             "name": "SP1_BT_A",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SP1_BT_A.zip",
             "source_checksum": "23c47c4535e838cb2ac4e98eb05c9238",
             "input_file": "sp1_bt_a.h264",
-            "result": "ca0b3580f448cc1e07f81a4756273b59",
-            "result_frames": null
+            "result": "ca0b3580f448cc1e07f81a4756273b59"
+
         },
         {
             "name": "sp2_bt_b",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/sp2_bt_b.zip",
             "source_checksum": "c1601a80dabffd65a1c3416635b6e862",
             "input_file": "H26L/BitstreamExchange/sp2_bt_b.h264",
-            "result": "77fef826070d3d17174529b16765bb24",
-            "result_frames": null
+            "result": "77fef826070d3d17174529b16765bb24"
+
         },
         {
             "name": "SVA_BA1_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_BA1_B.zip",
             "source_checksum": "9b8dbf8d53c5c86d0fdb7f562d48a8bc",
             "input_file": "SVA_BA1_B.264",
-            "result": "dab92aa2145ab44abab2beb2868dd326",
-            "result_frames": null
+            "result": "dab92aa2145ab44abab2beb2868dd326"
+
         },
         {
             "name": "SVA_BA2_D",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_BA2_D.zip",
             "source_checksum": "2e19bf8fdc75ae5b3d3024a7fe0b627a",
             "input_file": "SVA_BA2_D.264",
-            "result": "66130b14295574bf35b725a8eaded3ae",
-            "result_frames": null
+            "result": "66130b14295574bf35b725a8eaded3ae"
+
         },
         {
             "name": "SVA_Base_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_Base_B.zip",
             "source_checksum": "b142d2416e72b16d6db435a4f0d45ebb",
             "input_file": "SVA_Base_B.264",
-            "result": "180dda3234bcbe57fc45587dac7d43fb",
-            "result_frames": null
+            "result": "180dda3234bcbe57fc45587dac7d43fb"
+
         },
         {
             "name": "SVA_CL1_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_CL1_E.zip",
             "source_checksum": "6f88f5b3a4855602f2ff294e028bfee9",
             "input_file": "SVA_CL1_E.264",
-            "result": "5723a1518de9fadca7499c5ba34da7c4",
-            "result_frames": null
+            "result": "5723a1518de9fadca7499c5ba34da7c4"
+
         },
         {
             "name": "SVA_FM1_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_FM1_E.zip",
             "source_checksum": "281237b3e2943f1854b5e50340581ca9",
             "input_file": "SVA_FM1_E.264",
-            "result": "7f7eaf6107852b871a3894a950e3647e",
-            "result_frames": null
+            "result": "7f7eaf6107852b871a3894a950e3647e"
+
         },
         {
             "name": "SVA_NL1_B",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_NL1_B.zip",
             "source_checksum": "c2cd660149c09fb90f6f0761bdca7a06",
             "input_file": "SVA_NL1_B.264",
-            "result": "b5626983ac0877497fff9a4b10d2f1d4",
-            "result_frames": null
+            "result": "b5626983ac0877497fff9a4b10d2f1d4"
+
         },
         {
             "name": "SVA_NL2_E",
             "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/SVA_NL2_E.zip",
             "source_checksum": "c8664c867e1c607349b508ec4f18a6e3",
             "input_file": "SVA_NL2_E.264",
-            "result": "b47e932d436288013b8453d9a1d0f60d",
-            "result_frames": null
+            "result": "b47e932d436288013b8453d9a1d0f60d"
+
         }
     ]
 }

@@ -22,13 +22,12 @@ class TestVector:
     '''Test vector'''
 
     def __init__(self, name: str, source: str, source_checksum: str, input_file: str,
-                 result: str, result_frames=None):
+                 result: str):
         self.name = name
         self.source = source
         self.source_checksum = source_checksum
         self.input_file = input_file
         self.result = result
-        self.result_frames = result_frames
         self.errors = []
 
     @classmethod
@@ -47,6 +46,4 @@ class TestVector:
             f'            Source: {self.source}\n' \
             f'            Input: {self.input_file}\n' \
             f'            Result: {self.result}'
-        if self.result_frames:
-            ret += f'\n            Result frames: {", ".join(self.result_frames)}'
         return ret

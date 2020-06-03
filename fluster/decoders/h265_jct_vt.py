@@ -25,9 +25,9 @@ from fluster.utils import file_checksum
 
 @register_decoder
 class H265JCTVTDecoder(Decoder):
-    '''JCT-VT H.265 / HEVC reference decoder implementation'''
+    '''JCT-VT H.265/HEVC reference decoder implementation'''
     name = "JCT-VT-H265"
-    description = "JCT-VT H.265 / HEVC reference decoder"
+    description = "JCT-VT H.265/HEVC reference decoder"
     codec = Codec.H265
     binary = 'TAppDecoder'
 

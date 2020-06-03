@@ -51,7 +51,7 @@ class GStreamer(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check_run(self):
+    def check(self):
         # pylint: disable=broad-except
         try:
             pipeline = f'gst-launch-{self.gst_api} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
@@ -83,6 +83,16 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
     '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
     decoder_bin = ' h265parse ! vaapih265dec '
+    caps = 'video/x-raw,format=I420'
+    api = 'VA-API'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerVaapiH264Gst10Decoder(GStreamer10):
+    '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! vaapih264dec '
     caps = 'video/x-raw,format=I420'
     api = 'VA-API'
     hw_acceleration = True
