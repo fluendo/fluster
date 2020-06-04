@@ -230,11 +230,11 @@ class TestSuite:
             print(
                 f'Decoder {ctx.decoder.name} uses hardware acceleration, using 1 job automatically')
 
-        print('*' * 100 + '\n')
-        string = f'Running test suite {self.name} with decoder {ctx.decoder.name}'
+        print('*' * 100)
+        string = f'Running test suite {self.name} with decoder {ctx.decoder.name}\n'
         if ctx.test_vectors:
-            string += f' and test vectors {", ".join(ctx.test_vectors)}'
-        string += f' using {ctx.jobs} parallel jobs'
+            string += f'Test vectors {" ".join(ctx.test_vectors)}\n'
+        string += f'Using {ctx.jobs} parallel job(s)'
         print(string)
         print('*' * 100 + '\n')
 
