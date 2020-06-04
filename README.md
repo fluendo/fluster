@@ -102,14 +102,14 @@ H264
     Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0 ❌
     GStreamer-H.264-VA-API-Gst1.0: GStreamer H.264 VA-API decoder for GStreamer 1.0 ✔️
     JCT-VT-H264: JCT-VT H.264/AVC reference decoder ✔️
-    ffmpeg-H264: ffmpeg H.264 decoder ✔️
+    FFmpeg-H264: FFmpeg H.264 decoder ✔️
 H265
     Fluendo-H.265-HW-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0 ✔️
     Fluendo-H.265-SW-Gst0.10: Fluendo H.265 SW decoder for GStreamer 0.10 ❌
     Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0 ❌
     GStreamer-H.265-VA-API-Gst1.0: GStreamer H.265 VA-API decoder for GStreamer 1.0 ✔️
     JCT-VT-H265: JCT-VT H.265/HEVC reference decoder ✔️
-    ffmpeg-H265: ffmpeg H.265 decoder ✔️
+    FFmpeg-H265: FFmpeg H.265 decoder ✔️
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
@@ -125,9 +125,9 @@ H265
       suite for all decoders that support H.265/HEVC
     - `./fluster.py run -ts JCT-VC-HEVC_V1 -tv AMP_A_Samsung_7` runs only the
       test vector *AMP_A_Samsung_7* of the *JCT-VC-HEVC_V1* test suite
-    - `./fluster.py run -d ffmpeg-H265` runs the *ffmpeg-H265* decoder on all
+    - `./fluster.py run -d FFmpeg-H265` runs the *FFmpeg-H265* decoder on all
       test suites for H.265/HEVC
-    - `./fluster.py run -d ffmpeg-H265 -j1` runs the *ffmpeg-H265* decoder on all
+    - `./fluster.py run -d FFmpeg-H265 -j1` runs the *FFmpeg-H265* decoder on all
       test suites for H.265/HEVC using one job
 
 ## Test Suites
@@ -138,18 +138,18 @@ H265
 
 ## Decoders
 
-- [JCT-VT H.264/AVC](https://vcgit.hhi.fraunhofer.de/jct-vc/JM) as reference
-  decoder for H.264/AVC
 - [JCT-VT H.265/HEVC](https://vcgit.hhi.fraunhofer.de/jct-vc/HM) as reference
   decoder for H.265/HEVC
+- [JCT-VT H.264/AVC](https://vcgit.hhi.fraunhofer.de/jct-vc/JM) as reference
+  decoder for H.264/AVC
 - GStreamer's
   [vaapih265dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih265dec.html)
   for H.265/HEVC
 - GStreamer's
   [vaapih264dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih264dec.html)
   for H.264/AVC
-- [ffmpeg's](https://ffmpeg.org) H.265/HEVC
-- [ffmpeg's](https://ffmpeg.org) H.264/AVC
+- [FFmpeg's](https://FFmpeg.org) H.265/HEVC
+- [FFmpeg's](https://FFmpeg.org) H.264/AVC
 - Fluendo's propietary decoders for H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/)

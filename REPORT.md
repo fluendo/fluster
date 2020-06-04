@@ -57,9 +57,9 @@ vainfo: Supported profile and entrypoints
 
 ## H.265/HECV
 
-`./fluster.py run -d GStreamer-H.265-VA-API-Gst1.0 JCT-VT-H265 ffmpeg-H265 -ts JCT-VC-HEVC_V1 -s`
+`./fluster.py run -d GStreamer-H.265-VA-API-Gst1.0 JCT-VT-H265 FFmpeg-H265 -ts JCT-VC-HEVC_V1 -s`
 
-|Test|GStreamer-H.265-VA-API-Gst1.0|JCT-VT-H265|ffmpeg-H265|
+|Test|GStreamer-H.265-VA-API-Gst1.0|JCT-VT-H265|FFmpeg-H265|
 |-|-|-|-|
 |AMP_A_Samsung_7|✔️|✔️|✔️|
 |AMP_B_Samsung_7|✔️|✔️|✔️|
@@ -213,9 +213,9 @@ vainfo: Supported profile and entrypoints
 
 ## H.264/AVC
 
-`./fluster.py run -d GStreamer-H.264-VA-API-Gst1.0 JCT-VT-H264 ffmpeg-H264 -ts JVT-AVC_V1 -s`
+`./fluster.py run -d GStreamer-H.264-VA-API-Gst1.0 JCT-VT-H264 FFmpeg-H264 -ts JVT-AVC_V1 -s`
 
-|Test|GStreamer-H.264-VA-API-Gst1.0|JCT-VT-H264|ffmpeg-H264|
+|Test|GStreamer-H.264-VA-API-Gst1.0|JCT-VT-H264|FFmpeg-H264|
 |-|-|-|-|
 |AUD_MW_E|✔️|✔️|✔️|
 |BA1_FT_C|✔️|✔️|✔️|

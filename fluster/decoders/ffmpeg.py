@@ -27,9 +27,9 @@ from fluster.utils import file_checksum
 
 @register_decoder
 class FFmpegH264Decoder(Decoder):
-    '''ffmpeg decoder for H.264'''
-    name = "ffmpeg-H264"
-    description = "ffmpeg H.264 decoder"
+    '''FFmpeg decoder for H.264'''
+    name = "FFmpeg-H264"
+    description = "FFmpeg H.264 decoder"
     codec = Codec.H264
     binary = 'ffmpeg'
 
@@ -42,11 +42,11 @@ class FFmpegH264Decoder(Decoder):
 
 @register_decoder
 class FFmpegH265Decoder(Decoder):
-    '''ffmpeg decoder for H.265'''
-    name = "ffmpeg-H265"
-    description = "ffmpeg H.265 decoder"
+    '''FFmpeg decoder for H.265'''
+    name = "FFmpeg-H265"
+    description = "FFmpeg H.265 decoder"
     codec = Codec.H265
-    binary = 'ffmpeg'
+    binary = 'FFmpeg'
 
     def decode(self, input_filepath: str, output_filepath: str, timeout: int):
         '''Decodes input_filepath in output_filepath'''
