@@ -208,6 +208,21 @@ class TestSuite:
         '''
         # pylint: disable=too-many-locals
 
+        if not ctx.decoder.check():
+            print(
+                f'Skipping decoder {ctx.decoder.name} because it cannot be run')
+            return None
+
+        ctx.results_dir = os.path.join(
+            ctx.results_dir, self.name, 'test_results')
+        if not os.path.exists(ctx.results_dir):
+            os.makedirs(ctx.results_dir)
+
+        test_suite = self.clone()
+        tests = test_suite.generate_tests(ctx)
+        if not tests:
+            return None
+
         # decoders using hardware acceleration cannot be easily parallelized
         # reliably and may case issues. Thus, we execute them sequentially
         if ctx.decoder.hw_acceleration and ctx.jobs > 1:
@@ -215,24 +230,13 @@ class TestSuite:
             print(
                 f'Decoder {ctx.decoder.name} uses hardware acceleration, using 1 job automatically')
 
-        print('*' * 100 + '\n')
-        string = f'Running test suite {self.name} with decoder {ctx.decoder.name}'
+        print('*' * 100)
+        string = f'Running test suite {self.name} with decoder {ctx.decoder.name}\n'
         if ctx.test_vectors:
-            string += f' and test vectors {", ".join(ctx.test_vectors)}'
-        string += f' using {ctx.jobs} parallel jobs'
+            string += f'Test vectors {" ".join(ctx.test_vectors)}\n'
+        string += f'Using {ctx.jobs} parallel job(s)'
         print(string)
         print('*' * 100 + '\n')
-        if not ctx.decoder.check():
-            print(
-                f'Skipping decoder {ctx.decoder.name} because it cannot be run')
-            return None
-
-        results_dir = os.path.join(ctx.results_dir, self.name, 'test_results')
-        if not os.path.exists(results_dir):
-            os.makedirs(results_dir)
-
-        test_suite = self.clone()
-        tests = test_suite.generate_tests(ctx)
 
         if ctx.jobs == 1:
             test_suite.run_test_suite_sequentially(
@@ -243,8 +247,8 @@ class TestSuite:
         if ctx.reference:
             test_suite.to_json_file(test_suite.filename)
 
-        if not ctx.keep_files and os.path.isdir(results_dir):
-            rmtree(results_dir)
+        if not ctx.keep_files and os.path.isdir(ctx.results_dir):
+            rmtree(ctx.results_dir)
 
         return test_suite
 
