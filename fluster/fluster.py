@@ -156,15 +156,17 @@ class Fluster:
             print('Reference mode')
 
         error = False
-        for ctx.test_suite in ctx.test_suites:
+        no_test_run = True
+        for test_suite in ctx.test_suites:
             results = []
             for decoder in ctx.decoders:
-                if decoder.codec != ctx.test_suite.codec:
+                if decoder.codec != test_suite.codec:
                     continue
-                test_suite_res = ctx.test_suite.run(
+                test_suite_res = test_suite.run(
                     ctx.to_test_suite_context(decoder, self.results_dir, ctx.test_vectors))
 
                 if test_suite_res:
+                    no_test_run = False
                     results.append((decoder, test_suite_res))
                     success = True
                     for test_vector in test_suite_res.test_vectors.values():
@@ -179,7 +181,7 @@ class Fluster:
 
             if ctx.summary and results:
                 self._generate_summary(results)
-        if error:
+        if error or no_test_run:
             sys.exit(1)
 
     def _generate_summary(self, results: tuple):
