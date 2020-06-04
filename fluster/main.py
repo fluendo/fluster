@@ -83,8 +83,8 @@ class Main:
             '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
             '0 means all logical cores',
             type=int, default=multiprocessing.cpu_count())
-        subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 5 secs',
-                               type=int, default=5)
+        subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 20 secs',
+                               type=int, default=20)
         subparser.add_argument(
             '-ff', '--failfast', help='stop after first fail', action='store_true')
         subparser.add_argument(
