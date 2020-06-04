@@ -215,8 +215,9 @@ class TestSuite:
 
         ctx.results_dir = os.path.join(
             ctx.results_dir, self.name, 'test_results')
-        if not os.path.exists(ctx.results_dir):
-            os.makedirs(ctx.results_dir)
+        if os.path.exists(ctx.results_dir):
+            rmtree(ctx.results_dir)
+        os.makedirs(ctx.results_dir)
 
         test_suite = self.clone()
         tests = test_suite.generate_tests(ctx)
@@ -268,6 +269,6 @@ class TestSuite:
 
     def __str__(self):
         return f'\n{self.name}\n' \
-            f'    Codec: {self.codec}\n' \
+            f'    Codec: {self.codec.value}\n' \
             f'    Description: {self.description}\n' \
             f'    Test vectors: {len(self.test_vectors)}'
