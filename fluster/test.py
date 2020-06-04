@@ -38,14 +38,8 @@ class Test(unittest.TestCase):
         self.reference = reference
         self.timeout = timeout
         self.keep_files = keep_files
-        test_name = ''
-        for char in f'{decoder.name}_{test_suite.name}_{test_vector.name}':
-            if char.isalnum():
-                test_name += char
-            else:
-                test_name += '_'
-        setattr(self, test_name, self._test)
-        super().__init__(test_name)
+        setattr(self, test_vector.name, self._test)
+        super().__init__(test_vector.name)
 
     def _test(self):
         output_filepath = os.path.join(
