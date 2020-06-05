@@ -160,6 +160,13 @@ class TestSuite:
 
     def run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
         '''Run the test suite sequentially'''
+
+        # Set the names of the tests to a more human-friendly name: Decoder.TestSuite
+        for test in tests:
+            test_cls = type(test)
+            test_cls.__module__ = test.decoder.name
+            test_cls.__qualname__ = test.test_suite.name
+
         suite = unittest.TestSuite()
         suite.addTests(tests)
         runner = unittest.TextTestRunner(
