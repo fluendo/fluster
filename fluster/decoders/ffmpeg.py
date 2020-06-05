@@ -46,7 +46,7 @@ class FFmpegH265Decoder(Decoder):
     name = "FFmpeg-H265"
     description = "FFmpeg H.265 decoder"
     codec = Codec.H265
-    binary = 'FFmpeg'
+    binary = 'ffmpeg'
 
     def decode(self, input_filepath: str, output_filepath: str, timeout: int):
         '''Decodes input_filepath in output_filepath'''
