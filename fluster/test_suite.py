@@ -144,20 +144,44 @@ class TestSuite:
 
         print('All downloads finished')
 
+    def _rename_test(self, test: Test, module, qualname):
+        test_cls = type(test)
+        test_cls.__module__ = module
+        test_cls.__qualname__ = qualname
+
+    def __collect_results(self, test_result: TestResult):
+        '''Collect all TestResults with error to add them into the test vectors'''
+        for res in test_result.failures:
+            test_vector = res[0].test_vector
+            test_vector.errors.append([str(x) for x in res])
+        for res in test_result.errors:
+            test_vector = res[0].test_vector
+            test_vector.errors.append([str(x) for x in res])
+
     def _run_worker(self, test: Test):
         '''Run one unit test returning the TestVector'''
+        # Save the original module and qualname to restore it before returning
+        # the TestVector. Otherwise, Pickle will complain if the classes can't
+        # be found in global scope. The trick here is that we change the names
+        # momentarily just to obtain the error traces in str format
+        test_cls = type(test)
+        module_orig = test_cls.__module__
+        qualname_orig = test_cls.__qualname__
+        self._rename_test(test, test.decoder.name, test.test_suite.name)
+
         test_result = TestResult()
         test(test_result)
+
         line = '.'
         if test_result.failures:
             line = 'F'
         elif test_result.errors:
             line = 'E'
         print(line, end='', flush=True)
-        if test_result.failures:
-            test.test_vector.errors += test_result.failures
-        if test_result.errors:
-            test.test_vector.errors += test_result.errors
+
+        self.__collect_results(test_result)
+        self._rename_test(test, module_orig, qualname_orig)
+
         return test.test_vector
 
     def run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
@@ -165,9 +189,7 @@ class TestSuite:
 
         # Set the names of the tests to a more human-friendly name: Decoder.TestSuite
         for test in tests:
-            test_cls = type(test)
-            test_cls.__module__ = test.decoder.name
-            test_cls.__qualname__ = test.test_suite.name
+            self._rename_test(test, test.decoder.name, test.test_suite.name)
 
         suite = unittest.TestSuite()
         suite.addTests(tests)
@@ -175,14 +197,7 @@ class TestSuite:
             failfast=failfast, verbosity=1 if quiet else 2)
         res = runner.run(suite)
 
-        # Collect all TestResults with error to add them into the test vectors
-        for test_result in res.failures:
-            test_vector = test_result[0].test_vector
-            test_vector.errors.append(test_result[1])
-        for test_result in res.errors:
-            test_vector = test_result[0].test_vector
-            test_vector.errors.append(test_result[1])
-
+        self.__collect_results(res)
         self.test_vectors_success = 0
         for test_vector in self.test_vectors.values():
             if not test_vector.errors:
@@ -199,7 +214,9 @@ class TestSuite:
             for test_vector_res in test_results:
                 if test_vector_res.errors:
                     for error in test_vector_res.errors:
-                        for line in error:
+                        # Use same format to report errors as TextTestRunner
+                        print(f'{"=" * 71}\nFAIL: {error[0]}\n{"-" * 70}')
+                        for line in error[1:]:
                             print(line)
                 else:
                     self.test_vectors_success += 1
