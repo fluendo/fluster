@@ -149,8 +149,10 @@ class TestSuite:
         test_result = TestResult()
         test(test_result)
         line = '.'
-        if not test_result.wasSuccessful():
-            line = 'x'
+        if test_result.failures:
+            line = 'F'
+        elif test_result.errors:
+            line = 'E'
         print(line, end='', flush=True)
         if test_result.failures:
             test.test_vector.errors += test_result.failures
