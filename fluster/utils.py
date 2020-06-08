@@ -17,6 +17,7 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
+
 import hashlib
 import os
 import shutil
@@ -37,8 +38,15 @@ def download(url: str, dest_dir: str):
 
 
 def file_checksum(path: str):
-    '''Calculates the checksum of a file'''
-    return hashlib.md5(open(path, 'rb').read()).hexdigest()
+    '''Calculates the checksum of a file reading chunks of 64KiB'''
+    md5 = hashlib.md5()
+    with open(path, 'rb') as file:
+        while True:
+            data = file.read(65536)
+            if not data:
+                break
+            md5.update(data)
+    return md5.hexdigest()
 
 
 def is_extractable(filepath: str):
