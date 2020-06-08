@@ -47,16 +47,13 @@ class Main:
             fluster = Fluster(self.test_suites_dir,
                               self.decoders_dir,
                               self.resources_dir,
-                              self.results_dir,
-                              verbose=args.verbose)
+                              self.results_dir)
             args.func(args, fluster)
         else:
             self.parser.print_help()
 
     def _create_parser(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('-v', '--verbose',
-                            help='increase output verbosity', action='store_true')
         subparsers = parser.add_subparsers(title='subcommands')
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
@@ -105,6 +102,8 @@ class Main:
         subparser.add_argument(
             '-tth', '--time-threshold', help='set exit code to 3 if test suite takes longer than treshold seconds. '
             'exit code is 0 otherwise', type=float)
+        subparser.add_argument(
+            '-v', '--verbose', help='show stdout and stderr of commands executed', action='store_true')
         subparser.set_defaults(func=self._run_cmd)
 
     def _add_reference_cmd(self, subparsers):
@@ -122,6 +121,8 @@ class Main:
             'testsuites', help='list of testsuites to run the decoder with', nargs='+')
         subparser.add_argument(
             '-q', '--quiet', help="don't show every test run", action='store_true')
+        subparser.add_argument(
+            '-v', '--verbose', help='show stdout and stderr of commands executed', action='store_true')
         subparser.set_defaults(func=self._reference_cmd)
 
     def _add_download_cmd(self, subparsers):
@@ -158,7 +159,8 @@ class Main:
                           summary=args.summary,
                           keep_files=args.keep,
                           threshold=args.threshold,
-                          time_threshold=args.time_threshold
+                          time_threshold=args.time_threshold,
+                          verbose=args.verbose
                           )
         fluster.run_test_suites(context)
 
@@ -168,6 +170,7 @@ class Main:
                           test_suites=args.testsuites,
                           decoders=args.decoder,
                           quiet=args.quiet,
+                          verbose=args.verbose,
                           reference=True)
         fluster.run_test_suites(context)
 

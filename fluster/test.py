@@ -29,7 +29,7 @@ class Test(unittest.TestCase):
     # pylint: disable=too-many-instance-attributes
 
     def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str,
-                 reference: bool, timeout: int, keep_files: bool):
+                 reference: bool, timeout: int, keep_files: bool, verbose: bool):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
@@ -38,6 +38,7 @@ class Test(unittest.TestCase):
         self.reference = reference
         self.timeout = timeout
         self.keep_files = keep_files
+        self.verbose = verbose
         setattr(self, test_vector.name, self._test)
         super().__init__(test_vector.name)
 
@@ -47,7 +48,7 @@ class Test(unittest.TestCase):
         result = self.decoder.decode(
             os.path.join(self.resources_dir, self.test_suite.name,
                          self.test_vector.name, self.test_vector.input_file),
-            output_filepath, self.timeout)
+            output_filepath, self.timeout, self.verbose)
         if not self.keep_files and os.path.exists(output_filepath) and \
                 os.path.isfile(output_filepath):
             os.remove(output_filepath)
