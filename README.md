@@ -190,13 +190,13 @@ optional arguments:
 
 ```
 ./fluster.py run --help
-usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q] [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s] [-k]
+usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q] [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s] [-k] [-th THRESHOLD] [-tth TIME_THRESHOLD]
 
 optional arguments:
   -h, --help            show this help message and exit
   -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by default.0 means all logical cores
   -t TIMEOUT, --timeout TIMEOUT
-                        timeout in secs for each decoding. Defaults to 5 secs
+                        timeout in secs for each decoding. Defaults to 20 secs
   -ff, --failfast       stop after first fail
   -q, --quiet           don't show every test run
   -ts TESTSUITES [TESTSUITES ...], --testsuites TESTSUITES [TESTSUITES ...]
@@ -207,6 +207,10 @@ optional arguments:
                         run only the specific decoders
   -s, --summary         generate a summary in Markdown format for each test suite
   -k, --keep            keep output files generated during the test
+  -th THRESHOLD, --threshold THRESHOLD
+                        set exit code to 2 if threshold tests are not success. exit code is 0 otherwise
+  -tth TIME_THRESHOLD, --time-threshold TIME_THRESHOLD
+                        set exit code to 3 if test suite takes longer than treshold seconds. exit code is 0 otherwise
 ```
 
 ### Download
