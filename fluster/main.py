@@ -98,7 +98,13 @@ class Main:
         subparser.add_argument(
             '-s', '--summary', help='generate a summary in Markdown format for each test suite', action='store_true')
         subparser.add_argument(
-            '-k', '--keep', help="keep output files generated during the test", action='store_true')
+            '-k', '--keep', help='keep output files generated during the test', action='store_true')
+        subparser.add_argument(
+            '-th', '--threshold', help='set exit code to 2 if threshold tests are not success. '
+            'exit code is 0 otherwise', type=float)
+        subparser.add_argument(
+            '-tth', '--time-threshold', help='set exit code to 3 if test suite takes longer than treshold seconds. '
+            'exit code is 0 otherwise', type=float)
         subparser.set_defaults(func=self._run_cmd)
 
     def _add_reference_cmd(self, subparsers):
@@ -109,7 +115,7 @@ class Main:
             '0 means all logical cores',
             type=int, default=multiprocessing.cpu_count())
         subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 5 secs',
-                               type=int, default=5)
+                               type=int, default=20)
         subparser.add_argument(
             'decoder', help='decoder to run', nargs=1)
         subparser.add_argument(
@@ -150,7 +156,10 @@ class Main:
                           failfast=args.failfast,
                           quiet=args.quiet,
                           summary=args.summary,
-                          keep_files=args.keep)
+                          keep_files=args.keep,
+                          threshold=args.threshold,
+                          time_threshold=args.time_threshold
+                          )
         fluster.run_test_suites(context)
 
     def _reference_cmd(self, args, fluster):

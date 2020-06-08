@@ -40,7 +40,8 @@ class Context:
 
     def __init__(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
                  test_vectors: list = None, failfast: bool = False, quiet: bool = False,
-                 reference: bool = False, summary: bool = False, keep_files: bool = False):
+                 reference: bool = False, summary: bool = False, keep_files: bool = False,
+                 threshold: int = None, time_threshold: int = None):
         self.jobs = jobs
         self.timeout = timeout
         self.test_suites = test_suites
@@ -51,6 +52,8 @@ class Context:
         self.reference = reference
         self.summary = summary
         self.keep_files = keep_files
+        self.threshold = threshold
+        self.time_threshold = time_threshold
 
     def to_test_suite_context(self, decoder, results_dir, test_vectors):
         '''Create a TestSuite's Context from this'''
@@ -144,16 +147,24 @@ class Fluster:
 
     def run_test_suites(self, ctx: Context):
         '''Run a group of test suites'''
+        # pylint: disable=too-many-branches
+
         self._load_test_suites()
         self._normalize_context(ctx)
 
         if ctx.reference and (not ctx.decoders or len(ctx.decoders) > 1):
             dec_names = [dec.name for dec in ctx.decoders]
-            raise Exception(
+            print(
                 f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
+            sys.exit(1)
 
         if ctx.reference:
-            print('Reference mode')
+            print('\n=== Reference mode ===\n')
+
+        if ctx.threshold and len(ctx.test_suites) > 1:
+            print('Threshold for success tests can only be applied running a single test '
+                  'suite for a single decoder')
+            sys.exit(1)
 
         error = False
         no_test_run = True
@@ -175,13 +186,26 @@ class Fluster:
                             break
 
                     if not success:
+                        error = True
                         if ctx.failfast:
                             sys.exit(1)
-                        error = True
+
+                    if ctx.threshold:
+                        if test_suite_res.test_vectors_success < ctx.threshold:
+                            print(f'Tests results below threshold: {test_suite_res.test_vectors_success} vs '
+                                  f'{ctx.threshold}\nReporting error through exit code 2')
+                            sys.exit(2)
+
+                    if ctx.time_threshold:
+                        if test_suite_res.time_taken > ctx.time_threshold:
+                            print(f'Tests results over time threshold: {test_suite_res.time_taken} vs '
+                                  f'{ctx.time_threshold}\nReporting error through exit code 3')
+                            sys.exit(3)
 
             if ctx.summary and results:
                 self._generate_summary(results)
-        if error or no_test_run:
+
+        if (error or no_test_run) and (not ctx.threshold and not ctx.time_threshold):
             sys.exit(1)
 
     def _generate_summary(self, results: tuple):

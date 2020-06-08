@@ -5,11 +5,10 @@
     "test_vectors": [
         {
             "name": "one",
-            "source": "https://www.itu.int//wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_Sony_D.zip",
-            "source_checksum": "afa9e2d49d589f631ceb65695d25b69f",
-            "input_file": "BA1_Sony_D.jsv",
-            "result": "7466ed721dacfe77ba015d47a2e2439d"
-
+            "source": "https://www.itu.int//wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_A_NEC_3.zip",
+            "source_checksum": "69b58505dc88fe422e3de55251549409",
+            "input_file": "ipcm_A_NEC_3/ipcm_A_NEC_3.bit",
+            "result": "1ae5c2aa0dca6e11653b603a1f68b500"
         }
     ]
 }

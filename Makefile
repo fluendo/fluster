@@ -19,9 +19,14 @@ check: ## check that very basic tests run
 	./fluster.py list -ts dummy -tv
 	./fluster.py download dummy
 	./fluster.py run -ts dummy -tv one
+	./fluster.py reference Dummy dummy
 	./fluster.py run -ts dummy -tv one -j1
 	./fluster.py run -ts dummy -s
 	./fluster.py run -ts dummy -j1 -s
+	./fluster.py run -ts dummy -th 1
+	./fluster.py run -ts dummy -th 2; test $$? -eq 2
+	./fluster.py run -ts dummy -tth 10
+	./fluster.py run -ts dummy -tth 0.000000001; test $$? -eq 3
 
 format: ## format Python code using autopep8
 	autopep8 -i -j0 -r $(PY_FILES)

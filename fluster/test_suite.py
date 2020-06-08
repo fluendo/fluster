@@ -66,6 +66,7 @@ class Context:
 
 class TestSuite:
     '''Test suite class'''
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
                  test_vectors: dict):
@@ -73,6 +74,7 @@ class TestSuite:
         self.filename = filename
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
+        self.time_taken = 0
 
         # JSON members
         self.name = name
@@ -101,6 +103,7 @@ class TestSuite:
             data.pop('resources_dir')
             data.pop('filename')
             data.pop('test_vectors_success')
+            data.pop('time_taken')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.data_to_serialize()
                                     for tv in self.test_vectors.values()]
@@ -195,7 +198,9 @@ class TestSuite:
         suite.addTests(tests)
         runner = unittest.TextTestRunner(
             failfast=failfast, verbosity=1 if quiet else 2)
+        start = perf_counter()
         res = runner.run(suite)
+        self.time_taken = perf_counter() - start
 
         self.__collect_results(res)
         self.test_vectors_success = 0
@@ -208,8 +213,8 @@ class TestSuite:
         with Pool(jobs) as pool:
             start = perf_counter()
             test_results = pool.map(self._run_worker, tests)
+            self.time_taken = perf_counter() - start
             print('\n')
-            end = perf_counter()
             self.test_vectors_success = 0
             for test_vector_res in test_results:
                 if test_vector_res.errors:
@@ -225,7 +230,7 @@ class TestSuite:
                 # from a different process
                 self.test_vectors[test_vector_res.name] = test_vector_res
             print(
-                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {end-start:.3f} secs')
+                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {self.time_taken:.3f} secs')
 
     def run(self, ctx: Context):
         '''
