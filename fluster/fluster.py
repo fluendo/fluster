@@ -41,7 +41,7 @@ class Context:
     def __init__(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
                  test_vectors: list = None, failfast: bool = False, quiet: bool = False,
                  reference: bool = False, summary: bool = False, keep_files: bool = False,
-                 threshold: int = None, time_threshold: int = None):
+                 threshold: int = None, time_threshold: int = None, verbose: bool = False):
         self.jobs = jobs
         self.timeout = timeout
         self.test_suites = test_suites
@@ -54,12 +54,13 @@ class Context:
         self.keep_files = keep_files
         self.threshold = threshold
         self.time_threshold = time_threshold
+        self.verbose = verbose
 
     def to_test_suite_context(self, decoder, results_dir, test_vectors):
         '''Create a TestSuite's Context from this'''
         ts_context = TestSuiteContext(jobs=self.jobs, decoder=decoder, timeout=self.timeout, failfast=self.failfast,
                                       quiet=self.quiet, results_dir=results_dir, reference=self.reference,
-                                      test_vectors=test_vectors, keep_files=self.keep_files)
+                                      test_vectors=test_vectors, keep_files=self.keep_files, verbose=self.verbose)
         return ts_context
 
 
@@ -81,8 +82,6 @@ class Fluster:
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
                 if os.path.splitext(file)[1] == '.json':
-                    if self.verbose:
-                        print(f'Test suite found: {file}')
                     try:
                         test_suite = TestSuite.from_json_file(
                             os.path.join(root, file), self.resources_dir)

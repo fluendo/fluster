@@ -49,6 +49,16 @@ def file_checksum(path: str):
     return md5.hexdigest()
 
 
+def run_command(command: list, verbose: bool = False, check: bool = True, timeout: int = None):
+    '''Runs a command'''
+    sout = subprocess.DEVNULL if not verbose else None
+    serr = subprocess.DEVNULL if not verbose else None
+    if verbose:
+        print(f'\nRunning command \"{" ".join(command)}\"')
+    subprocess.run(command, stdout=sout, stderr=serr,
+                   check=check, timeout=timeout)
+
+
 def is_extractable(filepath: str):
     '''Checks is a file can be extracted from the its extension'''
     return filepath.endswith(TARBALL_EXTS) or filepath.endswith('.zip')

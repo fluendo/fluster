@@ -30,5 +30,5 @@ class Dummy(Decoder):
     codec = Codec.Dummy
     description = "This is a dummy implementation for the dummy codec"
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: int):
         return hashlib.md5(input_filepath.encode('utf-8')).hexdigest()

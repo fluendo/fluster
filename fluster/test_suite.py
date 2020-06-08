@@ -52,7 +52,7 @@ class Context:
     # pylint: disable=too-few-public-methods, too-many-instance-attributes
 
     def __init__(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
-                 reference: bool = False, test_vectors: list = None, keep_files: bool = False):
+                 reference: bool = False, test_vectors: list = None, keep_files: bool = False, verbose: bool = False):
         self.jobs = jobs
         self.decoder = decoder
         self.timeout = timeout
@@ -62,6 +62,7 @@ class Context:
         self.reference = reference
         self.test_vectors = test_vectors
         self.keep_files = keep_files
+        self.verbose = verbose
 
 
 class TestSuite:
@@ -293,7 +294,8 @@ class TestSuite:
                 if test_vector.name.lower() not in ctx.test_vectors:
                     continue
             tests.append(
-                Test(ctx.decoder, self, test_vector, ctx.results_dir, ctx.reference, ctx.timeout, ctx.keep_files))
+                Test(ctx.decoder, self, test_vector, ctx.results_dir, ctx.reference, ctx.timeout, ctx.keep_files,
+                     ctx.verbose))
             test_vectors_run[name] = test_vector
         self.test_vectors = test_vectors_run
         return tests

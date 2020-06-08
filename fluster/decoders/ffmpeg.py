@@ -18,11 +18,9 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import subprocess
-
 from fluster.codec import Codec
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum
+from fluster.utils import file_checksum, run_command
 
 
 @register_decoder
@@ -33,10 +31,10 @@ class FFmpegH264Decoder(Decoder):
     codec = Codec.H264
     binary = 'ffmpeg'
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
         '''Decodes input_filepath in output_filepath'''
-        subprocess.run([self.binary, '-i', input_filepath,
-                        output_filepath], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        run_command([self.binary, '-i', input_filepath,
+                     output_filepath], timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
 
@@ -48,8 +46,8 @@ class FFmpegH265Decoder(Decoder):
     codec = Codec.H265
     binary = 'ffmpeg'
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
         '''Decodes input_filepath in output_filepath'''
-        subprocess.run([self.binary, '-i', input_filepath,
-                        output_filepath], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        run_command([self.binary, '-i', input_filepath,
+                     output_filepath], timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)

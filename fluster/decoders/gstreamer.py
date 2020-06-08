@@ -18,13 +18,12 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import subprocess
 import shlex
 from functools import lru_cache
 
 from fluster.codec import Codec
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum
+from fluster.utils import file_checksum, run_command
 
 PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! filesink location={}'
 
@@ -43,11 +42,10 @@ class GStreamer(Decoder):
         self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int):
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
         pipeline = PIPELINE_TPL.format(self.cmd, input_filepath,
                                        self.decoder_bin, self.caps, output_filepath)
-        subprocess.run(shlex.split(pipeline),
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True, timeout=timeout)
+        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
@@ -55,8 +53,7 @@ class GStreamer(Decoder):
         # pylint: disable=broad-except
         try:
             pipeline = f'gst-launch-{self.gst_api} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
-            subprocess.run(shlex.split(
-                pipeline), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+            run_command(shlex.split(pipeline))
         except Exception:
             return False
         return True
