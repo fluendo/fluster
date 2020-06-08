@@ -26,7 +26,7 @@ from fluster.codec import Codec
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
-FFMPEG_TPL = '{} -i {} {}'
+FFMPEG_TPL = '{} -i {} {} {}'
 
 
 class FFmpegDecoder(Decoder):
@@ -45,8 +45,15 @@ class FFmpegDecoder(Decoder):
 
     def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
         '''Decodes input_filepath in output_filepath'''
+        if self.hw_acceleration:
+            if 'main10' in input_filepath.lower():
+                pixel_format = '-vf format=pix_fmts=yuv420p10le'
+            else:
+                pixel_format = '-vf format=pix_fmts=yuv420p'
+        else:
+            pixel_format = ''
         cmd = shlex.split(FFMPEG_TPL.format(
-            self.cmd, input_filepath, output_filepath))
+            self.cmd, input_filepath, pixel_format, output_filepath))
         run_command(cmd, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
