@@ -123,7 +123,11 @@ class Fluster:
 
     def _get_run_param(self, in_list: list, check_list: list, name: str):
         if in_list:
-            run = [x for x in check_list if x.name.lower() in in_list]
+            run = []
+            for name_list in in_list:
+                for entry in check_list:
+                    if entry.name.lower() == name_list:
+                        run.append(entry)
             if not run:
                 raise Exception(
                     f'No {name} found matching {in_list}')
