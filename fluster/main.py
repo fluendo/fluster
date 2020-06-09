@@ -22,12 +22,14 @@
 import argparse
 import os
 import multiprocessing
+import sys
 
 from fluster.fluster import Fluster, Context
 
 
 class Main:
     '''Main class for Fluster'''
+    # pylint: disable=broad-except
 
     def __init__(self, test_suites_dir, decoders_dir, resources_dir, results_dir):
         self.test_suites_dir = test_suites_dir
@@ -162,7 +164,11 @@ class Main:
                           time_threshold=args.time_threshold,
                           verbose=args.verbose
                           )
-        fluster.run_test_suites(context)
+        try:
+            fluster.run_test_suites(context)
+        except Exception as exception:
+            print(exception)
+            sys.exit(1)
 
     def _reference_cmd(self, args, fluster):
         context = Context(jobs=args.jobs,
@@ -172,7 +178,11 @@ class Main:
                           quiet=args.quiet,
                           verbose=args.verbose,
                           reference=True)
-        fluster.run_test_suites(context)
+        try:
+            fluster.run_test_suites(context)
+        except Exception as exception:
+            print(exception)
+            sys.exit(1)
 
     def _download_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()

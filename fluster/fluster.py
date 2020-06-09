@@ -157,17 +157,15 @@ class Fluster:
 
         if ctx.reference and (not ctx.decoders or len(ctx.decoders) > 1):
             dec_names = [dec.name for dec in ctx.decoders]
-            print(
+            raise Exception(
                 f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
-            sys.exit(1)
+
+        if ctx.threshold and len(ctx.test_suites) > 1:
+            raise Exception('Threshold for success tests can only be applied running a single test '
+                            'suite for a single decoder')
 
         if ctx.reference:
             print('\n=== Reference mode ===\n')
-
-        if ctx.threshold and len(ctx.test_suites) > 1:
-            print('Threshold for success tests can only be applied running a single test '
-                  'suite for a single decoder')
-            sys.exit(1)
 
         error = False
         no_test_run = True
