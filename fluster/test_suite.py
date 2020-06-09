@@ -153,7 +153,7 @@ class TestSuite:
         test_cls.__module__ = module
         test_cls.__qualname__ = qualname
 
-    def __collect_results(self, test_result: TestResult):
+    def _collect_results(self, test_result: TestResult):
         '''Collect all TestResults with error to add them into the test vectors'''
         for res in test_result.failures:
             test_vector = res[0].test_vector
@@ -183,7 +183,7 @@ class TestSuite:
             line = 'E'
         print(line, end='', flush=True)
 
-        self.__collect_results(test_result)
+        self._collect_results(test_result)
         self._rename_test(test, module_orig, qualname_orig)
 
         return test.test_vector
@@ -191,9 +191,13 @@ class TestSuite:
     def run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
         '''Run the test suite sequentially'''
 
-        # Set the names of the tests to a more human-friendly name: Decoder.TestSuite
-        for test in tests:
-            self._rename_test(test, test.decoder.name, test.test_suite.name)
+        # Set the names of the tests to a more human-friendly name:
+        # Decoder.TestSuite
+        test = tests[0]
+        test_cls = type(test)
+        module_orig = test_cls.__module__
+        qualname_orig = test_cls.__qualname__
+        self._rename_test(test, test.decoder.name, test.test_suite.name)
 
         suite = unittest.TestSuite()
         suite.addTests(tests)
@@ -203,11 +207,13 @@ class TestSuite:
         res = runner.run(suite)
         self.time_taken = perf_counter() - start
 
-        self.__collect_results(res)
+        self._collect_results(res)
         self.test_vectors_success = 0
         for test_vector in self.test_vectors.values():
             if not test_vector.errors:
                 self.test_vectors_success += 1
+
+        self._rename_test(test, module_orig, qualname_orig)
 
     def run_test_suite_in_parallel(self, jobs: int, tests: list):
         '''Run the test suite in parallel'''
