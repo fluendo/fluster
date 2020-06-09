@@ -21,7 +21,7 @@
 import shlex
 from functools import lru_cache
 
-from fluster.codec import Codec
+from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
@@ -42,7 +42,8 @@ class GStreamer(Decoder):
         self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
+    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
+               verbose: bool):
         pipeline = PIPELINE_TPL.format(self.cmd, input_filepath,
                                        self.decoder_bin, self.caps, output_filepath)
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)

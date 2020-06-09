@@ -18,7 +18,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from fluster.codec import Codec
+from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
@@ -31,7 +31,8 @@ class H264JCTVTDecoder(Decoder):
     codec = Codec.H264
     binary = 'ldecod'
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
+    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
+               verbose: bool):
         '''Decodes input_filepath in output_filepath'''
         run_command([self.binary, '-s', '-i', input_filepath, '-o',
                      output_filepath], timeout=timeout, verbose=verbose)

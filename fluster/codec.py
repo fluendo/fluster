@@ -25,3 +25,9 @@ class Codec(Enum):
     Dummy = 'Dummy'
     H264 = 'H.264'
     H265 = 'H.265'
+
+
+class PixelFormat(Enum):
+    '''Pixel format'''
+    yuv420p = 'yuv420p'
+    yuv420p10le = 'yuv420p10le'

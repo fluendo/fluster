@@ -30,13 +30,13 @@ import multiprocessing
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from fluster import utils
-from fluster.codec import Codec
+from fluster.codec import Codec, PixelFormat
 from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
-BASE_URL = "https://www.itu.int/"
-H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
-H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
+BASE_URL = 'https://www.itu.int/'
+H265_URL = BASE_URL + 'wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/'
+H264_URL = BASE_URL + 'wftp3/av-arch/jvt-site/draft_conformance/'
 BITSTREAM_EXTS = ('.bin', '.bit', '.264', '.h264',
                   '.jvc', '.jsv', '.jvt', '.avc', '.26l')
 MD5_EXTS = ('yuv.md5', '.md5', 'md5.txt')
@@ -56,11 +56,11 @@ class HREFParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         # Only parse the 'anchor' tag.
-        if tag == "a":
+        if tag == 'a':
             # Check the list of defined attributes.
             for name, value in attrs:
                 # If href is defined, print it.
-                if name == "href":
+                if name == 'href':
                     self.links.append(BASE_URL + value)
 
 
@@ -81,7 +81,7 @@ class JCTVTGenerator:
                                self.suite_name, self.codec, self.description, dict())
 
         hparser = HREFParser()
-        print(f"Download list of bitstreams from {self.site + self.name}")
+        print(f'Download list of bitstreams from {self.site + self.name}')
         with urllib.request.urlopen(self.site + self.name) as resp:
             data = str(resp.read())
             hparser.feed(data)
@@ -92,8 +92,9 @@ class JCTVTGenerator:
                 continue
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
-            file_input = "{name}.bin".format(name=name)
-            test_vector = TestVector(name, url, "", file_input, "")
+            file_input = f'{name}.bin'
+            test_vector = TestVector(
+                name, url, '', file_input, PixelFormat.yuv420p, '')
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -110,26 +111,29 @@ class JCTVTGenerator:
             test_vector.input_file = test_vector.input_file.replace(os.path.join(
                 test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep, '')
             if not test_vector.input_file:
-                raise Exception(f"Bitstream file not found in {dest_dir}")
+                raise Exception(f'Bitstream file not found in {dest_dir}')
             test_vector.source_checksum = utils.file_checksum(dest_path)
+            if 'main10' in test_vector.name.lower():
+                test_vector.output_format = PixelFormat.yuv420p10le
+
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
             elif self.codec == Codec.H264:
                 self._fill_checksum_h264(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
-        print("Generate new test suite: " + test_suite.name + '.json')
+        print('Generate new test suite: ' + test_suite.name + '.json')
 
     def _fill_checksum_h264(self, test_vector, dest_dir):
         raw_file = self._find_by_ext(dest_dir, RAW_EXTS)
         if raw_file is None:
-            raise Exception(f"RAW file not found in {dest_dir}")
+            raise Exception(f'RAW file not found in {dest_dir}')
         test_vector.result = utils.file_checksum(raw_file)
 
     def _fill_checksum_h265(self, test_vector, dest_dir):
         checksum_file = self._find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
         if checksum_file is None:
-            raise Exception("MD5 not found")
+            raise Exception('MD5 not found')
         with open(checksum_file, 'r') as checksum_file:
             # The md5 is in several formats
             # Example 1
@@ -168,17 +172,17 @@ class JCTVTGenerator:
         return None
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--skip-download', help='skip extracting tarball',
                         action='store_true', default=False)
     parser.add_argument(
-        '-j', '--jobs', help="number of parallel jobs to use. 2x logical cores by default",
+        '-j', '--jobs', help='number of parallel jobs to use. 2x logical cores by default',
         type=int, default=2 * multiprocessing.cpu_count())
     args = parser.parse_args()
-    generator = JCTVTGenerator("HEVC_v1", "JCT-VC-HEVC_V1", Codec.H265,
-                               "JCT-VC HEVC version 1", H265_URL)
+    generator = JCTVTGenerator('HEVC_v1', 'JCT-VC-HEVC_V1', Codec.H265,
+                               'JCT-VC HEVC version 1', H265_URL)
     generator.generate(not args.skip_download, args.jobs)
-    generator = JCTVTGenerator("AVCv1", "JVT-AVC_V1", Codec.H264,
-                               "JVT AVC version 1", H264_URL)
+    generator = JCTVTGenerator('AVCv1', 'JVT-AVC_V1', Codec.H264,
+                               'JVT AVC version 1', H264_URL)
     generator.generate(not args.skip_download, args.jobs)

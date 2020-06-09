@@ -45,10 +45,10 @@ class Test(unittest.TestCase):
     def _test(self):
         output_filepath = os.path.join(
             self.results_dir, self.test_vector.name + '.yuv')
+        input_filepath = os.path.join(self.resources_dir, self.test_suite.name,
+                                      self.test_vector.name, self.test_vector.input_file)
         result = self.decoder.decode(
-            os.path.join(self.resources_dir, self.test_suite.name,
-                         self.test_vector.name, self.test_vector.input_file),
-            output_filepath, self.timeout, self.verbose)
+            input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
         if not self.keep_files and os.path.exists(output_filepath) and \
                 os.path.isfile(output_filepath):
             os.remove(output_filepath)

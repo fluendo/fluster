@@ -21,6 +21,8 @@ import subprocess
 from abc import ABC, abstractmethod
 from functools import lru_cache
 
+from fluster.codec import PixelFormat
+
 # pylint: disable=broad-except
 
 
@@ -33,7 +35,8 @@ class Decoder(ABC):
     binary = None
 
     @abstractmethod
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
+    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
+               verbose: bool):
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 
