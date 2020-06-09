@@ -35,7 +35,6 @@ from fluster import utils
 
 class DownloadWork:
     '''Context to pass to each download worker'''
-    # pylint: disable=too-few-public-methods
 
     def __init__(self, out_dir: str, verify: bool, extract_all: bool, keep_file: bool,
                  test_suite_name: str, test_vector: TestVector):
@@ -49,7 +48,7 @@ class DownloadWork:
 
 class Context:
     '''Context for TestSuite'''
-    # pylint: disable=too-few-public-methods, too-many-instance-attributes
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
                  reference: bool = False, test_vectors: list = None, keep_files: bool = False, verbose: bool = False):

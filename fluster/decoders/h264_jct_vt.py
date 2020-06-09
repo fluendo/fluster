@@ -26,7 +26,7 @@ from fluster.utils import file_checksum, run_command
 @register_decoder
 class H264JCTVTDecoder(Decoder):
     '''JCT-VT H.264/AVC reference decoder implementation'''
-    name = "JCT-VT-H264"
+    name = "JCT-VT-H.264"
     description = "JCT-VT H.264/AVC reference decoder"
     codec = Codec.H264
     binary = 'ldecod'

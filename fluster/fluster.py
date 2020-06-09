@@ -36,7 +36,7 @@ from fluster.decoder import DECODERS
 
 class Context:
     '''Context for run and reference command'''
-    # pylint: disable=too-few-public-methods, too-many-instance-attributes
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
                  test_vectors: list = None, failfast: bool = False, quiet: bool = False,
