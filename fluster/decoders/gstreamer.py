@@ -81,7 +81,7 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
     codec = Codec.H265
     decoder_bin = ' h265parse ! vaapih265dec '
     caps = 'video/x-raw,format=I420'
-    api = 'VA-API'
+    api = 'VAAPI'
     hw_acceleration = True
 
 
@@ -91,7 +91,7 @@ class GStreamerVaapiH264Gst10Decoder(GStreamer10):
     codec = Codec.H264
     decoder_bin = ' h264parse ! vaapih264dec '
     caps = 'video/x-raw,format=I420'
-    api = 'VA-API'
+    api = 'VAAPI'
     hw_acceleration = True
 
 

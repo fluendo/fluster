@@ -18,36 +18,85 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from functools import lru_cache
+import shlex
+import subprocess
+
 from fluster.codec import Codec
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
+FFMPEG_TPL = '{} -i {} {} {}'
+
+
+class FFmpegDecoder(Decoder):
+    '''Generic class for FFmpeg decoder'''
+    binary = 'ffmpeg'
+    description = None
+    cmd = None
+    api = None
+
+    def __init__(self):
+        self.cmd = self.binary
+        if self.hw_acceleration:
+            self.cmd += f' -hwaccel {self.api.lower()}'
+        self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
+        self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
+
+    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
+        '''Decodes input_filepath in output_filepath'''
+        if self.hw_acceleration:
+            if 'main10' in input_filepath.lower():
+                pixel_format = '-vf format=pix_fmts=yuv420p10le'
+            else:
+                pixel_format = '-vf format=pix_fmts=yuv420p'
+        else:
+            pixel_format = ''
+        cmd = shlex.split(FFMPEG_TPL.format(
+            self.cmd, input_filepath, pixel_format, output_filepath))
+        run_command(cmd, timeout=timeout, verbose=verbose)
+        return file_checksum(output_filepath)
+
+    @lru_cache(maxsize=None)
+    def check(self):
+        '''Checks whether the decoder can be run'''
+        # pylint: disable=broad-except
+        if self.hw_acceleration:
+            try:
+                output = subprocess.check_output(
+                    [self.binary, '-hwaccels'], stderr=subprocess.DEVNULL).decode('utf-8')
+                return f'\n{self.api.lower()}\n' in output
+            except Exception:
+                return False
+        else:
+            return super().check()
+
 
 @register_decoder
-class FFmpegH264Decoder(Decoder):
-    '''FFmpeg decoder for H.264'''
-    name = "FFmpeg-H264"
-    description = "FFmpeg H.264 decoder"
+class FFmpegH264Decoder(FFmpegDecoder):
+    '''FFmpeg SW decoder for H.264'''
     codec = Codec.H264
-    binary = 'ffmpeg'
-
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
-        '''Decodes input_filepath in output_filepath'''
-        run_command([self.binary, '-i', input_filepath,
-                     output_filepath], timeout=timeout, verbose=verbose)
-        return file_checksum(output_filepath)
 
 
 @register_decoder
-class FFmpegH265Decoder(Decoder):
-    '''FFmpeg decoder for H.265'''
-    name = "FFmpeg-H265"
-    description = "FFmpeg H.265 decoder"
+class FFmpegH265Decoder(FFmpegDecoder):
+    '''FFmpeg SW decoder for H.265'''
     codec = Codec.H265
-    binary = 'ffmpeg'
 
-    def decode(self, input_filepath: str, output_filepath: str, timeout: int, verbose: bool):
-        '''Decodes input_filepath in output_filepath'''
-        run_command([self.binary, '-i', input_filepath,
-                     output_filepath], timeout=timeout, verbose=verbose)
-        return file_checksum(output_filepath)
+
+class FFmpegVaapiDecoder(FFmpegDecoder):
+    '''Generic class for FFmpeg VAAPI decoder'''
+    hw_acceleration = True
+    api = 'VAAPI'
+
+
+@register_decoder
+class FFmpegH264VaapiDecoder(FFmpegVaapiDecoder):
+    '''FFmpeg VAAPI decoder for H.264'''
+    codec = Codec.H264
+
+
+@register_decoder
+class FFmpegH265VaapiDecoder(FFmpegVaapiDecoder):
+    '''FFmpeg VAAPI decoder for H.265'''
+    codec = Codec.H265
