@@ -28,6 +28,7 @@ easily extended to add more decoders and test suites.
     - [Where does the name come from?](#where-does-the-name-come-from)
     - [How can I add a new decoder?](#how-can-i-add-a-new-decoder)
     - [How can I create a new test suite?](#how-can-i-create-a-new-test-suite)
+    - [How can I use it to test regressions?](#how-can-i-use-it-to-test-regressions)
     - [How can I contribute?](#how-can-i-contribute)
     - [How can I report an issue?](#how-can-i-report-an-issue)
   - [License](#license)
@@ -276,6 +277,23 @@ up.
 There is also a [generator script](scripts/gen_jct_vc.py) for the [conformance
 test suites](#test_suites) that you can use as a base to generate automatically
 new ones.
+
+### How can I use it to test regressions?
+
+We can easily use Fluster in a CI to test that our test suites for particular
+decoders are still working as good as they were before. There are two arguments
+to be used with the [run](#run) command that can help us achieve that. Both
+commands work only when running a single test suite:
+
+1. `-th/--threshold` sets the minimum number of tests that need to be success
+   in order to consider the command not a failure. In case of failure, the exit
+   code is 2. Please notice that even of some tests fail, the exit code will
+   still be 0 as long as the threshold is met.
+
+2. `-tth/--time-threshold` sets the maximum amount of time for a test suite to
+   run and be considered a success. The exit code 3 in case it takes longer and
+   0 otherwise. Please notice that even of some tests fail, the exit code will
+   still be 0 as long as the time it takes is less than the threshold.
 
 ### How can I contribute?
 
