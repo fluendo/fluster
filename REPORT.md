@@ -5,7 +5,7 @@
 - [Report](#report)
   - [Table of Contents](#table-of-contents)
   - [Environment](#environment)
-  - [H.265/HECV](#h265hecv)
+  - [H.265/HEVC](#h265hevc)
   - [H.264/AVC](#h264avc)
 
 ## Environment
@@ -55,7 +55,7 @@ vainfo: Supported profile and entrypoints
       VAProfileVP9Profile2            : VAEntrypointVLD
 ```
 
-## H.265/HECV
+## H.265/HEVC
 
 `./fluster.py run -d JCT-VT-H.265 GStreamer-H.265-VAAPI-Gst1.0 FFmpeg-H.265-VAAPI FFmpeg-H.265 -ts JCT-VC-HEVC_V1 -s`
 
