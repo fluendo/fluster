@@ -83,7 +83,7 @@ class Main:
             '0 means all logical cores',
             type=int, default=multiprocessing.cpu_count())
         subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 20 secs',
-                               type=int, default=20)
+                               type=int, default=30)
         subparser.add_argument(
             '-ff', '--failfast', help='stop after first fail', action='store_true')
         subparser.add_argument(
@@ -116,7 +116,7 @@ class Main:
             '0 means all logical cores',
             type=int, default=multiprocessing.cpu_count())
         subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 5 secs',
-                               type=int, default=20)
+                               type=int, default=30)
         subparser.add_argument(
             'decoder', help='decoder to run', nargs=1)
         subparser.add_argument(

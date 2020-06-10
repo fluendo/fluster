@@ -17,28 +17,36 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from fluster.codec import PixelFormat
+
 
 class TestVector:
     '''Test vector'''
 
     def __init__(self, name: str, source: str, source_checksum: str, input_file: str,
-                 result: str):
+                 output_format: PixelFormat, result: str):
         self.name = name
         self.source = source
         self.source_checksum = source_checksum
         self.input_file = input_file
+        self.output_format = output_format
         self.result = result
         self.errors = []
 
     @classmethod
     def from_json(cls, data: dict):
         '''Deserialize an instance of TestVector from a json file'''
+        if 'output_format' in data:
+            data['output_format'] = PixelFormat(data['output_format'])
+        else:
+            data['output_format'] = PixelFormat.yuv420p
         return (data['name'], cls(**data))
 
     def data_to_serialize(self):
         '''Return the data to be serialized'''
         data = self.__dict__.copy()
         data.pop('errors')
+        data['output_format'] = str(self.output_format.value)
         return data
 
     def __str__(self):
