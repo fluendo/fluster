@@ -87,12 +87,32 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerMsdkH265Gst10Decoder(GStreamer10):
+    '''GStreamer H.265 Intel MSDK decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! msdkh265dec '
+    caps = 'videoconvert ! video/x-raw,format=I420'
+    api = 'MSDK'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerVaapiH264Gst10Decoder(GStreamer10):
     '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
     decoder_bin = ' h264parse ! vaapih264dec '
     caps = 'video/x-raw,format=I420'
     api = 'VAAPI'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerMsdkH264Gst10Decoder(GStreamer10):
+    '''GStreamer H.264 Intel MSDK decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! msdkh264dec '
+    caps = 'videoconvert ! video/x-raw,format=I420'
+    api = 'MSDK'
     hw_acceleration = True
 
 
