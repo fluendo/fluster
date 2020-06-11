@@ -133,6 +133,16 @@ class FluendoH264Gst010Decoder(GStreamer010):
 
 
 @register_decoder
+class FluendoH264VAGst10Decoder(GStreamer10):
+    '''Fluendo H.264 hardware decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! fluvadec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
+
+
+@register_decoder
 class FluendoH265VAGst10Decoder(GStreamer10):
     '''Fluendo H.265 hardware decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
