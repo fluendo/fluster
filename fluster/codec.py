@@ -31,3 +31,12 @@ class PixelFormat(Enum):
     '''Pixel format'''
     yuv420p = 'yuv420p'
     yuv420p10le = 'yuv420p10le'
+
+    def to_gst(self):
+        '''Return GStreamer pixel format'''
+        mapping = {
+            self.yuv420p: 'I420',
+            self.yuv420p10le: 'I420_10LE'
+        }
+
+        return mapping[self]
