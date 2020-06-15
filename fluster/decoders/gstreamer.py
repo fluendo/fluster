@@ -42,15 +42,22 @@ class GStreamer(Decoder):
         self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
 
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
+        '''Generate the GStreamer pipeline used to decode the test vector'''
+        # pylint: disable=unused-argument
+        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, output_filepath)
+
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
                verbose: bool):
-        pipeline = PIPELINE_TPL.format(self.cmd, input_filepath,
-                                       self.decoder_bin, self.caps, output_filepath)
+        '''Decode the test vector and do the checksum'''
+        pipeline = self.gen_pipeline(
+            input_filepath, output_filepath, output_format)
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
     def check(self):
+        '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
         try:
             pipeline = f'gst-launch-{self.gst_api} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
@@ -67,6 +74,10 @@ class GStreamer10(GStreamer):
     gst_api = '1.0'
     provider = 'GStreamer'
 
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
+        caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format.to_gst()}'
+        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, output_filepath)
+
 
 class GStreamer010(GStreamer):
     '''Base class for GStreamer 0.10 decoders'''
@@ -81,7 +92,6 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
     '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
     decoder_bin = ' h265parse ! vaapih265dec '
-    caps = 'video/x-raw,format=I420'
     api = 'VAAPI'
     hw_acceleration = True
 
@@ -91,7 +101,6 @@ class GStreamerMsdkH265Gst10Decoder(GStreamer10):
     '''GStreamer H.265 Intel MSDK decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
     decoder_bin = ' h265parse ! msdkh265dec '
-    caps = 'videoconvert ! video/x-raw,format=I420'
     api = 'MSDK'
     hw_acceleration = True
 
@@ -101,7 +110,6 @@ class GStreamerVaapiH264Gst10Decoder(GStreamer10):
     '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
     decoder_bin = ' h264parse ! vaapih264dec '
-    caps = 'video/x-raw,format=I420'
     api = 'VAAPI'
     hw_acceleration = True
 
@@ -111,7 +119,6 @@ class GStreamerMsdkH264Gst10Decoder(GStreamer10):
     '''GStreamer H.264 Intel MSDK decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
     decoder_bin = ' h264parse ! msdkh264dec '
-    caps = 'videoconvert ! video/x-raw,format=I420'
     api = 'MSDK'
     hw_acceleration = True
 
