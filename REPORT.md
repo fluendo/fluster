@@ -209,6 +209,7 @@ vainfo: Supported profile and entrypoints
 |WPP_E_ericsson_MAIN_2|✔️|✔️|✔️|✔️|
 |WPP_F_ericsson_MAIN10_2|✔️|❌|✔️|✔️|
 |WPP_F_ericsson_MAIN_2|✔️|✔️|✔️|✔️|
+|TOTAL|147/147|124/147|136/147|134/147|
 
 
 ## H.264/AVC
