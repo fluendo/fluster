@@ -88,6 +88,15 @@ class GStreamer010(GStreamer):
 
 
 @register_decoder
+class GStreamerLibavH264(GStreamer10):
+    '''GStreamer H.264 Libav decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! avdec_h264 '
+    api = 'Libav'
+    hw_acceleration = False
+
+
+@register_decoder
 class GStreamerVaapiH265Gst10Decoder(GStreamer10):
     '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
