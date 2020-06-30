@@ -106,6 +106,15 @@ class GStreamerMsdkH265Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerNvdecH265Gst10Decoder(GStreamer10):
+    '''GStreamer H.265 NVDEC decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! nvh265dec '
+    api = 'NVDEC'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerVaapiH264Gst10Decoder(GStreamer10):
     '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
@@ -120,6 +129,15 @@ class GStreamerMsdkH264Gst10Decoder(GStreamer10):
     codec = Codec.H264
     decoder_bin = ' h264parse ! msdkh264dec '
     api = 'MSDK'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerNvdecH264Gst10Decoder(GStreamer10):
+    '''GStreamer H.264 NVDEC decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! nvh264dec '
+    api = 'NVDEC'
     hw_acceleration = True
 
 
