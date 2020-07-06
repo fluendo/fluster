@@ -37,6 +37,7 @@ class FFmpegDecoder(Decoder):
     api = None
 
     def __init__(self):
+        super().__init__()
         self.cmd = self.binary
         if self.hw_acceleration:
             self.cmd += f' -hwaccel {self.api.lower()}'

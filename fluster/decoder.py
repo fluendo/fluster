@@ -17,11 +17,12 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import subprocess
 from abc import ABC, abstractmethod
 from functools import lru_cache
+from shutil import which
 
 from fluster.codec import PixelFormat
+from fluster.utils import normalize_binary_cmd
 
 # pylint: disable=broad-except
 
@@ -34,6 +35,10 @@ class Decoder(ABC):
     description = None
     binary = None
 
+    def __init__(self):
+        if self.binary:
+            self.binary = normalize_binary_cmd(self.binary)
+
     @abstractmethod
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
                verbose: bool):
@@ -45,9 +50,8 @@ class Decoder(ABC):
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:
             try:
-                subprocess.run(['which', self.binary],
-                               stdout=subprocess.DEVNULL, check=True)
-                return True
+                path = which(self.binary)
+                return path is not None
             except Exception:
                 return False
         return True

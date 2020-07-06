@@ -23,7 +23,7 @@ from functools import lru_cache
 
 from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command
+from fluster.utils import file_checksum, run_command, normalize_binary_cmd
 
 PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! filesink location={}'
 
@@ -41,6 +41,7 @@ class GStreamer(Decoder):
         super().__init__()
         self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
+        self.cmd = normalize_binary_cmd(self.cmd)
 
     def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
         '''Generate the GStreamer pipeline used to decode the test vector'''
@@ -60,7 +61,8 @@ class GStreamer(Decoder):
         '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
         try:
-            pipeline = f'gst-launch-{self.gst_api} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
+            binary = normalize_binary_cmd(f'gst-launch-{self.gst_api}')
+            pipeline = f'{binary} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
             run_command(shlex.split(pipeline))
         except Exception:
             return False
