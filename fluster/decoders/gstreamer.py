@@ -135,6 +135,15 @@ class GStreamerNvdecH265Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerD3d11H265Gst10Decoder(GStreamer10):
+    '''GStreamer H.265 D3D11 decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! d3d11h265dec '
+    api = 'D3D11'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerVaapiH264Gst10Decoder(GStreamer10):
     '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
@@ -158,6 +167,15 @@ class GStreamerNvdecH264Gst10Decoder(GStreamer10):
     codec = Codec.H264
     decoder_bin = ' h264parse ! nvh264dec '
     api = 'NVDEC'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerD3d11H264Gst10Decoder(GStreamer10):
+    '''GStreamer H.264 D3D11 decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! d3d11h264dec '
+    api = 'D3D11'
     hw_acceleration = True
 
 
