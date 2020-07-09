@@ -18,6 +18,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+import os
 from functools import lru_cache
 import shlex
 import subprocess
@@ -37,6 +38,7 @@ class FFmpegDecoder(Decoder):
     api = None
 
     def __init__(self):
+        super().__init__()
         self.cmd = self.binary
         if self.hw_acceleration:
             self.cmd += f' -hwaccel {self.api.lower()}'
@@ -59,7 +61,7 @@ class FFmpegDecoder(Decoder):
             try:
                 output = subprocess.check_output(
                     [self.binary, '-hwaccels'], stderr=subprocess.DEVNULL).decode('utf-8')
-                return f'\n{self.api.lower()}\n' in output
+                return f'{os.linesep}{self.api.lower()}{os.linesep}' in output
             except Exception:
                 return False
         else:
@@ -93,4 +95,40 @@ class FFmpegH264VaapiDecoder(FFmpegVaapiDecoder):
 @register_decoder
 class FFmpegH265VaapiDecoder(FFmpegVaapiDecoder):
     '''FFmpeg VAAPI decoder for H.265'''
+    codec = Codec.H265
+
+
+class FFmpegDxva2Decoder(FFmpegDecoder):
+    '''Generic class for FFmpeg DXVA2 decoder'''
+    hw_acceleration = True
+    api = 'DXVA2'
+
+
+@register_decoder
+class FFmpegH264Dxva2Decoder(FFmpegDxva2Decoder):
+    '''FFmpeg DXVA2 decoder for H.264'''
+    codec = Codec.H264
+
+
+@register_decoder
+class FFmpegH265Dxva2Decoder(FFmpegDxva2Decoder):
+    '''FFmpeg DXVA2 decoder for H.265'''
+    codec = Codec.H265
+
+
+class FFmpegD3d11vaDecoder(FFmpegDecoder):
+    '''Generic class for FFmpeg D3D11VA decoder'''
+    hw_acceleration = True
+    api = 'D3D11VA'
+
+
+@register_decoder
+class FFmpegH264D3d11vaDecoder(FFmpegD3d11vaDecoder):
+    '''FFmpeg D3D11VA decoder for H.264'''
+    codec = Codec.H264
+
+
+@register_decoder
+class FFmpegH265D3d11vaDecoder(FFmpegD3d11vaDecoder):
+    '''FFmpeg D3D11VA decoder for H.265'''
     codec = Codec.H265

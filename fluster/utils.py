@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import urllib.request
 import zipfile
+import platform
 
 
 TARBALL_EXTS = ('tar.gz', 'tgz', 'tar.bz2', 'tbz2', 'tar.xz')
@@ -77,3 +78,19 @@ def extract(filepath: str, output_dir: str, file: str = None):
             zip_file.extractall(path=output_dir)
     else:
         raise Exception("Unknown tarball format %s" % filepath)
+
+
+def normalize_binary_cmd(cmd: str):
+    '''Return the OS-form binary'''
+    if platform.system() == 'Windows':
+        return cmd if cmd.endswith('.exe') else cmd + '.exe'
+    if cmd.endswith('.exe'):
+        return cmd.replace('.exe', '')
+    return cmd
+
+
+def normalize_path(path: str):
+    '''Normalize the path to make it Unix-like'''
+    if platform.system() == 'Windows':
+        return path.replace('\\', '/')
+    return path

@@ -1,6 +1,8 @@
 PY_FILES=fluster scripts fluster.py
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
+PYTHONPATH=.
+FLUSTER=python3 ./fluster.py
 
 help:
 	@awk -F ':|##' '/^[^\t].+?:.*?##/ { printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF }' $(MAKEFILE_LIST)
@@ -12,27 +14,29 @@ check: ## check that very basic tests run
 	@echo "Checking style with autopep8..."
 	autopep8 --exit-code --diff -r $(PY_FILES)
 	@echo "Running pylint..."
-	PYTHONPATH=. pylint -j0 $(PY_FILES) --fail-under=10
+	pylint -j0 $(PY_FILES) --fail-under=10
 	@echo "Running dummy test..."
-	./fluster.py list
-	./fluster.py list -c
-	./fluster.py list -ts dummy -tv
-	./fluster.py download dummy
-	./fluster.py run -ts dummy -tv one
-	./fluster.py reference Dummy dummy
-	./fluster.py run -ts dummy -tv one -j1
-	./fluster.py run -ts dummy -s
-	./fluster.py run -ts dummy -j1 -s
-	./fluster.py run -ts dummy -th 1
-	./fluster.py run -ts dummy -th 2; test $$? -eq 2
-	./fluster.py run -ts dummy -tth 10
-	./fluster.py run -ts dummy -tth 0.000000001; test $$? -eq 3
+	$(FLUSTER) list
+	$(FLUSTER) list -c
+	$(FLUSTER) list -ts dummy -tv
+	$(FLUSTER) download dummy
+	$(FLUSTER) run -ts dummy -tv one
+	$(FLUSTER) reference Dummy dummy
+	$(FLUSTER) run -ts dummy -tv one -j1
+	$(FLUSTER) run -ts dummy -s
+	$(FLUSTER) run -ts dummy -j1 -s
+	$(FLUSTER) run -ts dummy -th 1
+	$(FLUSTER) run -ts dummy -tth 10
+ifneq ($(OS),Windows_NT)
+	$(FLUSTER) run -ts dummy -th 2; test $$? -eq 2
+	$(FLUSTER) run -ts dummy -tth 0.000000001; test $$? -eq 3
+endif
 
 format: ## format Python code using autopep8
 	autopep8 -i -j0 -r $(PY_FILES)
 
 lint: ## run static analysis using pylint
-	PYTHONPATH=. pylint -j0 $(PY_FILES)
+	pylint -j0 $(PY_FILES)
 
 $(CONTRIB_DIR):
 	mkdir -p $@
@@ -53,5 +57,8 @@ h264_reference_decoder: $(CONTRIB_DIR) ## build H.264 reference decoder
 	cd $(CONTRIB_DIR)/JM && git stash && git pull && git stash apply | true
 	cd $(CONTRIB_DIR)/JM && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-truncation -Wno-stringop-overflow" && $(MAKE) -C build ldecod
 	find $(CONTRIB_DIR)/JM/bin/umake -name "ldecod" -type f -exec cp "{}" $(DECODERS_DIR) \;
+
+dbg-%:
+	echo "Value of $* = $($*)"
 
 .PHONY: help decoders h264_reference_decoder h265_reference_decoder lint check format install_deps
