@@ -210,23 +210,33 @@ class Fluster:
             sys.exit(1)
 
     def _generate_summary(self, results: tuple):
+        def _global_stats(results: tuple, test_suites: list, first: bool):
+            separator = f'\n|-|{"-|" * len(results)}'
+            output = separator if not first else ''
+            output += '\n|Test|' if not first else '|Test|'
+            for decoder, _ in results:
+                output += f'{decoder.name}|'
+            output += separator if first else ''
+            output += '\n|TOTAL|'
+            for test_suite in test_suites:
+                output += f'{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|'
+            output += separator if first else ''
+            return output
+
         test_suite_name = results[0][1].name
         decoder_names = [decoder.name for decoder, _ in results]
         test_suites = [res[1] for res in results]
         print(
             f'Generating summary for test suite {test_suite_name} and decoders {", ".join(decoder_names)}:\n')
-        output = '|Test|'
-        for decoder, _ in results:
-            output += f'{decoder.name}|'
-        output += f'\n|-|{"-|" * len(results)}'
+
+        output = ''
+        output += _global_stats(results, test_suites, True)
         for test_vector in results[0][1].test_vectors.values():
             output += f'\n|{test_vector.name}|'
             for test_suite in test_suites:
                 tvector = test_suite.test_vectors[test_vector.name]
                 output += '✔️|' if not tvector.errors else '❌|'
-        output += '\n|TOTAL|'
-        for test_suite in test_suites:
-            output += f'{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|'
+        output += _global_stats(results, test_suites, False)
         print(output)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):
