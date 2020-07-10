@@ -26,21 +26,24 @@ import sys
 
 from fluster.fluster import Fluster, Context
 
+TEST_SUITES_DIR = 'test_suites'
+DECODERS_DIR = 'decoders'
+RESOURCES_DIR = 'resources'
+RESULTS_DIR = 'results'
+
 
 class Main:
     '''Main class for Fluster'''
     # pylint: disable=broad-except
 
-    def __init__(self, test_suites_dir, decoders_dir, resources_dir, results_dir):
-        self.test_suites_dir = test_suites_dir
-        self.decoders_dir = decoders_dir
-        self.resources_dir = resources_dir
-        self.results_dir = results_dir
+    def __init__(self):
+        self.test_suites_dir = TEST_SUITES_DIR
+        self.decoders_dir = DECODERS_DIR
         self.parser = self._create_parser()
 
         # Prepend to the PATH the decoders_dir so that we can run them
         # without having to set the env for every single command
-        os.environ['PATH'] = decoders_dir + ':' + os.environ['PATH']
+        os.environ['PATH'] = self.decoders_dir + ':' + os.environ['PATH']
 
     def run(self):
         '''Runs Fluster'''
@@ -48,14 +51,18 @@ class Main:
         if hasattr(args, 'func'):
             fluster = Fluster(self.test_suites_dir,
                               self.decoders_dir,
-                              self.resources_dir,
-                              self.results_dir)
+                              args.resources,
+                              args.output)
             args.func(args, fluster)
         else:
             self.parser.print_help()
 
     def _create_parser(self):
         parser = argparse.ArgumentParser()
+        parser.add_argument(
+            '-r', '--resources', help='set the directory where resources are taken from', default=RESOURCES_DIR)
+        parser.add_argument(
+            '-o', '--output', help='set the directory where test results will be stored', default=RESULTS_DIR)
         subparsers = parser.add_subparsers(title='subcommands')
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)

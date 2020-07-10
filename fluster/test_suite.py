@@ -251,7 +251,7 @@ class TestSuite:
             return None
 
         ctx.results_dir = os.path.join(
-            ctx.results_dir, self.name, 'test_results')
+            ctx.results_dir, self.name)
         if os.path.exists(ctx.results_dir):
             rmtree(ctx.results_dir)
         os.makedirs(ctx.results_dir)

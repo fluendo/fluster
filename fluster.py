@@ -21,12 +21,7 @@
 
 from fluster.main import Main
 
-TEST_SUITES_DIR = 'test_suites'
-DECODERS_DIR = 'decoders'
-RESOURCES_DIR = 'resources'
-RESULTS_DIR = 'resources'
-
 
 if __name__ == "__main__":
-    main = Main(TEST_SUITES_DIR, DECODERS_DIR, RESOURCES_DIR, RESULTS_DIR)
+    main = Main()
     main.run()

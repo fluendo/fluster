@@ -176,15 +176,22 @@ subcommands:
 ### List
 
 ```
-/fluster.py list --help
-usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c]
+./fluster.py --help
+usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] {list,l,run,r,download,d,reference} ...
 
 optional arguments:
   -h, --help            show this help message and exit
-  -ts TESTSUITES [TESTSUITES ...], --testsuites TESTSUITES [TESTSUITES ...]
-                        show only the test suites given
-  -tv, --testvectors    show test vectors of test suites
-  -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
+  -r RESOURCES, --resources RESOURCES
+                        set the directory where resources are taken from
+  -o OUTPUT, --output OUTPUT
+                        set the directory where test results will be stored
+
+subcommands:
+  {list,l,run,r,download,d,reference}
+    list (l)            show list of available test suites and decoders
+    run (r)             run test suites for decoders
+    download (d)        downloads test suites resources
+    reference (r)       use a specific decoder to set its results for the test suites given
 ```
 
 ### Run

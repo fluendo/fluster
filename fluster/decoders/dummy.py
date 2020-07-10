@@ -17,10 +17,9 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-import hashlib
-
 from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
+from fluster.utils import file_checksum
 
 
 @register_decoder
@@ -31,4 +30,4 @@ class Dummy(Decoder):
     description = "This is a dummy implementation for the dummy codec"
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int, verbose: int):
-        return hashlib.md5(input_filepath.encode('utf-8')).hexdigest()
+        return file_checksum(input_filepath)
