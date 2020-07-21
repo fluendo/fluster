@@ -206,7 +206,7 @@ class Fluster:
             if ctx.summary and results:
                 self._generate_summary(results)
 
-        if (error or no_test_run) and (not ctx.threshold and not ctx.time_threshold):
+        if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)
 
     def _generate_summary(self, results: tuple):
