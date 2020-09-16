@@ -20,7 +20,6 @@
 
 import shlex
 from functools import lru_cache
-import platform
 
 from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
@@ -54,8 +53,7 @@ class GStreamer(Decoder):
         '''Decode the test vector and do the checksum'''
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)
-        run_command(shlex.split(pipeline), timeout=timeout,
-                    verbose=verbose, check=(platform.system() != 'Windows'))
+        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
