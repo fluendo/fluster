@@ -43,7 +43,8 @@ class Main:
 
         # Prepend to the PATH the decoders_dir so that we can run them
         # without having to set the env for every single command
-        os.environ['PATH'] = self.decoders_dir + ':' + os.environ['PATH']
+        os.environ['PATH'] = self.decoders_dir + \
+            os.path.pathsep + os.environ['PATH']
 
     def run(self):
         '''Runs Fluster'''
