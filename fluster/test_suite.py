@@ -245,7 +245,7 @@ class TestSuite:
         '''
         # pylint: disable=too-many-locals
 
-        if not ctx.decoder.check():
+        if not ctx.decoder.check(ctx.verbose):
             print(
                 f'Skipping decoder {ctx.decoder.name} because it cannot be run')
             return None

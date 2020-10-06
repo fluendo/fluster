@@ -57,13 +57,13 @@ class GStreamer(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check(self):
+    def check(self, verbose):
         '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
         try:
             binary = normalize_binary_cmd(f'gst-launch-{self.gst_api}')
             pipeline = f'{binary} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
-            run_command(shlex.split(pipeline))
+            run_command(shlex.split(pipeline), verbose=verbose)
         except Exception:
             return False
         return True

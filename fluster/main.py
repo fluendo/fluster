@@ -81,6 +81,8 @@ class Main:
         subparser.add_argument(
             '-c', '--check',
             help='check which decoders can be run successfully. Reports ✔️ or ❌', action='store_true')
+        subparser.add_argument(
+            '-v', '--verbose', help='show stdout and stderr of commands executed', action='store_true')
         subparser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers):
@@ -151,7 +153,7 @@ class Main:
     def _list_cmd(self, args, fluster):
         fluster.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites)
-        fluster.list_decoders(check=args.check)
+        fluster.list_decoders(check=args.check, verbose=args.verbose)
 
     def _run_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()

@@ -46,11 +46,15 @@ class Decoder(ABC):
         raise Exception('Not implemented')
 
     @lru_cache(maxsize=None)
-    def check(self):
+    def check(self, verbose: bool):
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:
             try:
                 path = which(self.binary)
+                if verbose and not path:
+                    print(
+                        f"Binary {self.binary} can't be found to be executed")
+
                 return path is not None
             except Exception:
                 return False

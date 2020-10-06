@@ -54,18 +54,21 @@ class FFmpegDecoder(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check(self):
+    def check(self, verbose):
         '''Checks whether the decoder can be run'''
         # pylint: disable=broad-except
         if self.hw_acceleration:
             try:
+                command = [self.binary, '-hwaccels']
                 output = subprocess.check_output(
-                    [self.binary, '-hwaccels'], stderr=subprocess.DEVNULL).decode('utf-8')
+                    command, stderr=subprocess.DEVNULL).decode('utf-8')
+                if verbose:
+                    print(f'{" ".join(command)}\n{output}')
                 return f'{os.linesep}{self.api.lower()}{os.linesep}' in output
             except Exception:
                 return False
         else:
-            return super().check()
+            return super().check(verbose)
 
 
 @register_decoder
