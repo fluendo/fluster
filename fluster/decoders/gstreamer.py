@@ -225,11 +225,63 @@ class FluendoH264VAGst10Decoder(GStreamer10):
     hw_acceleration = True
 
 
-@register_decoder
-class FluendoH265VAGst10Decoder(GStreamer10):
+class FluendoH265VAGst10DecoderBase(GStreamer10):
     '''Fluendo H.265 hardware decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
-    decoder_bin = ' h265parse ! fluvadec '
+    decoder_bin_tmpl =\
+        ' h265parse !'\
+        ' video/x-h265,stream-format={stream_format},alignment={alignment} !'\
+        ' fluvadec '
     provider = 'Fluendo'
     api = 'HW'
     hw_acceleration = True
+    stream_format = None
+    alignment = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        new_val = f'{self.codec.value}-{self.stream_format}-{self.alignment}'
+        translator = lambda s: s.replace(self.codec.value, new_val)
+        self.name = translator(self.name)
+        self.description = translator(self.description)
+
+        self.decoder_bin = self.decoder_bin_tmpl.format(
+            stream_format=self.stream_format, alignment=self.alignment)
+
+
+@register_decoder
+class FluendoH265VAGst10Decoder(FluendoH265VAGst10DecoderBase):
+    stream_format = 'byte-stream'
+    alignment = 'au'
+
+
+@register_decoder
+class FluendoH265VAGst10Decoder(FluendoH265VAGst10DecoderBase):
+    stream_format = 'byte-stream'
+    alignment = 'nal'
+
+
+@register_decoder
+class FluendoH265Hev1AuVAGst10Decoder(FluendoH265VAGst10DecoderBase):
+    stream_format = 'hev1'
+    alignment = 'au'
+
+
+@register_decoder
+class FluendoH265Hvc1AuVAGst10Decoder(FluendoH265VAGst10DecoderBase):
+    stream_format = 'hvc1'
+    alignment = 'au'
+
+
+@register_decoder
+class FluendoH265Hev1NalVAGst10Decoder(FluendoH265VAGst10DecoderBase):
+    stream_format = 'hev1'
+    alignment = 'nal'
+
+
+@register_decoder
+class FluendoH265Hvc1NalVAGst10Decoder(FluendoH265VAGst10DecoderBase):
+    stream_format = 'hvc1'
+    alignment = 'nal'
+
