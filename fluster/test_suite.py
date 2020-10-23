@@ -118,10 +118,11 @@ class TestSuite:
             dest_dir, os.path.basename(test_vector.source))
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
-        file_downloaded = os.path.exists(dest_path)
-        if file_downloaded and context.verify:
-            if test_vector.source_checksum != utils.file_checksum(dest_path):
-                file_downloaded = False
+        if context.verify and os.path.exists(dest_path) and \
+                test_vector.source_checksum == utils.file_checksum(dest_path):
+            if not context.keep_file:
+                os.remove(dest_path)
+            return
         print(f'\tDownloading test vector {test_vector.name} from {dest_dir}')
         utils.download(test_vector.source, dest_dir)
         if utils.is_extractable(dest_path):
