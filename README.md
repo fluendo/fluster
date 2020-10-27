@@ -114,8 +114,7 @@ H265
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
-   them). By default, hardware-accelerated decoders run tests sequentially,
-   while software decoders run them in parallel. By default it uses the same
+   them). By default, decoder test are run in parallel. By default it uses the same
    amount of parallel jobs as number of cores, but it can be configured using
    the `-j` option. You can pass `-d` to filter only the decoders that you want
    to run, `-ts` for the test suites and `-tv` for the test vectors. Examples:

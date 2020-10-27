@@ -262,13 +262,6 @@ class TestSuite:
         if not tests:
             return None
 
-        # decoders using hardware acceleration cannot be easily parallelized
-        # reliably and may case issues. Thus, we execute them sequentially
-        if ctx.decoder.hw_acceleration and ctx.jobs > 1:
-            ctx.jobs = 1
-            print(
-                f'Decoder {ctx.decoder.name} uses hardware acceleration, using 1 job automatically')
-
         print('*' * 100)
         string = f'Running test suite {self.name} with decoder {ctx.decoder.name}\n'
         if ctx.test_vectors:
