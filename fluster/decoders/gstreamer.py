@@ -117,6 +117,15 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerVaH265Gst10Decoder(GStreamer10):
+    '''GStreamer H.265 VA decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vah265dec '
+    api = 'VA'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerMsdkH265Gst10Decoder(GStreamer10):
     '''GStreamer H.265 Intel MSDK decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
@@ -149,6 +158,15 @@ class GStreamerVaapiH264Gst10Decoder(GStreamer10):
     codec = Codec.H264
     decoder_bin = ' h264parse ! vaapih264dec '
     api = 'VAAPI'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerVaH264Gst10Decoder(GStreamer10):
+    '''GStreamer H.264 VA decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! vah264dec '
+    api = 'VA'
     hw_acceleration = True
 
 
