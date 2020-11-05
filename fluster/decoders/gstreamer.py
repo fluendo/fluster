@@ -36,10 +36,12 @@ class GStreamer(Decoder):
     gst_api = None
     api = None
     provider = None
+    name = None
 
     def __init__(self):
         super().__init__()
-        self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
+        if not self.name:
+            self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
         self.cmd = normalize_binary_cmd(self.cmd)
 
@@ -328,5 +330,6 @@ class FluendoFluVAH265DecGst10Decoder(GStreamer10):
     codec = Codec.H265
     decoder_bin = ' h265parse ! fluvah265dec '
     provider = 'Fluendo'
-    api = 'HW-fluvah265dec'
+    api = 'HW'
     hw_acceleration = True
+    name = f'{provider}-{codec.value}-{api}-vah265dec-Gst1.0'

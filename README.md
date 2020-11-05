@@ -203,7 +203,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by default.0 means all logical cores
   -t TIMEOUT, --timeout TIMEOUT
-                        timeout in secs for each decoding. Defaults to 20 secs
+                        timeout in secs for each decoding. Defaults to 30 secs
   -ff, --failfast       stop after first fail
   -q, --quiet           don't show every test run
   -ts TESTSUITES [TESTSUITES ...], --testsuites TESTSUITES [TESTSUITES ...]
