@@ -41,7 +41,8 @@ class Context:
     def __init__(self, jobs: int, timeout: int, test_suites: list = None, decoders: list = None,
                  test_vectors: list = None, failfast: bool = False, quiet: bool = False,
                  reference: bool = False, summary: bool = False, keep_files: bool = False,
-                 threshold: int = None, time_threshold: int = None, verbose: bool = False):
+                 threshold: int = None, time_threshold: int = None, verbose: bool = False,
+                 summary_output: str = None):
         self.jobs = jobs
         self.timeout = timeout
         self.test_suites = test_suites
@@ -55,6 +56,7 @@ class Context:
         self.threshold = threshold
         self.time_threshold = time_threshold
         self.verbose = verbose
+        self.summary_output = summary_output
 
     def to_test_suite_context(self, decoder, results_dir, test_vectors):
         '''Create a TestSuite's Context from this'''
@@ -193,23 +195,28 @@ class Fluster:
 
                     if ctx.threshold:
                         if test_suite_res.test_vectors_success < ctx.threshold:
+                            self._show_summary_if_needed(ctx, results)
                             print(f'Tests results below threshold: {test_suite_res.test_vectors_success} vs '
                                   f'{ctx.threshold}\nReporting error through exit code 2')
                             sys.exit(2)
 
                     if ctx.time_threshold:
                         if test_suite_res.time_taken > ctx.time_threshold:
+                            self._show_summary_if_needed(ctx, results)
                             print(f'Tests results over time threshold: {test_suite_res.time_taken} vs '
                                   f'{ctx.time_threshold}\nReporting error through exit code 3')
                             sys.exit(3)
 
-            if ctx.summary and results:
-                self._generate_summary(results)
+            self._show_summary_if_needed(ctx, results)
 
         if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)
 
-    def _generate_summary(self, results: tuple):
+    def _show_summary_if_needed(self, ctx: Context, results: tuple):
+        if ctx.summary and results:
+            self._generate_summary(ctx, results)
+
+    def _generate_summary(self, ctx: Context, results: tuple):
         def _global_stats(results: tuple, test_suites: list, first: bool):
             separator = f'\n|-|{"-|" * len(results)}'
             output = separator if not first else ''
@@ -237,7 +244,12 @@ class Fluster:
                 tvector = test_suite.test_vectors[test_vector.name]
                 output += '✔️|' if not tvector.errors else '❌|'
         output += _global_stats(results, test_suites, False)
-        print(output)
+        output += '\n'
+        if ctx.summary_output:
+            with open(ctx.summary_output, 'w+') as summary_file:
+                summary_file.write(output)
+        else:
+            print(output)
 
     def download_test_suites(self, test_suites: list, jobs: int, keep_file: bool):
         '''Download a group of test suites'''

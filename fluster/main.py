@@ -107,10 +107,12 @@ class Main:
         subparser.add_argument(
             '-s', '--summary', help='generate a summary in Markdown format for each test suite', action='store_true')
         subparser.add_argument(
+            '-so', '--summary-output', help='dump summary output to file')
+        subparser.add_argument(
             '-k', '--keep', help='keep output files generated during the test', action='store_true')
         subparser.add_argument(
             '-th', '--threshold', help='set exit code to 2 if threshold tests are not success. '
-            'exit code is 0 otherwise', type=float)
+            'exit code is 0 otherwise', type=int)
         subparser.add_argument(
             '-tth', '--time-threshold', help='set exit code to 3 if test suite takes longer than treshold seconds. '
             'exit code is 0 otherwise', type=float)
@@ -147,7 +149,7 @@ class Main:
         subparser.add_argument(
             '-k', '--keep', help="keep downloaded file after extracting", action='store_true')
         subparser.add_argument(
-            'testsuites', help='list of testsuites to download', nargs='*')
+            'testsuites', help='list of testsuites to download', nargs='+')
         subparser.set_defaults(func=self._download_cmd)
 
     def _list_cmd(self, args, fluster):
@@ -168,11 +170,12 @@ class Main:
                           test_vectors=args.testvectors,
                           failfast=args.failfast,
                           quiet=args.quiet,
-                          summary=args.summary,
+                          summary=args.summary or args.summary_output,
                           keep_files=args.keep,
                           threshold=args.threshold,
                           time_threshold=args.time_threshold,
-                          verbose=args.verbose
+                          verbose=args.verbose,
+                          summary_output=args.summary_output
                           )
         try:
             fluster.run_test_suites(context)
