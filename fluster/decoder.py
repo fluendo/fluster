@@ -41,12 +41,12 @@ class Decoder(ABC):
 
     @abstractmethod
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool):
+               verbose: bool) -> str:
         '''Decodes input_filepath in output_filepath'''
         raise Exception('Not implemented')
 
     @lru_cache(maxsize=None)
-    def check(self, verbose: bool):
+    def check(self, verbose: bool) -> bool:
         '''Checks whether the decoder can be run'''
         if hasattr(self, 'binary') and self.binary:
             try:

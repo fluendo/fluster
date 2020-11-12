@@ -18,10 +18,11 @@
 # Boston, MA 02111-1307, USA.
 
 import os
+from subprocess import TimeoutExpired
 import unittest
 
 from fluster.decoder import Decoder
-from fluster.test_vector import TestVector
+from fluster.test_vector import TestVector, TestVectorResult
 from fluster.utils import normalize_path
 
 
@@ -51,13 +52,24 @@ class Test(unittest.TestCase):
         output_filepath = normalize_path(output_filepath)
         input_filepath = normalize_path(input_filepath)
 
-        result = self.decoder.decode(
-            input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
+        try:
+            result = self.decoder.decode(
+                input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
+        except TimeoutExpired:
+            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Timeout
+            raise
+        except Exception:
+            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Error
+            raise
+
         if not self.keep_files and os.path.exists(output_filepath) and \
                 os.path.isfile(output_filepath):
             os.remove(output_filepath)
 
         if not self.reference:
+            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Failure
+            if self.test_vector.result.lower() == result.lower():
+                self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Success
             self.assertEqual(self.test_vector.result.lower(), result.lower(),
                              f'{self.test_vector.input_file}')
         else:

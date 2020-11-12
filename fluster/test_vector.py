@@ -17,20 +17,34 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from enum import Enum
 from fluster.codec import PixelFormat
+
+
+class TestVectorResult(Enum):
+    '''Test Result'''
+    Success = 'Success'
+    Failure = 'Failure'
+    Timeout = 'Timeout'
+    Error = 'Error'
 
 
 class TestVector:
     '''Test vector'''
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, name: str, source: str, source_checksum: str, input_file: str,
                  output_format: PixelFormat, result: str):
+        # JSON members
         self.name = name
         self.source = source
         self.source_checksum = source_checksum
         self.input_file = input_file
         self.output_format = output_format
         self.result = result
+
+        # Not included in JSON
+        self.test_result = TestVectorResult.Failure
         self.errors = []
 
     @classmethod
@@ -45,6 +59,7 @@ class TestVector:
     def data_to_serialize(self):
         '''Return the data to be serialized'''
         data = self.__dict__.copy()
+        data.pop('test_result')
         data.pop('errors')
         data['output_format'] = str(self.output_format.value)
         return data
