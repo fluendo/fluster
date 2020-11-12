@@ -18,6 +18,7 @@
 # Boston, MA 02111-1307, USA.
 
 import os
+from subprocess import TimeoutExpired
 import unittest
 
 from fluster.decoder import Decoder
@@ -51,8 +52,13 @@ class Test(unittest.TestCase):
         output_filepath = normalize_path(output_filepath)
         input_filepath = normalize_path(input_filepath)
 
-        result = self.decoder.decode(
-            input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
+        try:
+            result = self.decoder.decode(
+                input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
+        except TimeoutExpired:
+            self.test_suite.test_vectors[self.test_vector.name].timeout = True
+            raise
+
         if not self.keep_files and os.path.exists(output_filepath) and \
                 os.path.isfile(output_filepath):
             os.remove(output_filepath)

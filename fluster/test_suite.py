@@ -70,17 +70,18 @@ class TestSuite:
 
     def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
                  test_vectors: dict):
-        # Not included in JSON
-        self.filename = filename
-        self.resources_dir = resources_dir
-        self.test_vectors_success = 0
-        self.time_taken = 0
-
         # JSON members
         self.name = name
         self.codec = codec
         self.description = description
         self.test_vectors = test_vectors
+
+        # Not included in JSON
+        self.filename = filename
+        self.resources_dir = resources_dir
+        self.test_vectors_success = 0
+        self.test_vectors_timeout = 0
+        self.time_taken = 0
 
     def clone(self):
         '''Create a deep copy of the object'''
@@ -103,6 +104,7 @@ class TestSuite:
             data.pop('resources_dir')
             data.pop('filename')
             data.pop('test_vectors_success')
+            data.pop('test_vectors_timeout')
             data.pop('time_taken')
             data['codec'] = str(self.codec.value)
             data['test_vectors'] = [tv.data_to_serialize()
@@ -212,6 +214,8 @@ class TestSuite:
         for test_vector in self.test_vectors.values():
             if not test_vector.errors:
                 self.test_vectors_success += 1
+            elif test_vector.timeout:
+                self.test_vectors_timeout += 1
 
         self._rename_test(test, module_orig, qualname_orig)
 
@@ -224,6 +228,8 @@ class TestSuite:
             print('\n')
             self.test_vectors_success = 0
             for test_vector_res in test_results:
+                if test_vector_res.timeout:
+                    self.test_vectors_timeout += 1
                 if test_vector_res.errors:
                     for error in test_vector_res.errors:
                         # Use same format to report errors as TextTestRunner
@@ -237,7 +243,8 @@ class TestSuite:
                 # from a different process
                 self.test_vectors[test_vector_res.name] = test_vector_res
             print(
-                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {self.time_taken:.3f} secs')
+                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully with '
+                f'{self.test_vectors_timeout} timeout(s) in {self.time_taken:.3f} secs')
 
     def run(self, ctx: Context):
         '''

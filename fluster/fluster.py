@@ -242,7 +242,12 @@ class Fluster:
             output += f'\n|{test_vector.name}|'
             for test_suite in test_suites:
                 tvector = test_suite.test_vectors[test_vector.name]
-                output += '✔️|' if not tvector.errors else '❌|'
+                if not tvector.errors:
+                    output += '✔️|'
+                elif tvector.timeout:
+                    output += '⌛|'
+                else:
+                    output += '❌|'
         output += _global_stats(results, test_suites, False)
         output += '\n'
         if ctx.summary_output:
