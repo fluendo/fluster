@@ -24,7 +24,7 @@ check: ## check that very basic tests run
 	$(FLUSTER) reference Dummy dummy
 	$(FLUSTER) run -ts dummy -tv one -j1
 	$(FLUSTER) run -ts dummy -s
-	$(FLUSTER) run -ts dummy -so summary.log && rm -rf summary.log
+	$(FLUSTER) run -ts dummy -so summary.log && cat summary.log && rm -rf summary.log
 	$(FLUSTER) run -ts dummy -j1 -s
 	$(FLUSTER) run -ts dummy -th 1
 	$(FLUSTER) run -ts dummy -tth 10

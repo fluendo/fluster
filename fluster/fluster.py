@@ -246,7 +246,7 @@ class Fluster:
         output += _global_stats(results, test_suites, False)
         output += '\n'
         if ctx.summary_output:
-            with open(ctx.summary_output, 'w+') as summary_file:
+            with open(ctx.summary_output, 'w+', encoding="utf-8") as summary_file:
                 summary_file.write(output)
         else:
             print(output)
