@@ -333,3 +333,14 @@ class FluendoFluVAH265DecGst10Decoder(GStreamer10):
     api = 'HW'
     hw_acceleration = True
     name = f'{provider}-{codec.value}-{api}-vah265dec-Gst1.0'
+
+
+@register_decoder
+class FluendoFluVAH264DecGst10Decoder(GStreamer10):
+    '''Fluendo H.264 separated plugin hardware decoder for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! fluvah264dec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
+    name = f'{provider}-{codec.value}-{api}-vah264dec-Gst1.0'
