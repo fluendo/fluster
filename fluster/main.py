@@ -50,10 +50,12 @@ class Main:
         '''Runs Fluster'''
         args = self.parser.parse_args()
         if hasattr(args, 'func'):
-            fluster = Fluster(self.test_suites_dir,
-                              self.decoders_dir,
-                              args.resources,
-                              args.output)
+            fluster = Fluster(test_suites_dir=self.test_suites_dir,
+                              decoders_dir=self.decoders_dir,
+                              resources_dir=args.resources,
+                              results_dir=args.output,
+                              use_emoji=not args.no_emoji
+                              )
             args.func(args, fluster)
         else:
             self.parser.print_help()
@@ -64,6 +66,9 @@ class Main:
             '-r', '--resources', help='set the directory where resources are taken from', default=RESOURCES_DIR)
         parser.add_argument(
             '-o', '--output', help='set the directory where test results will be stored', default=RESULTS_DIR)
+        parser.add_argument(
+            '-ne', '--no-emoji', help='set to use plain text instead of emojis', action='store_true'
+        )
         subparsers = parser.add_subparsers(title='subcommands')
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
