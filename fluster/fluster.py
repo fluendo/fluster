@@ -67,11 +67,27 @@ class Context:
         return ts_context
 
 
+EMOJI_RESULT = {
+    TestVectorResult.Success: '✔️',
+    TestVectorResult.Failure: '❌',
+    TestVectorResult.Timeout: '⌛',
+    TestVectorResult.Error: '☠'
+}
+
+TEXT_RESULT = {
+    TestVectorResult.Success: 'OK️',
+    TestVectorResult.Failure: 'KO',
+    TestVectorResult.Timeout: 'TO',
+    TestVectorResult.Error: 'ER'
+}
+
+
 class Fluster:
     '''Main class for fluster'''
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, test_suites_dir: str, decoders_dir: str, resources_dir: str,
-                 results_dir: str, verbose: bool = False):
+                 results_dir: str, verbose: bool = False, use_emoji: bool = True):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
@@ -79,6 +95,7 @@ class Fluster:
         self.verbose = verbose
         self.test_suites = []
         self.decoders = DECODERS
+        self.emoji = EMOJI_RESULT if use_emoji else TEXT_RESULT
 
     @lru_cache(maxsize=None)
     def _load_test_suites(self):
@@ -106,7 +123,8 @@ class Fluster:
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check:
-                    string += ' ✔️' if decoder.check(verbose) else ' ❌'
+                    string += '... ' + (self.emoji[TestVectorResult.Success] if decoder.check(
+                        verbose) else self.emoji[TestVectorResult.Failure])
                 print(string)
 
     def list_test_suites(self, show_test_vectors: bool = False, test_suites: list = None):
@@ -243,14 +261,7 @@ class Fluster:
             output += f'\n|{test_vector.name}|'
             for test_suite in test_suites:
                 tvector = test_suite.test_vectors[test_vector.name]
-                if tvector.test_result == TestVectorResult.Success:
-                    output += '✔️|'
-                elif tvector.test_result == TestVectorResult.Failure:
-                    output += '❌|'
-                elif tvector.test_result == TestVectorResult.Timeout:
-                    output += '⌛|'
-                elif tvector.test_result == TestVectorResult.Error:
-                    output += '☠|'
+                output += self.emoji[tvector.test_result] + '|'
         output += _global_stats(results, test_suites, False)
         output += '\n'
         if ctx.summary_output:

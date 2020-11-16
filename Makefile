@@ -18,12 +18,14 @@ check: ## check that very basic tests run
 	@echo "Running dummy test..."
 	$(FLUSTER) list
 	$(FLUSTER) list -c
+	$(FLUSTER) -ne list -c
 	$(FLUSTER) list -ts dummy -tv
 	$(FLUSTER) download dummy
 	$(FLUSTER) run -ts dummy -tv one
 	$(FLUSTER) reference Dummy dummy
 	$(FLUSTER) run -ts dummy -tv one -j1
 	$(FLUSTER) run -ts dummy -s
+	$(FLUSTER) -ne run -ts dummy -s
 	$(FLUSTER) run -ts dummy -so summary.log && cat summary.log && rm -rf summary.log
 	$(FLUSTER) run -ts dummy -j1 -s
 	$(FLUSTER) run -ts dummy -th 1
