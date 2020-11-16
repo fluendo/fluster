@@ -46,7 +46,7 @@ class FFmpegDecoder(Decoder):
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool):
+               verbose: bool) -> str:
         '''Decodes input_filepath in output_filepath'''
         cmd = shlex.split(FFMPEG_TPL.format(
             self.cmd, input_filepath, str(output_format.value), output_filepath))
@@ -54,7 +54,7 @@ class FFmpegDecoder(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check(self, verbose):
+    def check(self, verbose) -> bool:
         '''Checks whether the decoder can be run'''
         # pylint: disable=broad-except
         if self.hw_acceleration:

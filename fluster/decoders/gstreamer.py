@@ -51,7 +51,7 @@ class GStreamer(Decoder):
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, output_filepath)
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool):
+               verbose: bool) -> str:
         '''Decode the test vector and do the checksum'''
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)
@@ -59,7 +59,7 @@ class GStreamer(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check(self, verbose):
+    def check(self, verbose) -> bool:
         '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
         try:

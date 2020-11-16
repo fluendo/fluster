@@ -30,6 +30,7 @@ from fluster.decoders import *
 from fluster.test_suite import TestSuite
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.decoder import DECODERS
+from fluster.test_vector import TestVectorResult
 
 # pylint: disable=broad-except
 
@@ -242,7 +243,14 @@ class Fluster:
             output += f'\n|{test_vector.name}|'
             for test_suite in test_suites:
                 tvector = test_suite.test_vectors[test_vector.name]
-                output += '✔️|' if not tvector.errors else '❌|'
+                if tvector.test_result == TestVectorResult.Success:
+                    output += '✔️|'
+                elif tvector.test_result == TestVectorResult.Failure:
+                    output += '❌|'
+                elif tvector.test_result == TestVectorResult.Timeout:
+                    output += '⌛|'
+                elif tvector.test_result == TestVectorResult.Error:
+                    output += '☠|'
         output += _global_stats(results, test_suites, False)
         output += '\n'
         if ctx.summary_output:

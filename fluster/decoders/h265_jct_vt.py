@@ -32,7 +32,7 @@ class H265JCTVTDecoder(Decoder):
     binary = 'TAppDecoder'
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool):
+               verbose: bool) -> str:
         '''Decodes input_filepath in output_filepath'''
         run_command([self.binary, '-b', input_filepath,
                      '-o', output_filepath], timeout=timeout, verbose=verbose)

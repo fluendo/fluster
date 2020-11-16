@@ -70,17 +70,17 @@ class TestSuite:
 
     def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
                  test_vectors: dict):
-        # Not included in JSON
-        self.filename = filename
-        self.resources_dir = resources_dir
-        self.test_vectors_success = 0
-        self.time_taken = 0
-
         # JSON members
         self.name = name
         self.codec = codec
         self.description = description
         self.test_vectors = test_vectors
+
+        # Not included in JSON
+        self.filename = filename
+        self.resources_dir = resources_dir
+        self.test_vectors_success = 0
+        self.time_taken = 0
 
     def clone(self):
         '''Create a deep copy of the object'''
