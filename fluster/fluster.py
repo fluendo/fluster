@@ -75,7 +75,7 @@ EMOJI_RESULT = {
 }
 
 TEXT_RESULT = {
-    TestVectorResult.Success: 'OK️',
+    TestVectorResult.Success: 'OK',
     TestVectorResult.Failure: 'KO',
     TestVectorResult.Timeout: 'TO',
     TestVectorResult.Error: 'ER'
