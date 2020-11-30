@@ -263,7 +263,7 @@ class Fluster:
                 tvector = test_suite.test_vectors[test_vector.name]
                 output += self.emoji[tvector.test_result] + '|'
         output += _global_stats(results, test_suites, False)
-        output += '\n'
+        output += '\n\n'
         if ctx.summary_output:
             with open(ctx.summary_output, 'w+', encoding="utf-8") as summary_file:
                 summary_file.write(output)
