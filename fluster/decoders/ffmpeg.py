@@ -83,6 +83,12 @@ class FFmpegH265Decoder(FFmpegDecoder):
     codec = Codec.H265
 
 
+@register_decoder
+class FFmpegVP8Decoder(FFmpegDecoder):
+    '''FFmpeg SW decoder for VP8'''
+    codec = Codec.VP8
+
+
 class FFmpegVaapiDecoder(FFmpegDecoder):
     '''Generic class for FFmpeg VAAPI decoder'''
     hw_acceleration = True
@@ -99,6 +105,12 @@ class FFmpegH264VaapiDecoder(FFmpegVaapiDecoder):
 class FFmpegH265VaapiDecoder(FFmpegVaapiDecoder):
     '''FFmpeg VAAPI decoder for H.265'''
     codec = Codec.H265
+
+
+@register_decoder
+class FFmpegVP8VaapiDecoder(FFmpegVaapiDecoder):
+    '''FFmpeg VAAPI decoder for VP8'''
+    codec = Codec.VP8
 
 
 class FFmpegVdpauDecoder(FFmpegDecoder):

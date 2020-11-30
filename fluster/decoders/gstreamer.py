@@ -218,6 +218,24 @@ class GStreamerV4l2CodecsH264Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerLibvpxVP8(GStreamer10):
+    '''GStreamer VP8 Libvpx decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vp8dec '
+    api = 'libvpx'
+    hw_acceleration = False
+
+
+@register_decoder
+class GStreamerVaapiVP8Gst10Decoder(GStreamer10):
+    '''GStreamer VP8 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vaapivp8dec '
+    api = 'VAAPI'
+    hw_acceleration = True
+
+
+@register_decoder
 class FluendoH265Gst10Decoder(GStreamer10):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
