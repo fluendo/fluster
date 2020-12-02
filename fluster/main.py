@@ -50,7 +50,7 @@ class Main:
         '''Runs Fluster'''
         args = self.parser.parse_args()
         if hasattr(args, 'func'):
-            fluster = Fluster(test_suites_dir=self.test_suites_dir,
+            fluster = Fluster(test_suites_dir=args.test_suites_dir,
                               decoders_dir=self.decoders_dir,
                               resources_dir=args.resources,
                               results_dir=args.output,
@@ -69,6 +69,9 @@ class Main:
         parser.add_argument(
             '-ne', '--no-emoji', help='set to use plain text instead of emojis', action='store_true'
         )
+        parser.add_argument(
+            '-tsd', '--test-suites-dir', help='set the directory where test suite will be read',
+            default=TEST_SUITES_DIR)
         subparsers = parser.add_subparsers(title='subcommands')
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
