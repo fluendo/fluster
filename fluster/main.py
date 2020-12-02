@@ -167,10 +167,6 @@ class Main:
 
     def _run_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
-        if args.jobs > 1 and args.failfast:
-            print(f'Error: failfast is not compatible with running {args.jobs} parallel jobs.'
-                  ' Please use -j1 if you want to use failfast')
-            return
         context = Context(jobs=args.jobs,
                           test_suites=args.testsuites,
                           timeout=args.timeout,

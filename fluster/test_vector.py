@@ -23,6 +23,7 @@ from fluster.codec import PixelFormat
 
 class TestVectorResult(Enum):
     '''Test Result'''
+    NotRun = 'NotRun'
     Success = 'Success'
     Failure = 'Failure'
     Timeout = 'Timeout'
@@ -44,7 +45,7 @@ class TestVector:
         self.result = result
 
         # Not included in JSON
-        self.test_result = TestVectorResult.Failure
+        self.test_result = TestVectorResult.NotRun
         self.errors = []
 
     @classmethod

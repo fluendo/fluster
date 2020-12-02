@@ -68,6 +68,7 @@ class Context:
 
 
 EMOJI_RESULT = {
+    TestVectorResult.NotRun: '',
     TestVectorResult.Success: '✔️',
     TestVectorResult.Failure: '❌',
     TestVectorResult.Timeout: '⌛',
@@ -75,6 +76,7 @@ EMOJI_RESULT = {
 }
 
 TEXT_RESULT = {
+    TestVectorResult.NotRun: '',
     TestVectorResult.Success: 'OK',
     TestVectorResult.Failure: 'KO',
     TestVectorResult.Timeout: 'TO',
@@ -210,6 +212,7 @@ class Fluster:
                     if not success:
                         error = True
                         if ctx.failfast:
+                            self._show_summary_if_needed(ctx, results)
                             sys.exit(1)
 
                     if ctx.threshold:
