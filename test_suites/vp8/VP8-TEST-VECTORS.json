@@ -3,7 +3,6 @@
     "codec": "VP8",
     "description": "VP8 Test Vector Catalogue from https://github.com/webmproject/vp8-test-vectors",
     "test_vectors": [
-
         {
             "name": "vp80-00-comprehensive-001",
             "source": "https://github.com/webmproject/vp8-test-vectors/raw/master/vp80-00-comprehensive-001.ivf",
