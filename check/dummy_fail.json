@@ -1,0 +1,23 @@
+{
+    "name": "dummy_fail",
+    "codec": "Dummy",
+    "description": "Dummy fail test suite",
+    "test_vectors": [
+        {
+            "name": "fail",
+            "source": "https://www.itu.int//wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_B_NEC_3.zip",
+            "source_checksum": "bad checksum on purpose",
+            "input_file": "ipcm_B_NEC_3/ipcm_B_NEC_3.bit",
+            "output_format": "yuv420p",
+            "result": "bad result on purpose"
+        },
+        {
+            "name": "success",
+            "source": "https://www.itu.int//wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_A_NEC_3.zip",
+            "source_checksum": "69b58505dc88fe422e3de55251549409",
+            "input_file": "ipcm_A_NEC_3/ipcm_A_NEC_3.bit",
+            "output_format": "yuv420p",
+            "result": "19b8d716307ae8b28c81b21f14f870dc"
+        }
+    ]
+}
