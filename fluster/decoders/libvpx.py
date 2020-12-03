@@ -1,6 +1,7 @@
 # Fluster - testing framework for decoders conformance
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
+#  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -17,27 +18,22 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from enum import Enum
+from fluster.codec import Codec, PixelFormat
+from fluster.decoder import Decoder, register_decoder
+from fluster.utils import file_checksum, run_command
 
 
-class Codec(Enum):
-    '''Codec type'''
-    Dummy = 'Dummy'
-    H264 = 'H.264'
-    H265 = 'H.265'
-    VP8 = 'VP8'
+@register_decoder
+class VP8Decoder(Decoder):
+    '''VP8 reference decoder implementation'''
+    name = "libvpx-VP8"
+    description = "VP8 reference decoder"
+    codec = Codec.VP8
+    binary = 'vpxdec'
 
-
-class PixelFormat(Enum):
-    '''Pixel format'''
-    yuv420p = 'yuv420p'
-    yuv420p10le = 'yuv420p10le'
-
-    def to_gst(self):
-        '''Return GStreamer pixel format'''
-        mapping = {
-            self.yuv420p: 'I420',
-            self.yuv420p10le: 'I420_10LE'
-        }
-
-        return mapping[self]
+    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
+               verbose: bool) -> str:
+        '''Decodes input_filepath in output_filepath'''
+        run_command([self.binary, '--i420', input_filepath, '-o',
+                     output_filepath], timeout=timeout, verbose=verbose)
+        return file_checksum(output_filepath)
