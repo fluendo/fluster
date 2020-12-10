@@ -21,6 +21,7 @@ import os.path
 import json
 import unittest
 import copy
+import sys
 from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
@@ -125,6 +126,12 @@ class TestSuite:
             return
         print(f'\tDownloading test vector {test_vector.name} from {dest_dir}')
         utils.download(test_vector.source, dest_dir)
+        checksum = utils.file_checksum(dest_path)
+        if test_vector.source_checksum != checksum:
+            raise Exception(
+                f'Checksum error for test vector \'{test_vector.name}\': \'{checksum}\' instead of '
+                f'\'{test_vector.source_checksum}\'')
+
         if utils.is_extractable(dest_path):
             print(
                 f'\tExtracting test vector {test_vector.name} to {dest_dir}')
@@ -138,13 +145,24 @@ class TestSuite:
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         print(f'Downloading test suite {self.name} using {jobs} parallel jobs')
-        download_tasks = []
-        for test_vector in self.test_vectors.values():
-            download_tasks.append(
-                DownloadWork(out_dir, verify, extract_all, keep_file, self.name, test_vector))
 
-        with Pool(jobs) as pool:
-            pool.map(self._download_worker, download_tasks, chunksize=1)
+        pool = Pool(jobs)
+
+        def _callback_error(err):
+            print(f'\nError downloading -> {err}\n')
+            pool.terminate()
+
+        downloads = []
+        for test_vector in self.test_vectors.values():
+            downloads.append(pool.apply_async(self._download_worker, args=(DownloadWork(
+                out_dir, verify, extract_all, keep_file, self.name, test_vector), ), error_callback=_callback_error))
+        pool.close()
+        pool.join()
+
+        for job in downloads:
+            if not job.successful():
+                print('Some download failed')
+                sys.exit(1)
 
         print('All downloads finished')
 
@@ -162,7 +180,7 @@ class TestSuite:
             test_vector = res[0].test_vector
             test_vector.errors.append([str(x) for x in res])
 
-    def _run_worker(self, test: Test):
+    def _run_worker(self, test: Test) -> TestVector:
         '''Run one unit test returning the TestVector'''
         # Save the original module and qualname to restore it before returning
         # the TestVector. Otherwise, Pickle will complain if the classes can't
@@ -215,29 +233,39 @@ class TestSuite:
 
         self._rename_test(test, module_orig, qualname_orig)
 
-    def run_test_suite_in_parallel(self, jobs: int, tests: list):
+    def run_test_suite_in_parallel(self, jobs: int, tests: list, failfast: bool):
         '''Run the test suite in parallel'''
-        with Pool(jobs) as pool:
-            start = perf_counter()
-            test_results = pool.map(self._run_worker, tests)
-            self.time_taken = perf_counter() - start
-            print('\n')
-            self.test_vectors_success = 0
-            for test_vector_res in test_results:
-                if test_vector_res.errors:
-                    for error in test_vector_res.errors:
-                        # Use same format to report errors as TextTestRunner
-                        print(f'{"=" * 71}\nFAIL: {error[0]}\n{"-" * 70}')
-                        for line in error[1:]:
-                            print(line)
-                else:
-                    self.test_vectors_success += 1
+        pool = Pool(jobs)
+        test_results = []
 
-                # Collect the test vector results and failures since they come
-                # from a different process
-                self.test_vectors[test_vector_res.name] = test_vector_res
-            print(
-                f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {self.time_taken:.3f} secs')
+        def _callback(test_result):
+            test_results.append(test_result)
+            if failfast and test_result.errors:
+                pool.terminate()
+
+        start = perf_counter()
+        for test in tests:
+            pool.apply_async(self._run_worker, (test, ), callback=_callback)
+        pool.close()
+        pool.join()
+        self.time_taken = perf_counter() - start
+        print('\n')
+        self.test_vectors_success = 0
+        for test_vector_res in test_results:
+            if test_vector_res.errors:
+                for error in test_vector_res.errors:
+                    # Use same format to report errors as TextTestRunner
+                    print(f'{"=" * 71}\nFAIL: {error[0]}\n{"-" * 70}')
+                    for line in error[1:]:
+                        print(line)
+            else:
+                self.test_vectors_success += 1
+
+            # Collect the test vector results and failures since they come
+            # from a different process
+            self.test_vectors[test_vector_res.name] = test_vector_res
+        print(
+            f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {self.time_taken:.3f} secs')
 
     def run(self, ctx: Context):
         '''
@@ -274,7 +302,8 @@ class TestSuite:
             test_suite.run_test_suite_sequentially(
                 tests, ctx.failfast, ctx.quiet)
         else:
-            test_suite.run_test_suite_in_parallel(ctx.jobs, tests)
+            test_suite.run_test_suite_in_parallel(
+                ctx.jobs, tests, ctx.failfast)
 
         if ctx.reference:
             test_suite.to_json_file(test_suite.filename)

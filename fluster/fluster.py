@@ -68,6 +68,7 @@ class Context:
 
 
 EMOJI_RESULT = {
+    TestVectorResult.NotRun: '',
     TestVectorResult.Success: '✔️',
     TestVectorResult.Failure: '❌',
     TestVectorResult.Timeout: '⌛',
@@ -75,6 +76,7 @@ EMOJI_RESULT = {
 }
 
 TEXT_RESULT = {
+    TestVectorResult.NotRun: '',
     TestVectorResult.Success: 'OK',
     TestVectorResult.Failure: 'KO',
     TestVectorResult.Timeout: 'TO',
@@ -111,7 +113,7 @@ class Fluster:
 
     def list_decoders(self, check: bool, verbose: bool):
         '''List all the available decoders'''
-        print('\nList of available decoders:\n')
+        print('\nList of available decoders:')
         decoders_dict = {}
         for dec in self.decoders:
             if dec.codec not in decoders_dict:
@@ -119,7 +121,7 @@ class Fluster:
             decoders_dict[dec.codec].append(dec)
 
         for codec in decoders_dict:
-            print(f'{codec}'.split('.')[1])
+            print(f'\n{str(codec).split(".")[1]}')
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check:
@@ -210,6 +212,7 @@ class Fluster:
                     if not success:
                         error = True
                         if ctx.failfast:
+                            self._show_summary_if_needed(ctx, results)
                             sys.exit(1)
 
                     if ctx.threshold:
