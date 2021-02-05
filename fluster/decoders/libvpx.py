@@ -23,13 +23,16 @@ from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
 
-@register_decoder
-class VP8Decoder(Decoder):
-    '''VP8 reference decoder implementation'''
-    name = "libvpx-VP8"
-    description = "VP8 reference decoder"
-    codec = Codec.VP8
+class VPXDecoder(Decoder):
+    '''Generic class for VPX reference decoder'''
+    name = None
+    description = None
     binary = 'vpxdec'
+
+    def __init__(self):
+        super().__init__()
+        self.name = f'libvpx-{self.codec.value}'
+        self.description = f'{self.codec.value} reference decoder'
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
                verbose: bool) -> str:
@@ -37,3 +40,9 @@ class VP8Decoder(Decoder):
         run_command([self.binary, '--i420', input_filepath, '-o',
                      output_filepath], timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
+
+
+@register_decoder
+class VP8Decoder(VPXDecoder):
+    '''VP8 reference decoder implementation'''
+    codec = Codec.VP8
