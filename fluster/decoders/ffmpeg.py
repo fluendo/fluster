@@ -89,6 +89,12 @@ class FFmpegVP8Decoder(FFmpegDecoder):
     codec = Codec.VP8
 
 
+@register_decoder
+class FFmpegVP9Decoder(FFmpegDecoder):
+    '''FFmpeg SW decoder for VP9'''
+    codec = Codec.VP9
+
+
 class FFmpegVaapiDecoder(FFmpegDecoder):
     '''Generic class for FFmpeg VAAPI decoder'''
     hw_acceleration = True
