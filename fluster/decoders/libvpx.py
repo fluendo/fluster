@@ -46,3 +46,9 @@ class VPXDecoder(Decoder):
 class VP8Decoder(VPXDecoder):
     '''VP8 reference decoder implementation'''
     codec = Codec.VP8
+
+
+@register_decoder
+class VP9Decoder(VPXDecoder):
+    '''VP9 reference decoder implementation'''
+    codec = Codec.VP9
