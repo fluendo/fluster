@@ -218,6 +218,15 @@ class GStreamerV4l2CodecsH264Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10):
+    '''GStreamer VP8 V4L2 stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! v4l2slvp8dec '
+    api = 'V4L2SL'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerLibvpxVP8(GStreamer10):
     '''GStreamer VP8 Libvpx decoder implementation for GStreamer 1.0'''
     codec = Codec.VP8
