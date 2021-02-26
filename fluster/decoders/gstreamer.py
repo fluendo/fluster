@@ -114,6 +114,25 @@ class GStreamerLibavH265(GStreamer10):
 
 
 @register_decoder
+class GStreamerLibavVP8(GStreamer10):
+    '''GStreamer VP9 Libav decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! avdec_vp8 '
+    api = 'Libav'
+    hw_acceleration = False
+
+
+@register_decoder
+class GStreamerLibavVP9(GStreamer10):
+    '''GStreamer VP9 Libav decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' avdec_vp9'
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'Libav'
+    hw_acceleration = False
+
+
+@register_decoder
 class GStreamerVaapiH265Gst10Decoder(GStreamer10):
     '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
@@ -258,6 +277,15 @@ class GStreamerVaVP8Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerD3d11VP8Gst10Decoder(GStreamer10):
+    '''GStreamer VP8 D3D11 decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! d3d11vp8dec '
+    api = 'D3D11'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10):
     '''GStreamer VP9 V4L2 stateless decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
@@ -294,6 +322,16 @@ class GStreamerVaVP9Gst10Decoder(GStreamer10):
     check_decoder_bin = ' vavp9dec '
     decoder_bin = f' parsebin ! {check_decoder_bin}'
     api = 'VA'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerD3d11VP9Gst10Decoder(GStreamer10):
+    '''GStreamer VP9 D3D11 decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' d3d11vp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'D3D11'
     hw_acceleration = True
 
 
