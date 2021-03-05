@@ -157,7 +157,7 @@ class Main:
         subparser.add_argument(
             '-k', '--keep', help="keep downloaded file after extracting", action='store_true')
         subparser.add_argument(
-            'testsuites', help='list of testsuites to download', nargs='+')
+            'testsuites', help='list of testsuites to download', nargs='*')
         subparser.set_defaults(func=self._download_cmd)
 
     def _list_cmd(self, args, fluster):
