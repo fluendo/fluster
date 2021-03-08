@@ -161,8 +161,7 @@ class TestSuite:
 
         for job in downloads:
             if not job.successful():
-                print('Some download failed')
-                sys.exit(1)
+                sys.exit('Some download failed')
 
         print('All downloads finished')
 

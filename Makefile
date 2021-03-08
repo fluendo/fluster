@@ -31,8 +31,10 @@ check: ## check that very basic tests run
 	$(FLUSTER) run -ts dummy -th 1
 	$(FLUSTER) run -ts dummy -tth 10
 ifneq ($(OS),Windows_NT)
+	$(FLUSTER) run -ts dummy non_existing_test_suite; test $$? -ne 0
 	$(FLUSTER) run -ts dummy -th 2; test $$? -eq 2
 	$(FLUSTER) run -ts dummy -tth 0.000000001; test $$? -eq 3
+	$(FLUSTER) download dummy non_existing_test_suite; test $$? -ne 0
 	$(FLUSTER) download dummy_fail; test $$? -ne 0
 	$(FLUSTER) run -ts dummy_fail -th 1
 	$(FLUSTER) run -ts dummy_fail -th 2; test $$? -eq 2
