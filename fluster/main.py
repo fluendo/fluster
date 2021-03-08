@@ -183,9 +183,8 @@ class Main:
                           )
         try:
             fluster.run_test_suites(context)
-        except Exception as exception:
-            print(exception)
-            sys.exit(1)
+        except SystemExit as exception:
+            sys.exit(exception.code)
 
     def _reference_cmd(self, args, fluster):
         context = Context(jobs=args.jobs,
@@ -197,9 +196,8 @@ class Main:
                           reference=True)
         try:
             fluster.run_test_suites(context)
-        except Exception as exception:
-            print(exception)
-            sys.exit(1)
+        except SystemExit as exception:
+            sys.exit(exception.code)
 
     def _download_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()

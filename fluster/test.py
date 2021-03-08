@@ -56,10 +56,10 @@ class Test(unittest.TestCase):
             result = self.decoder.decode(
                 input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
         except TimeoutExpired:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Timeout
+            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.TIMEOUT
             raise
         except Exception:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Error
+            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.ERROR
             raise
 
         if not self.keep_files and os.path.exists(output_filepath) and \
@@ -67,9 +67,9 @@ class Test(unittest.TestCase):
             os.remove(output_filepath)
 
         if not self.reference:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Failure
+            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.FAILURE
             if self.test_vector.result.lower() == result.lower():
-                self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.Success
+                self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.SUCCESS
             self.assertEqual(self.test_vector.result.lower(), result.lower(),
                              f'{self.test_vector.input_file}')
         else:

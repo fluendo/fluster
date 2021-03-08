@@ -23,11 +23,11 @@ from fluster.codec import PixelFormat
 
 class TestVectorResult(Enum):
     '''Test Result'''
-    NotRun = 'NotRun'
-    Success = 'Success'
-    Failure = 'Failure'
-    Timeout = 'Timeout'
-    Error = 'Error'
+    NOT_RUN = 'NotRun'
+    SUCCESS = 'Success'
+    FAILURE = 'Failure'
+    TIMEOUT = 'Timeout'
+    ERROR = 'Error'
 
 
 class TestVector:
@@ -45,7 +45,7 @@ class TestVector:
         self.result = result
 
         # Not included in JSON
-        self.test_result = TestVectorResult.NotRun
+        self.test_result = TestVectorResult.NOT_RUN
         self.errors = []
 
     @classmethod
@@ -54,7 +54,7 @@ class TestVector:
         if 'output_format' in data:
             data['output_format'] = PixelFormat(data['output_format'])
         else:
-            data['output_format'] = PixelFormat.yuv420p
+            data['output_format'] = PixelFormat.YUV420P
         return (data['name'], cls(**data))
 
     def data_to_serialize(self):

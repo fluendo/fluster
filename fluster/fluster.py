@@ -68,19 +68,19 @@ class Context:
 
 
 EMOJI_RESULT = {
-    TestVectorResult.NotRun: '',
-    TestVectorResult.Success: '✔️',
-    TestVectorResult.Failure: '❌',
-    TestVectorResult.Timeout: '⌛',
-    TestVectorResult.Error: '☠'
+    TestVectorResult.NOT_RUN: '',
+    TestVectorResult.SUCCESS: '✔️',
+    TestVectorResult.FAILURE: '❌',
+    TestVectorResult.TIMEOUT: '⌛',
+    TestVectorResult.ERROR: '☠'
 }
 
 TEXT_RESULT = {
-    TestVectorResult.NotRun: '',
-    TestVectorResult.Success: 'OK',
-    TestVectorResult.Failure: 'KO',
-    TestVectorResult.Timeout: 'TO',
-    TestVectorResult.Error: 'ER'
+    TestVectorResult.NOT_RUN: '',
+    TestVectorResult.SUCCESS: 'OK',
+    TestVectorResult.FAILURE: 'KO',
+    TestVectorResult.TIMEOUT: 'TO',
+    TestVectorResult.ERROR: 'ER'
 }
 
 
@@ -125,8 +125,8 @@ class Fluster:
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check:
-                    string += '... ' + (self.emoji[TestVectorResult.Success] if decoder.check(
-                        verbose) else self.emoji[TestVectorResult.Failure])
+                    string += '... ' + (self.emoji[TestVectorResult.SUCCESS] if decoder.check(
+                        verbose) else self.emoji[TestVectorResult.FAILURE])
                 print(string)
 
     def list_test_suites(self, show_test_vectors: bool = False, test_suites: list = None):
@@ -144,19 +144,18 @@ class Fluster:
                 for test_vector in test_suite.test_vectors.values():
                     print(test_vector)
 
-    def _get_run_param(self, in_list: list, check_list: list, name: str):
+    def _get_matches(self, in_list: list, check_list: list, name: str) -> list:
         if in_list:
-            run = []
-            for name_list in in_list:
-                for entry in check_list:
-                    if entry.name.lower() == name_list:
-                        run.append(entry)
-            if not run:
-                raise Exception(
-                    f'No {name} found matching {in_list}')
+            in_list_names = {x.lower() for x in in_list}
+            check_list_names = {x.name.lower() for x in check_list}
+            matches = in_list_names & check_list_names
+            if len(matches) != len(in_list):
+                sys.exit(
+                    f'No {name} found for: {", ".join(in_list_names - check_list_names)}')
+            matches = [x for x in check_list if x.name.lower() in matches]
         else:
-            run = check_list
-        return run
+            matches = check_list
+        return matches
 
     def _normalize_context(self, ctx: Context):
         # Convert all test suites and decoders to lowercase to make the filter greedy
@@ -166,9 +165,9 @@ class Fluster:
             ctx.decoders = [x.lower() for x in ctx.decoders]
         if ctx.test_vectors:
             ctx.test_vectors = [x.lower() for x in ctx.test_vectors]
-        ctx.test_suites = self._get_run_param(
+        ctx.test_suites = self._get_matches(
             ctx.test_suites, self.test_suites, 'test suite')
-        ctx.decoders = self._get_run_param(
+        ctx.decoders = self._get_matches(
             ctx.decoders, self.decoders, 'decoders')
 
     def run_test_suites(self, ctx: Context):
@@ -277,10 +276,11 @@ class Fluster:
         '''Download a group of test suites'''
         self._load_test_suites()
         if not test_suites:
-            test_suites = self.test_suites
+            download_test_suites = self.test_suites
         else:
-            test_suites = [
-                t for t in self.test_suites if t.name in test_suites]
-        for test_suite in test_suites:
+            download_test_suites = self._get_matches(
+                test_suites, self.test_suites, 'test suites')
+
+        for test_suite in download_test_suites:
             test_suite.download(jobs, self.resources_dir,
                                 verify=True, keep_file=keep_file)
