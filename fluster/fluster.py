@@ -68,19 +68,19 @@ class Context:
 
 
 EMOJI_RESULT = {
-    TestVectorResult.NotRun: '',
-    TestVectorResult.Success: '✔️',
-    TestVectorResult.Failure: '❌',
-    TestVectorResult.Timeout: '⌛',
-    TestVectorResult.Error: '☠'
+    TestVectorResult.NOT_RUN: '',
+    TestVectorResult.SUCCESS: '✔️',
+    TestVectorResult.FAILURE: '❌',
+    TestVectorResult.TIMEOUT: '⌛',
+    TestVectorResult.ERROR: '☠'
 }
 
 TEXT_RESULT = {
-    TestVectorResult.NotRun: '',
-    TestVectorResult.Success: 'OK',
-    TestVectorResult.Failure: 'KO',
-    TestVectorResult.Timeout: 'TO',
-    TestVectorResult.Error: 'ER'
+    TestVectorResult.NOT_RUN: '',
+    TestVectorResult.SUCCESS: 'OK',
+    TestVectorResult.FAILURE: 'KO',
+    TestVectorResult.TIMEOUT: 'TO',
+    TestVectorResult.ERROR: 'ER'
 }
 
 
@@ -125,8 +125,8 @@ class Fluster:
             for decoder in decoders_dict[codec]:
                 string = f'{decoder}'
                 if check:
-                    string += '... ' + (self.emoji[TestVectorResult.Success] if decoder.check(
-                        verbose) else self.emoji[TestVectorResult.Failure])
+                    string += '... ' + (self.emoji[TestVectorResult.SUCCESS] if decoder.check(
+                        verbose) else self.emoji[TestVectorResult.FAILURE])
                 print(string)
 
     def list_test_suites(self, show_test_vectors: bool = False, test_suites: list = None):

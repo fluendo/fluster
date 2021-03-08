@@ -26,7 +26,7 @@ from fluster.utils import file_checksum
 class Dummy(Decoder):
     '''Dummy decoder implementation'''
     name = "Dummy"
-    codec = Codec.Dummy
+    codec = Codec.DUMMY
     description = "This is a dummy implementation for the dummy codec"
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,

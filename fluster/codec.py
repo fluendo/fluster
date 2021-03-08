@@ -22,7 +22,7 @@ from enum import Enum
 
 class Codec(Enum):
     '''Codec type'''
-    Dummy = 'Dummy'
+    DUMMY = 'Dummy'
     H264 = 'H.264'
     H265 = 'H.265'
     VP8 = 'VP8'
@@ -31,14 +31,14 @@ class Codec(Enum):
 
 class PixelFormat(Enum):
     '''Pixel format'''
-    yuv420p = 'yuv420p'
-    yuv420p10le = 'yuv420p10le'
+    YUV420P = 'yuv420p'
+    YUV420P10LE = 'yuv420p10le'
 
     def to_gst(self):
         '''Return GStreamer pixel format'''
         mapping = {
-            self.yuv420p: 'I420',
-            self.yuv420p10le: 'I420_10LE'
+            self.YUV420P: 'I420',
+            self.YUV420P10LE: 'I420_10LE'
         }
 
         return mapping[self]

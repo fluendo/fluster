@@ -94,7 +94,7 @@ class JCTVTGenerator:
             name = os.path.splitext(file_url)[0]
             file_input = f'{name}.bin'
             test_vector = TestVector(
-                name, url, '', file_input, PixelFormat.yuv420p, '')
+                name, url, '', file_input, PixelFormat.YUV420P, '')
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -114,7 +114,7 @@ class JCTVTGenerator:
                 raise Exception(f'Bitstream file not found in {dest_dir}')
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if 'main10' in test_vector.name.lower():
-                test_vector.output_format = PixelFormat.yuv420p10le
+                test_vector.output_format = PixelFormat.YUV420P10LE
 
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
