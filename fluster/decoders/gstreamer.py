@@ -245,6 +245,15 @@ class GStreamerVaapiVP8Gst10Decoder(GStreamer10):
 
 
 @register_decoder
+class GStreamerVaVP8Gst10Decoder(GStreamer10):
+    '''GStreamer VP8 VA decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vavp8dec '
+    api = 'VA'
+    hw_acceleration = True
+
+
+@register_decoder
 class FluendoH265Gst10Decoder(GStreamer10):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
