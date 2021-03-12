@@ -63,8 +63,12 @@ class GStreamer(Decoder):
         '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
         try:
+            if hasattr(self, 'check_decoder_bin'):
+                decoder_bin = getattr(self, 'check_decoder_bin')
+            else:
+                decoder_bin = self.decoder_bin
             binary = normalize_binary_cmd(f'gst-launch-{self.gst_api}')
-            pipeline = f'{binary} appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink'
+            pipeline = f'{binary} appsrc num-buffers=0 ! {decoder_bin} ! fakesink'
             run_command(shlex.split(pipeline), verbose=verbose)
         except Exception:
             return False
@@ -241,6 +245,55 @@ class GStreamerVaapiVP8Gst10Decoder(GStreamer10):
     codec = Codec.VP8
     decoder_bin = ' ivfparse ! vaapivp8dec '
     api = 'VAAPI'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerVaVP8Gst10Decoder(GStreamer10):
+    '''GStreamer VP8 VA decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vavp8dec '
+    api = 'VA'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10):
+    '''GStreamer VP9 V4L2 stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' v4l2slvp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'V4L2SL'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerLibvpxVP9(GStreamer10):
+    '''GStreamer VP9 Libvpx decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' vp9dec  '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'libvpx'
+    hw_acceleration = False
+
+
+@register_decoder
+class GStreamerVaapiVP9Gst10Decoder(GStreamer10):
+    '''GStreamer VP9 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' vaapivp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'VAAPI'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerVaVP9Gst10Decoder(GStreamer10):
+    '''GStreamer VP9 VA decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' vavp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'VA'
     hw_acceleration = True
 
 
