@@ -38,7 +38,7 @@ def download(url: str, dest_dir: str):
             shutil.copyfileobj(response, dest)
 
 
-def file_checksum(path: str):
+def file_checksum(path: str) -> str:
     '''Calculates the checksum of a file reading chunks of 64KiB'''
     md5 = hashlib.md5()
     with open(path, 'rb') as file:
@@ -60,7 +60,7 @@ def run_command(command: list, verbose: bool = False, check: bool = True, timeou
                    check=check, timeout=timeout)
 
 
-def is_extractable(filepath: str):
+def is_extractable(filepath: str) -> bool:
     '''Checks is a file can be extracted from the its extension'''
     return filepath.endswith(TARBALL_EXTS) or filepath.endswith('.zip')
 
@@ -80,7 +80,7 @@ def extract(filepath: str, output_dir: str, file: str = None):
         raise Exception("Unknown tarball format %s" % filepath)
 
 
-def normalize_binary_cmd(cmd: str):
+def normalize_binary_cmd(cmd: str) -> str:
     '''Return the OS-form binary'''
     if platform.system() == 'Windows':
         return cmd if cmd.endswith('.exe') else cmd + '.exe'
@@ -89,7 +89,7 @@ def normalize_binary_cmd(cmd: str):
     return cmd
 
 
-def normalize_path(path: str):
+def normalize_path(path: str) -> str:
     '''Normalize the path to make it Unix-like'''
     if platform.system() == 'Windows':
         return path.replace('\\', '/')

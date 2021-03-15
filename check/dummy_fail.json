@@ -4,7 +4,7 @@
     "description": "Dummy fail test suite",
     "test_vectors": [
         {
-            "name": "fail",
+            "name": "expected_fail",
             "source": "https://www.itu.int//wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_B_NEC_3.zip",
             "source_checksum": "0efbe6e6a4a7cd259ffa241c4aee473e",
             "input_file": "ipcm_B_NEC_3/ipcm_B_NEC_3.bit",
