@@ -5,7 +5,7 @@
     "test_vectors": [
         {
             "name": "download_fail",
-            "source": "https://www.itu.int//wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_B_NEC_3.zip",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_B_NEC_3.zip",
             "source_checksum": "bad checksum on purpose",
             "input_file": "ipcm_B_NEC_3/ipcm_B_NEC_3.bit",
             "output_format": "yuv420p",

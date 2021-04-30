@@ -1,2 +1,2 @@
 autopep8
-pylint
+pylint==2.7.4
