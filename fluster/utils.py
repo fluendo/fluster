@@ -71,11 +71,11 @@ def extract(filepath: str, output_dir: str, file: str = None):
         subprocess.run(['tar', '-C', output_dir, '-xf',
                         filepath, file], check=True)
     elif filepath.endswith('.zip'):
-        zip_file = zipfile.ZipFile(filepath, "r")
-        if file:
-            zip_file.extract(file, path=output_dir)
-        else:
-            zip_file.extractall(path=output_dir)
+        with zipfile.ZipFile(filepath, "r") as zip_file:
+            if file:
+                zip_file.extract(file, path=output_dir)
+            else:
+                zip_file.extractall(path=output_dir)
     else:
         raise Exception("Unknown tarball format %s" % filepath)
 

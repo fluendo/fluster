@@ -146,18 +146,19 @@ class TestSuite:
             os.makedirs(out_dir)
         print(f'Downloading test suite {self.name} using {jobs} parallel jobs')
 
-        pool = Pool(jobs)
+        with Pool(jobs) as pool:
+            def _callback_error(err):
+                print(f'\nError downloading -> {err}\n')
+                pool.terminate()
 
-        def _callback_error(err):
-            print(f'\nError downloading -> {err}\n')
-            pool.terminate()
-
-        downloads = []
-        for test_vector in self.test_vectors.values():
-            downloads.append(pool.apply_async(self._download_worker, args=(DownloadWork(
-                out_dir, verify, extract_all, keep_file, self.name, test_vector), ), error_callback=_callback_error))
-        pool.close()
-        pool.join()
+            downloads = []
+            for test_vector in self.test_vectors.values():
+                dwork = DownloadWork(
+                    out_dir, verify, extract_all, keep_file, self.name, test_vector)
+                downloads.append(pool.apply_async(self._download_worker, args=(
+                    dwork, ), error_callback=_callback_error))
+            pool.close()
+            pool.join()
 
         for job in downloads:
             if not job.successful():
@@ -234,19 +235,19 @@ class TestSuite:
 
     def run_test_suite_in_parallel(self, jobs: int, tests: list, failfast: bool):
         '''Run the test suite in parallel'''
-        pool = Pool(jobs)
         test_results = []
+        with Pool(jobs) as pool:
+            def _callback(test_result):
+                test_results.append(test_result)
+                if failfast and test_result.errors:
+                    pool.terminate()
 
-        def _callback(test_result):
-            test_results.append(test_result)
-            if failfast and test_result.errors:
-                pool.terminate()
-
-        start = perf_counter()
-        for test in tests:
-            pool.apply_async(self._run_worker, (test, ), callback=_callback)
-        pool.close()
-        pool.join()
+            start = perf_counter()
+            for test in tests:
+                pool.apply_async(self._run_worker, (test, ),
+                                 callback=_callback)
+                pool.close()
+            pool.join()
         self.time_taken = perf_counter() - start
         print('\n')
         self.test_vectors_success = 0
