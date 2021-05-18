@@ -69,6 +69,13 @@ create_dirs=mkdir -p $(CONTRIB_DIR) $(DECODERS_DIR)
 
 all_reference_decoders: h265_reference_decoder h264_reference_decoder aac_reference_decoder ## build all reference decoders
 
+h266_reference_decoder: ## build H.266 reference decoder
+	$(create_dirs)
+	cd $(CONTRIB_DIR) && git clone https://github.com/fraunhoferhhi/vvdec.git --depth=1 || true
+	cd $(CONTRIB_DIR)/vvdec && git pull --autostash || true
+	cd $(CONTRIB_DIR)/vvdec && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-truncation -Wno-stringop-overflow" && $(MAKE) -C build vvdecapp
+	find $(CONTRIB_DIR)/vvdec/bin/release-static/ -name "vvdecapp" -type f -exec cp {} $(DECODERS_DIR)/ \;
+
 h265_reference_decoder: ## build H.265 reference decoder
 	$(create_dirs)
 	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git --depth=1 || true
