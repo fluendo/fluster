@@ -71,7 +71,8 @@ class HREFParser(HTMLParser):
             for name, value in attrs:
                 # If href is defined, print it.
                 if name == "href":
-                    self.links.append(BASE_URL + value)
+                    base_url = BASE_URL if BASE_URL[-1] != "/" else BASE_URL[0:-1]
+                    self.links.append(base_url + value)
 
 
 class JCTVTGenerator:
