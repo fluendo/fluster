@@ -36,6 +36,7 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://www.itu.int/"
+H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
 H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = (
@@ -230,4 +231,8 @@ if __name__ == "__main__":
     generator = JCTVTGenerator(
         "AVCv1", "JVT-AVC_V1", Codec.H264, "JVT AVC version 1", H264_URL
     )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator('draft6', 'JVET-VVC_draft6', Codec.H266,
+                               'JVET VVC draft6', H266_URL)
     generator.generate(not args.skip_download, args.jobs)
