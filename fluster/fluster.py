@@ -107,6 +107,9 @@ class Fluster:
                     try:
                         test_suite = TestSuite.from_json_file(
                             os.path.join(root, file), self.resources_dir)
+                        if test_suite.name in [ts.name for ts in self.test_suites]:
+                            raise Exception(
+                                f'Repeated test suite with name "{test_suite.name}"')
                         self.test_suites.append(test_suite)
                     except Exception as ex:
                         print(f'Error loading test suite {file}: {ex}')
