@@ -37,7 +37,6 @@ class Main:
     # pylint: disable=broad-except
 
     def __init__(self):
-        self.test_suites_dir = TEST_SUITES_DIR
         self.decoders_dir = DECODERS_DIR
         self.parser = self._create_parser()
 
