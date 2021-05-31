@@ -19,13 +19,26 @@
 # Boston, MA 02111-1307, USA.
 
 import shlex
+import subprocess
 from functools import lru_cache
 
 from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command, normalize_binary_cmd
 
-PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! filesink location={}'
+PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} location={}'
+
+
+@lru_cache(maxsize=None)
+def gst_element_exists(element: str) -> bool:
+    '''Check if an element exists in current GStreamer installation'''
+    try:
+        subprocess.run(
+            ['gst-inspect-1.0', '--exists', element], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+    return False
 
 
 class GStreamer(Decoder):
@@ -37,6 +50,7 @@ class GStreamer(Decoder):
     api = None
     provider = None
     name = None
+    sink = 'videocodectestsink'
 
     def __init__(self):
         super().__init__()
@@ -45,10 +59,13 @@ class GStreamer(Decoder):
         self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
         self.cmd = normalize_binary_cmd(self.cmd)
 
+        if not gst_element_exists(self.sink):
+            self.sink = 'filesink'
+
     def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
         '''Generate the GStreamer pipeline used to decode the test vector'''
         # pylint: disable=unused-argument
-        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, output_filepath)
+        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output_filepath)
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
                verbose: bool) -> str:
@@ -84,7 +101,7 @@ class GStreamer10(GStreamer):
 
     def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
         caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format.to_gst()}'
-        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, output_filepath)
+        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output_filepath)
 
 
 class GStreamer010(GStreamer):
