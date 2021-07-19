@@ -11,8 +11,23 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Install dependencies
+      run: |
+        make install_deps
+    - name: Check
+      run: |
+        make check
+
+  build_win:
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
