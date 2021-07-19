@@ -17,9 +17,9 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from functools import lru_cache
 import os.path
 import json
-import unittest
 import copy
 import sys
 from multiprocessing import Pool
@@ -180,6 +180,14 @@ class TestSuite:
             test_vector = res[0].test_vector
             test_vector.errors.append([str(x) for x in res])
 
+    @lru_cache(maxsize=None)
+    def _get_max_length_test_vectors_name(self) -> int:
+        max_length = 0
+        for name in self.test_vectors.keys():
+            length = len(name)
+            max_length = max(max_length, length)
+        return max_length
+
     def _run_worker(self, test: Test) -> TestVector:
         '''Run one unit test returning the TestVector'''
         # Save the original module and qualname to restore it before returning
@@ -194,48 +202,27 @@ class TestSuite:
         test_result = TestResult()
         test(test_result)
 
-        line = '.'
+        result = 'ok'
         if test_result.failures:
-            line = 'F'
+            result = 'fail'
         elif test_result.errors:
-            line = 'E'
-        print(line, end='', flush=True)
+            result = 'error'
+
+        max_len = self._get_max_length_test_vectors_name()
+        print(f'[{test.test_suite.name}]\t({test.decoder.name})\t{test.test_vector.name:{max_len}} ... {result}',
+              flush=True)
 
         self._collect_results(test_result)
         self._rename_test(test, module_orig, qualname_orig)
 
         return test.test_vector
 
-    def run_test_suite_sequentially(self, tests: list, failfast: bool, quiet: bool):
-        '''Run the test suite sequentially'''
-
-        # Set the names of the tests to a more human-friendly name:
-        # Decoder.TestSuite
-        test = tests[0]
-        test_cls = type(test)
-        module_orig = test_cls.__module__
-        qualname_orig = test_cls.__qualname__
-        self._rename_test(test, test.decoder.name, test.test_suite.name)
-
-        suite = unittest.TestSuite()
-        suite.addTests(tests)
-        runner = unittest.TextTestRunner(
-            failfast=failfast, verbosity=1 if quiet else 2)
-        start = perf_counter()
-        res = runner.run(suite)
-        self.time_taken = perf_counter() - start
-
-        self._collect_results(res)
-        self.test_vectors_success = 0
-        for test_vector in self.test_vectors.values():
-            if not test_vector.errors:
-                self.test_vectors_success += 1
-
-        self._rename_test(test, module_orig, qualname_orig)
-
     def run_test_suite_in_parallel(self, jobs: int, tests: list, failfast: bool):
         '''Run the test suite in parallel'''
         test_results = []
+        max_len = self._get_max_length_test_vectors_name()
+        print(
+            f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}')
         with Pool(jobs) as pool:
             def _callback(test_result):
                 test_results.append(test_result)
@@ -298,12 +285,8 @@ class TestSuite:
         print(string)
         print('*' * 100 + '\n')
 
-        if ctx.jobs == 1:
-            test_suite.run_test_suite_sequentially(
-                tests, ctx.failfast, ctx.quiet)
-        else:
-            test_suite.run_test_suite_in_parallel(
-                ctx.jobs, tests, ctx.failfast)
+        test_suite.run_test_suite_in_parallel(
+            ctx.jobs, tests, ctx.failfast)
 
         if ctx.reference:
             test_suite.to_json_file(test_suite.filename)
