@@ -32,9 +32,11 @@ PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} location={}'
 @lru_cache(maxsize=None)
 def gst_element_exists(element: str) -> bool:
     '''Check if an element exists in current GStreamer installation'''
+    inspect_exe = normalize_binary_cmd('gst-inspect-1.0')
+
     try:
         subprocess.run(
-            ['gst-inspect-1.0', '--exists', element], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            [inspect_exe, '--exists', element], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
