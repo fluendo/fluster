@@ -3,6 +3,9 @@ CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 PYTHONPATH=.
 FLUSTER=python3 ./fluster.py -tsd check
+ifeq ($(OS),Windows_NT)
+FLUSTER+=--no-emoji
+endif
 
 help:
 	@awk -F ':|##' '/^[^\t].+?:.*?##/ { printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF }' $(MAKEFILE_LIST)
