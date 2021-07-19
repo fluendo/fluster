@@ -74,43 +74,101 @@ to be collected first.
    moved to a new `decoders` directory in the root.
 
 3. List the test suites, the decoders and which of them can run using
-   `./fluster.py list -c`
+   `./fluster.py list -c`.
 
-```none
+```bash
 List of available test suites:
 
+VP8-TEST-VECTORS
+    Codec: VP8
+    Description: VP8 Test Vector Catalogue from https://github.com/webmproject/vp8-test-vectors
+    Test vectors: 61
+
 JVT-AVC_V1
-    Codec: Codec.H264
+    Codec: H.264
     Description: JVT AVC version 1
     Test vectors: 135
 
 JCT-VC-HEVC_V1
-    Codec: Codec.H265
+    Codec: H.265
     Description: JCT-VC HEVC version 1
     Test vectors: 147
 
-dummy
-    Codec: Codec.Dummy
-    Description: Dummy test suite
-    Test vectors: 1
+VP9-TEST-VECTORS
+    Codec: VP9
+    Description: VP9 Test Vector Catalogue from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/
+    Test vectors: 303
 
 List of available decoders:
 
-Dummy
-    Dummy: This is a dummy implementation for the dummy codec ✔️
+DUMMY
+    Dummy: This is a dummy implementation for the dummy codec... ✔️
+
 H264
-    Fluendo-H.264-SW-Gst0.10: Fluendo H.264 SW decoder for GStreamer 0.10 ❌
-    Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0 ❌
-    GStreamer-H.264-VA-API-Gst1.0: GStreamer H.264 VA-API decoder for GStreamer 1.0 ✔️
-    JCT-VT-H264: JCT-VT H.264/AVC reference decoder ✔️
-    FFmpeg-H264: FFmpeg H.264 decoder ✔️
+    FFmpeg-H.264: FFmpeg H.264 SW decoder... ✔️
+    FFmpeg-H.264-D3D11VA: FFmpeg H.264 D3D11VA decoder... ❌
+    FFmpeg-H.264-DXVA2: FFmpeg H.264 DXVA2 decoder... ❌
+    FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder... ✔️
+    FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder... ✔️
+    Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.264-HW-vah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.264-SW-Gst0.10: Fluendo H.264 SW decoder for GStreamer 0.10... ❌
+    Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-D3D11-Gst1.0: GStreamer H.264 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-VAAPI-Gst1.0: GStreamer H.264 VAAPI decoder for GStreamer 1.0... ✔️
+    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder... ✔️
+
 H265
-    Fluendo-H.265-HW-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0 ✔️
-    Fluendo-H.265-SW-Gst0.10: Fluendo H.265 SW decoder for GStreamer 0.10 ❌
-    Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0 ❌
-    GStreamer-H.265-VA-API-Gst1.0: GStreamer H.265 VA-API decoder for GStreamer 1.0 ✔️
-    JCT-VT-H265: JCT-VT H.265/HEVC reference decoder ✔️
-    FFmpeg-H265: FFmpeg H.265 decoder ✔️
+    FFmpeg-H.265: FFmpeg H.265 SW decoder... ✔️
+    FFmpeg-H.265-D3D11VA: FFmpeg H.265 D3D11VA decoder... ❌
+    FFmpeg-H.265-DXVA2: FFmpeg H.265 DXVA2 decoder... ❌
+    FFmpeg-H.265-VAAPI: FFmpeg H.265 VAAPI decoder... ✔️
+    FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder... ✔️
+    Fluendo-H.265-HW-vah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-SW-Gst0.10: Fluendo H.265 SW decoder for GStreamer 0.10... ❌
+    Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-byte-stream-au-HW-Gst1.0: Fluendo H.265-byte-stream-au HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-byte-stream-nal-HW-Gst1.0: Fluendo H.265-byte-stream-nal HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hev1-au-HW-Gst1.0: Fluendo H.265-hev1-au HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hev1-nal-HW-Gst1.0: Fluendo H.265-hev1-nal HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hvc1-au-HW-Gst1.0: Fluendo H.265-hvc1-au HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hvc1-nal-HW-Gst1.0: Fluendo H.265-hvc1-nal HW decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-D3D11-Gst1.0: GStreamer H.265 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-Libav-Gst1.0: GStreamer H.265 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-H.265-MSDK-Gst1.0: GStreamer H.265 MSDK decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-NVDEC-Gst1.0: GStreamer H.265 NVDEC decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-V4L2SL-Gst1.0: GStreamer H.265 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-VA-Gst1.0: GStreamer H.265 VA decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-VAAPI-Gst1.0: GStreamer H.265 VAAPI decoder for GStreamer 1.0... ✔️
+    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder... ✔️
+
+VP8
+    FFmpeg-VP8: FFmpeg VP8 SW decoder... ✔️
+    FFmpeg-VP8-VAAPI: FFmpeg VP8 VAAPI decoder... ✔️
+    GStreamer-VP8-D3D11-Gst1.0: GStreamer VP8 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-Libav-Gst1.0: GStreamer VP8 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-VP8-V4L2SL-Gst1.0: GStreamer VP8 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-VA-Gst1.0: GStreamer VP8 VA decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-VAAPI-Gst1.0: GStreamer VP8 VAAPI decoder for GStreamer 1.0... ✔️
+    GStreamer-VP8-libvpx-Gst1.0: GStreamer VP8 libvpx decoder for GStreamer 1.0... ✔️
+    libvpx-VP8: VP8 reference decoder... ✔️
+
+VP9
+    FFmpeg-VP9: FFmpeg VP9 SW decoder... ✔️
+    FFmpeg-VP9-VAAPI: FFmpeg VP9 VAAPI decoder... ✔️
+    GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-Libav-Gst1.0: GStreamer VP9 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-VP9-V4L2SL-Gst1.0: GStreamer VP9 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-VA-Gst1.0: GStreamer VP9 VA decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-VAAPI-Gst1.0: GStreamer VP9 VAAPI decoder for GStreamer 1.0... ✔️
+    GStreamer-VP9-libvpx-Gst1.0: GStreamer VP9 libvpx decoder for GStreamer 1.0... ✔️
+    libvpx-VP9: VP9 reference decoder... ✔️
+
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
@@ -120,49 +178,56 @@ H265
    to run, `-ts` for the test suites and `-tv` for the test vectors. Examples:
 
     - `./fluster.py run` runs all test suites for all decoders available that
-      match each test suite's codec
+      match each test suite's codec.
     - `./fluster.py run -ts JCT-VC-HEVC_V1` runs the *JCT-VC-HEVC_V1* test
-      suite for all decoders that support H.265/HEVC
+      suite for all decoders that support H.265/HEVC.
     - `./fluster.py run -ts JCT-VC-HEVC_V1 -tv AMP_A_Samsung_7` runs only the
-      test vector *AMP_A_Samsung_7* of the *JCT-VC-HEVC_V1* test suite
+      test vector *AMP_A_Samsung_7* of the *JCT-VC-HEVC_V1* test suite.
     - `./fluster.py run -d FFmpeg-H265` runs the *FFmpeg-H265* decoder on all
-      test suites for H.265/HEVC
+      test suites for H.265/HEVC.
     - `./fluster.py run -d FFmpeg-H265 -j1` runs the *FFmpeg-H265* decoder on all
-      test suites for H.265/HEVC using one job
+      test suites for H.265/HEVC using one job.
 
 ## Test Suites
 
-- [H.264/AVC](https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/)
-- [H.265/HEVC](https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/)
-- Dummy test suite for testing purposes
+- Dummy test suite for testing purposes.
+- [H.264/AVC](https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/).
+- [H.265/HEVC](https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/).
+- [VP8](https://github.com/webmproject/vp8-test-vectors).
+- [VP9](https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx).
 
 ## Decoders
 
+- Dummy decoder for testing purposes.
 - [JCT-VT H.265/HEVC](https://vcgit.hhi.fraunhofer.de/jct-vc/HM) as reference
-  decoder for H.265/HEVC
+  decoder for H.265/HEVC.
 - [JCT-VT H.264/AVC](https://vcgit.hhi.fraunhofer.de/jct-vc/JM) as reference
-  decoder for H.264/AVC
-- GStreamer's
-  [vaapih265dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih265dec.html)
-  for H.265/HEVC
-- GStreamer's
-  [vaapih264dec](https://gstreamer.freedesktop.org/documentation/vaapi/vaapih264dec.html)
-  for H.264/AVC
-- [FFmpeg's](https://FFmpeg.org) H.265/HEVC
-- [FFmpeg's](https://FFmpeg.org) H.264/AVC
+  decoder for H.264/AVC.
 - Fluendo's propietary decoders for H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
-  Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/)
-- Dummy decoder for testing purposes
-
+  Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/).
+- [GStreamer's](https://gstreamer.freedesktop.org/) for H.265/HEVC.
+- [GStreamer's](https://gstreamer.freedesktop.org/) for H.264/AVC.
+- [FFmpeg's](https://FFmpeg.org) for H.265/HEVC.
+- [FFmpeg's](https://FFmpeg.org) for H.264/AVC.
+- [libvpx's](https://github.com/webmproject/libvpx/) for VP8.
+- [libvpx's](https://github.com/webmproject/libvpx/) for VP9.
 ## CLI usage
 
-```
-usage: fluster.py [-h] [-v] {list,l,run,r,download,d,reference} ...
+```bash
+./fluster.py --help
+
+usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR] {list,l,run,r,download,d,reference} ...
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v, --verbose         increase output verbosity
+  -r RESOURCES, --resources RESOURCES
+                        set the directory where resources are taken from
+  -o OUTPUT, --output OUTPUT
+                        set the directory where test results will be stored
+  -ne, --no-emoji       set to use plain text instead of emojis
+  -tsd TEST_SUITES_DIR, --test-suites-dir TEST_SUITES_DIR
+                        set the directory where test suite will be read
 
 subcommands:
   {list,l,run,r,download,d,reference}
@@ -174,34 +239,31 @@ subcommands:
 
 ### List
 
-```
-./fluster.py --help
-usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] {list,l,run,r,download,d,reference} ...
+```bash
+./fluster.py list --help
+
+usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -r RESOURCES, --resources RESOURCES
-                        set the directory where resources are taken from
-  -o OUTPUT, --output OUTPUT
-                        set the directory where test results will be stored
-
-subcommands:
-  {list,l,run,r,download,d,reference}
-    list (l)            show list of available test suites and decoders
-    run (r)             run test suites for decoders
-    download (d)        downloads test suites resources
-    reference (r)       use a specific decoder to set its results for the test suites given
+  -ts TESTSUITES [TESTSUITES ...], --testsuites TESTSUITES [TESTSUITES ...]
+                        show only the test suites given
+  -tv, --testvectors    show test vectors of test suites
+  -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
+  -v, --verbose         show stdout and stderr of commands executed
 ```
 
 ### Run
 
-```
+```bash
 ./fluster.py run --help
-usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q] [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s] [-k] [-th THRESHOLD] [-tth TIME_THRESHOLD]
+
+usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q] [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]]
+                      [-d DECODERS [DECODERS ...]] [-s] [-so SUMMARY_OUTPUT] [-k] [-th THRESHOLD] [-tth TIME_THRESHOLD] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by default. 0 means all logical cores
+  -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by default.0 means all logical cores
   -t TIMEOUT, --timeout TIMEOUT
                         timeout in secs for each decoding. Defaults to 30 secs
   -ff, --failfast       stop after first fail
@@ -213,18 +275,22 @@ optional arguments:
   -d DECODERS [DECODERS ...], --decoders DECODERS [DECODERS ...]
                         run only the specific decoders
   -s, --summary         generate a summary in Markdown format for each test suite
+  -so SUMMARY_OUTPUT, --summary-output SUMMARY_OUTPUT
+                        dump summary output to file
   -k, --keep            keep output files generated during the test
   -th THRESHOLD, --threshold THRESHOLD
                         set exit code to 2 if threshold tests are not success. exit code is 0 otherwise
   -tth TIME_THRESHOLD, --time-threshold TIME_THRESHOLD
                         set exit code to 3 if test suite takes longer than treshold seconds. exit code is 0 otherwise
+  -v, --verbose         show stdout and stderr of commands executed
 ```
 
 ### Download
 
-```
+```bash
 ./fluster.py download --help
-usage: fluster.py download [-h] [-j JOBS] [-k] [testsuites [testsuites ...]]
+
+usage: fluster.py download [-h] [-j JOBS] [-k] [testsuites ...]
 
 positional arguments:
   testsuites            list of testsuites to download
@@ -237,9 +303,10 @@ optional arguments:
 
 ### Reference
 
-```
+```bash
 ./fluster.py reference --help
-usage: fluster.py reference [-h] [-j JOBS] [-t TIMEOUT] [-q] decoder testsuites [testsuites ...]
+
+usage: fluster.py reference [-h] [-j JOBS] [-t TIMEOUT] [-q] [-v] decoder testsuites [testsuites ...]
 
 positional arguments:
   decoder               decoder to run
@@ -249,8 +316,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by default.0 means all logical cores
   -t TIMEOUT, --timeout TIMEOUT
-                        timeout in secs for each decoding. Defaults to 5 secs
+                        timeout in secs for each decoding. Defaults to 30 secs
   -q, --quiet           don't show every test run
+  -v, --verbose         show stdout and stderr of commands executed
 ```
 
 ## Report
@@ -267,12 +335,12 @@ appropriate name for testing decoders.
 
 ### How can I add a new decoder?
 
-1. Create a new decoder in [fluster/decoders](fluster/decoders) directory
-2. Implement the `decode` method
-3. Use the `register_decoder` decorator
-4. Ensure to set `hw_acceleration = True` if it requires hardware
+1. Create a new decoder in [fluster/decoders](fluster/decoders) directory.
+2. Implement the `decode` method.
+3. Use the `register_decoder` decorator.
+4. Ensure to set `hw_acceleration = True` if it requires hardware.
 5. Optionally, implement the `check` to know whether the decoder is available
-   to be run
+   to be run.
 
 ### How can I create a new test suite?
 
@@ -301,18 +369,35 @@ commands work only when running a single test suite:
    0 otherwise. Please notice that even of some tests fail, the exit code will
    still be 0 as long as the time it takes is less than the threshold.
 
+However, in case we want to be even more explicit, ensuring exactly the same
+results are obtained, you can do the following procedure:
+
+1. Store well known-results in an expected file with the output of Fluster's
+   run.
+2. Run Fluster again and compare with the expected result using diff. The
+   following command will return an `exitStatus` different from 0 in case
+   there's any difference.
+
+   ```bash
+   diffParams='-uB -I"|Test|" --strip-trailing-cr'
+   diff $diffParams expected.out current.out
+   ```
+
+   We recommend using the `--no-emoji` argument when running on the CI to
+   ensure the log is properly displayed with no issues.
+
 ### How can I contribute?
 
-1. Fork the repo
+1. Fork the repo.
 2. Install the required Python modules for development using `pip3 install -r
-   requirements.txt`
+   requirements.txt`.
 3. Install the [git hook](scripts/install_git_hook.sh) that will run for every
    commit to ensure it works before pushing. [About git
-   hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks)
+   hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
 4. Modify the code . Make sure the git hook is properly checking that the
-   basic functionality still works. You can also execute `make check` manually
-5. Create a new PR with your changes
-6. Make sure the GitHub Actions is running and its result is a pass
+   basic functionality still works. You can also execute `make check` manually.
+5. Create a new PR with your changes.
+6. Make sure the GitHub Actions is running and its result is a pass.
 
 ### How can I report an issue?
 
