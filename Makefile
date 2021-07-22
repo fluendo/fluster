@@ -1,4 +1,4 @@
-PY_FILES=fluster scripts fluster.py
+PY_FILES=fluster
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 PYTHONPATH=.
@@ -49,8 +49,9 @@ format-check:
 	@echo "Checking coding style with black..."
 	black --check $(PY_FILES)
 
-lint: ## run static analysis using pylint
-	pylint -j0 $(PY_FILES)
+lint: ## run static analysis using pylint, flake8 and mypy
+	pylint -j0 $(PY_FILES) --fail-under=10
+	flake8 --max-line-length=120 $(PY_FILES)
 
 $(CONTRIB_DIR):
 	mkdir -p $@

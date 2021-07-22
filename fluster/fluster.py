@@ -24,7 +24,7 @@ import sys
 
 # Import decoders that will auto-register
 # pylint: disable=wildcard-import, unused-wildcard-import
-from fluster.decoders import *
+from fluster.decoders import *  # noqa: F401,F403
 
 # pylint: enable=wildcard-import, unused-wildcard-import
 
