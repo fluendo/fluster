@@ -1,6 +1,7 @@
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2020, Fluendo, S.A.
+# Copyright (C) 2021, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
+#  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -17,18 +18,22 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from fluster.codec import Codec, PixelFormat
+from fluster.codec import Codec
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum
+from fluster.utils import file_checksum, run_command
 
 
 @register_decoder
-class Dummy(Decoder):
-    '''Dummy decoder implementation'''
-    name = "Dummy"
-    codec = Codec.DUMMY
-    description = "This is a dummy implementation for the dummy codec"
+class FDKAACDecoder(Decoder):
+    '''FDK AAC reference decoder implementation'''
+    name = "FDK-AAC"
+    description = "FDK AAC reference decoder"
+    codec = Codec.AAC
+    binary = 'aac-dec'
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
+    def decode(self, input_filepath: str, output_filepath: str, output_format: None, timeout: int,
                verbose: bool) -> str:
-        return file_checksum(input_filepath)
+        '''Decodes input_filepath in output_filepath'''
+        run_command([self.binary, input_filepath, output_filepath],
+                    timeout=timeout, verbose=verbose)
+        return file_checksum(output_filepath)

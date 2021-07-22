@@ -48,27 +48,60 @@ format: ## format Python code using autopep8
 lint: ## run static analysis using pylint
 	pylint -j0 $(PY_FILES)
 
-$(CONTRIB_DIR):
-	mkdir -p $@
+create_dirs=mkdir -p $(CONTRIB_DIR) $(DECODERS_DIR)
 
-$(DECODERS_DIR):
-	mkdir -p $@
+all_reference_decoders: h265_reference_decoder h264_reference_decoder aac_reference_decoder ## build all reference decoders
 
-decoders: h265_reference_decoder h264_reference_decoder ## build all reference decoders
-
-h265_reference_decoder: $(CONTRIB_DIR) $(DECODERS_DIR) ## build H.265 reference decoder
+h265_reference_decoder: ## build H.265 reference decoder
+	$(create_dirs)
 	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git --depth=1 | true
 	cd $(CONTRIB_DIR)/HM && git stash && git pull && git stash apply | true
 	cd $(CONTRIB_DIR)/HM && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release && $(MAKE) -C build TAppDecoder
-	find $(CONTRIB_DIR)/HM/bin/umake -name "TAppDecoder" -type f -exec cp "{}" $(DECODERS_DIR) \;
+	find $(CONTRIB_DIR)/HM/bin/umake -name "TAppDecoder" -type f -exec cp {} $(DECODERS_DIR)/ \;
 
-h264_reference_decoder: $(CONTRIB_DIR) ## build H.264 reference decoder
+h264_reference_decoder: ## build H.264 reference decoder
+	$(create_dirs)
 	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/JM.git --depth=1 | true
 	cd $(CONTRIB_DIR)/JM && git stash && git pull && git stash apply | true
 	cd $(CONTRIB_DIR)/JM && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-truncation -Wno-stringop-overflow" && $(MAKE) -C build ldecod
-	find $(CONTRIB_DIR)/JM/bin/umake -name "ldecod" -type f -exec cp "{}" $(DECODERS_DIR) \;
+	find $(CONTRIB_DIR)/JM/bin/umake -name "ldecod" -type f -exec cp {} $(DECODERS_DIR)/ \;
+
+aac_reference_decoder: ## build AAC reference decoder
+	if ! test -d $(CONTRIB_DIR)/fdk-aac; \
+	then \
+		$(create_dirs) && \
+		cd $(CONTRIB_DIR) && git clone https://github.com/mstorsjo/fdk-aac.git | true && \
+		cd fdk-aac && git checkout -B decoder origin/decoder-example && git merge-base master decoder | true && \
+		git rebase master || git checkout --ours .gitignore && git add .gitignore && \
+		git rebase --continue || git checkout --ours .gitignore && git add .gitignore && \
+		git rebase --continue && git checkout master && git merge decoder | true && \
+		sed -i '586a\
+		\
+		## Program sources \
+		\
+		set(aac_dec_SOURCES \
+			aac-dec.c \
+			wavwriter.c \
+			wavwriter.h) \
+		\
+		## Program target \
+		add_executable(aac-dec $${aac_dec_SOURCES}) \
+		\ \
+		## Program target configuration \
+		target_link_libraries(aac-dec PRIVATE fdk-aac) \
+		target_compile_definitions(aac-dec PRIVATE $$<$$<BOOL:$${MSVC}>:_CRT_SECURE_NO_WARNINGS>) \
+		if(WIN32) \
+			target_sources(aac-dec PRIVATE win32/getopt.h) \
+			target_include_directories(aac-dec PRIVATE win32) \
+		endif() \
+		\
+		## Program target installation \
+		install(TARGETS aac-dec RUNTIME DESTINATION $${CMAKE_INSTALL_BINDIR})' CMakeLists.txt; \
+	fi
+	cd $(CONTRIB_DIR)/fdk-aac && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DBUILD_PROGRAMS=1 && $(MAKE) -C build aac-dec
+	find $(CONTRIB_DIR)/fdk-aac/build -name "aac-dec" -type f -exec cp {} $(DECODERS_DIR) \;
 
 dbg-%:
 	echo "Value of $* = $($*)"
 
-.PHONY: help decoders h264_reference_decoder h265_reference_decoder lint check format install_deps
+.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder aac_reference_decoder lint check format install_deps
