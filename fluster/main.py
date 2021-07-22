@@ -309,6 +309,7 @@ class Main:
             timeout=args.timeout,
             test_suites=args.testsuites,
             decoders=args.decoder,
+            test_vectors=[],
             quiet=args.quiet,
             verbose=args.verbose,
             reference=True,

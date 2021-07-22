@@ -20,6 +20,7 @@
 import os
 from subprocess import TimeoutExpired
 import unittest
+from typing import Any
 
 from fluster.decoder import Decoder
 from fluster.test_vector import TestVector, TestVectorResult
@@ -34,7 +35,7 @@ class Test(unittest.TestCase):
     def __init__(
         self,
         decoder: Decoder,
-        test_suite,
+        test_suite: Any,  # can't use TestSuite type because of circular dependency
         test_vector: TestVector,
         results_dir: str,
         reference: bool,

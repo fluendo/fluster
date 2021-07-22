@@ -52,6 +52,7 @@ format-check:
 lint: ## run static analysis using pylint, flake8 and mypy
 	pylint -j0 $(PY_FILES) --fail-under=10
 	flake8 --max-line-length=120 $(PY_FILES)
+	mypy $(PY_FILES)
 
 $(CONTRIB_DIR):
 	mkdir -p $@

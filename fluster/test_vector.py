@@ -18,6 +18,7 @@
 # Boston, MA 02111-1307, USA.
 
 from enum import Enum
+from typing import List
 from fluster.codec import PixelFormat
 
 
@@ -55,7 +56,7 @@ class TestVector:
 
         # Not included in JSON
         self.test_result = TestVectorResult.NOT_RUN
-        self.errors = []
+        self.errors: List[List[str]] = []
 
     @classmethod
     def from_json(cls, data: dict):

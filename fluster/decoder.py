@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
 
-from fluster.codec import PixelFormat
+from fluster.codec import PixelFormat, Codec
 from fluster.utils import normalize_binary_cmd
 
 # pylint: disable=broad-except
@@ -30,11 +30,11 @@ from fluster.utils import normalize_binary_cmd
 class Decoder(ABC):
     """Base class for decoders"""
 
-    name = None
-    codec = None
+    name = ""
+    codec = Codec.NONE
     hw_acceleration = False
-    description = None
-    binary = None
+    description = ""
+    binary = ""
 
     def __init__(self):
         if self.binary:

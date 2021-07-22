@@ -23,6 +23,7 @@ from enum import Enum
 class Codec(Enum):
     """Codec type"""
 
+    NONE = "None"
     DUMMY = "Dummy"
     H264 = "H.264"
     H265 = "H.265"

@@ -25,6 +25,7 @@ import subprocess
 import urllib.request
 import zipfile
 import platform
+from typing import List
 
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
@@ -51,7 +52,7 @@ def file_checksum(path: str) -> str:
 
 
 def run_command(
-    command: list,
+    command: List[str],
     verbose: bool = False,
     check: bool = True,
     timeout: int = None,
@@ -77,7 +78,10 @@ def is_extractable(filepath: str) -> bool:
 def extract(filepath: str, output_dir: str, file: str = None):
     """Extracts a file to a directory"""
     if filepath.endswith(TARBALL_EXTS):
-        subprocess.run(["tar", "-C", output_dir, "-xf", filepath, file], check=True)
+        command = ["tar", "-C", output_dir, "-xf", filepath]
+        if file:
+            command.append(file)
+        subprocess.run(command, check=True)
     elif filepath.endswith(".zip"):
         with zipfile.ZipFile(filepath, "r") as zip_file:
             if file:

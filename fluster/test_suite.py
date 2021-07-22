@@ -26,6 +26,7 @@ from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
 from shutil import rmtree
+from typing import cast, List
 
 from fluster.test_vector import TestVector
 from fluster.codec import Codec
@@ -68,7 +69,7 @@ class Context:
         quiet: bool,
         results_dir: str,
         reference: bool = False,
-        test_vectors: list = None,
+        test_vectors: List[str] = None,
         keep_files: bool = False,
         verbose: bool = False,
     ):
@@ -108,7 +109,7 @@ class TestSuite:
         self.filename = filename
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
-        self.time_taken = 0
+        self.time_taken = 0.0
 
     def clone(self):
         """Create a deep copy of the object"""
@@ -137,21 +138,19 @@ class TestSuite:
             ]
             json.dump(data, json_file, indent=4)
 
-    def _download_worker(self, context: DownloadWork):
+    def _download_worker(self, ctx: DownloadWork):
         """Download and extract a test vector"""
-        test_vector = context.test_vector
-        dest_dir = os.path.join(
-            context.out_dir, context.test_suite_name, test_vector.name
-        )
+        test_vector = ctx.test_vector
+        dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, test_vector.name)
         dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
         if (
-            context.verify
+            ctx.verify
             and os.path.exists(dest_path)
             and test_vector.source_checksum == utils.file_checksum(dest_path)
         ):
-            if not context.keep_file:
+            if not ctx.keep_file:
                 os.remove(dest_path)
             return
         print(f"\tDownloading test vector {test_vector.name} from {dest_dir}")
@@ -168,9 +167,9 @@ class TestSuite:
             utils.extract(
                 dest_path,
                 dest_dir,
-                file=test_vector.input_file if not context.extract_all else None,
+                file=test_vector.input_file if not ctx.extract_all else None,
             )
-            if not context.keep_file:
+            if not ctx.keep_file:
                 os.remove(dest_path)
 
     def download(
@@ -226,10 +225,10 @@ class TestSuite:
     def _collect_results(self, test_result: TestResult):
         """Collect all TestResults with error to add them into the test vectors"""
         for res in test_result.failures:
-            test_vector = res[0].test_vector
+            test_vector = cast(Test, res[0]).test_vector
             test_vector.errors.append([str(x) for x in res])
         for res in test_result.errors:
-            test_vector = res[0].test_vector
+            test_vector = cast(Test, res[0]).test_vector
             test_vector.errors.append([str(x) for x in res])
 
     @lru_cache(maxsize=None)
@@ -271,7 +270,7 @@ class TestSuite:
 
         return test.test_vector
 
-    def run_test_suite_in_parallel(self, jobs: int, tests: list, failfast: bool):
+    def run_test_suite_in_parallel(self, jobs: int, tests: List[Test], failfast: bool):
         """Run the test suite in parallel"""
         test_results = []
         max_len = self._get_max_length_test_vectors_name()
@@ -349,7 +348,7 @@ class TestSuite:
 
         return test_suite
 
-    def generate_tests(self, ctx: Context):
+    def generate_tests(self, ctx: Context) -> List[Test]:
         """Generate the tests for a decoder"""
         tests = []
         test_vectors_run = dict()
