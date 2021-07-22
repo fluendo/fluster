@@ -22,20 +22,29 @@ from fluster.codec import PixelFormat
 
 
 class TestVectorResult(Enum):
-    '''Test Result'''
-    NOT_RUN = 'NotRun'
-    SUCCESS = 'Success'
-    FAILURE = 'Failure'
-    TIMEOUT = 'Timeout'
-    ERROR = 'Error'
+    """Test Result"""
+
+    NOT_RUN = "NotRun"
+    SUCCESS = "Success"
+    FAILURE = "Failure"
+    TIMEOUT = "Timeout"
+    ERROR = "Error"
 
 
 class TestVector:
-    '''Test vector'''
+    """Test vector"""
+
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, name: str, source: str, source_checksum: str, input_file: str,
-                 output_format: PixelFormat, result: str):
+    def __init__(
+        self,
+        name: str,
+        source: str,
+        source_checksum: str,
+        input_file: str,
+        output_format: PixelFormat,
+        result: str,
+    ):
         # JSON members
         self.name = name
         self.source = source
@@ -50,24 +59,26 @@ class TestVector:
 
     @classmethod
     def from_json(cls, data: dict):
-        '''Deserialize an instance of TestVector from a json file'''
-        if 'output_format' in data:
-            data['output_format'] = PixelFormat(data['output_format'])
+        """Deserialize an instance of TestVector from a json file"""
+        if "output_format" in data:
+            data["output_format"] = PixelFormat(data["output_format"])
         else:
-            data['output_format'] = PixelFormat.YUV420P
-        return (data['name'], cls(**data))
+            data["output_format"] = PixelFormat.YUV420P
+        return (data["name"], cls(**data))
 
     def data_to_serialize(self):
-        '''Return the data to be serialized'''
+        """Return the data to be serialized"""
         data = self.__dict__.copy()
-        data.pop('test_result')
-        data.pop('errors')
-        data['output_format'] = str(self.output_format.value)
+        data.pop("test_result")
+        data.pop("errors")
+        data["output_format"] = str(self.output_format.value)
         return data
 
     def __str__(self):
-        ret = f'        {self.name}\n' \
-            f'            Source: {self.source}\n' \
-            f'            Input: {self.input_file}\n' \
-            f'            Result: {self.result}'
+        ret = (
+            f"        {self.name}\n"
+            f"            Source: {self.source}\n"
+            f"            Input: {self.input_file}\n"
+            f"            Result: {self.result}"
+        )
         return ret

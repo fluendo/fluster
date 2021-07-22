@@ -13,11 +13,7 @@ help:
 install_deps: ## install Python dependencies
 	python3 -m pip install -r requirements.txt
 
-check: ## check that very basic tests run
-	@echo "Checking style with autopep8..."
-	autopep8 --exit-code --diff -r $(PY_FILES)
-	@echo "Running pylint..."
-	pylint -j0 $(PY_FILES) --fail-under=10
+check: format-check lint ## check that very basic tests run
 	@echo "Running dummy test..."
 	$(FLUSTER) list
 	$(FLUSTER) list -c
@@ -45,8 +41,13 @@ ifneq ($(OS),Windows_NT)
 endif
 	@echo "\nAll test finished succesfully!"
 
-format: ## format Python code using autopep8
-	autopep8 -i -j0 -r $(PY_FILES)
+format: ## format Python code using black
+	@echo "Formatting coding style with black..."
+	black $(PY_FILES)
+
+format-check:
+	@echo "Checking coding style with black..."
+	black --check $(PY_FILES)
 
 lint: ## run static analysis using pylint
 	pylint -j0 $(PY_FILES)

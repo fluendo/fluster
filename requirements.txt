@@ -1,2 +1,2 @@
-autopep8
+black
 pylint==2.8.2

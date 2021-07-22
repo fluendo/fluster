@@ -27,21 +27,21 @@ import zipfile
 import platform
 
 
-TARBALL_EXTS = ('tar.gz', 'tgz', 'tar.bz2', 'tbz2', 'tar.xz')
+TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
 
 def download(url: str, dest_dir: str):
-    '''Downloads a file to a directory'''
+    """Downloads a file to a directory"""
     with urllib.request.urlopen(url) as response:
-        dest_path = os.path.join(dest_dir, url.split('/')[-1])
-        with open(dest_path, 'wb') as dest:
+        dest_path = os.path.join(dest_dir, url.split("/")[-1])
+        with open(dest_path, "wb") as dest:
             shutil.copyfileobj(response, dest)
 
 
 def file_checksum(path: str) -> str:
-    '''Calculates the checksum of a file reading chunks of 64KiB'''
+    """Calculates the checksum of a file reading chunks of 64KiB"""
     md5 = hashlib.md5()
-    with open(path, 'rb') as file:
+    with open(path, "rb") as file:
         while True:
             data = file.read(65536)
             if not data:
@@ -50,15 +50,19 @@ def file_checksum(path: str) -> str:
     return md5.hexdigest()
 
 
-def run_command(command: list, verbose: bool = False, check: bool = True, timeout: int = None):
-    '''Runs a command'''
+def run_command(
+    command: list,
+    verbose: bool = False,
+    check: bool = True,
+    timeout: int = None,
+):
+    """Runs a command"""
     sout = subprocess.DEVNULL if not verbose else None
     serr = subprocess.DEVNULL if not verbose else None
     if verbose:
-        print(f'\nRunning command \"{" ".join(command)}\"')
+        print(f'\nRunning command "{" ".join(command)}"')
     try:
-        subprocess.run(command, stdout=sout, stderr=serr,
-                       check=check, timeout=timeout)
+        subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
@@ -66,16 +70,15 @@ def run_command(command: list, verbose: bool = False, check: bool = True, timeou
 
 
 def is_extractable(filepath: str) -> bool:
-    '''Checks is a file can be extracted from the its extension'''
-    return filepath.endswith(TARBALL_EXTS) or filepath.endswith('.zip')
+    """Checks is a file can be extracted from the its extension"""
+    return filepath.endswith(TARBALL_EXTS) or filepath.endswith(".zip")
 
 
 def extract(filepath: str, output_dir: str, file: str = None):
-    '''Extracts a file to a directory'''
+    """Extracts a file to a directory"""
     if filepath.endswith(TARBALL_EXTS):
-        subprocess.run(['tar', '-C', output_dir, '-xf',
-                        filepath, file], check=True)
-    elif filepath.endswith('.zip'):
+        subprocess.run(["tar", "-C", output_dir, "-xf", filepath, file], check=True)
+    elif filepath.endswith(".zip"):
         with zipfile.ZipFile(filepath, "r") as zip_file:
             if file:
                 zip_file.extract(file, path=output_dir)
@@ -86,16 +89,16 @@ def extract(filepath: str, output_dir: str, file: str = None):
 
 
 def normalize_binary_cmd(cmd: str) -> str:
-    '''Return the OS-form binary'''
-    if platform.system() == 'Windows':
-        return cmd if cmd.endswith('.exe') else cmd + '.exe'
-    if cmd.endswith('.exe'):
-        return cmd.replace('.exe', '')
+    """Return the OS-form binary"""
+    if platform.system() == "Windows":
+        return cmd if cmd.endswith(".exe") else cmd + ".exe"
+    if cmd.endswith(".exe"):
+        return cmd.replace(".exe", "")
     return cmd
 
 
 def normalize_path(path: str) -> str:
-    '''Normalize the path to make it Unix-like'''
-    if platform.system() == 'Windows':
-        return path.replace('\\', '/')
+    """Normalize the path to make it Unix-like"""
+    if platform.system() == "Windows":
+        return path.replace("\\", "/")
     return path

@@ -26,14 +26,15 @@ import sys
 
 from fluster.fluster import Fluster, Context
 
-TEST_SUITES_DIR = 'test_suites'
-DECODERS_DIR = 'decoders'
-RESOURCES_DIR = 'resources'
-RESULTS_DIR = 'results'
+TEST_SUITES_DIR = "test_suites"
+DECODERS_DIR = "decoders"
+RESOURCES_DIR = "resources"
+RESULTS_DIR = "results"
 
 
 class Main:
-    '''Main class for Fluster'''
+    """Main class for Fluster"""
+
     # pylint: disable=broad-except
 
     def __init__(self):
@@ -42,19 +43,19 @@ class Main:
 
         # Prepend to the PATH the decoders_dir so that we can run them
         # without having to set the env for every single command
-        os.environ['PATH'] = self.decoders_dir + \
-            os.path.pathsep + os.environ['PATH']
+        os.environ["PATH"] = self.decoders_dir + os.path.pathsep + os.environ["PATH"]
 
     def run(self):
-        '''Runs Fluster'''
+        """Runs Fluster"""
         args = self.parser.parse_args()
-        if hasattr(args, 'func'):
-            fluster = Fluster(test_suites_dir=args.test_suites_dir,
-                              decoders_dir=self.decoders_dir,
-                              resources_dir=args.resources,
-                              results_dir=args.output,
-                              use_emoji=not args.no_emoji
-                              )
+        if hasattr(args, "func"):
+            fluster = Fluster(
+                test_suites_dir=args.test_suites_dir,
+                decoders_dir=self.decoders_dir,
+                resources_dir=args.resources,
+                results_dir=args.output,
+                use_emoji=not args.no_emoji,
+            )
             args.func(args, fluster)
         else:
             self.parser.print_help()
@@ -62,16 +63,30 @@ class Main:
     def _create_parser(self):
         parser = argparse.ArgumentParser()
         parser.add_argument(
-            '-r', '--resources', help='set the directory where resources are taken from', default=RESOURCES_DIR)
-        parser.add_argument(
-            '-o', '--output', help='set the directory where test results will be stored', default=RESULTS_DIR)
-        parser.add_argument(
-            '-ne', '--no-emoji', help='set to use plain text instead of emojis', action='store_true'
+            "-r",
+            "--resources",
+            help="set the directory where resources are taken from",
+            default=RESOURCES_DIR,
         )
         parser.add_argument(
-            '-tsd', '--test-suites-dir', help='set the directory where test suite will be read',
-            default=TEST_SUITES_DIR)
-        subparsers = parser.add_subparsers(title='subcommands')
+            "-o",
+            "--output",
+            help="set the directory where test results will be stored",
+            default=RESULTS_DIR,
+        )
+        parser.add_argument(
+            "-ne",
+            "--no-emoji",
+            help="set to use plain text instead of emojis",
+            action="store_true",
+        )
+        parser.add_argument(
+            "-tsd",
+            "--test-suites-dir",
+            help="set the directory where test suite will be read",
+            default=TEST_SUITES_DIR,
+        )
+        subparsers = parser.add_subparsers(title="subcommands")
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
         self._add_download_cmd(subparsers)
@@ -80,119 +95,224 @@ class Main:
 
     def _add_list_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'list', aliases=['l'], help='show list of available test suites and decoders')
+            "list",
+            aliases=["l"],
+            help="show list of available test suites and decoders",
+        )
         subparser.add_argument(
-            '-ts', '--testsuites', help='show only the test suites given', nargs='+')
+            "-ts",
+            "--testsuites",
+            help="show only the test suites given",
+            nargs="+",
+        )
         subparser.add_argument(
-            '-tv', '--testvectors', help='show test vectors of test suites', action='store_true')
+            "-tv",
+            "--testvectors",
+            help="show test vectors of test suites",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-c', '--check',
-            help='check which decoders can be run successfully. Reports ✔️ or ❌', action='store_true')
+            "-c",
+            "--check",
+            help="check which decoders can be run successfully. Reports ✔️ or ❌",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-v', '--verbose', help='show stdout and stderr of commands executed', action='store_true')
+            "-v",
+            "--verbose",
+            help="show stdout and stderr of commands executed",
+            action="store_true",
+        )
         subparser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'run', aliases=['r'], help='run test suites for decoders')
+            "run", aliases=["r"], help="run test suites for decoders"
+        )
         subparser.add_argument(
-            '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
-            '0 means all logical cores',
-            type=int, default=multiprocessing.cpu_count())
-        subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 30 secs',
-                               type=int, default=30)
+            "-j",
+            "--jobs",
+            help="number of parallel jobs to use. 1x logical cores by default."
+            "0 means all logical cores",
+            type=int,
+            default=multiprocessing.cpu_count(),
+        )
         subparser.add_argument(
-            '-ff', '--failfast', help='stop after first fail', action='store_true')
+            "-t",
+            "--timeout",
+            help="timeout in secs for each decoding. Defaults to 30 secs",
+            type=int,
+            default=30,
+        )
         subparser.add_argument(
-            '-q', '--quiet', help="don't show every test run", action='store_true')
+            "-ff",
+            "--failfast",
+            help="stop after first fail",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-ts', '--testsuites', help='run only the specific test suites', nargs='+')
+            "-q",
+            "--quiet",
+            help="don't show every test run",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-tv', '--testvectors', help='run only the specific test vectors', nargs='+')
+            "-ts",
+            "--testsuites",
+            help="run only the specific test suites",
+            nargs="+",
+        )
         subparser.add_argument(
-            '-d', '--decoders', help='run only the specific decoders', nargs='+')
+            "-tv",
+            "--testvectors",
+            help="run only the specific test vectors",
+            nargs="+",
+        )
         subparser.add_argument(
-            '-s', '--summary', help='generate a summary in Markdown format for each test suite', action='store_true')
+            "-d",
+            "--decoders",
+            help="run only the specific decoders",
+            nargs="+",
+        )
         subparser.add_argument(
-            '-so', '--summary-output', help='dump summary output to file')
+            "-s",
+            "--summary",
+            help="generate a summary in Markdown format for each test suite",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-k', '--keep', help='keep output files generated during the test', action='store_true')
+            "-so", "--summary-output", help="dump summary output to file"
+        )
         subparser.add_argument(
-            '-th', '--threshold', help='set exit code to 2 if threshold tests are not success. '
-            'exit code is 0 otherwise', type=int)
+            "-k",
+            "--keep",
+            help="keep output files generated during the test",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-tth', '--time-threshold', help='set exit code to 3 if test suite takes longer than treshold seconds. '
-            'exit code is 0 otherwise', type=float)
+            "-th",
+            "--threshold",
+            help="set exit code to 2 if threshold tests are not success. "
+            "exit code is 0 otherwise",
+            type=int,
+        )
         subparser.add_argument(
-            '-v', '--verbose', help='show stdout and stderr of commands executed', action='store_true')
+            "-tth",
+            "--time-threshold",
+            help="set exit code to 3 if test suite takes longer than treshold seconds. "
+            "exit code is 0 otherwise",
+            type=float,
+        )
+        subparser.add_argument(
+            "-v",
+            "--verbose",
+            help="show stdout and stderr of commands executed",
+            action="store_true",
+        )
         subparser.set_defaults(func=self._run_cmd)
 
     def _add_reference_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'reference', aliases=['r'], help='use a specific decoder to set its results for the test suites given')
+            "reference",
+            aliases=["r"],
+            help="use a specific decoder to set its results for the test suites given",
+        )
         subparser.add_argument(
-            '-j', '--jobs', help='number of parallel jobs to use. 1x logical cores by default.'
-            '0 means all logical cores',
-            type=int, default=multiprocessing.cpu_count())
-        subparser.add_argument('-t', '--timeout', help='timeout in secs for each decoding. Defaults to 30 secs',
-                               type=int, default=30)
+            "-j",
+            "--jobs",
+            help="number of parallel jobs to use. 1x logical cores by default."
+            "0 means all logical cores",
+            type=int,
+            default=multiprocessing.cpu_count(),
+        )
         subparser.add_argument(
-            'decoder', help='decoder to run', nargs=1)
+            "-t",
+            "--timeout",
+            help="timeout in secs for each decoding. Defaults to 30 secs",
+            type=int,
+            default=30,
+        )
+        subparser.add_argument("decoder", help="decoder to run", nargs=1)
         subparser.add_argument(
-            'testsuites', help='list of testsuites to run the decoder with', nargs='+')
+            "testsuites",
+            help="list of testsuites to run the decoder with",
+            nargs="+",
+        )
         subparser.add_argument(
-            '-q', '--quiet', help="don't show every test run", action='store_true')
+            "-q",
+            "--quiet",
+            help="don't show every test run",
+            action="store_true",
+        )
         subparser.add_argument(
-            '-v', '--verbose', help='show stdout and stderr of commands executed', action='store_true')
+            "-v",
+            "--verbose",
+            help="show stdout and stderr of commands executed",
+            action="store_true",
+        )
         subparser.set_defaults(func=self._reference_cmd)
 
     def _add_download_cmd(self, subparsers):
         subparser = subparsers.add_parser(
-            'download', aliases=['d'], help='downloads test suites resources')
+            "download", aliases=["d"], help="downloads test suites resources"
+        )
         subparser.add_argument(
-            '-j', '--jobs', help='number of parallel jobs to use. 2x logical cores by default.'
-            '0 means all logical cores',
-            type=int, default=2 * multiprocessing.cpu_count())
+            "-j",
+            "--jobs",
+            help="number of parallel jobs to use. 2x logical cores by default."
+            "0 means all logical cores",
+            type=int,
+            default=2 * multiprocessing.cpu_count(),
+        )
         subparser.add_argument(
-            '-k', '--keep', help="keep downloaded file after extracting", action='store_true')
+            "-k",
+            "--keep",
+            help="keep downloaded file after extracting",
+            action="store_true",
+        )
         subparser.add_argument(
-            'testsuites', help='list of testsuites to download', nargs='*')
+            "testsuites", help="list of testsuites to download", nargs="*"
+        )
         subparser.set_defaults(func=self._download_cmd)
 
     def _list_cmd(self, args, fluster):
         fluster.list_test_suites(
-            show_test_vectors=args.testvectors, test_suites=args.testsuites)
+            show_test_vectors=args.testvectors, test_suites=args.testsuites
+        )
         fluster.list_decoders(check=args.check, verbose=args.verbose)
 
     def _run_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
-        context = Context(jobs=args.jobs,
-                          test_suites=args.testsuites,
-                          timeout=args.timeout,
-                          decoders=args.decoders,
-                          test_vectors=args.testvectors,
-                          failfast=args.failfast,
-                          quiet=args.quiet,
-                          summary=args.summary or args.summary_output,
-                          keep_files=args.keep,
-                          threshold=args.threshold,
-                          time_threshold=args.time_threshold,
-                          verbose=args.verbose,
-                          summary_output=args.summary_output
-                          )
+        context = Context(
+            jobs=args.jobs,
+            test_suites=args.testsuites,
+            timeout=args.timeout,
+            decoders=args.decoders,
+            test_vectors=args.testvectors,
+            failfast=args.failfast,
+            quiet=args.quiet,
+            summary=args.summary or args.summary_output,
+            keep_files=args.keep,
+            threshold=args.threshold,
+            time_threshold=args.time_threshold,
+            verbose=args.verbose,
+            summary_output=args.summary_output,
+        )
         try:
             fluster.run_test_suites(context)
         except SystemExit as exception:
             sys.exit(exception.code)
 
     def _reference_cmd(self, args, fluster):
-        context = Context(jobs=args.jobs,
-                          timeout=args.timeout,
-                          test_suites=args.testsuites,
-                          decoders=args.decoder,
-                          quiet=args.quiet,
-                          verbose=args.verbose,
-                          reference=True)
+        context = Context(
+            jobs=args.jobs,
+            timeout=args.timeout,
+            test_suites=args.testsuites,
+            decoders=args.decoder,
+            quiet=args.quiet,
+            verbose=args.verbose,
+            reference=True,
+        )
         try:
             fluster.run_test_suites(context)
         except SystemExit as exception:
@@ -201,4 +321,5 @@ class Main:
     def _download_cmd(self, args, fluster):
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         fluster.download_test_suites(
-            test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep)
+            test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep
+        )
