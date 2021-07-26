@@ -20,6 +20,7 @@
 import os
 from subprocess import TimeoutExpired
 import unittest
+from typing import Any
 
 from fluster.decoder import Decoder
 from fluster.test_vector import TestVector, TestVectorResult
@@ -27,11 +28,21 @@ from fluster.utils import normalize_path
 
 
 class Test(unittest.TestCase):
-    '''Test suite for decoder tests'''
+    """Test suite for decoder tests"""
+
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, decoder: Decoder, test_suite, test_vector: TestVector, results_dir: str,
-                 reference: bool, timeout: int, keep_files: bool, verbose: bool):
+    def __init__(
+        self,
+        decoder: Decoder,
+        test_suite: Any,  # can't use TestSuite type because of circular dependency
+        test_vector: TestVector,
+        results_dir: str,
+        reference: bool,
+        timeout: int,
+        keep_files: bool,
+        verbose: bool,
+    ):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
@@ -44,33 +55,55 @@ class Test(unittest.TestCase):
         setattr(self, test_vector.name, self._test)
         super().__init__(test_vector.name)
 
-    def _test(self):
-        output_filepath = os.path.join(
-            self.results_dir, self.test_vector.name + '.yuv')
-        input_filepath = os.path.join(self.resources_dir, self.test_suite.name,
-                                      self.test_vector.name, self.test_vector.input_file)
+    def _test(self) -> None:
+        output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".yuv")
+        input_filepath = os.path.join(
+            self.resources_dir,
+            self.test_suite.name,
+            self.test_vector.name,
+            self.test_vector.input_file,
+        )
         output_filepath = normalize_path(output_filepath)
         input_filepath = normalize_path(input_filepath)
 
         try:
             result = self.decoder.decode(
-                input_filepath, output_filepath, self.test_vector.output_format, self.timeout, self.verbose)
+                input_filepath,
+                output_filepath,
+                self.test_vector.output_format,
+                self.timeout,
+                self.verbose,
+            )
         except TimeoutExpired:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.TIMEOUT
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.TIMEOUT
             raise
         except Exception:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.ERROR
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.ERROR
             raise
 
-        if not self.keep_files and os.path.exists(output_filepath) and \
-                os.path.isfile(output_filepath):
+        if (
+            not self.keep_files
+            and os.path.exists(output_filepath)
+            and os.path.isfile(output_filepath)
+        ):
             os.remove(output_filepath)
 
         if not self.reference:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.FAILURE
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.FAILURE
             if self.test_vector.result.lower() == result.lower():
-                self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.SUCCESS
-            self.assertEqual(self.test_vector.result.lower(), result.lower(),
-                             self.test_vector.name)
+                self.test_suite.test_vectors[
+                    self.test_vector.name
+                ].test_result = TestVectorResult.SUCCESS
+            self.assertEqual(
+                self.test_vector.result.lower(),
+                result.lower(),
+                self.test_vector.name,
+            )
         else:
             self.test_suite.test_vectors[self.test_vector.name].result = result

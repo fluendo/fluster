@@ -24,31 +24,44 @@ from fluster.utils import file_checksum, run_command
 
 
 class VPXDecoder(Decoder):
-    '''Generic class for VPX reference decoder'''
-    name = None
-    description = None
-    binary = 'vpxdec'
+    """Generic class for VPX reference decoder"""
 
-    def __init__(self):
+    name = ""
+    description = ""
+    binary = "vpxdec"
+    codec = Codec.NONE
+
+    def __init__(self) -> None:
         super().__init__()
-        self.name = f'libvpx-{self.codec.value}'
-        self.description = f'{self.codec.value} reference decoder'
+        self.name = f"libvpx-{self.codec.value}"
+        self.description = f"{self.codec.value} reference decoder"
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool) -> str:
-        '''Decodes input_filepath in output_filepath'''
-        run_command([self.binary, '--i420', input_filepath, '-o',
-                     output_filepath], timeout=timeout, verbose=verbose)
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: PixelFormat,
+        timeout: int,
+        verbose: bool,
+    ) -> str:
+        """Decodes input_filepath in output_filepath"""
+        run_command(
+            [self.binary, "--i420", input_filepath, "-o", output_filepath],
+            timeout=timeout,
+            verbose=verbose,
+        )
         return file_checksum(output_filepath)
 
 
 @register_decoder
 class VP8Decoder(VPXDecoder):
-    '''VP8 reference decoder implementation'''
+    """VP8 reference decoder implementation"""
+
     codec = Codec.VP8
 
 
 @register_decoder
 class VP9Decoder(VPXDecoder):
-    '''VP9 reference decoder implementation'''
+    """VP9 reference decoder implementation"""
+
     codec = Codec.VP9

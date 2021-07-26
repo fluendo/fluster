@@ -45,16 +45,15 @@ def gst_element_exists(element: str) -> bool:
 
 class GStreamer(Decoder):
     '''Base class for GStreamer decoders'''
-    decoder_bin = None
-    cmd = None
-    caps = None
-    gst_api = None
-    api = None
-    provider = None
-    name = None
+    decoder_bin = ""
+    cmd = ""
+    caps = ""
+    gst_api = ""
+    api = ""
+    provider = ""
     sink = 'videocodectestsink'
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         if not self.name:
             self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
@@ -64,13 +63,19 @@ class GStreamer(Decoder):
         if not gst_element_exists(self.sink):
             self.sink = 'filesink'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat) -> str:
         '''Generate the GStreamer pipeline used to decode the test vector'''
         # pylint: disable=unused-argument
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output_filepath)
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool) -> str:
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: PixelFormat,
+        timeout: int,
+        verbose: bool,
+    ) -> str:
         '''Decode the test vector and do the checksum'''
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)
@@ -78,7 +83,7 @@ class GStreamer(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check(self, verbose) -> bool:
+    def check(self, verbose: bool) -> bool:
         '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
         try:
@@ -101,7 +106,7 @@ class GStreamer10(GStreamer):
     gst_api = '1.0'
     provider = 'GStreamer'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat) -> str:
         caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format.to_gst()}'
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output_filepath)
 
@@ -410,17 +415,17 @@ class FluendoH265VAGst10DecoderBase(GStreamer10):
     provider = 'Fluendo'
     api = 'HW'
     hw_acceleration = True
-    stream_format = None
-    alignment = None
+    stream_format: str = ""
+    alignment: str = ""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self) -> None:
+        super().__init__()
         self.name = self._translator(self.name)
         self.description = self._translator(self.description)
         self.decoder_bin = self.decoder_bin_tmpl.format(
             stream_format=self.stream_format, alignment=self.alignment)
 
-    def _translator(self, target_val):
+    def _translator(self, target_val: str) -> str:
         new_val = f'{self.codec.value}-{self.stream_format}-{self.alignment}'
         return target_val.replace(self.codec.value, new_val)
 

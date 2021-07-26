@@ -1,2 +1,4 @@
-autopep8
+black
 pylint==2.8.2
+flake8
+mypy

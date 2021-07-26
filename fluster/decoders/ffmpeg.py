@@ -33,11 +33,11 @@ FFMPEG_TPL = '{} -i {} -vf format=pix_fmts={} {}'
 class FFmpegDecoder(Decoder):
     '''Generic class for FFmpeg decoder'''
     binary = 'ffmpeg'
-    description = None
-    cmd = None
-    api = None
+    description = ""
+    cmd = ""
+    api = ""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.cmd = self.binary
         if self.hw_acceleration:
@@ -45,8 +45,14 @@ class FFmpegDecoder(Decoder):
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: bool) -> str:
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: PixelFormat,
+        timeout: int,
+        verbose: bool,
+    ) -> str:
         '''Decodes input_filepath in output_filepath'''
         cmd = shlex.split(FFMPEG_TPL.format(
             self.cmd, input_filepath, str(output_format.value), output_filepath))
@@ -54,7 +60,7 @@ class FFmpegDecoder(Decoder):
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=None)
-    def check(self, verbose) -> bool:
+    def check(self, verbose: bool) -> bool:
         '''Checks whether the decoder can be run'''
         # pylint: disable=broad-except
         if self.hw_acceleration:

@@ -17,6 +17,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from __future__ import annotations
 from functools import lru_cache
 import os.path
 import json
@@ -26,6 +27,8 @@ from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
 from shutil import rmtree
+from typing import cast, List, Dict, Optional, Type, Any
+
 
 from fluster.test_vector import TestVector
 from fluster.codec import Codec
@@ -35,10 +38,17 @@ from fluster import utils
 
 
 class DownloadWork:
-    '''Context to pass to each download worker'''
+    """Context to pass to each download worker"""
 
-    def __init__(self, out_dir: str, verify: bool, extract_all: bool, keep_file: bool,
-                 test_suite_name: str, test_vector: TestVector):
+    def __init__(
+        self,
+        out_dir: str,
+        verify: bool,
+        extract_all: bool,
+        keep_file: bool,
+        test_suite_name: str,
+        test_vector: TestVector,
+    ):
         self.out_dir = out_dir
         self.verify = verify
         self.extract_all = extract_all
@@ -48,11 +58,23 @@ class DownloadWork:
 
 
 class Context:
-    '''Context for TestSuite'''
+    """Context for TestSuite"""
+
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, jobs: int, decoder: Decoder, timeout: int, failfast: bool, quiet: bool, results_dir: str,
-                 reference: bool = False, test_vectors: list = None, keep_files: bool = False, verbose: bool = False):
+    def __init__(
+        self,
+        jobs: int,
+        decoder: Decoder,
+        timeout: int,
+        failfast: bool,
+        quiet: bool,
+        results_dir: str,
+        reference: bool = False,
+        test_vectors: Optional[List[str]] = None,
+        keep_files: bool = False,
+        verbose: bool = False,
+    ):
         self.jobs = jobs
         self.decoder = decoder
         self.timeout = timeout
@@ -66,11 +88,19 @@ class Context:
 
 
 class TestSuite:
-    '''Test suite class'''
+    """Test suite class"""
+
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, filename: str, resources_dir: str, name: str, codec: Codec, description: str,
-                 test_vectors: dict):
+    def __init__(
+        self,
+        filename: str,
+        resources_dir: str,
+        name: str,
+        codec: Codec,
+        description: str,
+        test_vectors: Dict[str, TestVector],
+    ):
         # JSON members
         self.name = name
         self.codec = codec
@@ -81,103 +111,135 @@ class TestSuite:
         self.filename = filename
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
-        self.time_taken = 0
+        self.time_taken = 0.0
 
-    def clone(self):
-        '''Create a deep copy of the object'''
+    def clone(self) -> TestSuite:
+        """Create a deep copy of the object"""
         return copy.deepcopy(self)
 
     @classmethod
-    def from_json_file(cls, filename: str, resources_dir: str):
-        '''Create a TestSuite instance from a file'''
+    def from_json_file(
+        cls: Type[TestSuite], filename: str, resources_dir: str
+    ) -> TestSuite:
+        """Create a TestSuite instance from a file"""
         with open(filename) as json_file:
             data = json.load(json_file)
-            data['test_vectors'] = dict(
-                map(TestVector.from_json, data["test_vectors"]))
-            data['codec'] = Codec(data['codec'])
+            data["test_vectors"] = dict(map(TestVector.from_json, data["test_vectors"]))
+            data["codec"] = Codec(data["codec"])
             return cls(filename, resources_dir, **data)
 
-    def to_json_file(self, filename: str):
-        '''Serialize the test suite to a file'''
-        with open(filename, 'w') as json_file:
+    def to_json_file(self, filename: str) -> None:
+        """Serialize the test suite to a file"""
+        with open(filename, "w") as json_file:
             data = self.__dict__.copy()
-            data.pop('resources_dir')
-            data.pop('filename')
-            data.pop('test_vectors_success')
-            data.pop('time_taken')
-            data['codec'] = str(self.codec.value)
-            data['test_vectors'] = [tv.data_to_serialize()
-                                    for tv in self.test_vectors.values()]
+            data.pop("resources_dir")
+            data.pop("filename")
+            data.pop("test_vectors_success")
+            data.pop("time_taken")
+            data["codec"] = str(self.codec.value)
+            data["test_vectors"] = [
+                tv.data_to_serialize() for tv in self.test_vectors.values()
+            ]
             json.dump(data, json_file, indent=4)
 
-    def _download_worker(self, context: DownloadWork):
-        '''Download and extract a test vector'''
-        test_vector = context.test_vector
-        dest_dir = os.path.join(
-            context.out_dir, context.test_suite_name, test_vector.name)
-        dest_path = os.path.join(
-            dest_dir, os.path.basename(test_vector.source))
+    def _download_worker(self, ctx: DownloadWork) -> None:
+        """Download and extract a test vector"""
+        test_vector = ctx.test_vector
+        dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, test_vector.name)
+        dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
-        if context.verify and os.path.exists(dest_path) and \
-                test_vector.source_checksum == utils.file_checksum(dest_path):
-            if not context.keep_file:
+        if (
+            ctx.verify
+            and os.path.exists(dest_path)
+            and test_vector.source_checksum == utils.file_checksum(dest_path)
+        ):
+            if not ctx.keep_file:
                 os.remove(dest_path)
             return
-        print(f'\tDownloading test vector {test_vector.name} from {dest_dir}')
-        utils.download(test_vector.source, dest_dir)
+        print(f"\tDownloading test vector {test_vector.name} from {dest_dir}")
+        # Catch the exception that download may throw to make sure pickle can serialize it properly
+        # This avoids:
+        # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
+        # Reason: 'TypeError("cannot pickle '_io.BufferedReader' object")'
+        try:
+            utils.download(test_vector.source, dest_dir)
+        except Exception as ex:
+            raise Exception(str(ex)) from ex
         checksum = utils.file_checksum(dest_path)
         if test_vector.source_checksum != checksum:
             raise Exception(
-                f'Checksum error for test vector \'{test_vector.name}\': \'{checksum}\' instead of '
-                f'\'{test_vector.source_checksum}\'')
+                f"Checksum error for test vector '{test_vector.name}': '{checksum}' instead of "
+                f"'{test_vector.source_checksum}'"
+            )
 
         if utils.is_extractable(dest_path):
-            print(
-                f'\tExtracting test vector {test_vector.name} to {dest_dir}')
+            print(f"\tExtracting test vector {test_vector.name} to {dest_dir}")
             utils.extract(
-                dest_path, dest_dir, file=test_vector.input_file if not context.extract_all else None)
-            if not context.keep_file:
+                dest_path,
+                dest_dir,
+                file=test_vector.input_file if not ctx.extract_all else None,
+            )
+            if not ctx.keep_file:
                 os.remove(dest_path)
 
-    def download(self, jobs: int, out_dir: str, verify: bool, extract_all: bool = False, keep_file: bool = False):
-        '''Download the test suite'''
+    def download(
+        self,
+        jobs: int,
+        out_dir: str,
+        verify: bool,
+        extract_all: bool = False,
+        keep_file: bool = False,
+    ) -> None:
+        """Download the test suite"""
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
-        print(f'Downloading test suite {self.name} using {jobs} parallel jobs')
+        print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
 
         with Pool(jobs) as pool:
-            def _callback_error(err):
-                print(f'\nError downloading -> {err}\n')
+
+            def _callback_error(err: Any) -> None:
+                print(f"\nError downloading -> {err}\n")
                 pool.terminate()
 
             downloads = []
             for test_vector in self.test_vectors.values():
                 dwork = DownloadWork(
-                    out_dir, verify, extract_all, keep_file, self.name, test_vector)
-                downloads.append(pool.apply_async(self._download_worker, args=(
-                    dwork, ), error_callback=_callback_error))
+                    out_dir,
+                    verify,
+                    extract_all,
+                    keep_file,
+                    self.name,
+                    test_vector,
+                )
+                downloads.append(
+                    pool.apply_async(
+                        self._download_worker,
+                        args=(dwork,),
+                        error_callback=_callback_error,
+                    )
+                )
             pool.close()
             pool.join()
 
         for job in downloads:
             if not job.successful():
-                sys.exit('Some download failed')
+                sys.exit("Some download failed")
 
-        print('All downloads finished')
+        print("All downloads finished")
 
-    def _rename_test(self, test: Test, module, qualname):
+    def _rename_test(self, test: Test, module: str, qualname: str) -> None:
         test_cls = type(test)
         test_cls.__module__ = module
         test_cls.__qualname__ = qualname
 
-    def _collect_results(self, test_result: TestResult):
-        '''Collect all TestResults with error to add them into the test vectors'''
+    def _collect_results(self, test_result: TestResult) -> None:
+        """Collect all TestResults with error to add them into the test vectors"""
         for res in test_result.failures:
-            test_vector = res[0].test_vector
+            test_vector = cast(Test, res[0]).test_vector
             test_vector.errors.append([str(x) for x in res])
         for res in test_result.errors:
-            test_vector = res[0].test_vector
+            test_vector = cast(Test, res[0]).test_vector
             test_vector.errors.append([str(x) for x in res])
 
     @lru_cache(maxsize=None)
@@ -189,7 +251,7 @@ class TestSuite:
         return max_length
 
     def _run_worker(self, test: Test) -> TestVector:
-        '''Run one unit test returning the TestVector'''
+        """Run one unit test returning the TestVector"""
         # Save the original module and qualname to restore it before returning
         # the TestVector. Otherwise, Pickle will complain if the classes can't
         # be found in global scope. The trick here is that we change the names
@@ -202,43 +264,48 @@ class TestSuite:
         test_result = TestResult()
         test(test_result)
 
-        result = 'ok'
+        result = "ok"
         if test_result.failures:
-            result = 'fail'
+            result = "fail"
         elif test_result.errors:
-            result = 'error'
+            result = "error"
 
         max_len = self._get_max_length_test_vectors_name()
-        print(f'[{test.test_suite.name}]\t({test.decoder.name})\t{test.test_vector.name:{max_len}} ... {result}',
-              flush=True)
+        print(
+            f"[{test.test_suite.name}]\t({test.decoder.name})\t{test.test_vector.name:{max_len}} ... {result}",
+            flush=True,
+        )
 
         self._collect_results(test_result)
         self._rename_test(test, module_orig, qualname_orig)
 
         return test.test_vector
 
-    def run_test_suite_in_parallel(self, jobs: int, tests: list, failfast: bool):
-        '''Run the test suite in parallel'''
-        test_results = []
+    def run_test_suite_in_parallel(
+        self, jobs: int, tests: List[Test], failfast: bool
+    ) -> None:
+        """Run the test suite in parallel"""
+        test_vector_results: List[TestVector] = []
         max_len = self._get_max_length_test_vectors_name()
         print(
-            f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}')
+            f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}'
+        )
         with Pool(jobs) as pool:
-            def _callback(test_result):
-                test_results.append(test_result)
+
+            def _callback(test_result: TestVector) -> None:
+                test_vector_results.append(test_result)
                 if failfast and test_result.errors:
                     pool.terminate()
 
             start = perf_counter()
             for test in tests:
-                pool.apply_async(self._run_worker, (test, ),
-                                 callback=_callback)
+                pool.apply_async(self._run_worker, (test,), callback=_callback)
             pool.close()
             pool.join()
         self.time_taken = perf_counter() - start
-        print('\n')
+        print("\n")
         self.test_vectors_success = 0
-        for test_vector_res in test_results:
+        for test_vector_res in test_vector_results:
             if test_vector_res.errors:
                 for error in test_vector_res.errors:
                     # Use same format to report errors as TextTestRunner
@@ -252,22 +319,22 @@ class TestSuite:
             # from a different process
             self.test_vectors[test_vector_res.name] = test_vector_res
         print(
-            f'Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {self.time_taken:.3f} secs')
+            f"Ran {self.test_vectors_success}/{len(test_vector_results)} tests successfully \
+              in {self.time_taken:.3f} secs"
+        )
 
-    def run(self, ctx: Context):
-        '''
+    def run(self, ctx: Context) -> Optional[TestSuite]:
+        """
         Run the test suite.
         Returns a new copy of the test suite with the result of the test
-        '''
+        """
         # pylint: disable=too-many-locals
 
         if not ctx.decoder.check(ctx.verbose):
-            print(
-                f'Skipping decoder {ctx.decoder.name} because it cannot be run')
+            print(f"Skipping decoder {ctx.decoder.name} because it cannot be run")
             return None
 
-        ctx.results_dir = os.path.join(
-            ctx.results_dir, self.name)
+        ctx.results_dir = os.path.join(ctx.results_dir, self.name)
         if os.path.exists(ctx.results_dir):
             rmtree(ctx.results_dir)
         os.makedirs(ctx.results_dir)
@@ -277,16 +344,15 @@ class TestSuite:
         if not tests:
             return None
 
-        print('*' * 100)
-        string = f'Running test suite {self.name} with decoder {ctx.decoder.name}\n'
+        print("*" * 100)
+        string = f"Running test suite {self.name} with decoder {ctx.decoder.name}\n"
         if ctx.test_vectors:
             string += f'Test vectors {" ".join(ctx.test_vectors)}\n'
-        string += f'Using {ctx.jobs} parallel job(s)'
+        string += f"Using {ctx.jobs} parallel job(s)"
         print(string)
-        print('*' * 100 + '\n')
+        print("*" * 100 + "\n")
 
-        test_suite.run_test_suite_in_parallel(
-            ctx.jobs, tests, ctx.failfast)
+        test_suite.run_test_suite_in_parallel(ctx.jobs, tests, ctx.failfast)
 
         if ctx.reference:
             test_suite.to_json_file(test_suite.filename)
@@ -296,8 +362,8 @@ class TestSuite:
 
         return test_suite
 
-    def generate_tests(self, ctx: Context):
-        '''Generate the tests for a decoder'''
+    def generate_tests(self, ctx: Context) -> List[Test]:
+        """Generate the tests for a decoder"""
         tests = []
         test_vectors_run = dict()
         for name, test_vector in self.test_vectors.items():
@@ -305,14 +371,25 @@ class TestSuite:
                 if test_vector.name.lower() not in ctx.test_vectors:
                     continue
             tests.append(
-                Test(ctx.decoder, self, test_vector, ctx.results_dir, ctx.reference, ctx.timeout, ctx.keep_files,
-                     ctx.verbose))
+                Test(
+                    ctx.decoder,
+                    self,
+                    test_vector,
+                    ctx.results_dir,
+                    ctx.reference,
+                    ctx.timeout,
+                    ctx.keep_files,
+                    ctx.verbose,
+                )
+            )
             test_vectors_run[name] = test_vector
         self.test_vectors = test_vectors_run
         return tests
 
-    def __str__(self):
-        return f'\n{self.name}\n' \
-            f'    Codec: {self.codec.value}\n' \
-            f'    Description: {self.description}\n' \
-            f'    Test vectors: {len(self.test_vectors)}'
+    def __str__(self) -> str:
+        return (
+            f"\n{self.name}\n"
+            f"    Codec: {self.codec.value}\n"
+            f"    Description: {self.description}\n"
+            f"    Test vectors: {len(self.test_vectors)}"
+        )

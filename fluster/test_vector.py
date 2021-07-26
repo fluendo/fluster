@@ -17,25 +17,36 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from __future__ import annotations
 from enum import Enum
+from typing import List, Dict, Type, Any
 from fluster.codec import PixelFormat
 
 
 class TestVectorResult(Enum):
-    '''Test Result'''
-    NOT_RUN = 'NotRun'
-    SUCCESS = 'Success'
-    FAILURE = 'Failure'
-    TIMEOUT = 'Timeout'
-    ERROR = 'Error'
+    """Test Result"""
+
+    NOT_RUN = "NotRun"
+    SUCCESS = "Success"
+    FAILURE = "Failure"
+    TIMEOUT = "Timeout"
+    ERROR = "Error"
 
 
 class TestVector:
-    '''Test vector'''
+    """Test vector"""
+
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, name: str, source: str, source_checksum: str, input_file: str,
-                 output_format: PixelFormat, result: str):
+    def __init__(
+        self,
+        name: str,
+        source: str,
+        source_checksum: str,
+        input_file: str,
+        output_format: PixelFormat,
+        result: str,
+    ):
         # JSON members
         self.name = name
         self.source = source
@@ -46,28 +57,30 @@ class TestVector:
 
         # Not included in JSON
         self.test_result = TestVectorResult.NOT_RUN
-        self.errors = []
+        self.errors: List[List[str]] = []
 
     @classmethod
-    def from_json(cls, data: dict):
-        '''Deserialize an instance of TestVector from a json file'''
-        if 'output_format' in data:
-            data['output_format'] = PixelFormat(data['output_format'])
+    def from_json(cls: Type[TestVector], data: Any) -> Any:
+        """Deserialize an instance of TestVector from a json file"""
+        if "output_format" in data:
+            data["output_format"] = PixelFormat(data["output_format"])
         else:
-            data['output_format'] = PixelFormat.YUV420P
-        return (data['name'], cls(**data))
+            data["output_format"] = PixelFormat.YUV420P
+        return (data["name"], cls(**data))
 
-    def data_to_serialize(self):
-        '''Return the data to be serialized'''
+    def data_to_serialize(self) -> Dict[str, object]:
+        """Return the data to be serialized"""
         data = self.__dict__.copy()
-        data.pop('test_result')
-        data.pop('errors')
-        data['output_format'] = str(self.output_format.value)
+        data.pop("test_result")
+        data.pop("errors")
+        data["output_format"] = str(self.output_format.value)
         return data
 
-    def __str__(self):
-        ret = f'        {self.name}\n' \
-            f'            Source: {self.source}\n' \
-            f'            Input: {self.input_file}\n' \
-            f'            Result: {self.result}'
+    def __str__(self) -> str:
+        ret = (
+            f"        {self.name}\n"
+            f"            Source: {self.source}\n"
+            f"            Input: {self.input_file}\n"
+            f"            Result: {self.result}"
+        )
         return ret

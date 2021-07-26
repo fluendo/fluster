@@ -35,7 +35,7 @@ easily extended to add more decoders and test suites.
 
 ## Description
 
-Fluster requires **Python 3.6+** to work. It has zero dependencies apart from
+Fluster requires **Python 3.7+** to work. It has zero dependencies apart from
 that. The [requirements.txt](requirements.txt) file includes Python's modules
 used only for development.
 

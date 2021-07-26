@@ -29,6 +29,12 @@ class Dummy(Decoder):
     codec = Codec.DUMMY
     description = "This is a dummy implementation for the dummy codec"
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: PixelFormat, timeout: int,
-               verbose: int) -> str:
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: PixelFormat,
+        timeout: int,
+        verbose: bool,
+    ) -> str:
         return file_checksum(input_filepath)
