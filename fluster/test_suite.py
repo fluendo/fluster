@@ -158,7 +158,14 @@ class TestSuite:
                 os.remove(dest_path)
             return
         print(f"\tDownloading test vector {test_vector.name} from {dest_dir}")
-        utils.download(test_vector.source, dest_dir)
+        # Catch the exception that download may throw to make sure pickle can serialize it properly
+        # This avoids:
+        # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
+        # Reason: 'TypeError("cannot pickle '_io.BufferedReader' object")'
+        try:
+            utils.download(test_vector.source, dest_dir)
+        except Exception as ex:
+            raise Exception(str(ex)) from ex
         checksum = utils.file_checksum(dest_path)
         if test_vector.source_checksum != checksum:
             raise Exception(
