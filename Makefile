@@ -46,13 +46,17 @@ format: ## format Python code using black
 	black $(PY_FILES)
 
 format-check:
-	@echo "Checking coding style with black..."
+	@echo "Checking coding style with black... Run '$(MAKE) format' to fix if needed"
 	black --check $(PY_FILES)
 
-lint: ## run static analysis using pylint, flake8 and mypy
+lint: format-check ## run static analysis using pylint, flake8 and mypy
+# ignore similar lines error: it's a bug when running parallel jobs - https://github.com/PyCQA/pylint/issues/4118
+	@echo "Checking with pylint... Ignore similar lines warning. It's a bug in pylint"
 	pylint -j0 $(PY_FILES) --fail-under=10
+	@echo "Checking with flake8..."
 	flake8 --max-line-length=120 $(PY_FILES)
-	mypy $(PY_FILES)
+	@echo "Checking with mypy..."
+	mypy --strict $(PY_FILES)
 
 $(CONTRIB_DIR):
 	mkdir -p $@

@@ -17,9 +17,11 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
+from typing import Type
 
 from fluster.codec import PixelFormat, Codec
 from fluster.utils import normalize_binary_cmd
@@ -36,7 +38,7 @@ class Decoder(ABC):
     description = ""
     binary = ""
 
-    def __init__(self):
+    def __init__(self) -> None:
         if self.binary:
             self.binary = normalize_binary_cmd(self.binary)
 
@@ -66,14 +68,14 @@ class Decoder(ABC):
                 return False
         return True
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"    {self.name}: {self.description}"
 
 
 DECODERS = []
 
 
-def register_decoder(cls):
+def register_decoder(cls: Type[Decoder]) -> Type[Decoder]:
     """Register a new decoder implementation"""
     # pylint: disable=global-statement
     global DECODERS

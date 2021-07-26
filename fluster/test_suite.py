@@ -17,6 +17,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from __future__ import annotations
 from functools import lru_cache
 import os.path
 import json
@@ -26,7 +27,8 @@ from multiprocessing import Pool
 from unittest.result import TestResult
 from time import perf_counter
 from shutil import rmtree
-from typing import cast, List
+from typing import cast, List, Dict, Optional, Type, Any
+
 
 from fluster.test_vector import TestVector
 from fluster.codec import Codec
@@ -69,7 +71,7 @@ class Context:
         quiet: bool,
         results_dir: str,
         reference: bool = False,
-        test_vectors: List[str] = None,
+        test_vectors: Optional[List[str]] = None,
         keep_files: bool = False,
         verbose: bool = False,
     ):
@@ -97,7 +99,7 @@ class TestSuite:
         name: str,
         codec: Codec,
         description: str,
-        test_vectors: dict,
+        test_vectors: Dict[str, TestVector],
     ):
         # JSON members
         self.name = name
@@ -111,12 +113,14 @@ class TestSuite:
         self.test_vectors_success = 0
         self.time_taken = 0.0
 
-    def clone(self):
+    def clone(self) -> TestSuite:
         """Create a deep copy of the object"""
         return copy.deepcopy(self)
 
     @classmethod
-    def from_json_file(cls, filename: str, resources_dir: str):
+    def from_json_file(
+        cls: Type[TestSuite], filename: str, resources_dir: str
+    ) -> TestSuite:
         """Create a TestSuite instance from a file"""
         with open(filename) as json_file:
             data = json.load(json_file)
@@ -124,7 +128,7 @@ class TestSuite:
             data["codec"] = Codec(data["codec"])
             return cls(filename, resources_dir, **data)
 
-    def to_json_file(self, filename: str):
+    def to_json_file(self, filename: str) -> None:
         """Serialize the test suite to a file"""
         with open(filename, "w") as json_file:
             data = self.__dict__.copy()
@@ -138,7 +142,7 @@ class TestSuite:
             ]
             json.dump(data, json_file, indent=4)
 
-    def _download_worker(self, ctx: DownloadWork):
+    def _download_worker(self, ctx: DownloadWork) -> None:
         """Download and extract a test vector"""
         test_vector = ctx.test_vector
         dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, test_vector.name)
@@ -179,7 +183,7 @@ class TestSuite:
         verify: bool,
         extract_all: bool = False,
         keep_file: bool = False,
-    ):
+    ) -> None:
         """Download the test suite"""
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
@@ -187,7 +191,7 @@ class TestSuite:
 
         with Pool(jobs) as pool:
 
-            def _callback_error(err):
+            def _callback_error(err: Any) -> None:
                 print(f"\nError downloading -> {err}\n")
                 pool.terminate()
 
@@ -217,12 +221,12 @@ class TestSuite:
 
         print("All downloads finished")
 
-    def _rename_test(self, test: Test, module, qualname):
+    def _rename_test(self, test: Test, module: str, qualname: str) -> None:
         test_cls = type(test)
         test_cls.__module__ = module
         test_cls.__qualname__ = qualname
 
-    def _collect_results(self, test_result: TestResult):
+    def _collect_results(self, test_result: TestResult) -> None:
         """Collect all TestResults with error to add them into the test vectors"""
         for res in test_result.failures:
             test_vector = cast(Test, res[0]).test_vector
@@ -270,17 +274,19 @@ class TestSuite:
 
         return test.test_vector
 
-    def run_test_suite_in_parallel(self, jobs: int, tests: List[Test], failfast: bool):
+    def run_test_suite_in_parallel(
+        self, jobs: int, tests: List[Test], failfast: bool
+    ) -> None:
         """Run the test suite in parallel"""
-        test_results = []
+        test_vector_results: List[TestVector] = []
         max_len = self._get_max_length_test_vectors_name()
         print(
             f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}'
         )
         with Pool(jobs) as pool:
 
-            def _callback(test_result):
-                test_results.append(test_result)
+            def _callback(test_result: TestVector) -> None:
+                test_vector_results.append(test_result)
                 if failfast and test_result.errors:
                     pool.terminate()
 
@@ -292,7 +298,7 @@ class TestSuite:
         self.time_taken = perf_counter() - start
         print("\n")
         self.test_vectors_success = 0
-        for test_vector_res in test_results:
+        for test_vector_res in test_vector_results:
             if test_vector_res.errors:
                 for error in test_vector_res.errors:
                     # Use same format to report errors as TextTestRunner
@@ -306,10 +312,11 @@ class TestSuite:
             # from a different process
             self.test_vectors[test_vector_res.name] = test_vector_res
         print(
-            f"Ran {self.test_vectors_success}/{len(test_results)} tests successfully in {self.time_taken:.3f} secs"
+            f"Ran {self.test_vectors_success}/{len(test_vector_results)} tests successfully \
+              in {self.time_taken:.3f} secs"
         )
 
-    def run(self, ctx: Context):
+    def run(self, ctx: Context) -> Optional[TestSuite]:
         """
         Run the test suite.
         Returns a new copy of the test suite with the result of the test
@@ -372,7 +379,7 @@ class TestSuite:
         self.test_vectors = test_vectors_run
         return tests
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"\n{self.name}\n"
             f"    Codec: {self.codec.value}\n"

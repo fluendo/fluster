@@ -31,7 +31,7 @@ class VPXDecoder(Decoder):
     binary = "vpxdec"
     codec = Codec.NONE
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.name = f"libvpx-{self.codec.value}"
         self.description = f"{self.codec.value} reference decoder"

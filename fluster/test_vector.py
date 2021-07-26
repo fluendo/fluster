@@ -17,8 +17,9 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from __future__ import annotations
 from enum import Enum
-from typing import List
+from typing import List, Dict, Type, Any
 from fluster.codec import PixelFormat
 
 
@@ -59,7 +60,7 @@ class TestVector:
         self.errors: List[List[str]] = []
 
     @classmethod
-    def from_json(cls, data: dict):
+    def from_json(cls: Type[TestVector], data: Any) -> Any:
         """Deserialize an instance of TestVector from a json file"""
         if "output_format" in data:
             data["output_format"] = PixelFormat(data["output_format"])
@@ -67,7 +68,7 @@ class TestVector:
             data["output_format"] = PixelFormat.YUV420P
         return (data["name"], cls(**data))
 
-    def data_to_serialize(self):
+    def data_to_serialize(self) -> Dict[str, object]:
         """Return the data to be serialized"""
         data = self.__dict__.copy()
         data.pop("test_result")
@@ -75,7 +76,7 @@ class TestVector:
         data["output_format"] = str(self.output_format.value)
         return data
 
-    def __str__(self):
+    def __str__(self) -> str:
         ret = (
             f"        {self.name}\n"
             f"            Source: {self.source}\n"

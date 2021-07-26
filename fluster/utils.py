@@ -25,13 +25,13 @@ import subprocess
 import urllib.request
 import zipfile
 import platform
-from typing import List
+from typing import List, Optional
 
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
 
-def download(url: str, dest_dir: str):
+def download(url: str, dest_dir: str) -> None:
     """Downloads a file to a directory"""
     with urllib.request.urlopen(url) as response:
         dest_path = os.path.join(dest_dir, url.split("/")[-1])
@@ -55,8 +55,8 @@ def run_command(
     command: List[str],
     verbose: bool = False,
     check: bool = True,
-    timeout: int = None,
-):
+    timeout: Optional[int] = None,
+) -> None:
     """Runs a command"""
     sout = subprocess.DEVNULL if not verbose else None
     serr = subprocess.DEVNULL if not verbose else None
@@ -75,7 +75,7 @@ def is_extractable(filepath: str) -> bool:
     return filepath.endswith(TARBALL_EXTS) or filepath.endswith(".zip")
 
 
-def extract(filepath: str, output_dir: str, file: str = None):
+def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
     """Extracts a file to a directory"""
     if filepath.endswith(TARBALL_EXTS):
         command = ["tar", "-C", output_dir, "-xf", filepath]

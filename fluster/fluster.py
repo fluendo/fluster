@@ -20,7 +20,7 @@
 import os
 import os.path
 from functools import lru_cache
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
 import sys
 
 # Import decoders that will auto-register
@@ -55,10 +55,10 @@ class Context:
         reference: bool = False,
         summary: bool = False,
         keep_files: bool = False,
-        threshold: int = None,
-        time_threshold: int = None,
+        threshold: Optional[int] = None,
+        time_threshold: Optional[int] = None,
         verbose: bool = False,
-        summary_output: str = None,
+        summary_output: str = "",
     ):
         self.jobs = jobs
         self.timeout = timeout
@@ -77,7 +77,9 @@ class Context:
         self.verbose = verbose
         self.summary_output = summary_output
 
-    def to_test_suite_context(self, decoder, results_dir, test_vectors):
+    def to_test_suite_context(
+        self, decoder: Decoder, results_dir: str, test_vectors: List[str]
+    ) -> TestSuiteContext:
         """Create a TestSuite's Context from this"""
         ts_context = TestSuiteContext(
             jobs=self.jobs,
@@ -135,7 +137,7 @@ class Fluster:
         self.emoji = EMOJI_RESULT if use_emoji else TEXT_RESULT
 
     @lru_cache(maxsize=None)
-    def _load_test_suites(self):
+    def _load_test_suites(self) -> None:
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
                 if os.path.splitext(file)[1] == ".json":
@@ -151,7 +153,7 @@ class Fluster:
                     except Exception as ex:
                         print(f"Error loading test suite {file}: {ex}")
 
-    def list_decoders(self, check: bool, verbose: bool):
+    def list_decoders(self, check: bool, verbose: bool) -> None:
         """List all the available decoders"""
         print("\nList of available decoders:")
         decoders_dict: Dict[Codec, List[Decoder]] = {}
@@ -173,8 +175,10 @@ class Fluster:
                 print(string)
 
     def list_test_suites(
-        self, show_test_vectors: bool = False, test_suites: List[str] = None
-    ):
+        self,
+        show_test_vectors: bool = False,
+        test_suites: Optional[List[str]] = None,
+    ) -> None:
         """List all test suites"""
         self._load_test_suites()
         print("\nList of available test suites:")
@@ -205,7 +209,7 @@ class Fluster:
             matches_ret = check_list
         return matches_ret
 
-    def _normalize_context(self, ctx: Context):
+    def _normalize_context(self, ctx: Context) -> None:
         # Convert all test suites and decoders to lowercase to make the filter greedy
         if ctx.test_suites:
             ctx.test_suites_names = [x.lower() for x in ctx.test_suites_names]
@@ -218,7 +222,7 @@ class Fluster:
         )
         ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
 
-    def run_test_suites(self, ctx: Context):
+    def run_test_suites(self, ctx: Context) -> None:
         """Run a group of test suites"""
         # pylint: disable=too-many-branches
 
@@ -243,7 +247,7 @@ class Fluster:
         error = False
         no_test_run = True
         for test_suite in ctx.test_suites:
-            results = []
+            results: List[Tuple[Decoder, TestSuite]] = []
             for decoder in ctx.decoders:
                 if decoder.codec != test_suite.codec:
                     continue
@@ -293,16 +297,18 @@ class Fluster:
 
     def _show_summary_if_needed(
         self, ctx: Context, results: List[Tuple[Decoder, TestSuite]]
-    ):
+    ) -> None:
         if ctx.summary and results:
             self._generate_summary(ctx, results)
 
-    def _generate_summary(self, ctx: Context, results: List[Tuple[Decoder, TestSuite]]):
+    def _generate_summary(
+        self, ctx: Context, results: List[Tuple[Decoder, TestSuite]]
+    ) -> None:
         def _global_stats(
             results: List[Tuple[Decoder, TestSuite]],
             test_suites: List[TestSuite],
             first: bool,
-        ):
+        ) -> str:
             separator = f'\n|-|{"-|" * len(results)}'
             output = separator if not first else ""
             output += "\n|Test|" if not first else "|Test|"
@@ -339,7 +345,9 @@ class Fluster:
         else:
             print(output)
 
-    def download_test_suites(self, test_suites: List[str], jobs: int, keep_file: bool):
+    def download_test_suites(
+        self, test_suites: List[str], jobs: int, keep_file: bool
+    ) -> None:
         """Download a group of test suites"""
         self._load_test_suites()
         if not test_suites:

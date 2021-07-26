@@ -55,7 +55,7 @@ class Test(unittest.TestCase):
         setattr(self, test_vector.name, self._test)
         super().__init__(test_vector.name)
 
-    def _test(self):
+    def _test(self) -> None:
         output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".yuv")
         input_filepath = os.path.join(
             self.resources_dir,

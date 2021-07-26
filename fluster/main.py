@@ -23,6 +23,7 @@ import argparse
 import os
 import multiprocessing
 import sys
+from typing import Any
 
 from fluster.fluster import Fluster, Context
 
@@ -37,7 +38,7 @@ class Main:
 
     # pylint: disable=broad-except
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
         self.parser = self._create_parser()
 
@@ -45,7 +46,7 @@ class Main:
         # without having to set the env for every single command
         os.environ["PATH"] = self.decoders_dir + os.path.pathsep + os.environ["PATH"]
 
-    def run(self):
+    def run(self) -> None:
         """Runs Fluster"""
         args = self.parser.parse_args()
         if hasattr(args, "func"):
@@ -60,7 +61,7 @@ class Main:
         else:
             self.parser.print_help()
 
-    def _create_parser(self):
+    def _create_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser()
         parser.add_argument(
             "-r",
@@ -93,7 +94,7 @@ class Main:
         self._add_reference_cmd(subparsers)
         return parser
 
-    def _add_list_cmd(self, subparsers):
+    def _add_list_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser(
             "list",
             aliases=["l"],
@@ -125,7 +126,7 @@ class Main:
         )
         subparser.set_defaults(func=self._list_cmd)
 
-    def _add_run_cmd(self, subparsers):
+    def _add_run_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser(
             "run", aliases=["r"], help="run test suites for decoders"
         )
@@ -211,7 +212,7 @@ class Main:
         )
         subparser.set_defaults(func=self._run_cmd)
 
-    def _add_reference_cmd(self, subparsers):
+    def _add_reference_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser(
             "reference",
             aliases=["r"],
@@ -252,7 +253,7 @@ class Main:
         )
         subparser.set_defaults(func=self._reference_cmd)
 
-    def _add_download_cmd(self, subparsers):
+    def _add_download_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser(
             "download", aliases=["d"], help="downloads test suites resources"
         )
@@ -275,13 +276,13 @@ class Main:
         )
         subparser.set_defaults(func=self._download_cmd)
 
-    def _list_cmd(self, args, fluster):
+    def _list_cmd(self, args: Any, fluster: Fluster) -> None:
         fluster.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites
         )
         fluster.list_decoders(check=args.check, verbose=args.verbose)
 
-    def _run_cmd(self, args, fluster):
+    def _run_cmd(self, args: Any, fluster: Fluster) -> None:
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         context = Context(
             jobs=args.jobs,
@@ -303,7 +304,7 @@ class Main:
         except SystemExit as exception:
             sys.exit(exception.code)
 
-    def _reference_cmd(self, args, fluster):
+    def _reference_cmd(self, args: Any, fluster: Fluster) -> None:
         context = Context(
             jobs=args.jobs,
             timeout=args.timeout,
@@ -319,7 +320,7 @@ class Main:
         except SystemExit as exception:
             sys.exit(exception.code)
 
-    def _download_cmd(self, args, fluster):
+    def _download_cmd(self, args: Any, fluster: Fluster) -> None:
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         fluster.download_test_suites(
             test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep

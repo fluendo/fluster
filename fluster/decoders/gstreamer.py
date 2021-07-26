@@ -53,7 +53,7 @@ class GStreamer(Decoder):
     provider = ""
     sink = 'videocodectestsink'
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         if not self.name:
             self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
@@ -63,7 +63,7 @@ class GStreamer(Decoder):
         if not gst_element_exists(self.sink):
             self.sink = 'filesink'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat) -> str:
         '''Generate the GStreamer pipeline used to decode the test vector'''
         # pylint: disable=unused-argument
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output_filepath)
@@ -106,7 +106,7 @@ class GStreamer10(GStreamer):
     gst_api = '1.0'
     provider = 'GStreamer'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat):
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat) -> str:
         caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format.to_gst()}'
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output_filepath)
 
@@ -418,14 +418,14 @@ class FluendoH265VAGst10DecoderBase(GStreamer10):
     stream_format: str = ""
     alignment: str = ""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self) -> None:
+        super().__init__()
         self.name = self._translator(self.name)
         self.description = self._translator(self.description)
         self.decoder_bin = self.decoder_bin_tmpl.format(
             stream_format=self.stream_format, alignment=self.alignment)
 
-    def _translator(self, target_val):
+    def _translator(self, target_val: str) -> str:
         new_val = f'{self.codec.value}-{self.stream_format}-{self.alignment}'
         return target_val.replace(self.codec.value, new_val)
 
