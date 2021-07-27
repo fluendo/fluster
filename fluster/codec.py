@@ -39,6 +39,6 @@ class PixelFormat(Enum):
 
     def to_gst(self) -> str:
         """Return GStreamer pixel format"""
-        mapping = {self.YUV420P: "I420", self.YUV420P10LE: "I420_10LE"}
+        mapping = {str(self.YUV420P): "I420", str(self.YUV420P10LE): "I420_10LE"}
 
         return mapping[str(self)]
