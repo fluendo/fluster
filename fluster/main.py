@@ -268,7 +268,8 @@ class Main:
         subparser.add_argument(
             "-k",
             "--keep",
-            help="keep downloaded file after extracting",
+            help="keep original downloaded file after extracting. Only applicable to compressed "
+            "files such as .zip, .tar.gz, etc",
             action="store_true",
         )
         subparser.add_argument(
