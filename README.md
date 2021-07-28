@@ -394,8 +394,16 @@ results are obtained, you can do the following procedure:
 3. Install the [git hook](scripts/install_git_hook.sh) that will run for every
    commit to ensure it works before pushing. [About git
    hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
-4. Modify the code . Make sure the git hook is properly checking that the
-   basic functionality still works. You can also execute `make check` manually.
+4. Modify the code. Make sure the git hook is properly checking that the basic
+   functionality still works. You can also execute `make check` manually. Take
+   into account that some basic tests are run to ensure that GStreamer, FFmpeg
+   and libvpx decoders are working fine. Thus, you need to have them available.
+   On an Ubuntu 20.04 the needed packages are:
+
+   ```bash
+   gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools
+   ```
+
 5. Create a new PR with your changes.
 6. Make sure the GitHub Actions is running and its result is a pass.
 

@@ -1,0 +1,14 @@
+{
+    "name": "H265-min",
+    "codec": "H.265",
+    "description": "JCT-VC HEVC version 1",
+    "test_vectors": [
+        {
+            "name": "AMP_A_Samsung_7",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/AMP_A_Samsung_7.zip",
+            "source_checksum": "0c3edda6a77b4dad7ea70fd24b0b6270",
+            "input_file": "AMP_A_Samsung_7.bin",
+            "result": "93a5875d58072db5539c04e1e943ed9d"
+        }
+    ]
+}

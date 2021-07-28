@@ -19,7 +19,7 @@ check: format-check lint ## check that very basic tests run
 	$(FLUSTER) list -c
 	$(FLUSTER) -ne list -c
 	$(FLUSTER) list -ts dummy -tv
-	$(FLUSTER) download dummy dummy_fail
+	$(FLUSTER) download dummy dummy_fail -k
 	$(FLUSTER) run -ts dummy -tv one
 	$(FLUSTER) reference Dummy dummy
 	$(FLUSTER) run -ts dummy -tv one -j1
@@ -36,8 +36,13 @@ ifneq ($(OS),Windows_NT)
 	$(FLUSTER) run -ts dummy_fail -th 1
 	$(FLUSTER) run -ts dummy_fail -th 2; test $$? -eq 2
 	$(FLUSTER) run -ts dummy_fail -j1 -ff -s; test $$? -ne 0
-	$(FLUSTER) download dummy non_existing_test_suite; test $$? -ne 0
-	$(FLUSTER) download dummy dummy_download_fail; test $$? -ne 0
+	$(FLUSTER) download dummy non_existing_test_suite -k; test $$? -ne 0
+	$(FLUSTER) download dummy dummy_download_fail -k; test $$? -ne 0
+	$(FLUSTER) download H264-min H265-min VP8-min VP9-min -k
+	$(FLUSTER) run -ts H264-min -d GStreamer-H.264-Libav-Gst1.0 FFmpeg-H.264 -s
+	$(FLUSTER) run -ts H265-min -d GStreamer-H.265-Libav-Gst1.0 FFmpeg-H.265 -s
+	$(FLUSTER) run -ts VP8-min -d libvpx-VP8 -s
+	$(FLUSTER) run -ts VP9-min -d libvpx-VP9 -s
 endif
 	@echo "\nAll test finished succesfully!"
 

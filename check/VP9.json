@@ -1,0 +1,15 @@
+{
+    "name": "VP9-min",
+    "codec": "VP9",
+    "description": "VP9 Test Vector Catalogue from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/",
+    "test_vectors": [
+        {
+            "name": "vp90-2-00-quantizer-00.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp90-2-00-quantizer-00.webm",
+            "source_checksum": "a86cf9946f69363aecbf6da67adfa946",
+            "input_file": "vp90-2-00-quantizer-00.webm",
+            "output_format": "yuv420p",
+            "result": "e3b792ed5ed3a7c53d17db06bd437ad9"
+        }
+    ]
+}
