@@ -1,0 +1,15 @@
+{
+    "name": "VP8-min",
+    "codec": "VP8",
+    "description": "VP8 Test Vector Catalogue from https://github.com/webmproject/vp8-test-vectors",
+    "test_vectors": [
+        {
+            "name": "vp80-00-comprehensive-001",
+            "source": "https://github.com/webmproject/vp8-test-vectors/raw/master/vp80-00-comprehensive-001.ivf",
+            "source_checksum": "5db435f13b5c35004f51307aee1074eb",
+            "input_file": "vp80-00-comprehensive-001.ivf",
+            "output_format": "yuv420p",
+            "result": "fad126074e1bd5363d43b9d1cadddb71"
+        }
+    ]
+}

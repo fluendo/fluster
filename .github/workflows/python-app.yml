@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build_linux:
+  linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +22,12 @@ jobs:
     - name: Install dependencies
       run: |
         make install_deps
+        sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools
     - name: Check
       run: |
         make check
 
-  build_win:
+  windows:
     runs-on: windows-latest
 
     steps:
