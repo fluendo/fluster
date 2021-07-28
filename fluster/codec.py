@@ -29,6 +29,7 @@ class Codec(Enum):
     H265 = "H.265"
     VP8 = "VP8"
     VP9 = "VP9"
+    AAC = "AAC"
 
 
 class PixelFormat(Enum):
