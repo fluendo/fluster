@@ -154,7 +154,10 @@ class TestSuite:
             and os.path.exists(dest_path)
             and test_vector.source_checksum == utils.file_checksum(dest_path)
         ):
-            if not ctx.keep_file:
+            # Remove file only in case the input file was extractable.
+            # Otherwise, we'd be removing the original file we want to work
+            # with every even time we execute the download subcommand.
+            if utils.is_extractable(dest_path) and not ctx.keep_file:
                 os.remove(dest_path)
             return
         print(f"\tDownloading test vector {test_vector.name} from {dest_dir}")
