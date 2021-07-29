@@ -17,7 +17,6 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from __future__ import annotations
 from enum import Enum
 from typing import List, Dict, Type, Any
 from fluster.codec import PixelFormat
@@ -60,7 +59,7 @@ class TestVector:
         self.errors: List[List[str]] = []
 
     @classmethod
-    def from_json(cls: Type[TestVector], data: Any) -> Any:
+    def from_json(cls: Type["TestVector"], data: Any) -> Any:
         """Deserialize an instance of TestVector from a json file"""
         if "output_format" in data:
             data["output_format"] = PixelFormat(data["output_format"])
