@@ -17,7 +17,6 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from __future__ import annotations
 from functools import lru_cache
 import os.path
 import json
@@ -113,14 +112,14 @@ class TestSuite:
         self.test_vectors_success = 0
         self.time_taken = 0.0
 
-    def clone(self) -> TestSuite:
+    def clone(self) -> "TestSuite":
         """Create a deep copy of the object"""
         return copy.deepcopy(self)
 
     @classmethod
     def from_json_file(
-        cls: Type[TestSuite], filename: str, resources_dir: str
-    ) -> TestSuite:
+        cls: Type["TestSuite"], filename: str, resources_dir: str
+    ) -> "TestSuite":
         """Create a TestSuite instance from a file"""
         with open(filename) as json_file:
             data = json.load(json_file)
@@ -326,7 +325,7 @@ class TestSuite:
               in {self.time_taken:.3f} secs"
         )
 
-    def run(self, ctx: Context) -> Optional[TestSuite]:
+    def run(self, ctx: Context) -> Optional["TestSuite"]:
         """
         Run the test suite.
         Returns a new copy of the test suite with the result of the test
