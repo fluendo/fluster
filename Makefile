@@ -1,4 +1,4 @@
-PY_FILES=fluster
+PY_FILES=fluster unit_test
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 PYTHONPATH=.
@@ -119,4 +119,8 @@ aac_reference_decoder: ## build AAC reference decoder
 dbg-%:
 	echo "Value of $* = $($*)"
 
-.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder aac_reference_decoder lint check format install_deps
+unit-test: ## Run unit tests
+	@echo "Run unit test"
+	@python3 -m unittest discover -s unit_test -p "*_test.py" -v
+
+.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder aac_reference_decoder lint check format install_deps unit-test
