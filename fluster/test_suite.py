@@ -71,6 +71,7 @@ class Context:
         results_dir: str,
         reference: bool = False,
         test_vectors: Optional[List[str]] = None,
+        failing_test_vectors: Optional[List[str]] = None,
         keep_files: bool = False,
         verbose: bool = False,
     ):
@@ -82,6 +83,7 @@ class Context:
         self.results_dir = results_dir
         self.reference = reference
         self.test_vectors = test_vectors
+        self.failing_test_vectors = failing_test_vectors
         self.keep_files = keep_files
         self.verbose = verbose
 
@@ -99,12 +101,14 @@ class TestSuite:
         codec: Codec,
         description: str,
         test_vectors: Dict[str, TestVector],
+        failing_test_vectors: Optional[Dict[str, TestVector]] = None,
     ):
         # JSON members
         self.name = name
         self.codec = codec
         self.description = description
         self.test_vectors = test_vectors
+        self.failing_test_vectors = failing_test_vectors
 
         # Not included in JSON
         self.filename = filename
@@ -123,6 +127,10 @@ class TestSuite:
         """Create a TestSuite instance from a file"""
         with open(filename) as json_file:
             data = json.load(json_file)
+            if "failing_test_vectors" in data:
+                data["failing_test_vectors"] = dict(
+                    map(TestVector.from_json, data["failing_test_vectors"])
+                )
             data["test_vectors"] = dict(map(TestVector.from_json, data["test_vectors"]))
             data["codec"] = Codec(data["codec"])
             return cls(filename, resources_dir, **data)
@@ -135,9 +143,17 @@ class TestSuite:
             data.pop("filename")
             data.pop("test_vectors_success")
             data.pop("time_taken")
+            if self.failing_test_vectors is None:
+                data.pop("failing_test_vectors")
+            else:
+                data["failing_test_vectors"] = [
+                    failing_test_vector.data_to_serialize()
+                    for failing_test_vector in self.failing_test_vectors.values()
+                ]
             data["codec"] = str(self.codec.value)
             data["test_vectors"] = [
-                tv.data_to_serialize() for tv in self.test_vectors.values()
+                test_vector.data_to_serialize()
+                for test_vector in self.test_vectors.values()
             ]
             json.dump(data, json_file, indent=4)
 
