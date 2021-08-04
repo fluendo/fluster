@@ -332,7 +332,7 @@ class TestSuite:
             # from a different process
             self.test_vectors[test_vector_res.name] = test_vector_res
         print(
-            f"Ran {self.test_vectors_success}/{len(test_vector_results)} tests successfully \
+            f"Ran {self.test_vectors_success}/{len(tests)} tests successfully \
               in {self.time_taken:.3f} secs"
         )
 
