@@ -25,9 +25,9 @@ from fluster.codec import OutputFormat
 class TestVectorResult(Enum):
     """Test Result"""
 
-    NOT_RUN = "NotRun"
+    NOT_RUN = "Not Run"
     SUCCESS = "Success"
-    FAILURE = "Failure"
+    FAIL = "Fail"
     TIMEOUT = "Timeout"
     ERROR = "Error"
 

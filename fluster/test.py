@@ -96,7 +96,7 @@ class Test(unittest.TestCase):
         if not self.reference:
             self.test_suite.test_vectors[
                 self.test_vector.name
-            ].test_result = TestVectorResult.FAILURE
+            ].test_result = TestVectorResult.FAIL
             if self.test_vector.result.lower() == result.lower():
                 self.test_suite.test_vectors[
                     self.test_vector.name

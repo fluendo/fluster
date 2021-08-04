@@ -282,18 +282,6 @@ class TestSuite:
         test_result = TestResult()
         test(test_result)
 
-        result = "ok"
-        if test_result.failures:
-            result = "fail"
-        elif test_result.errors:
-            result = "error"
-
-        max_len = self._get_max_length_test_vectors_name()
-        print(
-            f"[{test.test_suite.name}]\t({test.decoder.name})\t{test.test_vector.name:{max_len}} ... {result}",
-            flush=True,
-        )
-
         self._collect_results(test_result)
         self._rename_test(test, module_orig, qualname_orig)
 
@@ -308,9 +296,16 @@ class TestSuite:
         print(
             f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}'
         )
+        decoder = tests[0].decoder
         with Pool(jobs) as pool:
 
             def _callback(test_result: TestVector) -> None:
+                max_len = self._get_max_length_test_vectors_name()
+                print(
+                    f"[{test_result.name}]\t({decoder.name})\t{test_result.name:{max_len}} ... \
+                       {test_result.test_result.value}",
+                    flush=True,
+                )
                 test_vector_results.append(test_result)
                 if failfast and test_result.errors:
                     pool.terminate()
