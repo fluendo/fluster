@@ -56,8 +56,8 @@ format-check:
 
 lint: format-check ## run static analysis using pylint, flake8 and mypy
 # ignore similar lines error: it's a bug when running parallel jobs - https://github.com/PyCQA/pylint/issues/4118
-	@echo "Checking with pylint... Ignore similar lines warning. It's a bug in pylint"
-	pylint -j0 $(PY_FILES) --fail-under=10
+	@echo "Checking with pylint... "
+	pylint $(PY_FILES) --fail-under=10
 	@echo "Checking with flake8..."
 	flake8 --max-line-length=120 $(PY_FILES)
 	@echo "Checking with mypy..."
