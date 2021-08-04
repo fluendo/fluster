@@ -22,7 +22,7 @@ from functools import lru_cache
 from shutil import which
 from typing import Type
 
-from fluster.codec import PixelFormat, Codec
+from fluster.codec import OutputFormat, Codec
 from fluster.utils import normalize_binary_cmd
 
 # pylint: disable=broad-except
@@ -46,7 +46,7 @@ class Decoder(ABC):
         self,
         input_filepath: str,
         output_filepath: str,
-        output_format: PixelFormat,
+        output_format: OutputFormat,
         timeout: int,
         verbose: bool,
     ) -> str:

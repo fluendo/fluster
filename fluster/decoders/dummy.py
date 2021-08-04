@@ -17,7 +17,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from fluster.codec import Codec, PixelFormat
+from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum
 
@@ -33,7 +33,7 @@ class Dummy(Decoder):
         self,
         input_filepath: str,
         output_filepath: str,
-        output_format: PixelFormat,
+        output_format: OutputFormat,
         timeout: int,
         verbose: bool,
     ) -> str:

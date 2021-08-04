@@ -19,7 +19,7 @@
 
 from enum import Enum
 from typing import List, Dict, Type, Any
-from fluster.codec import PixelFormat
+from fluster.codec import OutputFormat
 
 
 class TestVectorResult(Enum):
@@ -43,7 +43,7 @@ class TestVector:
         source: str,
         source_checksum: str,
         input_file: str,
-        output_format: PixelFormat,
+        output_format: OutputFormat,
         result: str,
     ):
         # JSON members
@@ -62,9 +62,9 @@ class TestVector:
     def from_json(cls: Type["TestVector"], data: Any) -> Any:
         """Deserialize an instance of TestVector from a json file"""
         if "output_format" in data:
-            data["output_format"] = PixelFormat(data["output_format"])
+            data["output_format"] = OutputFormat(data["output_format"])
         else:
-            data["output_format"] = PixelFormat.YUV420P
+            data["output_format"] = OutputFormat.NONE
         return (data["name"], cls(**data))
 
     def data_to_serialize(self) -> Dict[str, object]:

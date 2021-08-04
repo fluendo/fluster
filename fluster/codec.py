@@ -32,14 +32,9 @@ class Codec(Enum):
     AAC = "AAC"
 
 
-class PixelFormat(Enum):
-    """Pixel format"""
+class OutputFormat(Enum):
+    """Output format"""
 
+    NONE = "None"
     YUV420P = "yuv420p"
     YUV420P10LE = "yuv420p10le"
-
-    def to_gst(self) -> str:
-        """Return GStreamer pixel format"""
-        mapping = {PixelFormat.YUV420P: "I420", PixelFormat.YUV420P10LE: "I420_10LE"}
-
-        return mapping[self]

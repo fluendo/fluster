@@ -8,6 +8,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_08.adts",
             "source_checksum": "2843464c7d9b40adac27c075ef100705",
             "input_file": "al09_08.adts",
+            "output_format": "None",
             "result": "88a0bbed55df7e505d5529e369e598d5"
         },
         {
@@ -15,6 +16,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_11.adts",
             "source_checksum": "d9c69bdd4677c4998591272e6de378e7",
             "input_file": "al09_11.adts",
+            "output_format": "None",
             "result": "a9e96f962a0f7ec82aba4d4b25600ee4"
         },
         {
@@ -22,6 +24,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_12.adts",
             "source_checksum": "cd8ae7d9c7a06f1af755a33683594a98",
             "input_file": "al09_12.adts",
+            "output_format": "None",
             "result": "db6897e43d54eec9617ccbf3f8824be8"
         },
         {
@@ -29,6 +32,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_16.adts",
             "source_checksum": "8c91b5fc725fdba3c44c8f2390f89381",
             "input_file": "al09_16.adts",
+            "output_format": "None",
             "result": "c1ffffad1aafbb718422ddeb5ae2e871"
         },
         {
@@ -36,6 +40,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_22.adts",
             "source_checksum": "683f11281b7830def34ee1f778c7130b",
             "input_file": "al09_22.adts",
+            "output_format": "None",
             "result": "0e6497475f0e0441cb83a7c204fe476d"
         },
         {
@@ -43,6 +48,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_24.adts",
             "source_checksum": "3e5a52c0c73cc9bb46d98d4c28378374",
             "input_file": "al09_24.adts",
+            "output_format": "None",
             "result": "226b880db82dcac840918b459a2a73b0"
         },
         {
@@ -50,6 +56,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_32.adts",
             "source_checksum": "56e57d9b3c98efaf74c2e75e46b94707",
             "input_file": "al09_32.adts",
+            "output_format": "None",
             "result": "7426aedb64bd0e92bab9d9fa238695bb"
         },
         {
@@ -57,6 +64,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_44.adts",
             "source_checksum": "8d67429688392ceaf915ae92dc0eb14e",
             "input_file": "al09_44.adts",
+            "output_format": "None",
             "result": "1b52ed7f35ece8e67a3b8f5458c94f24"
         },
         {
@@ -64,6 +72,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_48.adts",
             "source_checksum": "5be05f18cfcf9340c9967a0d0007e4ad",
             "input_file": "al09_48.adts",
+            "output_format": "None",
             "result": "2638f55d2232727bf942c765e77d9964"
         },
         {
@@ -71,6 +80,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_64.adts",
             "source_checksum": "154b9a2a184284d5f27aa9109324578a",
             "input_file": "al09_64.adts",
+            "output_format": "None",
             "result": "dfb9200512a6bfbd9682901b7791e304"
         },
         {
@@ -78,6 +88,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_88.adts",
             "source_checksum": "a4d5e526f7c0fc8fb048aad54e4d71c2",
             "input_file": "al09_88.adts",
+            "output_format": "None",
             "result": "a63a2bf8dd983630e0b5f266a25901d2"
         },
         {
@@ -85,6 +96,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_96.adts",
             "source_checksum": "5ccaa6962dbbe8a7988990834b588b61",
             "input_file": "al09_96.adts",
+            "output_format": "None",
             "result": "3b2617321d971d30784f0e0a7381f916"
         },
         {
@@ -92,6 +104,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al13_48.adts",
             "source_checksum": "92e966b0c730d9dcde6373636d869534",
             "input_file": "al13_48.adts",
+            "output_format": "None",
             "result": "c501b080cb6f35cd5e7f1383be63be0f"
         }
     ],
@@ -101,6 +114,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al12_48.adts",
             "source_checksum": "27929bfbce9d06fb61274cb013d04e9a",
             "input_file": "al12_48.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -108,6 +122,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_08.adts",
             "source_checksum": "a64588993a1bb52acfedb21df39e9b78",
             "input_file": "as18_08.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -115,6 +130,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_11.adts",
             "source_checksum": "f5ffb91d23d125853afcb8297d925404",
             "input_file": "as18_11.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -122,6 +138,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_12.adts",
             "source_checksum": "b745ffe579e4832c214c6de012485f1f",
             "input_file": "as18_12.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -129,6 +146,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_16.adts",
             "source_checksum": "a5bb06ebb5238ebd2539f481515aec11",
             "input_file": "as18_16.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -136,6 +154,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_22.adts",
             "source_checksum": "5369c26e819fa6ea569007ad629ac0ec",
             "input_file": "as18_22.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -143,6 +162,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_24.adts",
             "source_checksum": "192ab015b67c34d36d22aa0675ca5560",
             "input_file": "as18_24.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -150,6 +170,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_32.adts",
             "source_checksum": "e12fc78483b5c2a5bf4cab5aca1cd921",
             "input_file": "as18_32.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -157,6 +178,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_44.adts",
             "source_checksum": "b4b616b26ab554ed57ea7014de845cc0",
             "input_file": "as18_44.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -164,6 +186,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_48.adts",
             "source_checksum": "e5fd7fb3db6bea960171e155ffcd81f2",
             "input_file": "as18_48.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -171,6 +194,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_64.adts",
             "source_checksum": "8b9d9f7969f20284dcb670c51b425d93",
             "input_file": "as18_64.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -178,6 +202,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_88.adts",
             "source_checksum": "c565798d39dbbc3a0c3dcb07d7210df8",
             "input_file": "as18_88.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -185,6 +210,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_96.adts",
             "source_checksum": "5fca7fa515d86d5910147cc909bfc9fb",
             "input_file": "as18_96.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -192,6 +218,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_08.adts",
             "source_checksum": "035f0a74173468a7940e901da1599d55",
             "input_file": "as19_08.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -199,6 +226,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_11.adts",
             "source_checksum": "f6415137c41dd5ce5572659abbd61333",
             "input_file": "as19_11.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -206,6 +234,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_12.adts",
             "source_checksum": "1e22b357bef8f7a32fb5a0655a03cc65",
             "input_file": "as19_12.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -213,6 +242,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_16.adts",
             "source_checksum": "4a7dda41b06c18a35b9f9d7dbad42bc7",
             "input_file": "as19_16.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -220,6 +250,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_22.adts",
             "source_checksum": "21a24c98f9c0c871422050e31ff5a27a",
             "input_file": "as19_22.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -227,6 +258,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_24.adts",
             "source_checksum": "d95b1df14e768ae90fecebab57219b58",
             "input_file": "as19_24.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -234,6 +266,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_32.adts",
             "source_checksum": "9e4044870f052175df24acdd6d04cd39",
             "input_file": "as19_32.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -241,6 +274,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_44.adts",
             "source_checksum": "5622d850cdae2178bf8cca590fdfa011",
             "input_file": "as19_44.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -248,6 +282,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_48.adts",
             "source_checksum": "a7a3032f2d9abb74ba53c59f8edaefec",
             "input_file": "as19_48.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -255,6 +290,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_64.adts",
             "source_checksum": "e45128742ebd2432e82c007f18a631b9",
             "input_file": "as19_64.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -262,6 +298,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_88.adts",
             "source_checksum": "5843d8d610d372283455b48f74cbe0d3",
             "input_file": "as19_88.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -269,6 +306,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_96.adts",
             "source_checksum": "78ecb299d42f2aa4aa07d15240013e78",
             "input_file": "as19_96.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -276,6 +314,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_08.adts",
             "source_checksum": "ad7d08193b166cf1c46ff84a3f3ebb7d",
             "input_file": "as20_08.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -283,6 +322,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_11.adts",
             "source_checksum": "6d3260070f0e55a02e41272edce11d23",
             "input_file": "as20_11.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -290,6 +330,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_12.adts",
             "source_checksum": "f694118f7ff688c2915d6fe4060bef33",
             "input_file": "as20_12.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -297,6 +338,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_16.adts",
             "source_checksum": "a8ec01e8aa200ed65dbae8459b438df6",
             "input_file": "as20_16.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -304,6 +346,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_22.adts",
             "source_checksum": "3cefa90c24155f261826bebb95065fe0",
             "input_file": "as20_22.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -311,6 +354,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_24.adts",
             "source_checksum": "711515116cd73b67d1f76862edc9cb10",
             "input_file": "as20_24.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -318,6 +362,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_32.adts",
             "source_checksum": "f9de9178603479f2575db585cc944622",
             "input_file": "as20_32.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -325,6 +370,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_44.adts",
             "source_checksum": "c6c903ccd30accc90b44dbe556bf3701",
             "input_file": "as20_44.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -332,6 +378,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_48.adts",
             "source_checksum": "569bb98829b5a308c3bb9c7afc83cdc6",
             "input_file": "as20_48.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -339,6 +386,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_64.adts",
             "source_checksum": "da230df29e16888934ef7a64ca544243",
             "input_file": "as20_64.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -346,6 +394,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_88.adts",
             "source_checksum": "d9a81756fa3880d19821de84ca37dd9a",
             "input_file": "as20_88.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -353,6 +402,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_96.adts",
             "source_checksum": "0ffe6dc8a1a8817bc9f4f95bb0a272cf",
             "input_file": "as20_96.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -360,6 +410,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_08.adts",
             "source_checksum": "a8ba0949a1e983cb076dafa6726082d4",
             "input_file": "as21_08.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -367,6 +418,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_11.adts",
             "source_checksum": "09b1c407c41e2370417abb5dedffce9c",
             "input_file": "as21_11.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -374,6 +426,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_12.adts",
             "source_checksum": "939556a3ce7d04dc581db45317147d08",
             "input_file": "as21_12.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -381,6 +434,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_16.adts",
             "source_checksum": "29c98dae5c26f6739fa449607dc6adf9",
             "input_file": "as21_16.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -388,6 +442,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_22.adts",
             "source_checksum": "316b53896aff83108f32d2db8aa39fcf",
             "input_file": "as21_22.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -395,6 +450,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_24.adts",
             "source_checksum": "7d54f1ca0dea1a42491252e61e0b0ade",
             "input_file": "as21_24.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -402,6 +458,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_32.adts",
             "source_checksum": "af841a1ebdefb2a40cd819c174fc1be6",
             "input_file": "as21_32.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -409,6 +466,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_44.adts",
             "source_checksum": "8318287c05fcdde7031de892a154dc7a",
             "input_file": "as21_44.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -416,6 +474,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_48.adts",
             "source_checksum": "1c98f957869644bbc3f1095d0ee90ec4",
             "input_file": "as21_48.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -423,6 +482,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_64.adts",
             "source_checksum": "6c595906c5e563a765ed97c825719cc6",
             "input_file": "as21_64.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -430,6 +490,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_88.adts",
             "source_checksum": "d1675729e2333effc6fcc50ab0b5e94b",
             "input_file": "as21_88.adts",
+            "output_format": "None",
             "result": ""
         },
         {
@@ -437,6 +498,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_96.adts",
             "source_checksum": "5f31709d01b272dd9434e5800dd948dd",
             "input_file": "as21_96.adts",
+            "output_format": "None",
             "result": ""
         }
     ]
