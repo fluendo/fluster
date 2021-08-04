@@ -27,7 +27,7 @@ from fluster.codec import Codec, PixelFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
-FFMPEG_TPL = '{} -i {} -vf format=pix_fmts={} {}'
+FFMPEG_TPL = '{} -i {} -vf format=pix_fmts={} -f rawvideo {}'
 
 
 class FFmpegDecoder(Decoder):

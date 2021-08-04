@@ -56,14 +56,7 @@ class Test(unittest.TestCase):
         super().__init__(test_vector.name)
 
     def _test(self) -> None:
-        if self.decoder.name == "FDK-AAC":
-            output_filepath = os.path.join(
-                self.results_dir, self.test_vector.name + ".wav"
-            )
-        else:
-            output_filepath = os.path.join(
-                self.results_dir, self.test_vector.name + ".yuv"
-            )
+        output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".out")
 
         input_filepath = os.path.join(
             self.resources_dir,

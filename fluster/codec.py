@@ -37,7 +37,6 @@ class PixelFormat(Enum):
 
     YUV420P = "yuv420p"
     YUV420P10LE = "yuv420p10le"
-    AUDIO = "audio"
 
     def to_gst(self) -> str:
         """Return GStreamer pixel format"""
