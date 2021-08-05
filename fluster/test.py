@@ -107,4 +107,7 @@ class Test(unittest.TestCase):
                 self.test_vector.name,
             )
         else:
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.REFERENCE
             self.test_suite.test_vectors[self.test_vector.name].result = result

@@ -31,6 +31,12 @@ class TestVectorResult(Enum):
     TIMEOUT = "Timeout"
     ERROR = "Error"
 
+    """
+    This is only used in reference runs to indicate that
+    the decoder for this test vector run succesfully
+    """
+    REFERENCE = "Reference run"
+
 
 class TestVector:
     """Test vector"""
