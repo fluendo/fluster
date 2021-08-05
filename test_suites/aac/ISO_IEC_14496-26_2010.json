@@ -48,7 +48,7 @@
         {
             "name": "ap01_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedAdts/add-opt/ap01_48.adts",
-            "source_checksum": "",
+            "source_checksum": "fb59fdf49e4c6ca1b7a766ce2112e36f",
             "input_file": "ap01_48.adts",
             "output_format": "None",
             "result": ""
@@ -56,7 +56,7 @@
         {
             "name": "ap02_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedAdts/add-opt/ap02_48.adts",
-            "source_checksum": "",
+            "source_checksum": "f918c11808e687e6dc5a64154d0685b3",
             "input_file": "ap02_48.adts",
             "output_format": "None",
             "result": ""
@@ -64,7 +64,7 @@
         {
             "name": "ap04_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedAdts/add-opt/ap04_48.adts",
-            "source_checksum": "",
+            "source_checksum": "07092bd549a107aab9546b4a7e0ececa",
             "input_file": "ap04_48.adts",
             "output_format": "None",
             "result": ""
@@ -72,7 +72,7 @@
         {
             "name": "ap05_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedAdts/add-opt/ap05_48.adts",
-            "source_checksum": "",
+            "source_checksum": "9470863a3df3daf3d4a47a8226933501",
             "input_file": "ap05_48.adts",
             "output_format": "None",
             "result": ""
