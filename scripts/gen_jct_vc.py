@@ -30,7 +30,7 @@ import multiprocessing
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, PixelFormat
+from fluster.codec import Codec, OutputFormat
 from fluster.test_suite import TestSuite, TestVector
 
 # pylint: enable=wrong-import-position
@@ -116,7 +116,7 @@ class JCTVTGenerator:
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(name, url, "", file_input, PixelFormat.YUV420P, "")
+            test_vector = TestVector(name, url, "", file_input, OutputFormat.YUV420P, "")
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -145,7 +145,7 @@ class JCTVTGenerator:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if "main10" in test_vector.name.lower():
-                test_vector.output_format = PixelFormat.YUV420P10LE
+                test_vector.output_format = OutputFormat.YUV420P10LE
 
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)

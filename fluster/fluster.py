@@ -99,7 +99,7 @@ class Context:
 EMOJI_RESULT = {
     TestVectorResult.NOT_RUN: "",
     TestVectorResult.SUCCESS: "✔️",
-    TestVectorResult.FAILURE: "❌",
+    TestVectorResult.FAIL: "❌",
     TestVectorResult.TIMEOUT: "⌛",
     TestVectorResult.ERROR: "☠",
 }
@@ -107,7 +107,7 @@ EMOJI_RESULT = {
 TEXT_RESULT = {
     TestVectorResult.NOT_RUN: "",
     TestVectorResult.SUCCESS: "OK",
-    TestVectorResult.FAILURE: "KO",
+    TestVectorResult.FAIL: "KO",
     TestVectorResult.TIMEOUT: "TO",
     TestVectorResult.ERROR: "ER",
 }
@@ -170,7 +170,7 @@ class Fluster:
                     string += "... " + (
                         self.emoji[TestVectorResult.SUCCESS]
                         if decoder.check(verbose)
-                        else self.emoji[TestVectorResult.FAILURE]
+                        else self.emoji[TestVectorResult.FAIL]
                     )
                 print(string)
 

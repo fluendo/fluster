@@ -71,6 +71,7 @@ class Context:
         results_dir: str,
         reference: bool = False,
         test_vectors: Optional[List[str]] = None,
+        failing_test_vectors: Optional[List[str]] = None,
         keep_files: bool = False,
         verbose: bool = False,
     ):
@@ -82,6 +83,7 @@ class Context:
         self.results_dir = results_dir
         self.reference = reference
         self.test_vectors = test_vectors
+        self.failing_test_vectors = failing_test_vectors
         self.keep_files = keep_files
         self.verbose = verbose
 
@@ -99,12 +101,14 @@ class TestSuite:
         codec: Codec,
         description: str,
         test_vectors: Dict[str, TestVector],
+        failing_test_vectors: Optional[Dict[str, TestVector]] = None,
     ):
         # JSON members
         self.name = name
         self.codec = codec
         self.description = description
         self.test_vectors = test_vectors
+        self.failing_test_vectors = failing_test_vectors
 
         # Not included in JSON
         self.filename = filename
@@ -123,6 +127,10 @@ class TestSuite:
         """Create a TestSuite instance from a file"""
         with open(filename) as json_file:
             data = json.load(json_file)
+            if "failing_test_vectors" in data:
+                data["failing_test_vectors"] = dict(
+                    map(TestVector.from_json, data["failing_test_vectors"])
+                )
             data["test_vectors"] = dict(map(TestVector.from_json, data["test_vectors"]))
             data["codec"] = Codec(data["codec"])
             return cls(filename, resources_dir, **data)
@@ -135,9 +143,17 @@ class TestSuite:
             data.pop("filename")
             data.pop("test_vectors_success")
             data.pop("time_taken")
+            if self.failing_test_vectors is None:
+                data.pop("failing_test_vectors")
+            else:
+                data["failing_test_vectors"] = [
+                    failing_test_vector.data_to_serialize()
+                    for failing_test_vector in self.failing_test_vectors.values()
+                ]
             data["codec"] = str(self.codec.value)
             data["test_vectors"] = [
-                tv.data_to_serialize() for tv in self.test_vectors.values()
+                test_vector.data_to_serialize()
+                for test_vector in self.test_vectors.values()
             ]
             json.dump(data, json_file, indent=4)
 
@@ -246,7 +262,7 @@ class TestSuite:
 
     @lru_cache(maxsize=None)
     def _get_max_length_test_vectors_name(self) -> int:
-        max_length = 0
+        max_length = len("TEST_VECTOR")
         for name in self.test_vectors.keys():
             length = len(name)
             max_length = max(max_length, length)
@@ -266,18 +282,6 @@ class TestSuite:
         test_result = TestResult()
         test(test_result)
 
-        result = "ok"
-        if test_result.failures:
-            result = "fail"
-        elif test_result.errors:
-            result = "error"
-
-        max_len = self._get_max_length_test_vectors_name()
-        print(
-            f"[{test.test_suite.name}]\t({test.decoder.name})\t{test.test_vector.name:{max_len}} ... {result}",
-            flush=True,
-        )
-
         self._collect_results(test_result)
         self._rename_test(test, module_orig, qualname_orig)
 
@@ -292,9 +296,16 @@ class TestSuite:
         print(
             f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}'
         )
+        decoder = tests[0].decoder
         with Pool(jobs) as pool:
 
             def _callback(test_result: TestVector) -> None:
+                max_len = self._get_max_length_test_vectors_name()
+                print(
+                    f"[{test_result.name}]\t({decoder.name})\t{test_result.name:{max_len}} ... "
+                    f"{test_result.test_result.value}",
+                    flush=True,
+                )
                 test_vector_results.append(test_result)
                 if failfast and test_result.errors:
                     pool.terminate()
@@ -321,7 +332,7 @@ class TestSuite:
             # from a different process
             self.test_vectors[test_vector_res.name] = test_vector_res
         print(
-            f"Ran {self.test_vectors_success}/{len(test_vector_results)} tests successfully \
+            f"Ran {self.test_vectors_success}/{len(tests)} tests successfully \
               in {self.time_taken:.3f} secs"
         )
 

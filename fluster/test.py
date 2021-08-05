@@ -56,7 +56,8 @@ class Test(unittest.TestCase):
         super().__init__(test_vector.name)
 
     def _test(self) -> None:
-        output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".yuv")
+        output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".out")
+
         input_filepath = os.path.join(
             self.resources_dir,
             self.test_suite.name,
@@ -95,7 +96,7 @@ class Test(unittest.TestCase):
         if not self.reference:
             self.test_suite.test_vectors[
                 self.test_vector.name
-            ].test_result = TestVectorResult.FAILURE
+            ].test_result = TestVectorResult.FAIL
             if self.test_vector.result.lower() == result.lower():
                 self.test_suite.test_vectors[
                     self.test_vector.name
@@ -106,4 +107,7 @@ class Test(unittest.TestCase):
                 self.test_vector.name,
             )
         else:
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.REFERENCE
             self.test_suite.test_vectors[self.test_vector.name].result = result

@@ -23,11 +23,11 @@ from functools import lru_cache
 import shlex
 import subprocess
 
-from fluster.codec import Codec, PixelFormat
+from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
-FFMPEG_TPL = '{} -i {} -vf format=pix_fmts={} {}'
+FFMPEG_TPL = '{} -i {} -vf format=pix_fmts={} -f rawvideo {}'
 
 
 class FFmpegDecoder(Decoder):
@@ -49,7 +49,7 @@ class FFmpegDecoder(Decoder):
         self,
         input_filepath: str,
         output_filepath: str,
-        output_format: PixelFormat,
+        output_format: OutputFormat,
         timeout: int,
         verbose: bool,
     ) -> str:

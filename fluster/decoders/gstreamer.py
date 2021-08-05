@@ -22,7 +22,7 @@ import shlex
 import subprocess
 from functools import lru_cache
 
-from fluster.codec import Codec, PixelFormat
+from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command, normalize_binary_cmd
 
@@ -41,6 +41,14 @@ def gst_element_exists(element: str) -> bool:
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
     return False
+
+
+def output_format_to_gst(output_format: OutputFormat) -> str:
+    """Return GStreamer pixel format"""
+    mapping = {OutputFormat.YUV420P: "I420", OutputFormat.YUV420P10LE: "I420_10LE"}
+    if output_format not in mapping:
+        raise Exception(f"No matching output format found in GStreamer for {output_format}")
+    return mapping[output_format]
 
 
 class GStreamer(Decoder):
@@ -63,7 +71,7 @@ class GStreamer(Decoder):
         if not gst_element_exists(self.sink):
             self.sink = 'filesink'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat) -> str:
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> str:
         '''Generate the GStreamer pipeline used to decode the test vector'''
         # pylint: disable=unused-argument
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output_filepath)
@@ -72,7 +80,7 @@ class GStreamer(Decoder):
         self,
         input_filepath: str,
         output_filepath: str,
-        output_format: PixelFormat,
+        output_format: OutputFormat,
         timeout: int,
         verbose: bool,
     ) -> str:
@@ -106,8 +114,8 @@ class GStreamer10(GStreamer):
     gst_api = '1.0'
     provider = 'GStreamer'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: PixelFormat) -> str:
-        caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format.to_gst()}'
+    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> str:
+        caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}'
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output_filepath)
 
 
