@@ -262,7 +262,7 @@ class TestSuite:
 
     @lru_cache(maxsize=None)
     def _get_max_length_test_vectors_name(self) -> int:
-        max_length = 0
+        max_length = len("TEST_VECTOR")
         for name in self.test_vectors.keys():
             length = len(name)
             max_length = max(max_length, length)
@@ -302,8 +302,8 @@ class TestSuite:
             def _callback(test_result: TestVector) -> None:
                 max_len = self._get_max_length_test_vectors_name()
                 print(
-                    f"[{test_result.name}]\t({decoder.name})\t{test_result.name:{max_len}} ... \
-                       {test_result.test_result.value}",
+                    f"[{test_result.name}]\t({decoder.name})\t{test_result.name:{max_len}} ... "
+                    f"{test_result.test_result.value}",
                     flush=True,
                 )
                 test_vector_results.append(test_result)
