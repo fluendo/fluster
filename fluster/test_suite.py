@@ -93,6 +93,11 @@ class TestSuite:
 
     # pylint: disable=too-many-instance-attributes
 
+    TEST_SUITE_NAME = "TEST SUITE"
+    DECODER_NAME = "DECODER"
+    TEST_VECTOR_NAME = "TEST VECTOR"
+    RESULT_NAME = "RESULT"
+
     def __init__(
         self,
         filename: str,
@@ -260,14 +265,6 @@ class TestSuite:
             test_vector = cast(Test, res[0]).test_vector
             test_vector.errors.append([str(x) for x in res])
 
-    @lru_cache(maxsize=None)
-    def _get_max_length_test_vectors_name(self) -> int:
-        max_length = len("TEST_VECTOR")
-        for name in self.test_vectors.keys():
-            length = len(name)
-            max_length = max(max_length, length)
-        return max_length
-
     def _run_worker(self, test: Test) -> TestVector:
         """Run one unit test returning the TestVector"""
         # Save the original module and qualname to restore it before returning
@@ -287,23 +284,65 @@ class TestSuite:
 
         return test.test_vector
 
+    def _get_max_length_list_name(self, _list: List[str], name: str) -> int:
+        max_length = len(name)
+        for elem in _list:
+            length = len(elem)
+            max_length = max(max_length, length)
+        return max_length
+
+    @lru_cache(maxsize=None)
+    def _get_result_line(
+        self,
+        test_suite_text: str,
+        decoder_text: str,
+        test_vector_text: str,
+        result_text: str,
+        decoder_name: Optional[str] = None,
+    ) -> str:
+        decoder_name = decoder_text if not decoder_name else decoder_name
+        tests_suite_max_len = self._get_max_length_list_name(
+            [self.name], TestSuite.TEST_SUITE_NAME
+        )
+        decoder_max_len = self._get_max_length_list_name(
+            [decoder_name], TestSuite.DECODER_NAME
+        )
+        test_vectors_max_len = self._get_max_length_list_name(
+            list(self.test_vectors.keys()), TestSuite.TEST_VECTOR_NAME
+        )
+
+        return (
+            f"[{test_suite_text:{tests_suite_max_len}}] ({decoder_text:{decoder_max_len}}) "
+            f"{test_vector_text:{test_vectors_max_len}} ... {result_text}"
+        )
+
     def run_test_suite_in_parallel(
         self, jobs: int, tests: List[Test], failfast: bool
     ) -> None:
         """Run the test suite in parallel"""
         test_vector_results: List[TestVector] = []
-        max_len = self._get_max_length_test_vectors_name()
-        print(
-            f'[TEST_SUITE]\t(DECODER)\t{"TEST_VECTOR":{max_len}} ... RESULT\n{"-" * 70}'
-        )
         decoder = tests[0].decoder
+
+        print(
+            self._get_result_line(
+                TestSuite.TEST_SUITE_NAME,
+                TestSuite.DECODER_NAME,
+                TestSuite.TEST_VECTOR_NAME,
+                TestSuite.RESULT_NAME,
+                decoder.name,
+            )
+            + f'\n{"-" * 70}'
+        )
         with Pool(jobs) as pool:
 
             def _callback(test_result: TestVector) -> None:
-                max_len = self._get_max_length_test_vectors_name()
                 print(
-                    f"[{test_result.name}]\t({decoder.name})\t{test_result.name:{max_len}} ... "
-                    f"{test_result.test_result.value}",
+                    self._get_result_line(
+                        self.name,
+                        decoder.name,
+                        test_result.name,
+                        test_result.test_result.value,
+                    ),
                     flush=True,
                 )
                 test_vector_results.append(test_result)
