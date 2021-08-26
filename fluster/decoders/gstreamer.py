@@ -61,12 +61,11 @@ class GStreamer(Decoder):
     provider = ""
     sink = ""
 
-    def set_name_description_sink(self) -> None:
-        '''Set decoder name and description in case none has been given'''
+    def __init__(self) -> None:
+        super().__init__()
         if not self.name:
             self.name = f'{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}'
-        if not self.description:
-            self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
+        self.description = f'{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}'
         self.cmd = normalize_binary_cmd(self.cmd)
 
         if not gst_element_exists(self.sink):
@@ -110,13 +109,11 @@ class GStreamer(Decoder):
 
 class GStreamer10Video(GStreamer):
     '''Base class for GStreamer 1.x video decoders'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.cmd = 'gst-launch-1.0'
-        self.caps = 'video/x-raw'
-        self.gst_api = '1.0'
-        self.sink = 'videocodectestsink'
-        self.provider = 'GStreamer'
+    cmd = 'gst-launch-1.0'
+    caps = 'video/x-raw'
+    gst_api = '1.0'
+    sink = 'videocodectestsink'
+    provider = 'GStreamer'
 
     def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> str:
         caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}'
@@ -125,405 +122,308 @@ class GStreamer10Video(GStreamer):
 
 class GStreamer10Audio(GStreamer):
     '''Base class for GStreamer 1.x audio decoders'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.cmd = 'gst-launch-1.0'
-        self.caps = 'audio/x-raw'
-        self.gst_api = '1.0'
-        self.sink = 'filesink'
-        self.provider = 'GStreamer'
+    cmd = 'gst-launch-1.0'
+    caps = 'audio/x-raw'
+    gst_api = '1.0'
+    sink = 'filesink'
+    provider = 'GStreamer'
 
 
 class GStreamer010Video(GStreamer):
     '''Base class for GStreamer 0.10 video decoders'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.cmd = 'gst-launch-0.10'
-        self.caps = 'video/x-raw-yuv'
-        self.gst_api = '0.10'
-        self.sink = 'videocodectestsink'
-        self.provider = 'GStreamer'
+    cmd = 'gst-launch-0.10'
+    caps = 'video/x-raw-yuv'
+    gst_api = '0.10'
+    sink = 'videocodectestsink'
+    provider = 'GStreamer'
 
 
 @register_decoder
 class GStreamerLibavH264(GStreamer10Video):
     '''GStreamer H.264 Libav decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! avdec_h264 '
-        self.api = 'Libav'
-        self.hw_acceleration = False
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! avdec_h264 '
+    api = 'Libav'
+    hw_acceleration = False
 
 
 @register_decoder
 class GStreamerLibavH265(GStreamer10Video):
     '''GStreamer H.265 Libav decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! avdec_h265 '
-        self.api = 'Libav'
-        self.hw_acceleration = False
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! avdec_h265 '
+    api = 'Libav'
+    hw_acceleration = False
 
 
 @register_decoder
 class GStreamerLibavVP8(GStreamer10Video):
     '''GStreamer VP8 Libav decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP8
-        self.decoder_bin = ' ivfparse ! avdec_vp8 '
-        self.api = 'Libav'
-        self.sink = 'filesink'
-        self.hw_acceleration = False
-        super().set_name_description_sink()
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! avdec_vp8 '
+    api = 'Libav'
+    sink = 'filesink'
+    hw_acceleration = False
 
 
 @register_decoder
 class GStreamerLibavVP9(GStreamer10Video):
     '''GStreamer VP9 Libav decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP9
-        self.check_decoder_bin = ' avdec_vp9'
-        self.decoder_bin = f' parsebin ! {self.check_decoder_bin}'
-        self.api = 'Libav'
-        self.hw_acceleration = False
-        super().set_name_description_sink()
+    codec = Codec.VP9
+    check_decoder_bin = ' avdec_vp9'
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'Libav'
+    hw_acceleration = False
 
 
 @register_decoder
 class GStreamerVaapiH265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! vaapih265dec '
-        self.api = 'VAAPI'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vaapih265dec '
+    api = 'VAAPI'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerVaH265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 VA decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! vah265dec '
-        self.api = 'VA'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! vah265dec '
+    api = 'VA'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerMsdkH265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 Intel MSDK decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! msdkh265dec '
-        self.api = 'MSDK'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! msdkh265dec '
+    api = 'MSDK'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerNvdecH265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 NVDEC decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! nvh265dec '
-        self.api = 'NVDEC'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! nvh265dec '
+    api = 'NVDEC'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerD3d11H265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 D3D11 decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! d3d11h265dec '
-        self.api = 'D3D11'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! d3d11h265dec '
+    api = 'D3D11'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerV4l2CodecsH265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 V4L2 stateless decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! v4l2slh265dec '
-        self.api = 'V4L2SL'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! v4l2slh265dec '
+    api = 'V4L2SL'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerVaapiH264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! vaapih264dec '
-        self.api = 'VAAPI'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! vaapih264dec '
+    api = 'VAAPI'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerVaH264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 VA decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! vah264dec '
-        self.api = 'VA'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! vah264dec '
+    api = 'VA'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerMsdkH264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 Intel MSDK decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! msdkh264dec '
-        self.api = 'MSDK'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! msdkh264dec '
+    api = 'MSDK'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerNvdecH264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 NVDEC decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! nvh264dec '
-        self.api = 'NVDEC'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! nvh264dec '
+    api = 'NVDEC'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerD3d11H264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 D3D11 decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! d3d11h264dec '
-        self.api = 'D3D11'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! d3d11h264dec '
+    api = 'D3D11'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerV4l2CodecsH264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 V4L2 stateless decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! v4l2slh264dec '
-        self.api = 'V4L2SL'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! v4l2slh264dec '
+    api = 'V4L2SL'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
     '''GStreamer VP8 V4L2 stateless decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP8
-        self.decoder_bin = ' ivfparse ! v4l2slvp8dec '
-        self.api = 'V4L2SL'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! v4l2slvp8dec '
+    api = 'V4L2SL'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerLibvpxVP8(GStreamer10Video):
     '''GStreamer VP8 Libvpx decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP8
-        self.decoder_bin = ' ivfparse ! vp8dec '
-        self.api = 'libvpx'
-        self.sink = 'filesink'
-        self.hw_acceleration = False
-        super().set_name_description_sink()
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vp8dec '
+    api = 'libvpx'
+    sink = 'filesink'
+    hw_acceleration = False
 
 
 @register_decoder
 class GStreamerVaapiVP8Gst10Decoder(GStreamer10Video):
     '''GStreamer VP8 VAAPI decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP8
-        self.decoder_bin = ' ivfparse ! vaapivp8dec '
-        self.api = 'VAAPI'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vaapivp8dec '
+    api = 'VAAPI'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerVaVP8Gst10Decoder(GStreamer10Video):
     '''GStreamer VP8 VA decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP8
-        self.decoder_bin = ' ivfparse ! vavp8dec '
-        self.api = 'VA'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! vavp8dec '
+    api = 'VA'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerD3d11VP8Gst10Decoder(GStreamer10Video):
     '''GStreamer VP8 D3D11 decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP8
-        self.decoder_bin = ' ivfparse ! d3d11vp8dec '
-        self.api = 'D3D11'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! d3d11vp8dec '
+    api = 'D3D11'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 V4L2 stateless decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP9
-        self.check_decoder_bin = ' v4l2slvp9dec '
-        self.decoder_bin = f' parsebin ! {self.check_decoder_bin}'
-        self.api = 'V4L2SL'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP9
+    check_decoder_bin = ' v4l2slvp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'V4L2SL'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerLibvpxVP9(GStreamer10Video):
     '''GStreamer VP9 Libvpx decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP9
-        self.check_decoder_bin = ' vp9dec  '
-        self.decoder_bin = f' parsebin ! {self.check_decoder_bin}'
-        self.api = 'libvpx'
-        self.hw_acceleration = False
-        super().set_name_description_sink()
+    codec = Codec.VP9
+    check_decoder_bin = ' vp9dec  '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'libvpx'
+    hw_acceleration = False
 
 
 @register_decoder
 class GStreamerVaapiVP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 VAAPI decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP9
-        self.check_decoder_bin = ' vaapivp9dec '
-        self.decoder_bin = f' parsebin ! {self.check_decoder_bin}'
-        self.api = 'VAAPI'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP9
+    check_decoder_bin = ' vaapivp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'VAAPI'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerVaVP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 VA decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP9
-        self.check_decoder_bin = ' vavp9dec '
-        self.decoder_bin = f' parsebin ! {self.check_decoder_bin}'
-        self.api = 'VA'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP9
+    check_decoder_bin = ' vavp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'VA'
+    hw_acceleration = True
 
 
 @register_decoder
 class GStreamerD3d11VP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 D3D11 decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.VP9
-        self.check_decoder_bin = ' d3d11vp9dec '
-        self.decoder_bin = f' parsebin ! {self.check_decoder_bin}'
-        self.api = 'D3D11'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.VP9
+    check_decoder_bin = ' d3d11vp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'D3D11'
+    hw_acceleration = True
 
 
 @register_decoder
 class FluendoH265Gst10Decoder(GStreamer10Video):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! fluh265dec '
-        self.provider = 'Fluendo'
-        self.api = 'SW'
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! fluh265dec '
+    provider = 'Fluendo'
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH265Gst010Decoder(GStreamer010Video):
     '''Fluendo H.265 software decoder implementation for GStreamer 0.10'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! fluh265dec '
-        self.provider = 'Fluendo'
-        self.api = 'SW'
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! fluh265dec '
+    provider = 'Fluendo'
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH264Gst10Decoder(GStreamer10Video):
     '''Fluendo H.264 software decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! fluh264dec '
-        self.provider = 'Fluendo'
-        self.api = 'SW'
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! fluh264dec '
+    provider = 'Fluendo'
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH264Gst010Decoder(GStreamer010Video):
     '''Fluendo H.264 software decoder implementation for GStreamer 0.10'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' fluh264dec '
-        self.provider = 'Fluendo'
-        self.api = 'SW'
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' fluh264dec '
+    provider = 'Fluendo'
+    api = 'SW'
 
 
 @register_decoder
 class FluendoH264VAGst10Decoder(GStreamer10Video):
     '''Fluendo H.264 hardware decoder implementation for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! fluvadec '
-        self.provider = 'Fluendo'
-        self.api = 'HW'
-        self.hw_acceleration = True
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! fluvadec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
 
 
 class FluendoH265VAGst10DecoderBase(GStreamer10Video):
@@ -545,7 +445,6 @@ class FluendoH265VAGst10DecoderBase(GStreamer10Video):
         self.description = self._translator(self.description)
         self.decoder_bin = self.decoder_bin_tmpl.format(
             stream_format=self.stream_format, alignment=self.alignment)
-        super().set_name_description_sink()
 
     def _translator(self, target_val: str) -> str:
         new_val = f'{self.codec.value}-{self.stream_format}-{self.alignment}'
@@ -609,39 +508,32 @@ class FluendoH265Hvc1NalVAGst10Decoder(FluendoH265VAGst10DecoderBase):
 @register_decoder
 class FluendoFluVAH265DecGst10Decoder(GStreamer10Video):
     '''Fluendo H.265 separated plugin hardware decoder for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H265
-        self.decoder_bin = ' h265parse ! fluvah265dec '
-        self.provider = 'Fluendo'
-        self.api = 'HW'
-        self.hw_acceleration = True
-        self.name = f'{self.provider}-{self.codec.value}-{self.api}-vah265dec-Gst1.0'
-        super().set_name_description_sink()
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! fluvah265dec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
+    name = f'{provider}-{codec.value}-{api}-vah265dec-Gst1.0'
 
 
 @register_decoder
 class FluendoFluVAH264DecGst10Decoder(GStreamer10Video):
     '''Fluendo H.264 separated plugin hardware decoder for GStreamer 1.0'''
-    def __init__(self) -> None:
-        super().__init__()
-        self.codec = Codec.H264
-        self.decoder_bin = ' h264parse ! fluvah264dec '
-        self.provider = 'Fluendo'
-        self.api = 'HW'
-        self.hw_acceleration = True
-        self.name = f'{self.provider}-{self.codec.value}-{self.api}-vah264dec-Gst1.0'
-        super().set_name_description_sink()
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! fluvah264dec '
+    provider = 'Fluendo'
+    api = 'HW'
+    hw_acceleration = True
+    name = f'{provider}-{codec.value}-{api}-vah264dec-Gst1.0'
 
 
 @register_decoder
 class FluendoFluAACDecGst10Decoder(GStreamer10Audio):
     '''Fluendo AAC plugin decoder for GStreamer 1.0'''
     def __init__(self) -> None:
-        super().__init__()
-        self.caps = self.caps + ',format=S16LE'
         self.codec = Codec.AAC
         self.decoder_bin = 'fluaacdec trim=0'
         self.provider = 'Fluendo'
         self.api = 'SW'
-        super().set_name_description_sink()
+        self.caps = self.caps + ',format=S16LE'
+        super().__init__()
