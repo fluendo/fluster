@@ -9,7 +9,7 @@
             "source_checksum": "354eeece733c86fc4f22b63c2a6e0dbc",
             "input_file": "al18_08.adts",
             "output_format": "None",
-            "result": "ecdae29ff39024947a4e1c8a4306257e"
+            "result": "b2927751ae7a97613a9d9d0d2748eca7"
         },
         {
             "name": "al18_22",
@@ -17,7 +17,7 @@
             "source_checksum": "9bd1df720da86de0f12a5e13cd9bac3f",
             "input_file": "al18_22.adts",
             "output_format": "None",
-            "result": "5f8292a7e5fb470c89254b35790eaef6"
+            "result": "9c650228dea2c563560dcf3fbc31bff1"
         },
         {
             "name": "al18_32",
@@ -25,7 +25,7 @@
             "source_checksum": "fbfbcc287abaa61bb1d4e6209dc7b351",
             "input_file": "al18_32.adts",
             "output_format": "None",
-            "result": "e4c3e8eeb8da0ae9fe78e3156514c01f"
+            "result": "26c2430033002a138568d17ca3317ade"
         },
         {
             "name": "al18_64",
@@ -33,7 +33,7 @@
             "source_checksum": "908ef86a5c5b546f2707e7abf6a4fcbf",
             "input_file": "al18_64.adts",
             "output_format": "None",
-            "result": "18802e6ef0f2a269334bd979b4cd007e"
+            "result": "756d27e1b1bead05839758072cea9690"
         },
         {
             "name": "al18_96",
@@ -41,17 +41,15 @@
             "source_checksum": "3a2cc79299fb52481170cced3441b5de",
             "input_file": "al18_96.adts",
             "output_format": "None",
-            "result": "1baa05fb8532952e16edf36c0f75025b"
-        }
-    ],
-    "failing_test_vectors": [
+            "result": "02b0f333d4caa37379a8ab513dbc4dbf"
+        },
         {
             "name": "ap01_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedAdts/add-opt/ap01_48.adts",
             "source_checksum": "fb59fdf49e4c6ca1b7a766ce2112e36f",
             "input_file": "ap01_48.adts",
             "output_format": "None",
-            "result": ""
+            "result": "cb8a260c08236e342d2122496ae126d9"
         },
         {
             "name": "ap02_48",
@@ -59,7 +57,7 @@
             "source_checksum": "f918c11808e687e6dc5a64154d0685b3",
             "input_file": "ap02_48.adts",
             "output_format": "None",
-            "result": ""
+            "result": "57f4964f065c75fa825bf7c795ae621f"
         },
         {
             "name": "ap04_48",
@@ -67,7 +65,7 @@
             "source_checksum": "07092bd549a107aab9546b4a7e0ececa",
             "input_file": "ap04_48.adts",
             "output_format": "None",
-            "result": ""
+            "result": "6e1767241de43646691c21587ccbab9f"
         },
         {
             "name": "ap05_48",
@@ -75,7 +73,7 @@
             "source_checksum": "9470863a3df3daf3d4a47a8226933501",
             "input_file": "ap05_48.adts",
             "output_format": "None",
-            "result": ""
+            "result": "e5f3db7043119313eb29f6f670989ecd"
         }
     ]
 }

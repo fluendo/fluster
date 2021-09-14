@@ -5,6 +5,8 @@ PYTHONPATH=.
 FLUSTER=python3 ./fluster.py -tsd check
 ifeq ($(OS),Windows_NT)
 FLUSTER+=--no-emoji
+else
+KERNEL_NAME=$(shell uname -s)
 endif
 
 help:
@@ -69,54 +71,64 @@ all_reference_decoders: h265_reference_decoder h264_reference_decoder aac_refere
 
 h265_reference_decoder: ## build H.265 reference decoder
 	$(create_dirs)
-	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git --depth=1 | true
-	cd $(CONTRIB_DIR)/HM && git stash && git pull && git stash apply | true
+	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git --depth=1 || true
+	cd $(CONTRIB_DIR)/HM && git stash && git pull && git stash apply || true
 	cd $(CONTRIB_DIR)/HM && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release && $(MAKE) -C build TAppDecoder
 	find $(CONTRIB_DIR)/HM/bin/umake -name "TAppDecoder" -type f -exec cp {} $(DECODERS_DIR)/ \;
 
 h264_reference_decoder: ## build H.264 reference decoder
 	$(create_dirs)
-	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/JM.git --depth=1 | true
-	cd $(CONTRIB_DIR)/JM && git stash && git pull && git stash apply | true
+	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/JM.git --depth=1 || true
+	cd $(CONTRIB_DIR)/JM && git stash && git pull && git stash apply || true
 	cd $(CONTRIB_DIR)/JM && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-truncation -Wno-stringop-overflow" && $(MAKE) -C build ldecod
 	find $(CONTRIB_DIR)/JM/bin/umake -name "ldecod" -type f -exec cp {} $(DECODERS_DIR)/ \;
 
-aac_reference_decoder: ## build AAC reference decoder
-	if ! test -d $(CONTRIB_DIR)/fdk-aac; \
-	then \
-		$(create_dirs) && \
-		cd $(CONTRIB_DIR) && git clone https://github.com/mstorsjo/fdk-aac.git | true && \
-		cd fdk-aac && git checkout -B decoder origin/decoder-example && git merge-base master decoder | true && \
-		git rebase master || git checkout --ours .gitignore && git add .gitignore && \
-		git rebase --continue || git checkout --ours .gitignore && git add .gitignore && \
-		git rebase --continue && git checkout master && git merge decoder | true && \
-		sed -i '586a\
-		\
-		## Program sources \
-		\
-		set(aac_dec_SOURCES \
-			aac-dec.c \
-			wavwriter.c \
-			wavwriter.h) \
-		\
-		## Program target \
-		add_executable(aac-dec $${aac_dec_SOURCES}) \
-		\ \
-		## Program target configuration \
-		target_link_libraries(aac-dec PRIVATE fdk-aac) \
-		target_compile_definitions(aac-dec PRIVATE $$<$$<BOOL:$${MSVC}>:_CRT_SECURE_NO_WARNINGS>) \
-		if(WIN32) \
-			target_sources(aac-dec PRIVATE win32/getopt.h) \
-			target_include_directories(aac-dec PRIVATE win32) \
-		endif() \
-		\
-		## Program target installation \
-		install(TARGETS aac-dec RUNTIME DESTINATION $${CMAKE_INSTALL_BINDIR})' CMakeLists.txt; \
-	fi
-	cd $(CONTRIB_DIR)/fdk-aac && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DBUILD_PROGRAMS=1 && $(MAKE) -C build aac-dec
-	find $(CONTRIB_DIR)/fdk-aac/build -name "aac-dec" -type f -exec cp {} $(DECODERS_DIR) \;
+aac_reference_decoder: ## build ISO MPEG4 AAC reference decoder
+ifeq ($(dpkg -l | grep gcc-multilib), "")
+	sudo apt-get install gcc-multilib
+endif
+ifeq ($(dpkg -l | grep g++-multilib), "")
+	sudo apt-get install g++-multilib
+endif
+
+ifeq ($(wildcard $(CONTRIB_DIR)/C050470e_Electronic_inserts), )
+	$(create_dirs)
+	cd $(CONTRIB_DIR) && rm -f iso_cookies.txt
+	cd $(CONTRIB_DIR) && wget -qO- --keep-session-cookies --save-cookies iso_cookies.txt \
+	'https://standards.iso.org/ittf/PubliclyAvailableStandards/c050470__ISO_IEC_14496-5_2001_Amd_20_2009_Reference_Software.zip' > /dev/null
+	cd $(CONTRIB_DIR) && wget --keep-session-cookies --load-cookies iso_cookies.txt --post-data 'ok=I+accept' \
+	'https://standards.iso.org/ittf/PubliclyAvailableStandards/c050470__ISO_IEC_14496-5_2001_Amd_20_2009_Reference_Software.zip'
+	cd $(CONTRIB_DIR) && unzip -q c050470__ISO_IEC_14496-5_2001_Amd_20_2009_Reference_Software.zip
+	cd $(CONTRIB_DIR) && rm -f iso_cookies.txt c050470__ISO_IEC_14496-5_2001_Amd_20_2009_Reference_Software.zip
+
+	cd $(CONTRIB_DIR) && git clone https://github.com/MPEGGroup/isobmff.git
+	cd $(CONTRIB_DIR)/isobmff && mkdir build && cd build && cmake .. -DCMAKE_C_FLAGS=-m32 && $(MAKE) libisomediafile
+	cd $(CONTRIB_DIR)/isobmff && mv lib/liblibisomediafile.a lib/libisomediafile.a
+	cd $(CONTRIB_DIR) && cp isobmff/lib/libisomediafile.a C050470e_Electronic_inserts/audio/natural/import/lib/
+	cd $(CONTRIB_DIR) && cp isobmff/IsoLib/libisomediafile/src/ISOMovies.h C050470e_Electronic_inserts/audio/natural/import/include/
+	cd $(CONTRIB_DIR) && cp isobmff/IsoLib/libisomediafile/src/MP4Movies.h C050470e_Electronic_inserts/audio/natural/import/include/
+ifeq ($(OS), Windows_NT)
+	cd $(CONTRIB_DIR) && cp isobmff/IsoLib/libisomediafile/w32/MP4OSMacros.h C050470e_Electronic_inserts/audio/natural/import/include/
+else ifeq ($(KERNEL_NAME), Linux)
+	cd $(CONTRIB_DIR) && cp isobmff/IsoLib/libisomediafile/linux/MP4OSMacros.h C050470e_Electronic_inserts/audio/natural/import/include/ || true
+else ifeq ($(KERNEL_NAME), Darwin)
+	cd $(CONTRIB_DIR) && cp isobmff/IsoLib/libisomediafile/macosx/MP4OSMacros.h C050470e_Electronic_inserts/audio/natural/import/include/ || true
+endif
+	cd $(CONTRIB_DIR) && wget http://www-mmsp.ece.mcgill.ca/Documents/Downloads/libtsp/libtsp-v7r0.tar.gz
+	cd $(CONTRIB_DIR) && tar -zxf libtsp-v7r0.tar.gz && chmod -R ugo=rwx libtsp-v7r0/ && cd libtsp-v7r0/ && $(MAKE) -s COPTS=-m32
+	cd $(CONTRIB_DIR) && cp libtsp-v7r0/lib/libtsp.a C050470e_Electronic_inserts/audio/natural/import/lib/
+	cd $(CONTRIB_DIR) && cp libtsp-v7r0/include/libtsp.h C050470e_Electronic_inserts/audio/natural/import/include/
+	cd $(CONTRIB_DIR) && mkdir C050470e_Electronic_inserts/audio/natural/import/include/libtsp/
+	cd $(CONTRIB_DIR) && cp libtsp-v7r0/include/libtsp/AFpar.h C050470e_Electronic_inserts/audio/natural/import/include/libtsp/
+	cd $(CONTRIB_DIR) && cp libtsp-v7r0/include/libtsp/UTpar.h C050470e_Electronic_inserts/audio/natural/import/include/libtsp/
+endif
+	cd $(CONTRIB_DIR)/C050470e_Electronic_inserts/audio/natural/mp4mcDec && MAKELEVEL=0 $(MAKE) mp4audec_mc REFSOFT_INCLUDE_PATH=../import/include REFSOFT_LIBRARY_PATH=../import/lib CFLAGS=-m32 LDFLAGS=-m32
+	find $(CONTRIB_DIR)/C050470e_Electronic_inserts/audio/natural/bin/mp4mcDec -name "mp4audec_mc" -type f -exec cp {} $(DECODERS_DIR) \;
+
+clean: ## remove contrib temporary folder
+	rm -rf $(CONTRIB_DIR)
 
 dbg-%:
 	echo "Value of $* = $($*)"
 
-.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder aac_reference_decoder lint check format install_deps
+.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder aac_reference_decoder lint check format install_deps clean
