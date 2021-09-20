@@ -213,6 +213,15 @@ class GStreamerNvdecH265Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerNvdecSLH265Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.265 NVDEC stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! nvh265sldec '
+    api = 'NVDECSL'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerD3d11H265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 D3D11 decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
@@ -263,6 +272,15 @@ class GStreamerNvdecH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = ' h264parse ! nvh264dec '
     api = 'NVDEC'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerNvdecSLH264Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.264 NVDEC stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! nvh264sldec '
+    api = 'NVDECSL'
     hw_acceleration = True
 
 
@@ -331,6 +349,24 @@ class GStreamerD3d11VP8Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerNvdecVP8Gst10Decoder(GStreamer10Video):
+    '''GStreamer VP8 NVDEC decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! nvvp8dec '
+    api = 'NVDEC'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerNvdecSLVP8Gst10Decoder(GStreamer10Video):
+    '''GStreamer VP8 NVDEC stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! nvvp8sldec '
+    api = 'NVDECSL'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 V4L2 stateless decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
@@ -377,6 +413,26 @@ class GStreamerD3d11VP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = ' d3d11vp9dec '
     decoder_bin = f' parsebin ! {check_decoder_bin}'
     api = 'D3D11'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerNvdecVP9Gst10Decoder(GStreamer10Video):
+    '''GStreamer VP9 NVDEC decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' nvvp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'NVDEC'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerNvdecSLVP9Gst10Decoder(GStreamer10Video):
+    '''GStreamer VP9 NVDEC stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' nvvp9sldec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'NVDECSL'
     hw_acceleration = True
 
 
