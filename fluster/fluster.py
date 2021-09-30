@@ -320,6 +320,21 @@ class Fluster:
                 output += (
                     f"{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|"
                 )
+            output += "\n|TOTAL TIME|"
+            for test_suite in test_suites:
+                # Substract from the total time that took running a test suite on a decoder
+                # the timeouts. This is not ideal since we won't be comparing decoding the
+                # same number of test vectors, but at least it is much better than comparing
+                # total times when timeouts are such a huge part of the global time taken.
+                timeouts = sum(
+                    [
+                        ctx.timeout
+                        for tv in test_suite.test_vectors.values()
+                        if tv.test_result == TestVectorResult.TIMEOUT
+                    ]
+                )
+                total_time = test_suite.time_taken - timeouts
+                output += f"{total_time:.3f}s|"
             output += separator if first else ""
             return output
 
