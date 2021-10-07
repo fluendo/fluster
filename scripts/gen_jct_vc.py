@@ -36,6 +36,7 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://www.itu.int/"
+H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
 H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = (
@@ -71,7 +72,8 @@ class HREFParser(HTMLParser):
             for name, value in attrs:
                 # If href is defined, print it.
                 if name == "href":
-                    self.links.append(BASE_URL + value)
+                    base_url = BASE_URL if BASE_URL[-1] != "/" else BASE_URL[0:-1]
+                    self.links.append(base_url + value)
 
 
 class JCTVTGenerator:
@@ -116,7 +118,7 @@ class JCTVTGenerator:
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(name, url, "", file_input, OutputFormat.YUV420P, "")
+            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -229,4 +231,8 @@ if __name__ == "__main__":
     generator = JCTVTGenerator(
         "AVCv1", "JVT-AVC_V1", Codec.H264, "JVT AVC version 1", H264_URL
     )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator('draft6', 'JVET-VVC_draft6', Codec.H266,
+                               'JVET VVC draft6', H266_URL)
     generator.generate(not args.skip_download, args.jobs)

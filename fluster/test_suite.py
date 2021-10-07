@@ -189,12 +189,13 @@ class TestSuite:
             utils.download(test_vector.source, dest_dir)
         except Exception as ex:
             raise Exception(str(ex)) from ex
-        checksum = utils.file_checksum(dest_path)
-        if test_vector.source_checksum != checksum:
-            raise Exception(
-                f"Checksum error for test vector '{test_vector.name}': '{checksum}' instead of "
-                f"'{test_vector.source_checksum}'"
-            )
+        if test_vector.source_checksum != "__skip__":
+            checksum = utils.file_checksum(dest_path)
+            if test_vector.source_checksum != checksum:
+                raise Exception(
+                    f"Checksum error for test vector '{test_vector.name}': '{checksum}' instead of "
+                    f"'{test_vector.source_checksum}'"
+                )
 
         if utils.is_extractable(dest_path):
             print(f"\tExtracting test vector {test_vector.name} to {dest_dir}")
