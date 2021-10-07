@@ -118,7 +118,7 @@ class JCTVTGenerator:
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(name, url, "", file_input, OutputFormat.YUV420P, "")
+            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
             test_suite.test_vectors[name] = test_vector
 
         if download:
