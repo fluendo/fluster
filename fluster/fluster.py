@@ -326,12 +326,18 @@ class Fluster:
                 # the timeouts. This is not ideal since we won't be comparing decoding the
                 # same number of test vectors, but at least it is much better than comparing
                 # total times when timeouts are such a huge part of the global time taken.
-                timeouts = sum(
-                    [
-                        ctx.timeout
-                        for tv in test_suite.test_vectors.values()
-                        if tv.test_result == TestVectorResult.TIMEOUT
-                    ]
+                # Note: we only do this when the number of parallel jobs is 1, because
+                # whenever there are actual parallel jobs, this gets much more complicated.
+                timeouts = (
+                    sum(
+                        [
+                            ctx.timeout
+                            for tv in test_suite.test_vectors.values()
+                            if tv.test_result == TestVectorResult.TIMEOUT
+                        ]
+                    )
+                    if ctx.jobs == 1
+                    else 0
                 )
                 total_time = test_suite.time_taken - timeouts
                 output += f"{total_time:.3f}s|"
