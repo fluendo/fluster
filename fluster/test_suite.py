@@ -395,6 +395,10 @@ class TestSuite:
         test_suite = self.clone()
         tests = test_suite.generate_tests(ctx)
         if not tests:
+            extra = ""
+            if ctx.test_vectors:
+                extra = "with names: " + ", ".join(ctx.test_vectors)
+            print(f"No test vectors for suite {self.name} {extra}")
             return None
 
         print("*" * 100)
