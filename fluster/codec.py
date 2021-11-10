@@ -31,6 +31,7 @@ class Codec(Enum):
     VP8 = "VP8"
     VP9 = "VP9"
     AAC = "AAC"
+    AV1 = "AV1"
 
 
 class OutputFormat(Enum):
