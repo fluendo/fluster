@@ -240,6 +240,15 @@ class GStreamerV4l2CodecsH265Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerV4l2H265Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.265 V4L2 stateful decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! v4l2h265dec '
+    api = 'V4L2'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerVaapiH264Gst10Decoder(GStreamer10Video):
     '''GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
@@ -303,11 +312,29 @@ class GStreamerV4l2CodecsH264Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerV4l2H264Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.264 V4L2 stateful decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! v4l2h264dec '
+    api = 'V4L2'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
     '''GStreamer VP8 V4L2 stateless decoder implementation for GStreamer 1.0'''
     codec = Codec.VP8
     decoder_bin = ' ivfparse ! v4l2slvp8dec '
     api = 'V4L2SL'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerV4l2VP8Gst10Decoder(GStreamer10Video):
+    '''GStreamer VP8 V4L2 stateful decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP8
+    decoder_bin = ' ivfparse ! v4l2vp8dec '
+    api = 'V4L2'
     hw_acceleration = True
 
 
