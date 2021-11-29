@@ -404,6 +404,16 @@ class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerV4l2CodecsAV1Gst10Decoder(GStreamer10Video):
+    '''GStreamer AV1 V4L2 stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.AV1
+    check_decoder_bin = ' v4l2slav1dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'V4L2SL'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerLibvpxVP9(GStreamer10Video):
     '''GStreamer VP9 Libvpx decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
