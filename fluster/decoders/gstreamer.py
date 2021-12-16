@@ -423,6 +423,16 @@ class GStreamerV4l2CodecsAV1Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerD3d11AV1Gst10Decoder(GStreamer10Video):
+    '''GStreamer AV1 D3D11 decoder implementation for GStreamer 1.0'''
+    codec = Codec.AV1
+    check_decoder_bin = ' d3d11av1dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'D3D11'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerLibvpxVP9(GStreamer10Video):
     '''GStreamer VP9 Libvpx decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
