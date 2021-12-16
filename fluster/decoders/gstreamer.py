@@ -443,6 +443,16 @@ class GStreamerVaapiVP9Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerVaapiAV1Gst10Decoder(GStreamer10Video):
+    '''GStreamer AV1 VAAPI decoder implementation for GStreamer 1.0'''
+    codec = Codec.AV1
+    check_decoder_bin = ' vaapiav1dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'VAAPI'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerVaVP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 VA decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
