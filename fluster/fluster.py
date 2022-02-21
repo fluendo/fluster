@@ -246,8 +246,9 @@ class Fluster:
 
         error = False
         no_test_run = True
+        results: Dict[str, List[Tuple[Decoder, TestSuite]]] = {}
         for test_suite in ctx.test_suites:
-            results: List[Tuple[Decoder, TestSuite]] = []
+            test_suite_results: List[Tuple[Decoder, TestSuite]] = []
             for decoder in ctx.decoders:
                 if decoder.codec != test_suite.codec:
                     continue
@@ -259,7 +260,8 @@ class Fluster:
 
                 if test_suite_res:
                     no_test_run = False
-                    results.append((decoder, test_suite_res))
+                    test_suite_results.append((decoder, test_suite_res))
+                    results[test_suite.name] = test_suite_results
                     success = True
                     for test_vector in test_suite_res.test_vectors.values():
                         if test_vector.errors:
@@ -290,19 +292,19 @@ class Fluster:
                             )
                             sys.exit(3)
 
-            self._show_summary_if_needed(ctx, results)
+        self._show_summary_if_needed(ctx, results)
 
         if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)
 
     def _show_summary_if_needed(
-        self, ctx: Context, results: List[Tuple[Decoder, TestSuite]]
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
     ) -> None:
         if ctx.summary and results:
             self._generate_summary(ctx, results)
 
     def _generate_summary(
-        self, ctx: Context, results: List[Tuple[Decoder, TestSuite]]
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
     ) -> None:
         def _global_stats(
             results: List[Tuple[Decoder, TestSuite]],
@@ -344,22 +346,22 @@ class Fluster:
             output += separator if first else ""
             return output
 
-        test_suite_name = results[0][1].name
-        decoders_names = [decoder.name for decoder, _ in results]
-        test_suites = [res[1] for res in results]
-        print(
-            f'Generating summary for test suite {test_suite_name} and decoders {", ".join(decoders_names)}:\n'
-        )
-
         output = ""
-        output += _global_stats(results, test_suites, True)
-        for test_vector in results[0][1].test_vectors.values():
-            output += f"\n|{test_vector.name}|"
-            for test_suite in test_suites:
-                tvector = test_suite.test_vectors[test_vector.name]
-                output += self.emoji[tvector.test_result] + "|"
-        output += _global_stats(results, test_suites, False)
-        output += "\n\n"
+
+        for test_suite_name, test_suite_results in results.items():
+            decoders_names = [decoder.name for decoder, _ in test_suite_results]
+            test_suites = [res[1] for res in test_suite_results]
+            print(
+                f'Generating summary for test suite {test_suite_name} and decoders {", ".join(decoders_names)}:\n'
+            )
+            output += _global_stats(test_suite_results, test_suites, True)
+            for test_vector in test_suite_results[0][1].test_vectors.values():
+                output += f"\n|{test_vector.name}|"
+                for test_suite in test_suites:
+                    tvector = test_suite.test_vectors[test_vector.name]
+                    output += self.emoji[tvector.test_result] + "|"
+            output += _global_stats(test_suite_results, test_suites, False)
+            output += "\n\n"
         if ctx.summary_output:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
                 summary_file.write(output)
