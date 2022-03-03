@@ -23,9 +23,10 @@ import argparse
 import os
 import multiprocessing
 import sys
+from importlib import util
 from typing import Any
 
-from fluster.fluster import Fluster, Context
+from fluster.fluster import Fluster, Context, SummaryFormat
 
 TEST_SUITES_DIR = "test_suites"
 DECODERS_DIR = "decoders"
@@ -49,6 +50,8 @@ class Main:
     def run(self) -> None:
         """Runs Fluster"""
         args = self.parser.parse_args()
+        self._validate_args(args)
+        self._validate_deps(args)
         if hasattr(args, "func"):
             fluster = Fluster(
                 test_suites_dir=args.test_suites_dir,
@@ -60,6 +63,21 @@ class Main:
             args.func(args, fluster)
         else:
             self.parser.print_help()
+
+    def _validate_args(self, args: Any) -> None:
+        if hasattr(args, "format"):
+            if args.format == SummaryFormat.JUNITXML.value and not args.summary_output:
+                sys.exit(
+                    "error: please specify XML file path with -so/--summary-output option."
+                )
+
+    def _validate_deps(self, args: Any) -> None:
+        if hasattr(args, "format"):
+            junit_spec = util.find_spec("junitparser")
+            if args.format == SummaryFormat.JUNITXML.value and junit_spec is None:
+                sys.exit(
+                    "error: junitparser required to use JUnit format. Please install with pip install junitparser."
+                )
 
     def _create_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser()
@@ -185,6 +203,13 @@ class Main:
             "-so", "--summary-output", help="dump summary output to file"
         )
         subparser.add_argument(
+            "-f",
+            "--format",
+            help="specify the format for the summary file",
+            choices=list(x.value for x in SummaryFormat),
+            default=SummaryFormat.MARKDOWN.value,
+        )
+        subparser.add_argument(
             "-k",
             "--keep",
             help="keep output files generated during the test",
@@ -299,6 +324,7 @@ class Main:
             time_threshold=args.time_threshold,
             verbose=args.verbose,
             summary_output=args.summary_output,
+            summary_format=args.format,
         )
         try:
             fluster.run_test_suites(context)

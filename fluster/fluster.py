@@ -22,6 +22,7 @@ import os.path
 from functools import lru_cache
 from typing import List, Dict, Any, Tuple, Optional
 import sys
+from enum import Enum
 
 # Import decoders that will auto-register
 # pylint: disable=wildcard-import, unused-wildcard-import
@@ -32,7 +33,7 @@ from fluster.decoders import *  # noqa: F401,F403
 from fluster.test_suite import TestSuite
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.decoder import DECODERS, Decoder
-from fluster.test_vector import TestVectorResult
+from fluster.test_vector import TestVector, TestVectorResult
 from fluster.codec import Codec
 
 # pylint: disable=broad-except
@@ -41,7 +42,7 @@ from fluster.codec import Codec
 class Context:
     """Context for run and reference command"""
 
-    # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-instance-attributes too-many-locals
 
     def __init__(
         self,
@@ -59,6 +60,7 @@ class Context:
         time_threshold: Optional[int] = None,
         verbose: bool = False,
         summary_output: str = "",
+        summary_format: str = "",
     ):
         self.jobs = jobs
         self.timeout = timeout
@@ -76,6 +78,7 @@ class Context:
         self.time_threshold = time_threshold
         self.verbose = verbose
         self.summary_output = summary_output
+        self.summary_format = summary_format
 
     def to_test_suite_context(
         self, decoder: Decoder, results_dir: str, test_vectors: List[str]
@@ -111,6 +114,13 @@ TEXT_RESULT = {
     TestVectorResult.TIMEOUT: "TO",
     TestVectorResult.ERROR: "ER",
 }
+
+
+class SummaryFormat(Enum):
+    """Summary formats"""
+
+    MARKDOWN = "md"
+    JUNITXML = "junitxml"
 
 
 class Fluster:
@@ -301,9 +311,84 @@ class Fluster:
         self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
     ) -> None:
         if ctx.summary and results:
-            self._generate_summary(ctx, results)
+            if ctx.summary_format == SummaryFormat.JUNITXML.value:
+                self._generate_junit_summary(ctx, results)
+            else:
+                self._generate_md_summary(ctx, results)
 
-    def _generate_summary(
+    def _generate_junit_summary(
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> None:
+        # pylint: disable=import-outside-toplevel
+
+        try:
+            import junitparser as junitp  # type: ignore
+        except ImportError:
+            sys.exit(
+                "error: junitparser required to use JUnit format. Please install with pip install junitparser."
+            )
+
+        def _parse_vector_errors(vector: TestVector) -> List[junitp.Error]:
+            junit_err_map = {
+                TestVectorResult.ERROR: junitp.Error,
+                TestVectorResult.FAIL: junitp.Failure,
+                TestVectorResult.NOT_RUN: junitp.Skipped,
+                TestVectorResult.TIMEOUT: junitp.Failure,
+            }
+
+            jerrors = []
+
+            for err in vector.errors:
+                jerr = junit_err_map[vector.test_result](message=f"FAIL: {err[0]}")
+                jerr.text = "\n".join(err[1:])
+                jerrors.append(jerr)
+
+            return jerrors
+
+        def _parse_suite_results(
+            test_suite_tuple: Tuple[str, List[Tuple[Decoder, TestSuite]]]
+        ) -> junitp.TestSuite:
+            jsuites = []
+
+            test_suite_name, test_suite_results = test_suite_tuple
+
+            for suite_decoder_res in test_suite_results:
+                timeouts = 0
+
+                jsuite = junitp.TestSuite(test_suite_name)
+                jsuite.add_property("decoder", suite_decoder_res[0].name)
+
+                for vector in suite_decoder_res[1].test_vectors.values():
+                    jcase = junitp.TestCase(vector.name)
+                    if vector.test_result not in [
+                        TestVectorResult.SUCCESS,
+                        TestVectorResult.REFERENCE,
+                    ]:
+                        jcase.result = _parse_vector_errors(vector)
+
+                    jsuite.add_testcase(jcase)
+
+                    if vector.test_result is TestVectorResult.TIMEOUT and ctx.jobs == 1:
+                        timeouts += ctx.timeout
+
+                jsuite.time = round(suite_decoder_res[1].time_taken - timeouts, 3)
+
+                jsuites.append(jsuite)
+
+            return jsuites
+
+        xml = junitp.JUnitXml()
+
+        jsuites = map(_parse_suite_results, results.items())
+
+        for jsuite in [item for sublist in jsuites for item in sublist]:
+            xml.add_testsuite(jsuite)
+
+        if ctx.summary_output:
+            with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
+                xml.write(summary_file.name, pretty=True)
+
+    def _generate_md_summary(
         self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
     ) -> None:
         def _global_stats(
