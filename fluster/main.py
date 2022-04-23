@@ -66,9 +66,12 @@ class Main:
 
     def _validate_args(self, args: Any) -> None:
         if hasattr(args, "format"):
-            if args.format == SummaryFormat.JUNITXML.value and not args.summary_output:
+            if (
+                args.format in [SummaryFormat.JUNITXML.value, SummaryFormat.CSV.value]
+                and not args.summary_output
+            ):
                 sys.exit(
-                    "error: please specify XML file path with -so/--summary-output option."
+                    "error: please specify XML/CSV file path with -so/--summary-output option."
                 )
 
     def _validate_deps(self, args: Any) -> None:
