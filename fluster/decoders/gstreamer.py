@@ -83,8 +83,10 @@ class GStreamer(Decoder):
         output_format: OutputFormat,
         timeout: int,
         verbose: bool,
+        keep_files: bool,
     ) -> str:
         '''Decode the test vector and do the checksum'''
+	# pylint: disable=unused-argument
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)

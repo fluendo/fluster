@@ -49,6 +49,7 @@ class Decoder(ABC):
         output_format: OutputFormat,
         timeout: int,
         verbose: bool,
+        keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         raise Exception("Not implemented")

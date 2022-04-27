@@ -33,8 +33,9 @@ class ISOAACDecoder(Decoder):
     binary = 'mp4audec_mc'
 
     def decode(self, input_filepath: str, output_filepath: str, output_format: OutputFormat, timeout: int,
-               verbose: bool) -> str:
+               verbose: bool, keep_files: bool) -> str:
         '''Decodes input_filepath in output_filepath'''
+        # pylint: disable=unused-argument
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a
         # ".wav", which is undesirable.
         output_filepath += ".pcm"
