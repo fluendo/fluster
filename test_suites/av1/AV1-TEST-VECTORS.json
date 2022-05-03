@@ -8,7 +8,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-00.ivf",
             "source_checksum": "e40cef2a8632d9f6bab45a3d168bebe2",
             "input_file": "av1-1-b10-00-quantizer-00.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "8b834b72fe9c5dbd24c0869370f38157"
         },
         {
@@ -16,7 +16,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-01.ivf",
             "source_checksum": "f89e537a31c6c416f8cc21873d2d03e9",
             "input_file": "av1-1-b10-00-quantizer-01.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "57897599b284e73ad15bab304ba60c49"
         },
         {
@@ -24,7 +24,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-02.ivf",
             "source_checksum": "88e405ab26f6b6f134a50cafc593f94e",
             "input_file": "av1-1-b10-00-quantizer-02.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "628c9237205c34327cb964fea1df2f39"
         },
         {
@@ -32,7 +32,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-03.ivf",
             "source_checksum": "224bf4f45c8e5080b69a1e4c47c8f5f7",
             "input_file": "av1-1-b10-00-quantizer-03.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "fdcef1fbc21ce9ddc83c6b362d155801"
         },
         {
@@ -40,7 +40,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-04.ivf",
             "source_checksum": "d34adc384b46a1a5138e4fa3b38aeb9b",
             "input_file": "av1-1-b10-00-quantizer-04.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "ad1b12a6a0cbad1454655f529eb01ee7"
         },
         {
@@ -48,7 +48,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-05.ivf",
             "source_checksum": "7ce249333d854a957c1ea3898620a57f",
             "input_file": "av1-1-b10-00-quantizer-05.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "dc91c70dbff3e4b29b61bbc72984f662"
         },
         {
@@ -56,7 +56,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-06.ivf",
             "source_checksum": "1a3e2ed5bc0f3c65162a701f2a69e763",
             "input_file": "av1-1-b10-00-quantizer-06.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "92cf05c5e9f765131632b3c23fef9d03"
         },
         {
@@ -64,7 +64,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-07.ivf",
             "source_checksum": "e95415c6acc00f58def15dfe8efb1abb",
             "input_file": "av1-1-b10-00-quantizer-07.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "7477fc4e6b8594c99882ff39fc890c17"
         },
         {
@@ -72,7 +72,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-08.ivf",
             "source_checksum": "a11560fd550746dbfdd51f5ac18eb305",
             "input_file": "av1-1-b10-00-quantizer-08.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "dd28c75562a3a66754a4e9c2333257ae"
         },
         {
@@ -80,7 +80,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-09.ivf",
             "source_checksum": "59eb18cd70390e5821fd340b7f1b5c1b",
             "input_file": "av1-1-b10-00-quantizer-09.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "ebc0eeaab20e4760ac2ed0735aaba9d6"
         },
         {
@@ -88,7 +88,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-10.ivf",
             "source_checksum": "a125d67cb1ab59e69fbe938fee3e7c69",
             "input_file": "av1-1-b10-00-quantizer-10.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "2387e415ebed841a1a6a3c3c070ebdcb"
         },
         {
@@ -96,7 +96,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-11.ivf",
             "source_checksum": "cfba28958d3b1e16decf5764bd38926f",
             "input_file": "av1-1-b10-00-quantizer-11.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "a5b8e3891e1fdb046018878cc3220c6f"
         },
         {
@@ -104,7 +104,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-12.ivf",
             "source_checksum": "233b6700fb18c5367839906627bf989f",
             "input_file": "av1-1-b10-00-quantizer-12.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "2f6738252f8050d5fdcfd1c96e12b3df"
         },
         {
@@ -112,7 +112,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-13.ivf",
             "source_checksum": "b46a89ed8b6f1d0b138f9d29b23a3887",
             "input_file": "av1-1-b10-00-quantizer-13.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "3fc9986d441720eebbd83037fec89b62"
         },
         {
@@ -120,7 +120,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-14.ivf",
             "source_checksum": "b23ba578064b0875a562153bc34a5c54",
             "input_file": "av1-1-b10-00-quantizer-14.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "eb08b8cc797306afa84c884ac53e5948"
         },
         {
@@ -128,7 +128,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-15.ivf",
             "source_checksum": "13747ddb1cada33e84d766dd2447b110",
             "input_file": "av1-1-b10-00-quantizer-15.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "0df1d0fd054ee0efa091add7cd9f6963"
         },
         {
@@ -136,7 +136,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-16.ivf",
             "source_checksum": "1290459fb9d1a49b00e8ae568e24483c",
             "input_file": "av1-1-b10-00-quantizer-16.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "e12361887c1fbcbcbd9267d68e9afb1e"
         },
         {
@@ -144,7 +144,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-17.ivf",
             "source_checksum": "53220e21e02d8e9ae863858ab43eb681",
             "input_file": "av1-1-b10-00-quantizer-17.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "7458a9278a04b2dfe1e69737dee05faf"
         },
         {
@@ -152,7 +152,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-18.ivf",
             "source_checksum": "e3dde091be8fd16b01f94b9608eb2e6d",
             "input_file": "av1-1-b10-00-quantizer-18.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "9acd975ffa0a24c45c7f8ed28ed7713f"
         },
         {
@@ -160,7 +160,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-19.ivf",
             "source_checksum": "664d43643648b11d8fcc2df230bc8d5d",
             "input_file": "av1-1-b10-00-quantizer-19.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "bcaef8ca235d140afd3803dd0cdded9f"
         },
         {
@@ -168,7 +168,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-20.ivf",
             "source_checksum": "245a5f5fce994016c3431d9073ab825a",
             "input_file": "av1-1-b10-00-quantizer-20.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "2e7b859b62088c09c753828949b9ef1b"
         },
         {
@@ -176,7 +176,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-21.ivf",
             "source_checksum": "25c911fbf75389e807061004c0f8002f",
             "input_file": "av1-1-b10-00-quantizer-21.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "683ec2cb82937b8688cb9611238c59ad"
         },
         {
@@ -184,7 +184,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-22.ivf",
             "source_checksum": "76bddb6068e2cf4e3e5f871950e9f5e0",
             "input_file": "av1-1-b10-00-quantizer-22.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "397acee1e5aa84492256a49f27789dbb"
         },
         {
@@ -192,7 +192,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-23.ivf",
             "source_checksum": "d3ca443c4eb05baefa2d5761cb0e40df",
             "input_file": "av1-1-b10-00-quantizer-23.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "119acc22d7f20a2cd43a0ab7474d4089"
         },
         {
@@ -200,7 +200,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-24.ivf",
             "source_checksum": "31183c4da07fd9f2de9c13afed7ea2e4",
             "input_file": "av1-1-b10-00-quantizer-24.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "6ca1933add258b0236d9cbbdd9bcd8e4"
         },
         {
@@ -208,7 +208,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-25.ivf",
             "source_checksum": "172f09797380d3637c521dc83a2d0b95",
             "input_file": "av1-1-b10-00-quantizer-25.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "2e43ab094e6c6e93655f11f68d2990d0"
         },
         {
@@ -216,7 +216,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-26.ivf",
             "source_checksum": "0eeac45702a1b7708b6e86a74207b2df",
             "input_file": "av1-1-b10-00-quantizer-26.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "80ab8de4b5c151a848eaada9b4a348db"
         },
         {
@@ -224,7 +224,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-27.ivf",
             "source_checksum": "62f67b8a4023b64162c9c0c914a6db37",
             "input_file": "av1-1-b10-00-quantizer-27.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "39202ccd503ede4544125b3051c1913f"
         },
         {
@@ -232,7 +232,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-28.ivf",
             "source_checksum": "75a12633aa8ec0b09b1b4b252de79833",
             "input_file": "av1-1-b10-00-quantizer-28.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "718eca98a39315c735107898c2e0ceb3"
         },
         {
@@ -240,7 +240,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-29.ivf",
             "source_checksum": "a591560cb97e71d4d42efff89924ccd2",
             "input_file": "av1-1-b10-00-quantizer-29.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "a406b418d474b31f02a8807e8ca2b4a4"
         },
         {
@@ -248,7 +248,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-30.ivf",
             "source_checksum": "a89fb25a0e4d78ab44d918fe4a401488",
             "input_file": "av1-1-b10-00-quantizer-30.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "aa68b016e1c4151b49a6e7ec8865ec92"
         },
         {
@@ -256,7 +256,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-31.ivf",
             "source_checksum": "4327d6246cfbc1fa6af6a69912a22c69",
             "input_file": "av1-1-b10-00-quantizer-31.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "18da23bedef08352928852ae183bbf71"
         },
         {
@@ -264,7 +264,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-32.ivf",
             "source_checksum": "29a675fae556058bdba59b61c7bdf079",
             "input_file": "av1-1-b10-00-quantizer-32.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "1de5e5c5b904ebcda24b03a186b39792"
         },
         {
@@ -272,7 +272,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-33.ivf",
             "source_checksum": "c87aaa4e4bd8af859e75796d93b0600f",
             "input_file": "av1-1-b10-00-quantizer-33.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "b37f6c6d4165c7a63ec12e134eabff5b"
         },
         {
@@ -280,7 +280,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-34.ivf",
             "source_checksum": "dc60f1bc232fa474da6dc5200ee9c6f9",
             "input_file": "av1-1-b10-00-quantizer-34.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "c90f00a0e1e72f834095d2c60b9c4b80"
         },
         {
@@ -288,7 +288,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-35.ivf",
             "source_checksum": "4de70cf0477aef85c9129b73377f7398",
             "input_file": "av1-1-b10-00-quantizer-35.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "e3b8468fa7395ff12da67a0f07179c58"
         },
         {
@@ -296,7 +296,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-36.ivf",
             "source_checksum": "ca90739d295956028c0674115eed78a6",
             "input_file": "av1-1-b10-00-quantizer-36.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "526d21a06b007c9e735640e6470e7888"
         },
         {
@@ -304,7 +304,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-37.ivf",
             "source_checksum": "9b0f6269a0325e10ac5b30f939bc5aaf",
             "input_file": "av1-1-b10-00-quantizer-37.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "ea4c6aa2e6437f9beffca95b395b5299"
         },
         {
@@ -312,7 +312,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-38.ivf",
             "source_checksum": "4ff270742e7c7fdcf901aae3f2498abb",
             "input_file": "av1-1-b10-00-quantizer-38.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "00d04f3f06ae3b6ee759566e0024741b"
         },
         {
@@ -320,7 +320,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-39.ivf",
             "source_checksum": "6831a5b3fb01cc8e8578efdd23db5798",
             "input_file": "av1-1-b10-00-quantizer-39.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "cbba192759fe0915ea56ed6732ba21cb"
         },
         {
@@ -328,7 +328,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-40.ivf",
             "source_checksum": "ab0c82f604e8aac3ff3a8b08fb96cd68",
             "input_file": "av1-1-b10-00-quantizer-40.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "6854e82b96b1e16ee4b072fa5669b0e1"
         },
         {
@@ -336,7 +336,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-41.ivf",
             "source_checksum": "0e3e4c530a8cbe5232ac50263c48f69a",
             "input_file": "av1-1-b10-00-quantizer-41.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "4b09c49eb1f9732584a22facf6a02a34"
         },
         {
@@ -344,7 +344,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-42.ivf",
             "source_checksum": "ef047f657ff1294f20032eeaf701cb39",
             "input_file": "av1-1-b10-00-quantizer-42.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "d22aa42a80f48e63d82080b26c48e3f3"
         },
         {
@@ -352,7 +352,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-43.ivf",
             "source_checksum": "4f0382cf43375f817ce9335f739162be",
             "input_file": "av1-1-b10-00-quantizer-43.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "da46c8cad4caf9c91bde58447c2651e8"
         },
         {
@@ -360,7 +360,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-44.ivf",
             "source_checksum": "5b2e8a0582d4858093936c7d811f9de9",
             "input_file": "av1-1-b10-00-quantizer-44.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "ad1e1d026e0126373f64bbba2d85429f"
         },
         {
@@ -368,7 +368,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-45.ivf",
             "source_checksum": "72be95bcf7efd0f6dac1d13da52043e3",
             "input_file": "av1-1-b10-00-quantizer-45.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "04d10320af7d99b8ecbb40ca5c63681f"
         },
         {
@@ -376,7 +376,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-46.ivf",
             "source_checksum": "dafef15273eff78ae0e8bae156e463b1",
             "input_file": "av1-1-b10-00-quantizer-46.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "9c4a60481b7797059d7f6c166929e8d4"
         },
         {
@@ -384,7 +384,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-47.ivf",
             "source_checksum": "0b9865066fcab098085a5aa53bffca00",
             "input_file": "av1-1-b10-00-quantizer-47.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "98a1821861dcae3ec77ab10a2dd0c4bb"
         },
         {
@@ -392,7 +392,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-48.ivf",
             "source_checksum": "f401c9bfcec745dacd30db0422e96e4c",
             "input_file": "av1-1-b10-00-quantizer-48.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "3b87ce150d6746eb868b27a19fb86e7f"
         },
         {
@@ -400,7 +400,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-49.ivf",
             "source_checksum": "bdb906cdb702e3396573229020cc35e1",
             "input_file": "av1-1-b10-00-quantizer-49.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "f5cbe85a504c93913c2d58d4b9c0a0c9"
         },
         {
@@ -408,7 +408,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-50.ivf",
             "source_checksum": "46d2716c719d0569007ff8e80c52509d",
             "input_file": "av1-1-b10-00-quantizer-50.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "77258f68bb746a04bebf57fd23582b49"
         },
         {
@@ -416,7 +416,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-51.ivf",
             "source_checksum": "940ad390c38b6b07edb79dccdc2c5820",
             "input_file": "av1-1-b10-00-quantizer-51.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "c0b2dbfeaba5f4f3b4501b1d118bc3d1"
         },
         {
@@ -424,7 +424,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-52.ivf",
             "source_checksum": "3a1767d06328b0b5d469edb68557a421",
             "input_file": "av1-1-b10-00-quantizer-52.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "fdcdb83a737333ac30f13c4acd976fe1"
         },
         {
@@ -432,7 +432,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-53.ivf",
             "source_checksum": "9378f25c94fd217b7d9e3c1b8a425db6",
             "input_file": "av1-1-b10-00-quantizer-53.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "d505ed81e470319d4acf7dce262323c2"
         },
         {
@@ -440,7 +440,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-54.ivf",
             "source_checksum": "e158bd6d0c03a0104fd24cc221d7fc5c",
             "input_file": "av1-1-b10-00-quantizer-54.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "8a6fd37547462a6e9ffd629eb4a9563e"
         },
         {
@@ -448,7 +448,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-55.ivf",
             "source_checksum": "60560fea5481b77fd028a72b6d1cb7fe",
             "input_file": "av1-1-b10-00-quantizer-55.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "bb08af0080f809b02fb34ccb38c6d20d"
         },
         {
@@ -456,7 +456,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-56.ivf",
             "source_checksum": "8998ab57d4b10139dd83d3f5f971ac46",
             "input_file": "av1-1-b10-00-quantizer-56.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "0aeb3a869af91f4ca58a6f67b488b6ae"
         },
         {
@@ -464,7 +464,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-57.ivf",
             "source_checksum": "bf40a9c3e02b9cc8c6018f9044f2a7ce",
             "input_file": "av1-1-b10-00-quantizer-57.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "34234be86e8522694f906ea8ccf2ca39"
         },
         {
@@ -472,7 +472,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-58.ivf",
             "source_checksum": "5b5c6e2d577cc9ea4c5069fd521b1991",
             "input_file": "av1-1-b10-00-quantizer-58.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "c9fbfffdc05090be19ce94e244002f6d"
         },
         {
@@ -480,7 +480,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-59.ivf",
             "source_checksum": "826ea7fcbc0bc95e43a31a480307b374",
             "input_file": "av1-1-b10-00-quantizer-59.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "1908cfabb49b6b2c53d3d5b575e54b1e"
         },
         {
@@ -488,7 +488,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-60.ivf",
             "source_checksum": "8c535798a1505c9851fa0dc335ecfac9",
             "input_file": "av1-1-b10-00-quantizer-60.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "30b16f739a40fea2b0f035acd27ea16f"
         },
         {
@@ -496,7 +496,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-61.ivf",
             "source_checksum": "59086bab56fc25b9d0e5e18ea8028187",
             "input_file": "av1-1-b10-00-quantizer-61.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "33c469d4efc580705517f432f0b1ede9"
         },
         {
@@ -504,7 +504,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-62.ivf",
             "source_checksum": "f4e2b797d006507c9a0afd02970647a0",
             "input_file": "av1-1-b10-00-quantizer-62.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "d959b0257d18892af3c7524e65609d05"
         },
         {
@@ -512,7 +512,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-63.ivf",
             "source_checksum": "7aea47874bd8a2ec9b17e6005446da35",
             "input_file": "av1-1-b10-00-quantizer-63.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "cd215b30e02ffe016f4fccb8feb5e375"
         },
         {
@@ -520,7 +520,7 @@
             "source": "https://storage.googleapis.com/aom-test-data/av1-1-b10-23-film_grain-50.ivf",
             "source_checksum": "aaddbf87bdf9b5ac4b1ab4fe802c410b",
             "input_file": "av1-1-b10-23-film_grain-50.ivf",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "be596f5921854b9a9a5be81c302a5327"
         },
         {
