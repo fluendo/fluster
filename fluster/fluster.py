@@ -17,6 +17,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
+from collections import defaultdict
 import os
 import os.path
 from functools import lru_cache
@@ -120,6 +121,7 @@ class SummaryFormat(Enum):
     """Summary formats"""
 
     MARKDOWN = "md"
+    CSV = "csv"
     JUNITXML = "junitxml"
 
 
@@ -313,6 +315,8 @@ class Fluster:
         if ctx.summary and results:
             if ctx.summary_format == SummaryFormat.JUNITXML.value:
                 self._generate_junit_summary(ctx, results)
+            elif ctx.summary_format == SummaryFormat.CSV.value:
+                self._generate_csv_summary(ctx, results)
             else:
                 self._generate_md_summary(ctx, results)
 
@@ -387,6 +391,50 @@ class Fluster:
         if ctx.summary_output:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
                 xml.write(summary_file.name, pretty=True)
+
+    def _generate_csv_summary(
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> None:
+        # pylint: disable=too-many-locals
+        result_map = {
+            TestVectorResult.SUCCESS: "Success",
+            TestVectorResult.REFERENCE: "Reference",
+            TestVectorResult.TIMEOUT: "Timeout",
+            TestVectorResult.ERROR: "Error",
+            TestVectorResult.FAIL: "Fail",
+            TestVectorResult.NOT_RUN: "Not run",
+        }
+        content: Dict[Any, Any] = defaultdict(lambda: defaultdict(dict))
+        max_vectors = 0
+        for test_suite, suite_results in results.items():
+            for decoder, vectors in suite_results:
+                decoder_name = str(decoder.name[: decoder.name.find(":")])
+                max_vectors = max(max_vectors, len(vectors.test_vectors.values()))
+                for vector in vectors.test_vectors.values():
+                    vector_name = str(vector.name)
+                    content[str(test_suite)][decoder_name][vector_name] = result_map[
+                        vector.test_result
+                    ]
+
+        suite_row = []
+        decoder_row = []
+        field_row = []
+        content_rows: List[List[Any]] = [[] for _ in range(max_vectors)]
+        for suite in content:
+            suite_row.append(str(suite))
+            num_decoders = len(content[suite])
+            suite_row += ["" for _ in range(num_decoders + (num_decoders - 1))]
+            for decoder in content[suite]:
+                decoder_row += [str(decoder), ""]
+                field_row += ["Vector", "Result"]
+                for index, vector in enumerate(content[suite][decoder]):
+                    content_rows[index] += [vector, content[suite][decoder][vector]]
+                for index in range(len(content[suite][decoder]), max_vectors):
+                    content_rows[index] += ["", ""]
+        rows = [suite_row, decoder_row, field_row] + content_rows
+        if ctx.summary_output:
+            with open(ctx.summary_output, mode="w", encoding="utf8") as file:
+                file.writelines([",".join(row) + "\n" for row in rows])
 
     def _generate_md_summary(
         self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]

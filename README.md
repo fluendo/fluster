@@ -277,7 +277,7 @@ optional arguments:
   -s, --summary         generate a summary in Markdown format for each test suite
   -so SUMMARY_OUTPUT, --summary-output SUMMARY_OUTPUT
                         dump summary output to file
-  -f {md,junitxml}, --format {md,junitxml}
+  -f {md,csv,junitxml}, --format {md,csv,junitxml}
                         specify the format for the summary output. Markdown is selected by default
   -k, --keep            keep output files generated during the test
   -th THRESHOLD, --threshold THRESHOLD
