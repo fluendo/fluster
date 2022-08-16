@@ -119,7 +119,7 @@ class GStreamer(Decoder):
                 input_filepath, output_param, output_format)
             command = shlex.split(pipeline)
             command.append("-m")
-            serr = subprocess.DEVNULL if not verbose else None
+            serr = subprocess.DEVNULL if not verbose else subprocess.PIPE
             if verbose:
                 print(f'\nRunning command "{" ".join(command)}"')
 
