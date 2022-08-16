@@ -81,7 +81,7 @@ class GStreamer(Decoder):
     def parse_videocodectestsink_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
         '''Parse the MD5 sum out of commandline output produced when using
         videocodectestsink.'''
-        md5sum = "error"
+        md5sum = None
         for line in filter(None, data):
             if verbose:
                 print(line, end='')
@@ -95,6 +95,9 @@ class GStreamer(Decoder):
                     md5sum = line[sum_start:sum_end]
                     if not verbose:
                         return md5sum
+        if not md5sum:
+            raise Exception('No MD5 found in the program trace.')
+
         return md5sum
 
     def decode(
