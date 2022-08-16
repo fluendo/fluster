@@ -21,12 +21,13 @@
 import shlex
 import subprocess
 from functools import lru_cache
+from typing import Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command, normalize_binary_cmd
 
-PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} location={}'
+PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} {}'
 
 
 @lru_cache(maxsize=None)
@@ -71,10 +72,29 @@ class GStreamer(Decoder):
         if not gst_element_exists(self.sink):
             self.sink = 'filesink'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> str:
+    def gen_pipeline(self, input_filepath: str, output_filepath: Optional[str], output_format: OutputFormat) -> str:
         '''Generate the GStreamer pipeline used to decode the test vector'''
         # pylint: disable=unused-argument
-        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output_filepath)
+        output = "location={}".format(output_filepath) if output_filepath else ""
+        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output)
+
+    def parse_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
+        '''Parse the MD5 sum out of commandline output'''
+        md5sum = "error"
+        for line in filter(None, data):
+            if verbose:
+                print(line, end='')
+            pattern = "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
+            sum_start = line.find(pattern)
+            if sum_start > 0:
+                sum_start += len(pattern)
+                sum_end = line[sum_start:].find(";")
+                if sum_end > 0:
+                    sum_end += sum_start
+                    md5sum = line[sum_start:sum_end]
+                    if not verbose:
+                        return md5sum
+        return md5sum
 
     def decode(
         self,
@@ -83,8 +103,32 @@ class GStreamer(Decoder):
         output_format: OutputFormat,
         timeout: int,
         verbose: bool,
+        keep_files: bool,
     ) -> str:
         '''Decode the test vector and do the checksum'''
+        # When using videocodectestsink we can avoid writing files to disk
+        # completely, or avoid a full raw file read in order to compute the MD5
+        # SUM.
+        if self.sink == 'videocodectestsink':
+            output_param = output_filepath if keep_files else None
+            pipeline = self.gen_pipeline(
+                input_filepath, output_param, output_format)
+            command = shlex.split(pipeline)
+            command.append("-m")
+            serr = subprocess.DEVNULL if not verbose else None
+            if verbose:
+                print(f'\nRunning command "{" ".join(command)}"')
+
+            try:
+                with subprocess.Popen(command, stdout=subprocess.PIPE,
+                                      stderr=serr, universal_newlines=True) as pipe:
+                    data = pipe.communicate(timeout=timeout)
+                    return self.parse_md5sum(data, verbose)
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
+                # Developer experience improvement (facilitates copy/paste)
+                ex.cmd = " ".join(ex.cmd)
+                raise ex
+
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
@@ -115,9 +159,10 @@ class GStreamer10Video(GStreamer):
     sink = 'videocodectestsink'
     provider = 'GStreamer'
 
-    def gen_pipeline(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> str:
+    def gen_pipeline(self, input_filepath: str, output_filepath: Optional[str], output_format: OutputFormat) -> str:
         caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}'
-        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output_filepath)
+        output = "location={}".format(output_filepath) if output_filepath else ""
+        return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output)
 
 
 class GStreamer10Audio(GStreamer):
@@ -162,7 +207,6 @@ class GStreamerLibavVP8(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = ' ivfparse ! avdec_vp8 '
     api = 'Libav'
-    sink = 'filesink'
     hw_acceleration = False
 
 
@@ -344,7 +388,6 @@ class GStreamerLibvpxVP8(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = ' ivfparse ! vp8dec '
     api = 'libvpx'
-    sink = 'filesink'
     hw_acceleration = False
 
 

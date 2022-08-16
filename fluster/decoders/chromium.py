@@ -48,7 +48,9 @@ class ChromiumH264(Decoder):
             output_format: OutputFormat,
             timeout: int,
             verbose: bool,
+            keep_files: bool,
     ) -> str:
+        # pylint: disable=unused-argument
         return str(main(input_filepath))
 
     @lru_cache(maxsize=None)

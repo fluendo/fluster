@@ -52,8 +52,10 @@ class FFmpegDecoder(Decoder):
         output_format: OutputFormat,
         timeout: int,
         verbose: bool,
+        keep_files: bool,
     ) -> str:
         '''Decodes input_filepath in output_filepath'''
+        # pylint: disable=unused-argument
         cmd = shlex.split(FFMPEG_TPL.format(
             self.cmd, input_filepath, str(output_format.value), output_filepath))
         run_command(cmd, timeout=timeout, verbose=verbose)

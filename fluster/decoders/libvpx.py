@@ -43,8 +43,10 @@ class VPXDecoder(Decoder):
         output_format: OutputFormat,
         timeout: int,
         verbose: bool,
+        keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
+        # pylint: disable=unused-argument
         run_command(
             [self.binary, "--i420", input_filepath, "-o", output_filepath],
             timeout=timeout,

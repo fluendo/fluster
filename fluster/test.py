@@ -74,6 +74,7 @@ class Test(unittest.TestCase):
                 self.test_vector.output_format,
                 self.timeout,
                 self.verbose,
+                self.keep_files,
             )
         except TimeoutExpired:
             self.test_suite.test_vectors[
