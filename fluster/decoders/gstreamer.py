@@ -78,8 +78,9 @@ class GStreamer(Decoder):
         output = "location={}".format(output_filepath) if output_filepath else ""
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output)
 
-    def parse_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
-        '''Parse the MD5 sum out of commandline output'''
+    def parse_videocodectestsink_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
+        '''Parse the MD5 sum out of commandline output produced when using
+        videocodectestsink.'''
         md5sum = "error"
         for line in filter(None, data):
             if verbose:
@@ -123,7 +124,7 @@ class GStreamer(Decoder):
                 with subprocess.Popen(command, stdout=subprocess.PIPE,
                                       stderr=serr, universal_newlines=True) as pipe:
                     data = pipe.communicate(timeout=timeout)
-                    return self.parse_md5sum(data, verbose)
+                    return self.parse_videocodectestsink_md5sum(data, verbose)
             except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
                 # Developer experience improvement (facilitates copy/paste)
                 ex.cmd = " ".join(ex.cmd)
