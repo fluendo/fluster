@@ -127,6 +127,12 @@ class GStreamer(Decoder):
                 with subprocess.Popen(command, stdout=subprocess.PIPE,
                                       stderr=serr, universal_newlines=True) as pipe:
                     data = pipe.communicate(timeout=timeout)
+                    if pipe.returncode:
+                        if verbose:
+                            for line in filter(None, data):
+                                print(line, end='')
+                        raise subprocess.CalledProcessError(cmd=command,
+                                returncode=pipe.returncode, stderr=data)
                     return self.parse_videocodectestsink_md5sum(data, verbose)
             except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
                 # Developer experience improvement (facilitates copy/paste)
