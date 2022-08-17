@@ -25,7 +25,7 @@ from typing import Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command, normalize_binary_cmd
+from fluster.utils import file_checksum, run_command, run_pipe_command_with_std_output, normalize_binary_cmd
 
 PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} {}'
 
@@ -116,28 +116,14 @@ class GStreamer(Decoder):
         if self.sink == 'videocodectestsink':
             output_param = output_filepath if keep_files else None
             pipeline = self.gen_pipeline(
-                input_filepath, output_param, output_format)
+                input_filepath, output_param, output_format
+            )
             command = shlex.split(pipeline)
             command.append("-m")
-            serr = subprocess.DEVNULL if not verbose else subprocess.PIPE
-            if verbose:
-                print(f'\nRunning command "{" ".join(command)}"')
-
-            try:
-                with subprocess.Popen(command, stdout=subprocess.PIPE,
-                                      stderr=serr, universal_newlines=True) as pipe:
-                    data = pipe.communicate(timeout=timeout)
-                    if pipe.returncode:
-                        if verbose:
-                            for line in filter(None, data):
-                                print(line, end='')
-                        raise subprocess.CalledProcessError(cmd=command,
-                                returncode=pipe.returncode, stderr=data)
-                    return self.parse_videocodectestsink_md5sum(data, verbose)
-            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
-                # Developer experience improvement (facilitates copy/paste)
-                ex.cmd = " ".join(ex.cmd)
-                raise ex
+            data = run_pipe_command_with_std_output(
+                command, timeout=timeout, verbose=verbose
+            )
+            return self.parse_videocodectestsink_md5sum(data, verbose)
 
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)

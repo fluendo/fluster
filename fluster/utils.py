@@ -25,7 +25,7 @@ import subprocess
 import urllib.request
 import zipfile
 import platform
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
@@ -64,6 +64,36 @@ def run_command(
         print(f'\nRunning command "{" ".join(command)}"')
     try:
         subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
+        # Developer experience improvement (facilitates copy/paste)
+        ex.cmd = " ".join(ex.cmd)
+        raise ex
+
+
+def run_pipe_command_with_std_output(
+    command: List[str],
+    verbose: bool = False,
+    check: bool = True,
+    timeout: Optional[int] = None,
+) -> Tuple[str, str]:
+    """Runs a command and returns std output trace"""
+    serr = subprocess.DEVNULL if not verbose else subprocess.PIPE
+    if verbose:
+        print(f'\nRunning command "{" ".join(command)}"')
+
+    try:
+        with subprocess.Popen(
+            command, stdout=subprocess.PIPE, stderr=serr, universal_newlines=True
+        ) as pipe:
+            data = pipe.communicate(timeout=timeout)
+            if check and pipe.returncode:
+                if verbose:
+                    for line in filter(None, data):
+                        print(line, end="")
+                raise subprocess.CalledProcessError(
+                    cmd=command, returncode=pipe.returncode
+                )
+            return data
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
