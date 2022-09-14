@@ -585,7 +585,7 @@ class FluendoH264Gst010Decoder(GStreamer010Video):
 class FluendoH264VAGst10Decoder(GStreamer10Video):
     '''Fluendo H.264 hardware decoder implementation for GStreamer 1.0'''
     codec = Codec.H264
-    decoder_bin = ' h264parse ! fluvadec '
+    decoder_bin = ' h264parse ! fluhwvadec '
     provider = 'Fluendo'
     api = 'HW'
     hw_acceleration = True
@@ -597,7 +597,7 @@ class FluendoH265VAGst10DecoderBase(GStreamer10Video):
     decoder_bin_tmpl =\
         ' h265parse !'\
         ' video/x-h265,stream-format={stream_format},alignment={alignment} !'\
-        ' fluvadec '
+        ' fluhwvadec '
     provider = 'Fluendo'
     api = 'HW'
     hw_acceleration = True
@@ -674,22 +674,22 @@ class FluendoH265Hvc1NalVAGst10Decoder(FluendoH265VAGst10DecoderBase):
 class FluendoFluVAH265DecGst10Decoder(GStreamer10Video):
     '''Fluendo H.265 separated plugin hardware decoder for GStreamer 1.0'''
     codec = Codec.H265
-    decoder_bin = ' h265parse ! fluvah265dec '
+    decoder_bin = ' h265parse ! fluhwvah265dec '
     provider = 'Fluendo'
     api = 'HW'
     hw_acceleration = True
-    name = f'{provider}-{codec.value}-{api}-vah265dec-Gst1.0'
+    name = f'{provider}-{codec.value}-{api}-hwvah265dec-Gst1.0'
 
 
 @register_decoder
 class FluendoFluVAH264DecGst10Decoder(GStreamer10Video):
     '''Fluendo H.264 separated plugin hardware decoder for GStreamer 1.0'''
     codec = Codec.H264
-    decoder_bin = ' h264parse ! fluvah264dec '
+    decoder_bin = ' h264parse ! fluhwvah264dec '
     provider = 'Fluendo'
     api = 'HW'
     hw_acceleration = True
-    name = f'{provider}-{codec.value}-{api}-vah264dec-Gst1.0'
+    name = f'{provider}-{codec.value}-{api}-hwvah264dec-Gst1.0'
 
 
 @register_decoder
