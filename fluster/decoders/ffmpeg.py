@@ -36,12 +36,16 @@ class FFmpegDecoder(Decoder):
     description = ""
     cmd = ""
     api = ""
+    wrapper = False
 
     def __init__(self) -> None:
         super().__init__()
         self.cmd = self.binary
         if self.hw_acceleration:
-            self.cmd += f' -hwaccel {self.api.lower()}'
+            if self.wrapper:
+                self.cmd += f' -c:v {self.api.lower()}'
+            else:
+                self.cmd += f' -hwaccel {self.api.lower()}'
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
 
@@ -67,11 +71,21 @@ class FFmpegDecoder(Decoder):
         # pylint: disable=broad-except
         if self.hw_acceleration:
             try:
-                command = [self.binary, '-hwaccels']
+                command = None
+
+                if self.wrapper:
+                    command = [self.binary, '-decoders']
+                else:
+                    command = [self.binary, '-hwaccels']
+
                 output = subprocess.check_output(
                     command, stderr=subprocess.DEVNULL).decode('utf-8')
                 if verbose:
                     print(f'{" ".join(command)}\n{output}')
+
+                if self.wrapper:
+                    return self.api.lower() in output
+
                 return f'{os.linesep}{self.api.lower()}{os.linesep}' in output
             except Exception:
                 return False
@@ -191,3 +205,30 @@ class FFmpegH264D3d11vaDecoder(FFmpegD3d11vaDecoder):
 class FFmpegH265D3d11vaDecoder(FFmpegD3d11vaDecoder):
     '''FFmpeg D3D11VA decoder for H.265'''
     codec = Codec.H265
+
+
+@register_decoder
+class FFmpegVP8V4L2m2mDecoder(FFmpegDecoder):
+    '''FFmpeg V4L2m2m decoder for VP8'''
+    codec = Codec.VP8
+    hw_acceleration = True
+    api = 'vp8_v4l2m2m'
+    wrapper = True
+
+
+@register_decoder
+class FFmpegVP9V4L2m2mDecoder(FFmpegDecoder):
+    '''FFmpeg V4L2m2m decoder for VP9'''
+    codec = Codec.VP9
+    hw_acceleration = True
+    api = 'vp9_v4l2m2m'
+    wrapper = True
+
+
+@register_decoder
+class FFmpegH264V4L2m2mDecoder(FFmpegDecoder):
+    '''FFmpeg V4L2m2m decoder for H264'''
+    codec = Codec.H264
+    hw_acceleration = True
+    api = 'h264_v4l2m2m'
+    wrapper = True
