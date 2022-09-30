@@ -25,7 +25,7 @@ from typing import Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command, normalize_binary_cmd
+from fluster.utils import file_checksum, run_command, run_pipe_command_with_std_output, normalize_binary_cmd
 
 PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} {}'
 
@@ -78,9 +78,10 @@ class GStreamer(Decoder):
         output = "location={}".format(output_filepath) if output_filepath else ""
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output)
 
-    def parse_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
-        '''Parse the MD5 sum out of commandline output'''
-        md5sum = "error"
+    def parse_videocodectestsink_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
+        '''Parse the MD5 sum out of commandline output produced when using
+        videocodectestsink.'''
+        md5sum = None
         for line in filter(None, data):
             if verbose:
                 print(line, end='')
@@ -94,6 +95,9 @@ class GStreamer(Decoder):
                     md5sum = line[sum_start:sum_end]
                     if not verbose:
                         return md5sum
+        if not md5sum:
+            raise Exception('No MD5 found in the program trace.')
+
         return md5sum
 
     def decode(
@@ -112,22 +116,14 @@ class GStreamer(Decoder):
         if self.sink == 'videocodectestsink':
             output_param = output_filepath if keep_files else None
             pipeline = self.gen_pipeline(
-                input_filepath, output_param, output_format)
+                input_filepath, output_param, output_format
+            )
             command = shlex.split(pipeline)
             command.append("-m")
-            serr = subprocess.DEVNULL if not verbose else None
-            if verbose:
-                print(f'\nRunning command "{" ".join(command)}"')
-
-            try:
-                with subprocess.Popen(command, stdout=subprocess.PIPE,
-                                      stderr=serr, universal_newlines=True) as pipe:
-                    data = pipe.communicate(timeout=timeout)
-                    return self.parse_md5sum(data, verbose)
-            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
-                # Developer experience improvement (facilitates copy/paste)
-                ex.cmd = " ".join(ex.cmd)
-                raise ex
+            data = run_pipe_command_with_std_output(
+                command, timeout=timeout, verbose=verbose
+            )
+            return self.parse_videocodectestsink_md5sum(data, verbose)
 
         pipeline = self.gen_pipeline(
             input_filepath, output_filepath, output_format)
