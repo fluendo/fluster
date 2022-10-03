@@ -20,14 +20,16 @@
 
 import os
 from functools import lru_cache
+from typing import List, Optional, Match
 import shlex
 import subprocess
+import re
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
-FFMPEG_TPL = '{} -i {} -vf format=pix_fmts={} -f rawvideo {}'
+FFMPEG_TPL = '{} -i {} {} -vf format=pix_fmts={} -f rawvideo {}'
 
 
 class FFmpegDecoder(Decoder):
@@ -49,6 +51,26 @@ class FFmpegDecoder(Decoder):
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
 
+    @lru_cache(maxsize=None)
+    def ffmpeg_version(self) -> Optional[Match[str]]:
+        '''Returns the ffmpeg version as a re.Match object'''
+        cmd = shlex.split('ffmpeg -version')
+        output = subprocess.check_output(
+            cmd, stderr=subprocess.DEVNULL).decode('utf-8')
+        version = re.search(r"\d\.\d\.\d", output)
+        return version
+
+    def ffmpeg_cmd(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> List[str]:
+        '''Returns the formatted ffmpeg command based on the current ffmpeg version'''
+        version = self.ffmpeg_version()
+        if version and int(version.group(0)[0]) >= 5 and int(version.group(0)[2]) >= 1:
+            cmd = shlex.split(FFMPEG_TPL.format(
+                self.cmd, input_filepath, '-fps_mode passthrough', str(output_format.value), output_filepath))
+        else:
+            cmd = shlex.split(FFMPEG_TPL.format(
+                self.cmd, input_filepath, '-vsync passthrough', str(output_format.value), output_filepath))
+        return cmd
+
     def decode(
         self,
         input_filepath: str,
@@ -60,8 +82,7 @@ class FFmpegDecoder(Decoder):
     ) -> str:
         '''Decodes input_filepath in output_filepath'''
         # pylint: disable=unused-argument
-        cmd = shlex.split(FFMPEG_TPL.format(
-            self.cmd, input_filepath, str(output_format.value), output_filepath))
+        cmd = self.ffmpeg_cmd(input_filepath, output_filepath, output_format)
         run_command(cmd, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
