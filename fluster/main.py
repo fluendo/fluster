@@ -27,6 +27,7 @@ from typing import Any
 from fluster.fluster import Fluster, Context, SummaryFormat
 
 TEST_SUITES_DIR = "test_suites"
+TEST_SUITES_DIR_SYS = "/usr/share/fluster/test_suites"
 DECODERS_DIR = "decoders"
 RESOURCES_DIR = "resources"
 RESULTS_DIR = "results"
@@ -45,6 +46,15 @@ class Main:
 
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
+        self.test_suites_dir = TEST_SUITES_DIR
+        # Only use the system directory for test suites if the local directory
+        # doesn't exist and the system directory does exist.
+        if (
+            sys.platform.startswith("linux")
+            and not os.path.exists(TEST_SUITES_DIR)
+            and os.path.exists(TEST_SUITES_DIR_SYS)
+        ):
+            self.test_suites_dir = TEST_SUITES_DIR_SYS
         self.parser = self._create_parser()
 
         # Prepend to the PATH the decoders_dir so that we can run them
@@ -110,7 +120,7 @@ class Main:
             "-tsd",
             "--test-suites-dir",
             help="set the directory where test suite will be read from",
-            default=TEST_SUITES_DIR,
+            default=self.test_suites_dir,
         )
         subparsers = parser.add_subparsers(title="subcommands")
         self._add_list_cmd(subparsers)
