@@ -19,8 +19,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 
-from fluster.main import Main
+from fluster.main import fluster_main
 
 if __name__ == "__main__":
-    main = Main()
-    main.run()
+    fluster_main()
