@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fluster"
+description = "Testing framework for decoders conformance"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Pablo Marcos Oltra", email="pmarcos@fluendo.com"},
+    {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
+]
+readme = "README.md"
+requires-python = ">=3.6"
+dynamic = ["version"]
+
+[project.scripts]
+fluster = "fluster.main:fluster_main"
+
+[tool.setuptools]
+packages = ["fluster", "fluster.decoders"]

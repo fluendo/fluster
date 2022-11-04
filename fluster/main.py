@@ -34,6 +34,12 @@ RESOURCES_DIR = "resources"
 RESULTS_DIR = "results"
 
 
+def fluster_main() -> None:
+    """Entrypoint for the application."""
+    main = Main()
+    main.run()
+
+
 class Main:
     """Main class for Fluster"""
 
