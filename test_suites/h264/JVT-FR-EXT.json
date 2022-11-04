@@ -80,7 +80,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FREH10-1.zip",
             "source_checksum": "2216788546b1c66062b4aed9c0405da2",
             "input_file": "WB_10bit_QP21_I-Only_1920x1088.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "87071917ba18e58e314e40e76fecafa4"
         },
         {
@@ -88,7 +88,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FREH10-2.zip",
             "source_checksum": "46ea2bbd9e78155d539b5015cdb9eda2",
             "input_file": "WB_10bit_QP21_1920x1088.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv420p10le",
             "result": "853ed99f2badd6a8daea0c687e0c9e31"
         },
         {
@@ -152,7 +152,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FREXT1_TANDBERG_A.zip",
             "source_checksum": "5e27cba9d714ad1d8422abb64a66b0b2",
             "input_file": "FREXT1_TANDBERG_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "27b6692c6ed7cabd024bcce519498f1f"
         },
         {
@@ -160,7 +160,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FRExt2_Panasonic_C.zip",
             "source_checksum": "1bba9bb62c787fa771c833097c0153c5",
             "input_file": "FRExt2_Panasonic.avc",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "f4f02595e54be89fd9d33cb7907f5cb1"
         },
         {
@@ -168,7 +168,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FREXT2_TANDBERG_A.zip",
             "source_checksum": "a97d2780a7df8dd9a4e1132abab8e44a",
             "input_file": "FREXT2_TANDBERG_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "6462d635c5ba8ffa8e4fdefbf168faa5"
         },
         {
@@ -184,7 +184,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FREXT3_TANDBERG_A.zip",
             "source_checksum": "35d6d81400fa097af48135b25b7d5714",
             "input_file": "FREXT3_TANDBERG_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "10b71582637298df8df7eea8f6ffb3e5"
         },
         {
@@ -280,7 +280,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR10_SONY_A.zip",
             "source_checksum": "e72ef0d917f5d9681f7facb708f5e95f",
             "input_file": "Hi422FR10_SONY_B.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "b32b7847f791ce22bad747cff08ce398"
         },
         {
@@ -288,7 +288,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR11_SONY_A.zip",
             "source_checksum": "bcb56252362ff098b307c7cbe8d6cb27",
             "input_file": "Hi422FR11_SONY_B.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "f50fb1a31adf9985b864b959d890922b"
         },
         {
@@ -296,7 +296,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR12_SONY_A.zip",
             "source_checksum": "22f0a38c21f6be11f56ad59e36a32794",
             "input_file": "Hi422FR12_SONY_B.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "513afd34c94411f91dfecf2dd1880323"
         },
         {
@@ -304,7 +304,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR13_SONY_A.zip",
             "source_checksum": "e4fa8a110f484becac208431ca2238b6",
             "input_file": "Hi422FR13_SONY_B.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "412bad3d2624a83428571d1c7a6d6f92"
         },
         {
@@ -312,7 +312,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR14_SONY_A.zip",
             "source_checksum": "ca30629e2daed96b48e76a46a3773e79",
             "input_file": "Hi422FR14_SONY_B.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "43913b65400b8af68f65aa2520666030"
         },
         {
@@ -320,7 +320,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR15_SONY_A.zip",
             "source_checksum": "05f4473650aefa857d88188df793733c",
             "input_file": "Hi422FR15_SONY_B.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "234509d38715eeed66b55fa8f03074f8"
         },
         {
@@ -328,7 +328,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR1_SONY_A.zip",
             "source_checksum": "40b4b5af6846fcd73a0b9ff28392263e",
             "input_file": "Hi422FR1_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "e9828a1e3fdc1e3c1760e736ced80211"
         },
         {
@@ -336,7 +336,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR2_SONY_A.zip",
             "source_checksum": "c03cc00f35613c35da84e19c66bcfd5c",
             "input_file": "Hi422FR2_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "8da5d0e6233dfe33b251d32b68a775de"
         },
         {
@@ -344,7 +344,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR3_SONY_A.zip",
             "source_checksum": "1785867ad840137c690ef480985f981f",
             "input_file": "Hi422FR3_SONY_A/Hi422FR3_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "58516c013ae18d56abac50e80b9c7d39"
         },
         {
@@ -352,7 +352,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR4_SONY_A.zip",
             "source_checksum": "a2c6436f515119209da9787e1a5aa038",
             "input_file": "Hi422FR4_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p",
             "result": "7faa9c7c38da168dff60eaf9528c9544"
         },
         {
@@ -360,7 +360,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR6_SONY_A.zip",
             "source_checksum": "b43a18a54e661aac1cf42871c1430d4f",
             "input_file": "Hi422FR6_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "9681ee446d3f9247553ad2b7ed34f562"
         },
         {
@@ -368,7 +368,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR7_SONY_A.zip",
             "source_checksum": "42132542bd2e4dea2648daadf370c413",
             "input_file": "Hi422FR7_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "6c044824f67d9b06b26fa1e2bb9c7946"
         },
         {
@@ -376,7 +376,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR8_SONY_A.zip",
             "source_checksum": "c762f93fffe662e496e9fc35e8252343",
             "input_file": "Hi422FR8_SONY_A/Hi422FR8_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "facb28dec0ad67a1786a8e5d6735c77f"
         },
         {
@@ -384,7 +384,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FR9_SONY_A.zip",
             "source_checksum": "6926ed0a9dec9e07c46bf4657cc902fd",
             "input_file": "Hi422FR9_SONY_A.jsv",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "80039bfe8c1d434d27743a3538bfb209"
         },
         {
@@ -392,7 +392,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FREXT16_SONY_A.zip",
             "source_checksum": "67fab279d404b17e28adfb643c842b34",
             "input_file": "Hi422FREXT16_SONY_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "7c05357a73524cff43a503b24738b1b7"
         },
         {
@@ -400,7 +400,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FREXT17_SONY_A.zip",
             "source_checksum": "85d69360c274b8a75e1009d1c237d50d",
             "input_file": "Hi422FREXT17_SONY_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "f8db7da8040bb4d70a9443383215a9b8"
         },
         {
@@ -408,7 +408,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FREXT18_SONY_A.zip",
             "source_checksum": "fc8cf974a6b7c144199960ebbab52539",
             "input_file": "Hi422FREXT18_SONY_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "2d6d8e2651b15c2daa217aefc11bc3ea"
         },
         {
@@ -416,7 +416,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/Hi422FREXT19_SONY_A.zip",
             "source_checksum": "da3ffd7f22348dfbafc6406d6af0d57d",
             "input_file": "Hi422FREXT19_SONY_A.264",
-            "output_format": "yuv420p",
+            "output_format": "yuv422p10le",
             "result": "dd3bff803ddd05120e08b1034f390fcc"
         },
         {
