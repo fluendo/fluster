@@ -41,9 +41,14 @@ class AV1AOMDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
+        fmt = None
+        if output_format == OutputFormat.YUV420P:
+            fmt = "--i420"
+        else:
+            fmt = "--rawvideo"
         # pylint: disable=unused-argument
         run_command(
-            [self.binary, "--i420", input_filepath, "-o", output_filepath],
+            [self.binary, fmt, input_filepath, "-o", output_filepath],
             timeout=timeout,
             verbose=verbose,
         )
