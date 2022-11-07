@@ -1,0 +1,55 @@
+{
+    "name": "VP9-TEST-VECTORS-HIGH",
+    "codec": "VP9",
+    "description": "VP9 High Bit Depth Test Vectors from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/",
+    "test_vectors": [
+        {
+            "name": "vp92-2-20-10bit-yuv420.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp92-2-20-10bit-yuv420.webm",
+            "source_checksum": "d3f9379a229d170da71191da63c47794",
+            "input_file": "vp92-2-20-10bit-yuv420.webm",
+            "output_format": "yuv420p10le",
+            "result": "a16b99df180c584e8db2ffeda987d293"
+        },
+        {
+            "name": "vp92-2-20-12bit-yuv420.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp92-2-20-12bit-yuv420.webm",
+            "source_checksum": "bf1a456581f2fee88d65af81e3128cef",
+            "input_file": "vp92-2-20-12bit-yuv420.webm",
+            "output_format": "yuv420p12le",
+            "result": "c3b776bc952c461ba29950733d8b9f8c"
+        },
+        {
+            "name": "vp93-2-20-10bit-yuv422.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp93-2-20-10bit-yuv422.webm",
+            "source_checksum": "b784b3dca0cf6e9a56532cd6b98e59ef",
+            "input_file": "vp93-2-20-10bit-yuv422.webm",
+            "output_format": "yuv422p10le",
+            "result": "f5774d6dde2d211026e58e81147bb392"
+        },
+        {
+            "name": "vp93-2-20-12bit-yuv422.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp93-2-20-12bit-yuv422.webm",
+            "source_checksum": "e092993216d707692b08e39a5238928f",
+            "input_file": "vp93-2-20-12bit-yuv422.webm",
+            "output_format": "yuv422p12le",
+            "result": "868d373e8bca2f5cd8226abd03495d43"
+        },
+        {
+            "name": "vp93-2-20-10bit-yuv444.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp93-2-20-10bit-yuv444.webm",
+            "source_checksum": "5b133ecf053915d9fb83349633639014",
+            "input_file": "vp93-2-20-10bit-yuv444.webm",
+            "output_format": "yuv444p10le",
+            "result": "c05c5b755f485e180619599182d5b735"
+        },
+        {
+            "name": "vp93-2-20-12bit-yuv444.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp93-2-20-12bit-yuv444.webm",
+            "source_checksum": "136ab9ecb239c29a37f50b8956efa7a0",
+            "input_file": "vp93-2-20-12bit-yuv444.webm",
+            "output_format": "yuv444p12le",
+            "result": "fcbdf6d98d4c8d25c58a48026e45206e"
+        }
+    ]
+}
