@@ -2426,6 +2426,22 @@
             "input_file": "vp90-2-22-svc_1280x720_3.ivf",
             "output_format": "yuv420p",
             "result": "fbdd9f9bb30c27434d50c1258fe80491"
+        },
+        {
+            "name": "vp91-2-04-yuv422.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp91-2-04-yuv422.webm",
+            "source_checksum": "b1f5f0dc338bc85a73c8490136ec9483",
+            "input_file": "vp91-2-04-yuv422.webm",
+            "output_format": "yuv422p",
+            "result": "405879f80ecad20ccb1ce2786a279d3f"
+        },
+        {
+            "name": "vp91-2-04-yuv444.webm",
+            "source": "https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/vp91-2-04-yuv444.webm",
+            "source_checksum": "e96cf0e6e8e802d257113178e3bcfc20",
+            "input_file": "vp91-2-04-yuv444.webm",
+            "output_format": "yuv444p",
+            "result": "bd36f9e7cd888fb94f21c9d194cea7ff"
         }
     ]
 }
