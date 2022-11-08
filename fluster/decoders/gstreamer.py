@@ -46,7 +46,12 @@ def gst_element_exists(element: str) -> bool:
 
 def output_format_to_gst(output_format: OutputFormat) -> str:
     """Return GStreamer pixel format"""
-    mapping = {OutputFormat.YUV420P: "I420", OutputFormat.YUV420P10LE: "I420_10LE"}
+    mapping = {
+        OutputFormat.YUV420P: "I420",
+        OutputFormat.YUV422P: "Y42B",
+        OutputFormat.YUV420P10LE: "I420_10LE",
+        OutputFormat.YUV422P10LE: "I422_10LE",
+    }
     if output_format not in mapping:
         raise Exception(f"No matching output format found in GStreamer for {output_format}")
     return mapping[output_format]

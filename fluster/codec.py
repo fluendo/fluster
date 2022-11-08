@@ -39,4 +39,6 @@ class OutputFormat(Enum):
 
     NONE = "None"
     YUV420P = "yuv420p"
+    YUV422P = "yuv422p"
     YUV420P10LE = "yuv420p10le"
+    YUV422P10LE = "yuv422p10le"
