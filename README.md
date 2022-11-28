@@ -217,7 +217,7 @@ VP9
 ```bash
 ./fluster.py --help
 
-usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR] {list,l,run,r,download,d,reference} ...
+usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR] {list,l,run,r,download,d,reference,f} ...
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -234,7 +234,7 @@ subcommands:
     list (l)            show list of available test suites and decoders
     run (r)             run test suites for decoders
     download (d)        downloads test suites resources
-    reference (r)       use a specific decoder to set its results for the test suites given
+    reference (f)       use a specific decoder to set its results for the test suites given
 ```
 
 ### List
