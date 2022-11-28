@@ -249,7 +249,7 @@ class Main:
     def _add_reference_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser(
             "reference",
-            aliases=["r"],
+            aliases=["f"],
             help="use a specific decoder to set its results for the test suites given",
         )
         subparser.add_argument(
