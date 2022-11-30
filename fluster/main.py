@@ -111,7 +111,7 @@ class Main:
         parser.add_argument(
             "-tsd",
             "--test-suites-dir",
-            help="set the directory where test suite will be read",
+            help="set the directory where test suite will be read from",
             default=TEST_SUITES_DIR,
         )
         subparsers = parser.add_subparsers(title="subcommands")
@@ -234,7 +234,7 @@ class Main:
         subparser.add_argument(
             "-tth",
             "--time-threshold",
-            help="set exit code to 3 if test suite takes longer than treshold seconds. "
+            help="set exit code to 3 if test suite takes longer than threshold seconds. "
             "exit code is 0 otherwise",
             type=float,
         )

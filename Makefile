@@ -67,7 +67,7 @@ lint: format-check ## run static analysis using pylint, flake8 and mypy
 
 create_dirs=mkdir -p $(CONTRIB_DIR) $(DECODERS_DIR)
 
-all_reference_decoders: h265_reference_decoder h264_reference_decoder aac_reference_decoder ## build all reference decoders
+all_reference_decoders: h264_reference_decoder h265_reference_decoder h266_reference_decoder aac_reference_decoder ## build all reference decoders
 
 h266_reference_decoder: ## build H.266 reference decoder
 	$(create_dirs)
@@ -97,6 +97,11 @@ endif
 ifeq ($(dpkg -l | grep g++-multilib), "")
 	sudo apt-get install g++-multilib
 endif
+ifeq ($(wildcard /usr/include/asm), )
+ifneq ($(wildcard /usr/include/asm-generic), )
+		sudo ln -s /usr/include/asm-generic /usr/include/asm
+endif
+endif
 
 ifeq ($(wildcard $(CONTRIB_DIR)/C050470e_Electronic_inserts), )
 	$(create_dirs)
@@ -121,8 +126,9 @@ else ifeq ($(KERNEL_NAME), Linux)
 else ifeq ($(KERNEL_NAME), Darwin)
 	cd $(CONTRIB_DIR) && cp isobmff/IsoLib/libisomediafile/macosx/MP4OSMacros.h C050470e_Electronic_inserts/audio/natural/import/include/ || true
 endif
-	cd $(CONTRIB_DIR) && wget http://www-mmsp.ece.mcgill.ca/Documents/Downloads/libtsp/libtsp-v7r0.tar.gz
+	cd $(CONTRIB_DIR) && wget --no-check-certificate https://www-mmsp.ece.mcgill.ca/Documents/Downloads/libtsp/libtsp-v7r0.tar.gz
 	cd $(CONTRIB_DIR) && tar -zxf libtsp-v7r0.tar.gz && chmod -R ugo=rwx libtsp-v7r0/ && cd libtsp-v7r0/ && $(MAKE) -s COPTS=-m32
+	cd $(CONTRIB_DIR) && rm -f libtsp-v7r0.tar.gz
 	cd $(CONTRIB_DIR) && cp libtsp-v7r0/lib/libtsp.a C050470e_Electronic_inserts/audio/natural/import/lib/
 	cd $(CONTRIB_DIR) && cp libtsp-v7r0/include/libtsp.h C050470e_Electronic_inserts/audio/natural/import/include/
 	cd $(CONTRIB_DIR) && mkdir C050470e_Electronic_inserts/audio/natural/import/include/libtsp/
@@ -131,6 +137,12 @@ endif
 endif
 	cd $(CONTRIB_DIR)/C050470e_Electronic_inserts/audio/natural/mp4mcDec && MAKELEVEL=0 $(MAKE) mp4audec_mc REFSOFT_INCLUDE_PATH=../import/include REFSOFT_LIBRARY_PATH=../import/lib CFLAGS=-m32 LDFLAGS=-m32
 	find $(CONTRIB_DIR)/C050470e_Electronic_inserts/audio/natural/bin/mp4mcDec -name "mp4audec_mc" -type f -exec cp {} $(DECODERS_DIR) \;
+
+ifneq ($(wildcard /usr/include/asm), )
+ifneq ($(wildcard /usr/include/asm-generic), )
+		sudo unlink /usr/include/asm
+endif
+endif
 
 clean: ## remove contrib temporary folder
 	rm -rf $(CONTRIB_DIR)
