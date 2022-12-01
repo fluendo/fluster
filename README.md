@@ -297,7 +297,7 @@ H266
 ./fluster.py --help
 
 usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR]
-                  {list,l,run,r,download,d,reference,f} ...
+{list,l,run,r,download,d,reference,f} ...
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -340,11 +340,9 @@ optional arguments:
 ./fluster.py run --help
 
 usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
-                      [-ts TESTSUITES [TESTSUITES ...]]
-                      [-tv TESTVECTORS [TESTVECTORS ...]]
-                      [-d DECODERS [DECODERS ...]] [-s] [-so SUMMARY_OUTPUT]
-                      [-f {md,csv,junitxml}] [-k] [-th THRESHOLD]
-                      [-tth TIME_THRESHOLD] [-v]
+[-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]]
+[-d DECODERS [DECODERS ...]] [-s] [-so SUMMARY_OUTPUT]
+[-f {md,csv,junitxml}] [-k] [-th THRESHOLD] [-tth TIME_THRESHOLD] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -401,7 +399,7 @@ optional arguments:
 ./fluster.py reference --help
 
 usage: fluster.py reference [-h] [-j JOBS] [-t TIMEOUT] [-q] [-v]
-                            decoder testsuites [testsuites ...]
+decoder testsuites [testsuites ...]
 
 positional arguments:
   decoder               decoder to run
@@ -522,9 +520,9 @@ Copyright (C) 2020-2022, Fluendo, S.A.
   Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 
 This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation, 
-version 3 of the License.
+modify it under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation, either version 3
+of the License, or (at your option) any later version.
 
 This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
