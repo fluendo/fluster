@@ -128,7 +128,7 @@ class TestSuite:
         cls: Type["TestSuite"], filename: str, resources_dir: str
     ) -> "TestSuite":
         """Create a TestSuite instance from a file"""
-        with open(filename) as json_file:
+        with open(filename, encoding="utf-8") as json_file:
             data = json.load(json_file)
             if "failing_test_vectors" in data:
                 data["failing_test_vectors"] = dict(
@@ -140,7 +140,7 @@ class TestSuite:
 
     def to_json_file(self, filename: str) -> None:
         """Serialize the test suite to a file"""
-        with open(filename, "w") as json_file:
+        with open(filename, "w", encoding="utf-8") as json_file:
             data = self.__dict__.copy()
             data.pop("resources_dir")
             data.pop("filename")
@@ -290,7 +290,7 @@ class TestSuite:
             max_length = max(max_length, length)
         return max_length
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def _get_result_line(
         self,
         test_suite_text: str,
@@ -420,7 +420,7 @@ class TestSuite:
     def generate_tests(self, ctx: Context) -> List[Test]:
         """Generate the tests for a decoder"""
         tests = []
-        test_vectors_run = dict()
+        test_vectors_run = {}
         for name, test_vector in self.test_vectors.items():
             if ctx.test_vectors:
                 if test_vector.name.lower() not in ctx.test_vectors:

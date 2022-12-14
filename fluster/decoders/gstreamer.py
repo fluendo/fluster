@@ -83,7 +83,7 @@ class GStreamer(Decoder):
     def gen_pipeline(self, input_filepath: str, output_filepath: Optional[str], output_format: OutputFormat) -> str:
         '''Generate the GStreamer pipeline used to decode the test vector'''
         # pylint: disable=unused-argument
-        output = "location={}".format(output_filepath) if output_filepath else ""
+        output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output)
 
     def parse_videocodectestsink_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
@@ -138,7 +138,7 @@ class GStreamer(Decoder):
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         '''Check if GStreamer decoder is valid (better than gst-inspect)'''
         # pylint: disable=broad-except
@@ -165,7 +165,7 @@ class GStreamer10Video(GStreamer):
 
     def gen_pipeline(self, input_filepath: str, output_filepath: Optional[str], output_format: OutputFormat) -> str:
         caps = f'{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}'
-        output = "location={}".format(output_filepath) if output_filepath else ""
+        output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output)
 
 

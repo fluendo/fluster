@@ -146,7 +146,7 @@ class Fluster:
         self.decoders = DECODERS
         self.emoji = EMOJI_RESULT if use_emoji else TEXT_RESULT
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def _load_test_suites(self) -> None:
         for root, _, files in os.walk(self.test_suites_dir):
             for file in files:
@@ -172,9 +172,9 @@ class Fluster:
                 decoders_dict[dec.codec] = []
             decoders_dict[dec.codec].append(dec)
 
-        for codec in decoders_dict:
+        for codec, decoder_list in decoders_dict.items():
             print(f'\n{str(codec).split(".")[1]}')
-            for decoder in decoders_dict[codec]:
+            for decoder in decoder_list:
                 string = f"{decoder}"
                 if check:
                     string += "... " + (
