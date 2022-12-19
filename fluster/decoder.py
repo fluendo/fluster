@@ -18,8 +18,7 @@
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
-from typing import Type
-
+from typing import List, Type
 from fluster.codec import OutputFormat, Codec
 from fluster.utils import normalize_binary_cmd
 
@@ -52,7 +51,7 @@ class Decoder(ABC):
         """Decodes input_filepath in output_filepath"""
         raise Exception("Not implemented")
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         """Checks whether the decoder can be run"""
         if hasattr(self, "binary") and self.binary:
@@ -70,14 +69,11 @@ class Decoder(ABC):
         return f"    {self.name}: {self.description}"
 
 
-DECODERS = []
+DECODERS: List[Decoder] = []
 
 
 def register_decoder(cls: Type[Decoder]) -> Type[Decoder]:
     """Register a new decoder implementation"""
-    # pylint: disable=global-statement
-    global DECODERS
-    # pylint: enable=global-statement
     DECODERS.append(cls())
     DECODERS.sort(key=lambda dec: dec.name)
     return cls

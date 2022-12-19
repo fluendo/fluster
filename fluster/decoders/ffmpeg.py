@@ -49,7 +49,7 @@ class FFmpegDecoder(Decoder):
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def ffmpeg_version(self) -> Optional[Match[str]]:
         '''Returns the ffmpeg version as a re.Match object'''
         cmd = shlex.split('ffmpeg -version')
@@ -84,7 +84,7 @@ class FFmpegDecoder(Decoder):
         run_command(cmd, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         '''Checks whether the decoder can be run'''
         # pylint: disable=broad-except
