@@ -52,7 +52,7 @@ class ChromiumH264(Decoder):
         # pylint: disable=unused-argument
         return str(main(input_filepath))
 
-    @lru_cache(maxsize=None)
+    @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         if verbose and not HAS_FLUSTER_CHROMIUM:
             print("Decoder is not available, module fluster-chromium not installed")

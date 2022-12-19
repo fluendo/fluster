@@ -117,7 +117,7 @@ def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
             else:
                 zip_file.extractall(path=output_dir)
     else:
-        raise Exception("Unknown tarball format %s" % filepath)
+        raise Exception(f"Unknown tarball format {filepath}")
 
 
 def normalize_binary_cmd(cmd: str) -> str:
