@@ -46,12 +46,14 @@ class Main:
 
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
-        self.test_suites_dir = TEST_SUITES_DIR
+        self.test_suites_dir = os.path.join(
+            os.path.join(os.path.dirname(__file__), ".."), TEST_SUITES_DIR
+        )
         # Only use the system directory for test suites if the local directory
         # doesn't exist and the system directory does exist.
         if (
             sys.platform.startswith("linux")
-            and not os.path.exists(TEST_SUITES_DIR)
+            and not os.path.exists(self.test_suites_dir)
             and os.path.exists(TEST_SUITES_DIR_SYS)
         ):
             self.test_suites_dir = TEST_SUITES_DIR_SYS
