@@ -22,6 +22,7 @@ import os
 import multiprocessing
 import sys
 from importlib import util
+from pathlib import Path
 from typing import Any
 
 from fluster.fluster import Fluster, Context, SummaryFormat
@@ -46,12 +47,12 @@ class Main:
 
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
-        self.test_suites_dir = TEST_SUITES_DIR
+        self.test_suites_dir = os.path.join(Path(__file__).parent.parent,TEST_SUITES_DIR)
         # Only use the system directory for test suites if the local directory
         # doesn't exist and the system directory does exist.
         if (
             sys.platform.startswith("linux")
-            and not os.path.exists(TEST_SUITES_DIR)
+            and not os.path.exists(self.test_suites_dir)
             and os.path.exists(TEST_SUITES_DIR_SYS)
         ):
             self.test_suites_dir = TEST_SUITES_DIR_SYS
