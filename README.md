@@ -16,6 +16,7 @@ suites.
 - [Fluster](#fluster)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
+  - [How to get started] (#how-to-get-started)
   - [How to use](#how-to-use)
   - [Test Suites](#test-suites)
   - [Decoders](#decoders)
@@ -60,6 +61,16 @@ decoders.
 In order to run the tests for the different test suites and decoders, a
 `resources` directory containing all the input files for each test suite needs
 to be collected first.
+
+## How to get started
+
+- Clone the repository: `git clone https://github.com/fluendo/fluster.git`
+
+or
+
+- [Release source code](https://github.com/fluendo/fluster/releases) assets are available in the following formats zip, tar.gz
+
+Find more about how to use Fluster in the next section.
 
 ## How to use
 
