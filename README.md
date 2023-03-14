@@ -16,7 +16,7 @@ suites.
 - [Fluster](#fluster)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
-  - [How to get started] (#how-to-get-started)
+  - [How to get started](#how-to-get-started)
   - [How to use](#how-to-use)
   - [Test Suites](#test-suites)
   - [Decoders](#decoders)
