@@ -57,6 +57,14 @@ class Main:
             and os.path.exists(TEST_SUITES_DIR_SYS)
         ):
             self.test_suites_dir = TEST_SUITES_DIR_SYS
+
+        self.resources_dir = os.path.join(
+            os.path.join(os.path.dirname(__file__), ".."), RESOURCES_DIR
+        )
+        self.results_dir = os.path.join(
+            os.path.join(os.path.dirname(__file__), ".."), RESULTS_DIR
+        )
+
         self.parser = self._create_parser()
 
         # Prepend to the PATH the decoders_dir so that we can run them
@@ -104,13 +112,13 @@ class Main:
             "-r",
             "--resources",
             help="set the directory where resources are taken from",
-            default=RESOURCES_DIR,
+            default=self.resources_dir,
         )
         parser.add_argument(
             "-o",
             "--output",
             help="set the directory where test results will be stored",
-            default=RESULTS_DIR,
+            default=self.results_dir,
         )
         parser.add_argument(
             "-ne",
