@@ -27,7 +27,20 @@ from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
-FFMPEG_TPL = '{} -i {} {} -vf format=pix_fmts={} -f rawvideo {}'
+FFMPEG_TPL = '{} -i {} {} -vf {}format=pix_fmts={} -f rawvideo {}'
+
+
+def output_format_to_ffformat(output_format: OutputFormat) -> str:
+    """Return GStreamer pixel format"""
+    mapping = {
+        OutputFormat.YUV420P: "nv12",
+        OutputFormat.YUV422P: "nv12",  # vulkan
+        OutputFormat.YUV420P10LE: "p010",
+        OutputFormat.YUV422P10LE: "p012",
+    }
+    if output_format not in mapping:
+        raise Exception(f"No matching output format found in FFmpeg for {output_format}")
+    return mapping[output_format]
 
 
 class FFmpegDecoder(Decoder):
@@ -37,11 +50,15 @@ class FFmpegDecoder(Decoder):
     cmd = ""
     api = ""
     wrapper = False
+    hw_download = False
+    init_device = ""
 
     def __init__(self) -> None:
         super().__init__()
         self.cmd = self.binary
         if self.hw_acceleration:
+            if self.init_device:
+                self.cmd += f' -init_hw_device "{self.init_device}" -hwaccel_output_format {self.api.lower()}'
             if self.wrapper:
                 self.cmd += f' -c:v {self.api.lower()}'
             else:
@@ -61,12 +78,15 @@ class FFmpegDecoder(Decoder):
     def ffmpeg_cmd(self, input_filepath: str, output_filepath: str, output_format: OutputFormat) -> List[str]:
         '''Returns the formatted ffmpeg command based on the current ffmpeg version'''
         version = self.ffmpeg_version()
+        download = ""
+        if self.hw_acceleration and self.hw_download:
+            download = f'hwdownload,format={output_format_to_ffformat (output_format)},'
         if version and int(version.group(0)[0]) >= 5 and int(version.group(0)[2]) >= 1:
             cmd = shlex.split(FFMPEG_TPL.format(
-                self.cmd, input_filepath, '-fps_mode passthrough', str(output_format.value), output_filepath))
+                self.cmd, input_filepath, '-fps_mode passthrough', download, str(output_format.value), output_filepath))
         else:
             cmd = shlex.split(FFMPEG_TPL.format(
-                self.cmd, input_filepath, '-vsync passthrough', str(output_format.value), output_filepath))
+                self.cmd, input_filepath, '-vsync passthrough', download, str(output_format.value), output_filepath))
         return cmd
 
     def decode(
@@ -251,3 +271,23 @@ class FFmpegH264V4L2m2mDecoder(FFmpegDecoder):
     hw_acceleration = True
     api = 'h264_v4l2m2m'
     wrapper = True
+
+
+class FFmpegVulkanDecoder(FFmpegDecoder):
+    '''Generic class for FFmpeg Vulkan decoder'''
+    hw_acceleration = True
+    api = 'Vulkan'
+    init_device = "vulkan"
+    hw_download = True
+
+
+@register_decoder
+class FFmpegH264VulkanDecoder(FFmpegVulkanDecoder):
+    '''FFmpeg Vulkan decoder for H.264'''
+    codec = Codec.H264
+
+
+@register_decoder
+class FFmpegH265VulkanDecoder(FFmpegVulkanDecoder):
+    '''FFmpeg Vulkan decoder for H.265'''
+    codec = Codec.H265
