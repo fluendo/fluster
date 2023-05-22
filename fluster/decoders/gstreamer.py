@@ -25,7 +25,7 @@ from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command, run_pipe_command_with_std_output, normalize_binary_cmd
 
-PIPELINE_TPL = '{} filesrc location={} ! {} ! {} ! {} {}'
+PIPELINE_TPL = '{} --no-fault filesrc location={} ! {} ! {} ! {} {}'
 
 
 @lru_cache(maxsize=None)
@@ -148,7 +148,7 @@ class GStreamer(Decoder):
             else:
                 decoder_bin = self.decoder_bin
             binary = normalize_binary_cmd(f'gst-launch-{self.gst_api}')
-            pipeline = f'{binary} appsrc num-buffers=0 ! {decoder_bin} ! fakesink'
+            pipeline = f'{binary} --no-fault appsrc num-buffers=0 ! {decoder_bin} ! fakesink'
             run_command(shlex.split(pipeline), verbose=verbose)
         except Exception:
             return False
