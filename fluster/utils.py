@@ -23,7 +23,7 @@ import subprocess
 import urllib.request
 import zipfile
 import platform
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
@@ -73,26 +73,32 @@ def run_pipe_command_with_std_output(
     verbose: bool = False,
     check: bool = True,
     timeout: Optional[int] = None,
-) -> Tuple[str, str]:
+) -> List[str]:
     """Runs a command and returns std output trace"""
-    serr = subprocess.DEVNULL if not verbose else subprocess.PIPE
+    serr = subprocess.DEVNULL if not verbose else subprocess.STDOUT
     if verbose:
         print(f'\nRunning command "{" ".join(command)}"')
 
     try:
-        with subprocess.Popen(
-            command, stdout=subprocess.PIPE, stderr=serr, universal_newlines=True
-        ) as pipe:
-            data = pipe.communicate(timeout=timeout)
-            if check and pipe.returncode:
-                if verbose:
-                    for line in filter(None, data):
-                        print(line, end="")
-                raise subprocess.CalledProcessError(
-                    cmd=command, returncode=pipe.returncode
-                )
-            return data
+        data = subprocess.check_output(
+            command, stderr=serr, timeout=timeout, universal_newlines=True
+        )
+        return data.splitlines()
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
+        odata: List[str] = []
+        if verbose or check:
+            # Workaround inconsistent Python implementation
+            if isinstance(ex, subprocess.CalledProcessError):
+                odata = ex.output.splitlines()
+            else:
+                odata = ex.output.decode("utf-8").splitlines()
+        if verbose:
+            for line in odata:
+                print(line)
+
+        if isinstance(ex, subprocess.CalledProcessError) and not check:
+            return odata
+
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
         raise ex

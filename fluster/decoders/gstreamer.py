@@ -19,7 +19,7 @@
 import shlex
 import subprocess
 from functools import lru_cache
-from typing import Optional, Tuple
+from typing import Optional, List
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -86,13 +86,13 @@ class GStreamer(Decoder):
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output)
 
-    def parse_videocodectestsink_md5sum(self, data: Tuple[str, str], verbose: bool) -> str:
+    def parse_videocodectestsink_md5sum(self, data: List[str], verbose: bool) -> str:
         '''Parse the MD5 sum out of commandline output produced when using
         videocodectestsink.'''
         md5sum = None
-        for line in filter(None, data):
+        for line in data:
             if verbose:
-                print(line, end='')
+                print(line)
             pattern = "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
             sum_start = line.find(pattern)
             if sum_start > 0:
