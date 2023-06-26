@@ -291,3 +291,9 @@ class FFmpegH264VulkanDecoder(FFmpegVulkanDecoder):
 class FFmpegH265VulkanDecoder(FFmpegVulkanDecoder):
     '''FFmpeg Vulkan decoder for H.265'''
     codec = Codec.H265
+
+
+@register_decoder
+class FFmpegAV1VulkanDecoder(FFmpegVulkanDecoder):
+    '''FFmpeg Vulkan decoder for AV1'''
+    codec = Codec.AV1
