@@ -58,12 +58,21 @@ class Main:
         ):
             self.test_suites_dir = TEST_SUITES_DIR_SYS
 
+        # If the resources dir doesn't exist under the script location, fallback
+        # to the current working directory.
         self.resources_dir = os.path.join(
             os.path.join(os.path.dirname(__file__), ".."), RESOURCES_DIR
         )
+        if not os.path.exists(self.resources_dir):
+            self.resources_dir = os.path.join(os.getcwd(), RESOURCES_DIR)
+
+        # If the results dir doesn't exist under the script location, fallback
+        # to the current working directory.
         self.results_dir = os.path.join(
             os.path.join(os.path.dirname(__file__), ".."), RESULTS_DIR
         )
+        if not os.path.exists(self.results_dir):
+            self.results_dir = os.path.join(os.getcwd(), RESULTS_DIR)
 
         self.parser = self._create_parser()
 
