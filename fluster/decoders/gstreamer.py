@@ -45,6 +45,8 @@ def gst_element_exists(element: str) -> bool:
 def output_format_to_gst(output_format: OutputFormat) -> str:
     """Return GStreamer pixel format"""
     mapping = {
+        OutputFormat.GRAY: "GRAY8",
+        OutputFormat.GRAY16LE: "GRAY16_LE",
         OutputFormat.YUV420P: "I420",
         OutputFormat.YUV422P: "Y42B",
         OutputFormat.YUV420P10LE: "I420_10LE",
@@ -56,7 +58,8 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.YUV444P12LE: "Y444_12LE",
     }
     if output_format not in mapping:
-        raise Exception(f"No matching output format found in GStreamer for {output_format}")
+        raise Exception(
+            f"No matching output format found in GStreamer for {output_format}")
     return mapping[output_format]
 
 
@@ -598,6 +601,15 @@ class GStreamerNvdecSLVP9Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerVVdeCH266Decoder(GStreamer10Video):
+    '''GStreamer H.266/VVC VVdeC decoder implementation for GStreamer 1.0'''
+    codec = Codec.H266
+    decoder_bin = ' h266parse ! vvdec '
+    api = 'VVdeC'
+    hw_acceleration = False
+
+
+@register_decoder
 class FluendoH265Gst10Decoder(GStreamer10Video):
     '''Fluendo H.265 software decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
@@ -747,6 +759,7 @@ class FluendoFluVAH264DecGst10Decoder(GStreamer10Video):
 @register_decoder
 class FluendoFluAACDecGst10Decoder(GStreamer10Audio):
     '''Fluendo AAC plugin decoder for GStreamer 1.0'''
+
     def __init__(self) -> None:
         self.codec = Codec.AAC
         self.decoder_bin = 'fluaacdec trim=0'
