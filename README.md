@@ -8,7 +8,7 @@ application that runs a number of test suites with the supported decoders. Its
 purpose is to check different decoder implementations against known test suites
 with known and proven results. It was originally designed to check the
 conformance of H.265/HEVC decoders, but it also supports H.264/AVC, H.266/VVC,
-VP8, VP9, AV1 and AAC. It can easily be extended to add more decoders and test 
+VP8, VP9, AV1 and AAC. It can easily be extended to add more decoders and test
 suites.
 
 ## Table of Contents
@@ -248,6 +248,7 @@ AAC
     ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder... ✔️
 
 H266
+    GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0... ✔
     VVdeC-H266: VVdeC H.266/VVC reference decoder... ✔️
 
 ```
@@ -294,6 +295,7 @@ H266
 - Fluendo's proprietary decoders for H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/).
+- [GStreamer's](https://gstreamer.freedesktop.org/) for H.266/VVC.
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.265/HEVC.
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.264/AVC.
 - [FFmpeg's](https://FFmpeg.org) for H.265/HEVC.
@@ -512,7 +514,7 @@ results are obtained, we can do the following procedure:
    gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg
    vpx-tools aom-tools
    ```
-   
+
 5. Create a new PR with your changes.
 6. Make sure the GitHub Actions is running and its result is a pass.
 
