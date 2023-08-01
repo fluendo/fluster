@@ -49,7 +49,7 @@ BITSTREAM_EXTS = (
     ".avc",
     ".26l",
 )
-MD5_EXTS = ("yuv.md5", ".md5", "md5.txt")
+MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
 RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
 
@@ -116,6 +116,9 @@ class JCTVTGenerator:
             # The first item in the AVCv1 list is a readme file
             if "00readme_H" in url:
                 continue
+            elif "replaced" in url:
+                # This is in HEVC-SHVC, we don't want that.
+                continue
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
@@ -159,7 +162,33 @@ class JCTVTGenerator:
 
                 result = utils.run_pipe_command_with_std_output(command)
                 pix_fmt = result[0]
-                test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                try:
+                    test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                except KeyError as e:
+                    exceptions = {
+                        # Feature: Test unequal luma and chroma bitdepth
+                        # setting. The luma bitdepth is higher than the chroma
+                        # bitdepth. Luma is 12bit, chroma is 8bit. Considering
+                        # 12bit.
+                        "Bitdepth_A_RExt_Sony_1": OutputFormat.YUV444P12LE,
+                        # Same as above, but the chroma is 12bit and luma is 8bit.
+                        "Bitdepth_B_RExt_Sony_1": OutputFormat.YUV444P12LE,
+                        # Rest is taken by examining the error displayed by ffprobe, e.g.:
+                        # The following bit-depths are currently specified: 8,
+                        # 9, 10 and 12 bits, chroma_format_idc is 3, depth is 16
+                        "EXTPREC_MAIN_444_16_INTRA_10BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
+                        "EXTPREC_HIGHTHROUGHPUT_444_16_INTRA_16BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
+                        "EXTPREC_MAIN_444_16_INTRA_16BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
+                        "GENERAL_16b_400_RExt_Sony_1" : OutputFormat.GRAY16LE,
+                        "GENERAL_16b_444_highThroughput_RExt_Sony_2" : OutputFormat.YUV444P16LE,
+                        "GENERAL_16b_444_RExt_Sony_2": OutputFormat.YUV444P16LE,
+                        "WAVETILES_RExt_Sony_2" : OutputFormat.YUV444P16LE
+                    }
+                    if test_vector.name in exceptions.keys():
+                        test_vector.output_format = exceptions[test_vector.name]
+                    else:
+                        raise e
+
 
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
@@ -265,6 +294,37 @@ if __name__ == "__main__":
         H265_URL,
     )
     generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator(
+        "RExt",
+        "JCT-VC-RExt",
+        Codec.H265,
+        "JCT-VC HEVC Range Extension",
+        H265_URL,
+        True
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator(
+        "SCC",
+        "JCT-VC-SCC",
+        Codec.H265,
+        "JCT-VC HEVC Screen Content Coding Extension",
+        H265_URL,
+        True
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator(
+        "MV-HEVC",
+        "JCT-VC-MV-HEVC",
+        Codec.H265,
+        "JCT-VC HEVC Multiview Extension",
+        H265_URL,
+        True
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
     generator = JCTVTGenerator(
         "AVCv1", "JVT-AVC_V1", Codec.H264, "JVT AVC version 1", H264_URL
     )
