@@ -85,12 +85,14 @@ class JCTVTGenerator:
         codec: Codec,
         description: str,
         site: str,
+        use_ffprobe: bool = False
     ):
         self.name = name
         self.suite_name = suite_name
         self.codec = codec
         self.description = description
         self.site = site
+        self.use_ffprobe = use_ffprobe
 
     def generate(self, download, jobs):
         """Generates the test suite and saves it to a file"""
@@ -135,6 +137,7 @@ class JCTVTGenerator:
             )
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
+            absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
                 os.path.join(
                     test_suite.resources_dir, test_suite.name, test_vector.name
@@ -147,6 +150,16 @@ class JCTVTGenerator:
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if "main10" in test_vector.name.lower():
                 test_vector.output_format = OutputFormat.YUV420P10LE
+            elif self.use_ffprobe:
+                ffprobe = utils.normalize_binary_cmd('ffprobe')
+                command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
+                           '-show_entries', 'stream=pix_fmt', '-of',
+                           'default=nokey=1:noprint_wrappers=1',
+                           absolute_input_path]
+
+                result = utils.run_pipe_command_with_std_output(command)
+                pix_fmt = result[0]
+                test_vector.output_format = OutputFormat[pix_fmt.upper()]
 
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
