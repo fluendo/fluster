@@ -1,0 +1,79 @@
+{
+    "name": "JCT-VC-MV-HEVC",
+    "codec": "H.265",
+    "description": "JCT-VC HEVC Multiview Extension",
+    "test_vectors": [
+        {
+            "name": "MVHEVCS_A_Qualcomm_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_A_Qualcomm_3.zip",
+            "source_checksum": "8d042304d64777d57822a23801caf12c",
+            "input_file": "MVHEVCS_A_Qualcomm_3/MVHEVCS_A.bit",
+            "output_format": "yuv420p",
+            "result": "2a453ecf60a17a684dca4c51b11ae16e"
+        },
+        {
+            "name": "MVHEVCS_B_Sharp_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_B_Sharp_3.zip",
+            "source_checksum": "51c95458c403bcdb547faa5c4df5addb",
+            "input_file": "MVHEVCS_B_Sharp_3/MVHEVCS_B.bit",
+            "output_format": "yuv420p",
+            "result": "8396fde1ccc50548f3eb1795990ed0c0"
+        },
+        {
+            "name": "MVHEVCS_C_Sony_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_C_Sony_3.zip",
+            "source_checksum": "fbda521fadb7f70692941f833b434c4d",
+            "input_file": "MVHEVCS_C/MVHEVCS_C.bit",
+            "output_format": "yuv420p",
+            "result": "6b5d705225c00d0cc196fe0a2fadd925"
+        },
+        {
+            "name": "MVHEVCS_D_NTT_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_D_NTT_3.zip",
+            "source_checksum": "f81f4594b769395f0ad99e98b31467db",
+            "input_file": "MVHEVCS_D_NTT_3/MVHEVCS_D.bit",
+            "output_format": "yuv420p",
+            "result": "f16251dba49bcdd1b335a5d3606f6934"
+        },
+        {
+            "name": "MVHEVCS_E_Qualcomm_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_E_Qualcomm_3.zip",
+            "source_checksum": "1a30afef95c2771b9ef9066323c684ca",
+            "input_file": "MVHEVCS_E_Qualcomm_3/MVHEVCS_E.bit",
+            "output_format": "yuv420p",
+            "result": "96c07ed86f99e2e4bd3a9ce990c7c488"
+        },
+        {
+            "name": "MVHEVCS_F_Qualcomm_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_F_Qualcomm_3.zip",
+            "source_checksum": "b4228b0c66a4907606aeff34e7ee50ed",
+            "input_file": "MVHEVCS_F_Qualcomm_3/MVHEVCS_F.bit",
+            "output_format": "yuv420p",
+            "result": "96c07ed86f99e2e4bd3a9ce990c7c488"
+        },
+        {
+            "name": "MVHEVCS_G_NTT_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_G_NTT_3.zip",
+            "source_checksum": "095259a45425a2d96558821b4341631f",
+            "input_file": "MVHEVCS_G_NTT_3/MVHEVCS_G.bit",
+            "output_format": "yuv420p",
+            "result": "3bab3455424334d069ce5cce318872b2"
+        },
+        {
+            "name": "MVHEVCS_H_LGE_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_H_LGE_3.zip",
+            "source_checksum": "583d65b7728083758b70644eb8a8ccd8",
+            "input_file": "MVHEVCS_H.bit",
+            "output_format": "yuv420p",
+            "result": "927abd6fb088c9e834fb76724f2aaf6d"
+        },
+        {
+            "name": "MVHEVCS_I_Nokia_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/MV-HEVC/MVHEVCS_I_Nokia_3.zip",
+            "source_checksum": "bbe731cbbccced6ea25cb1850c91eacc",
+            "input_file": "MVHEVCS_I.bit",
+            "output_format": "yuv420p",
+            "result": "ae8c055003352954d9e599cdc9008a9b"
+        }
+    ]
+}
