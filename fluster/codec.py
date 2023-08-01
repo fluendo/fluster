@@ -45,3 +45,7 @@ class OutputFormat(Enum):
     YUV444P = "yuv444p"
     YUV444P10LE = "yuv444p10le"
     YUV444P12LE = "yuv444p12le"
+    YUV444P16LE = "yuv444p16le"
+    GRAY = "gray"
+    GRAY12LE = "gray12le"
+    GRAY16LE = "gray16le"
