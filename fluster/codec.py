@@ -42,6 +42,6 @@ class OutputFormat(Enum):
     YUV420P12LE = "yuv420p12le"
     YUV422P10LE = "yuv422p10le"
     YUV422P12LE = "yuv422p12le"
-    YUV444 = "yuv444p"
+    YUV444P = "yuv444p"
     YUV444P10LE = "yuv444p10le"
     YUV444P12LE = "yuv444p12le"

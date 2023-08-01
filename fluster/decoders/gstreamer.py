@@ -51,7 +51,7 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.YUV422P10LE: "I422_10LE",
         OutputFormat.YUV420P12LE: "I420_12LE",
         OutputFormat.YUV422P12LE: "I422_12LE",
-        OutputFormat.YUV444: "Y444",
+        OutputFormat.YUV444P: "Y444",
         OutputFormat.YUV444P10LE: "Y444_10LE",
         OutputFormat.YUV444P12LE: "Y444_12LE",
     }
