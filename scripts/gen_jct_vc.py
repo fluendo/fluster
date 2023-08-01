@@ -209,13 +209,16 @@ class JCTVTGenerator:
         for ext in exts:
             for subdir, _, files in os.walk(dest_dir):
                 for filename in files:
+                    excluded = False
                     filepath = subdir + os.sep + filename
                     if not filepath.endswith(ext) or "__MACOSX" in filepath:
                         continue
                     for excl in excludes:
                         if excl in filepath:
-                            continue
-                    return filepath
+                            excluded = True
+                            break
+                    if not excluded:
+                        return filepath
         return None
 
 
