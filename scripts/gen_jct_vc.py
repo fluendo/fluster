@@ -24,6 +24,7 @@ import os
 import sys
 import urllib.request
 import multiprocessing
+import re
 
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -184,6 +185,9 @@ class JCTVTGenerator:
                 else:
                     test_vector.result = line.split(" ")[0].split("\n")[0].lower()
                 break
+            # Assert that we have extracted a valid MD5 from the file
+            assert len(test_vector.result) == 32 and re.search(
+                r"^[a-fA-F0-9]{32}$", test_vector.result) != None, f"{test_vector.result} is not a valid MD5 hash"
 
     def _find_by_ext(self, dest_dir, exts, excludes=None):
         excludes = excludes or []
