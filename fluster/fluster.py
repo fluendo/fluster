@@ -50,6 +50,7 @@ class Context:
         test_suites: List[str],
         decoders: List[str],
         test_vectors: List[str],
+        skip_vectors: List[str],
         failfast: bool = False,
         quiet: bool = False,
         reference: bool = False,
@@ -68,6 +69,7 @@ class Context:
         self.decoders_names = decoders
         self.decoders: List[Decoder] = []
         self.test_vectors_names = test_vectors
+        self.skip_vectors_names = skip_vectors
         self.failfast = failfast
         self.quiet = quiet
         self.reference = reference
@@ -80,7 +82,11 @@ class Context:
         self.summary_format = summary_format
 
     def to_test_suite_context(
-        self, decoder: Decoder, results_dir: str, test_vectors: List[str]
+        self,
+        decoder: Decoder,
+        results_dir: str,
+        test_vectors: List[str],
+        skip_vectors: List[str],
     ) -> TestSuiteContext:
         """Create a TestSuite's Context from this"""
         ts_context = TestSuiteContext(
@@ -92,6 +98,7 @@ class Context:
             results_dir=results_dir,
             reference=self.reference,
             test_vectors=test_vectors,
+            skip_vectors=skip_vectors,
             keep_files=self.keep_files,
             verbose=self.verbose,
         )
@@ -227,6 +234,8 @@ class Fluster:
             ctx.decoders_names = [x.lower() for x in ctx.decoders_names]
         if ctx.test_vectors_names:
             ctx.test_vectors_names = [x.lower() for x in ctx.test_vectors_names]
+        if ctx.skip_vectors_names:
+            ctx.skip_vectors_names = [x.lower() for x in ctx.skip_vectors_names]
         ctx.test_suites = self._get_matches(
             ctx.test_suites_names, self.test_suites, "test suite"
         )
@@ -264,7 +273,10 @@ class Fluster:
                     continue
                 test_suite_res = test_suite.run(
                     ctx.to_test_suite_context(
-                        decoder, self.results_dir, ctx.test_vectors_names
+                        decoder,
+                        self.results_dir,
+                        ctx.test_vectors_names,
+                        ctx.skip_vectors_names,
                     )
                 )
 
@@ -362,7 +374,9 @@ class Fluster:
 
                 for vector in suite_decoder_res[1].test_vectors.values():
                     jcase = junitp.TestCase(vector.name)
-                    if vector.test_result not in [
+                    if vector.test_result == TestVectorResult.NOT_RUN:
+                        jcase.result = [junitp.Skipped()]
+                    elif vector.test_result not in [
                         TestVectorResult.SUCCESS,
                         TestVectorResult.REFERENCE,
                     ]:

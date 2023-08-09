@@ -35,6 +35,7 @@ class Test(unittest.TestCase):
         decoder: Decoder,
         test_suite: Any,  # can't use TestSuite type because of circular dependency
         test_vector: TestVector,
+        skip: bool,
         results_dir: str,
         reference: bool,
         timeout: int,
@@ -44,6 +45,7 @@ class Test(unittest.TestCase):
         self.decoder = decoder
         self.test_suite = test_suite
         self.test_vector = test_vector
+        self.skip = skip
         self.resources_dir = self.test_suite.resources_dir
         self.results_dir = results_dir
         self.reference = reference
@@ -54,6 +56,13 @@ class Test(unittest.TestCase):
         super().__init__(test_vector.name)
 
     def _test(self) -> None:
+        if self.skip:
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.NOT_RUN
+
+            return
+
         output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".out")
 
         input_filepath = os.path.join(
