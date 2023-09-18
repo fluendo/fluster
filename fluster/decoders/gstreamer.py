@@ -279,6 +279,15 @@ class GStreamerD3d11H265Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerD3d12H265Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.265 D3D12 decoder implementation for GStreamer 1.0'''
+    codec = Codec.H265
+    decoder_bin = ' h265parse ! d3d12h265dec '
+    api = 'D3D12'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerV4l2CodecsH265Gst10Decoder(GStreamer10Video):
     '''GStreamer H.265 V4L2 stateless decoder implementation for GStreamer 1.0'''
     codec = Codec.H265
@@ -347,6 +356,15 @@ class GStreamerD3d11H264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = ' h264parse ! d3d11h264dec '
     api = 'D3D11'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerD3d12H264Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.264 D3D12 decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! d3d12h264dec '
+    api = 'D3D12'
     hw_acceleration = True
 
 
@@ -490,6 +508,16 @@ class GStreamerD3d11AV1Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerD3d12AV1Gst10Decoder(GStreamer10Video):
+    '''GStreamer AV1 D3D12 decoder implementation for GStreamer 1.0'''
+    codec = Codec.AV1
+    check_decoder_bin = ' d3d12av1dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'D3D12'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerLibvpxVP9(GStreamer10Video):
     '''GStreamer VP9 Libvpx decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
@@ -536,6 +564,16 @@ class GStreamerD3d11VP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = ' d3d11vp9dec '
     decoder_bin = f' parsebin ! {check_decoder_bin}'
     api = 'D3D11'
+    hw_acceleration = True
+
+
+@register_decoder
+class GStreamerD3d12VP9Gst10Decoder(GStreamer10Video):
+    '''GStreamer VP9 D3D12 decoder implementation for GStreamer 1.0'''
+    codec = Codec.VP9
+    check_decoder_bin = ' d3d12vp9dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
+    api = 'D3D12'
     hw_acceleration = True
 
 
