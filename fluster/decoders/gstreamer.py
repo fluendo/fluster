@@ -390,6 +390,15 @@ class GStreamerV4l2H264Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerVulkanH264Gst10Decoder(GStreamer10Video):
+    '''GStreamer H.264 Vulkan stateless decoder implementation for GStreamer 1.0'''
+    codec = Codec.H264
+    decoder_bin = ' h264parse ! vulkanh264dec ! vulkandownload '
+    api = 'Vulkan'
+    hw_acceleration = True
+
+
+@register_decoder
 class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
     '''GStreamer VP8 V4L2 stateless decoder implementation for GStreamer 1.0'''
     codec = Codec.VP8
