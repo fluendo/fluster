@@ -48,7 +48,7 @@ class CrosCodecsDecoder(Decoder):
             OutputFormat.YUV420P12LE: "i012",
             OutputFormat.YUV422P10LE: "i210",
             OutputFormat.YUV422P12LE: "i212",
-            OutputFormat.YUV444: "i444",
+            OutputFormat.YUV444P: "i444",
             OutputFormat.YUV444P10LE: "i410",
             OutputFormat.YUV444P12LE: "i412",
         }
