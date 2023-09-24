@@ -1,0 +1,23 @@
+{
+    "name": "GSTCONF2023",
+    "codec": "H.264",
+    "description": "Sample for GStreamer Confenrece 2023 copied from JVT AVC version 1",
+    "test_vectors": [
+        {
+            "name": "AUD_MW_E",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/AVCv1/AUD_MW_E.zip",
+            "source_checksum": "7132c9cf7bc85fdde62add5ec25ea532",
+            "input_file": "AUD_MW_E.264",
+            "output_format": "yuv420p",
+            "result": "e96fe5054de0329a8868d06003375cdb"
+        },
+        {
+            "name": "BA1_FT_C",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/AVCv1/BA1_FT_C.zip",
+            "source_checksum": "1de5194e1c030948a60cdc1d0de9285a",
+            "input_file": "BA1_FT_C.264",
+            "output_format": "yuv420p",
+            "result": "4f2da01d1d1ae7b99bea3fe1fb9e8ef4"
+        }
+    ]
+}

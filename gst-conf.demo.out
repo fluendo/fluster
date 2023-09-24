@@ -1,0 +1,1251 @@
++ ./fluster.py -h
+usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR]
+                  {list,l,run,r,download,d,reference,f} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r RESOURCES, --resources RESOURCES
+                        set the directory where resources are taken from
+  -o OUTPUT, --output OUTPUT
+                        set the directory where test results will be stored
+  -ne, --no-emoji       set to use plain text instead of emojis
+  -tsd TEST_SUITES_DIR, --test-suites-dir TEST_SUITES_DIR
+                        set the directory where test suite will be read from
+
+subcommands:
+  {list,l,run,r,download,d,reference,f}
+    list (l)            show list of available test suites and decoders
+    run (r)             run test suites for decoders
+    download (d)        downloads test suites resources
+    reference (f)       use a specific decoder to set its results for the test
+                        suites given
++ ./fluster.py list
+
+List of available test suites:
+
+CHROMIUM-8bit-AV1-TEST-VECTORS
+    Codec: AV1
+    Description: AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/
+    Test vectors: 13
+
+CHROMIUM-10bit-AV1-TEST-VECTORS
+    Codec: AV1
+    Description: AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/
+    Test vectors: 23
+
+AV1-TEST-VECTORS
+    Codec: AV1
+    Description: AV1 Test Vector Catalogue from https://storage.googleapis.com/aom-test-data
+    Test vectors: 239
+
+JVT-FR-EXT
+    Codec: H.264
+    Description: JVT Fidelity Range Extensions
+    Test vectors: 69
+
+GSTCONF2023
+    Codec: H.264
+    Description: Sample for GStreamer Confenrece 2023 copied from JVT AVC version 1
+    Test vectors: 2
+
+JVT-AVC_V1
+    Codec: H.264
+    Description: JVT AVC version 1
+    Test vectors: 135
+
+JVET-VVC_draft6
+    Codec: H.266
+    Description: JVET VVC draft6
+    Test vectors: 282
+
+VP9-TEST-VECTORS-HIGH
+    Codec: VP9
+    Description: VP9 High Bit Depth Test Vectors from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/
+    Test vectors: 6
+
+VP9-TEST-VECTORS
+    Codec: VP9
+    Description: VP9 Test Vector Catalogue from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/
+    Test vectors: 305
+
+ISO_IEC_13818-4_2004
+    Codec: AAC
+    Description: ISO_IEC_13818-4_2004 ADTS conformance test suite
+    Test vectors: 62
+
+ISO_IEC_14496-26_2010
+    Codec: AAC
+    Description: ISO_IEC_14496-26_2010 ADTS conformance test suite
+    Test vectors: 9
+
+VP8-TEST-VECTORS
+    Codec: VP8
+    Description: VP8 Test Vector Catalogue from https://github.com/webmproject/vp8-test-vectors
+    Test vectors: 61
+
+JCT-VC-SCC
+    Codec: H.265
+    Description: JCT-VC HEVC Screen Content Coding Extension
+    Test vectors: 15
+
+JCT-VC-RExt
+    Codec: H.265
+    Description: JCT-VC HEVC Range Extension
+    Test vectors: 49
+
+JCT-VC-HEVC_V1
+    Codec: H.265
+    Description: JCT-VC HEVC version 1
+    Test vectors: 147
+
+JCT-VC-MV-HEVC
+    Codec: H.265
+    Description: JCT-VC HEVC Multiview Extension
+    Test vectors: 9
+
+List of available decoders:
+
+H264
+    Chromium-H.264: Chromium H.264 decoder for Chromium
+    FFmpeg-H.264: FFmpeg H.264 SW decoder
+    FFmpeg-H.264-D3D11VA: FFmpeg H.264 D3D11VA decoder
+    FFmpeg-H.264-DXVA2: FFmpeg H.264 DXVA2 decoder
+    FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder
+    FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder
+    FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder
+    FFmpeg-H.264-h264_v4l2m2m: FFmpeg H.264 h264_v4l2m2m decoder
+    Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
+    Fluendo-H.264-HW-hwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
+    Fluendo-H.264-SW-Gst0.10: Fluendo H.264 SW decoder for GStreamer 0.10
+    Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0
+    GStreamer-H.264-D3D11-Gst1.0: GStreamer H.264 D3D11 decoder for GStreamer 1.0
+    GStreamer-H.264-D3D12-Gst1.0: GStreamer H.264 D3D12 decoder for GStreamer 1.0
+    GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0
+    GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0
+    GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0
+    GStreamer-H.264-NVDECSL-Gst1.0: GStreamer H.264 NVDECSL decoder for GStreamer 1.0
+    GStreamer-H.264-V4L2-Gst1.0: GStreamer H.264 V4L2 decoder for GStreamer 1.0
+    GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0
+    GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0
+    GStreamer-H.264-VAAPI-Gst1.0: GStreamer H.264 VAAPI decoder for GStreamer 1.0
+    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder
+    ccdec-H.264: H.264 cros-codecs decoder
+
+DUMMY
+    Dummy: This is a dummy implementation for the dummy codec
+
+AV1
+    FFmpeg-AV1-VAAPI: FFmpeg AV1 VAAPI decoder
+    FFmpeg-AV1-Vulkan: FFmpeg AV1 Vulkan decoder
+    GStreamer-AV1-D3D11-Gst1.0: GStreamer AV1 D3D11 decoder for GStreamer 1.0
+    GStreamer-AV1-D3D12-Gst1.0: GStreamer AV1 D3D12 decoder for GStreamer 1.0
+    GStreamer-AV1-V4L2SL-Gst1.0: GStreamer AV1 V4L2SL decoder for GStreamer 1.0
+    GStreamer-AV1-VA-Gst1.0: GStreamer AV1 VA decoder for GStreamer 1.0
+    GStreamer-AV1-VAAPI-Gst1.0: GStreamer AV1 VAAPI decoder for GStreamer 1.0
+    dav1d-AV1: dav1d AV1 decoder
+    libaom-AV1: libaom AV1 reference decoder
+
+H265
+    FFmpeg-H.265: FFmpeg H.265 SW decoder
+    FFmpeg-H.265-D3D11VA: FFmpeg H.265 D3D11VA decoder
+    FFmpeg-H.265-DXVA2: FFmpeg H.265 DXVA2 decoder
+    FFmpeg-H.265-VAAPI: FFmpeg H.265 VAAPI decoder
+    FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder
+    FFmpeg-H.265-Vulkan: FFmpeg H.265 Vulkan decoder
+    Fluendo-H.265-HW-hwvah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0
+    Fluendo-H.265-SW-Gst0.10: Fluendo H.265 SW decoder for GStreamer 0.10
+    Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0
+    Fluendo-H.265-byte-stream-au-HW-Gst1.0: Fluendo H.265-byte-stream-au HW decoder for GStreamer 1.0
+    Fluendo-H.265-byte-stream-nal-HW-Gst1.0: Fluendo H.265-byte-stream-nal HW decoder for GStreamer 1.0
+    Fluendo-H.265-hev1-au-HW-Gst1.0: Fluendo H.265-hev1-au HW decoder for GStreamer 1.0
+    Fluendo-H.265-hev1-nal-HW-Gst1.0: Fluendo H.265-hev1-nal HW decoder for GStreamer 1.0
+    Fluendo-H.265-hvc1-au-HW-Gst1.0: Fluendo H.265-hvc1-au HW decoder for GStreamer 1.0
+    Fluendo-H.265-hvc1-nal-HW-Gst1.0: Fluendo H.265-hvc1-nal HW decoder for GStreamer 1.0
+    GStreamer-H.265-D3D11-Gst1.0: GStreamer H.265 D3D11 decoder for GStreamer 1.0
+    GStreamer-H.265-D3D12-Gst1.0: GStreamer H.265 D3D12 decoder for GStreamer 1.0
+    GStreamer-H.265-Libav-Gst1.0: GStreamer H.265 Libav decoder for GStreamer 1.0
+    GStreamer-H.265-MSDK-Gst1.0: GStreamer H.265 MSDK decoder for GStreamer 1.0
+    GStreamer-H.265-NVDEC-Gst1.0: GStreamer H.265 NVDEC decoder for GStreamer 1.0
+    GStreamer-H.265-NVDECSL-Gst1.0: GStreamer H.265 NVDECSL decoder for GStreamer 1.0
+    GStreamer-H.265-V4L2-Gst1.0: GStreamer H.265 V4L2 decoder for GStreamer 1.0
+    GStreamer-H.265-V4L2SL-Gst1.0: GStreamer H.265 V4L2SL decoder for GStreamer 1.0
+    GStreamer-H.265-VA-Gst1.0: GStreamer H.265 VA decoder for GStreamer 1.0
+    GStreamer-H.265-VAAPI-Gst1.0: GStreamer H.265 VAAPI decoder for GStreamer 1.0
+    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder
+    ccdec-H.265: H.265 cros-codecs decoder
+
+VP8
+    FFmpeg-VP8: FFmpeg VP8 SW decoder
+    FFmpeg-VP8-VAAPI: FFmpeg VP8 VAAPI decoder
+    FFmpeg-VP8-vp8_v4l2m2m: FFmpeg VP8 vp8_v4l2m2m decoder
+    GStreamer-VP8-D3D11-Gst1.0: GStreamer VP8 D3D11 decoder for GStreamer 1.0
+    GStreamer-VP8-Libav-Gst1.0: GStreamer VP8 Libav decoder for GStreamer 1.0
+    GStreamer-VP8-NVDEC-Gst1.0: GStreamer VP8 NVDEC decoder for GStreamer 1.0
+    GStreamer-VP8-NVDECSL-Gst1.0: GStreamer VP8 NVDECSL decoder for GStreamer 1.0
+    GStreamer-VP8-V4L2-Gst1.0: GStreamer VP8 V4L2 decoder for GStreamer 1.0
+    GStreamer-VP8-V4L2SL-Gst1.0: GStreamer VP8 V4L2SL decoder for GStreamer 1.0
+    GStreamer-VP8-VA-Gst1.0: GStreamer VP8 VA decoder for GStreamer 1.0
+    GStreamer-VP8-VAAPI-Gst1.0: GStreamer VP8 VAAPI decoder for GStreamer 1.0
+    GStreamer-VP8-libvpx-Gst1.0: GStreamer VP8 libvpx decoder for GStreamer 1.0
+    ccdec-VP8: VP8 cros-codecs decoder
+    libvpx-VP8: VP8 reference decoder
+
+VP9
+    FFmpeg-VP9: FFmpeg VP9 SW decoder
+    FFmpeg-VP9-VAAPI: FFmpeg VP9 VAAPI decoder
+    FFmpeg-VP9-vp9_v4l2m2m: FFmpeg VP9 vp9_v4l2m2m decoder
+    GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0
+    GStreamer-VP9-D3D12-Gst1.0: GStreamer VP9 D3D12 decoder for GStreamer 1.0
+    GStreamer-VP9-Libav-Gst1.0: GStreamer VP9 Libav decoder for GStreamer 1.0
+    GStreamer-VP9-NVDEC-Gst1.0: GStreamer VP9 NVDEC decoder for GStreamer 1.0
+    GStreamer-VP9-NVDECSL-Gst1.0: GStreamer VP9 NVDECSL decoder for GStreamer 1.0
+    GStreamer-VP9-V4L2-Gst1.0: GStreamer VP9 V4L2 decoder for GStreamer 1.0
+    GStreamer-VP9-V4L2SL-Gst1.0: GStreamer VP9 V4L2SL decoder for GStreamer 1.0
+    GStreamer-VP9-VA-Gst1.0: GStreamer VP9 VA decoder for GStreamer 1.0
+    GStreamer-VP9-VAAPI-Gst1.0: GStreamer VP9 VAAPI decoder for GStreamer 1.0
+    GStreamer-VP9-libvpx-Gst1.0: GStreamer VP9 libvpx decoder for GStreamer 1.0
+    ccdec-VP9: VP9 cros-codecs decoder
+    libvpx-VP9: VP9 reference decoder
+
+AAC
+    Fluendo-AAC-SW-Gst1.0: Fluendo AAC SW decoder for GStreamer 1.0
+    ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder
+
+H266
+    VVdeC-H266: VVdeC H.266/VVC reference decoder
++ ./fluster.py list -c
+
+List of available test suites:
+
+CHROMIUM-8bit-AV1-TEST-VECTORS
+    Codec: AV1
+    Description: AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/
+    Test vectors: 13
+
+CHROMIUM-10bit-AV1-TEST-VECTORS
+    Codec: AV1
+    Description: AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/
+    Test vectors: 23
+
+AV1-TEST-VECTORS
+    Codec: AV1
+    Description: AV1 Test Vector Catalogue from https://storage.googleapis.com/aom-test-data
+    Test vectors: 239
+
+JVT-FR-EXT
+    Codec: H.264
+    Description: JVT Fidelity Range Extensions
+    Test vectors: 69
+
+GSTCONF2023
+    Codec: H.264
+    Description: Sample for GStreamer Confenrece 2023 copied from JVT AVC version 1
+    Test vectors: 2
+
+JVT-AVC_V1
+    Codec: H.264
+    Description: JVT AVC version 1
+    Test vectors: 135
+
+JVET-VVC_draft6
+    Codec: H.266
+    Description: JVET VVC draft6
+    Test vectors: 282
+
+VP9-TEST-VECTORS-HIGH
+    Codec: VP9
+    Description: VP9 High Bit Depth Test Vectors from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/
+    Test vectors: 6
+
+VP9-TEST-VECTORS
+    Codec: VP9
+    Description: VP9 Test Vector Catalogue from https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx/
+    Test vectors: 305
+
+ISO_IEC_13818-4_2004
+    Codec: AAC
+    Description: ISO_IEC_13818-4_2004 ADTS conformance test suite
+    Test vectors: 62
+
+ISO_IEC_14496-26_2010
+    Codec: AAC
+    Description: ISO_IEC_14496-26_2010 ADTS conformance test suite
+    Test vectors: 9
+
+VP8-TEST-VECTORS
+    Codec: VP8
+    Description: VP8 Test Vector Catalogue from https://github.com/webmproject/vp8-test-vectors
+    Test vectors: 61
+
+JCT-VC-SCC
+    Codec: H.265
+    Description: JCT-VC HEVC Screen Content Coding Extension
+    Test vectors: 15
+
+JCT-VC-RExt
+    Codec: H.265
+    Description: JCT-VC HEVC Range Extension
+    Test vectors: 49
+
+JCT-VC-HEVC_V1
+    Codec: H.265
+    Description: JCT-VC HEVC version 1
+    Test vectors: 147
+
+JCT-VC-MV-HEVC
+    Codec: H.265
+    Description: JCT-VC HEVC Multiview Extension
+    Test vectors: 9
+
+List of available decoders:
+
+H264
+    Chromium-H.264: Chromium H.264 decoder for Chromium... ❌
+    FFmpeg-H.264: FFmpeg H.264 SW decoder... ✔️
+    FFmpeg-H.264-D3D11VA: FFmpeg H.264 D3D11VA decoder... ❌
+    FFmpeg-H.264-DXVA2: FFmpeg H.264 DXVA2 decoder... ❌
+    FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder... ✔️
+    FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder... ✔️
+    FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder... ❌
+    FFmpeg-H.264-h264_v4l2m2m: FFmpeg H.264 h264_v4l2m2m decoder... ✔️
+    Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.264-HW-hwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.264-SW-Gst0.10: Fluendo H.264 SW decoder for GStreamer 0.10... ❌
+    Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-D3D11-Gst1.0: GStreamer H.264 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-D3D12-Gst1.0: GStreamer H.264 D3D12 decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-NVDECSL-Gst1.0: GStreamer H.264 NVDECSL decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-V4L2-Gst1.0: GStreamer H.264 V4L2 decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-VAAPI-Gst1.0: GStreamer H.264 VAAPI decoder for GStreamer 1.0... ✔️
+    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder... ❌
+    ccdec-H.264: H.264 cros-codecs decoder... ❌
+
+DUMMY
+    Dummy: This is a dummy implementation for the dummy codec... ✔️
+
+AV1
+    FFmpeg-AV1-VAAPI: FFmpeg AV1 VAAPI decoder... ✔️
+    FFmpeg-AV1-Vulkan: FFmpeg AV1 Vulkan decoder... ❌
+    GStreamer-AV1-D3D11-Gst1.0: GStreamer AV1 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-AV1-D3D12-Gst1.0: GStreamer AV1 D3D12 decoder for GStreamer 1.0... ❌
+    GStreamer-AV1-V4L2SL-Gst1.0: GStreamer AV1 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-AV1-VA-Gst1.0: GStreamer AV1 VA decoder for GStreamer 1.0... ❌
+    GStreamer-AV1-VAAPI-Gst1.0: GStreamer AV1 VAAPI decoder for GStreamer 1.0... ❌
+    dav1d-AV1: dav1d AV1 decoder... ❌
+    libaom-AV1: libaom AV1 reference decoder... ✔️
+
+H265
+    FFmpeg-H.265: FFmpeg H.265 SW decoder... ✔️
+    FFmpeg-H.265-D3D11VA: FFmpeg H.265 D3D11VA decoder... ❌
+    FFmpeg-H.265-DXVA2: FFmpeg H.265 DXVA2 decoder... ❌
+    FFmpeg-H.265-VAAPI: FFmpeg H.265 VAAPI decoder... ✔️
+    FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder... ✔️
+    FFmpeg-H.265-Vulkan: FFmpeg H.265 Vulkan decoder... ❌
+    Fluendo-H.265-HW-hwvah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-SW-Gst0.10: Fluendo H.265 SW decoder for GStreamer 0.10... ❌
+    Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-byte-stream-au-HW-Gst1.0: Fluendo H.265-byte-stream-au HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-byte-stream-nal-HW-Gst1.0: Fluendo H.265-byte-stream-nal HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hev1-au-HW-Gst1.0: Fluendo H.265-hev1-au HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hev1-nal-HW-Gst1.0: Fluendo H.265-hev1-nal HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hvc1-au-HW-Gst1.0: Fluendo H.265-hvc1-au HW decoder for GStreamer 1.0... ❌
+    Fluendo-H.265-hvc1-nal-HW-Gst1.0: Fluendo H.265-hvc1-nal HW decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-D3D11-Gst1.0: GStreamer H.265 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-D3D12-Gst1.0: GStreamer H.265 D3D12 decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-Libav-Gst1.0: GStreamer H.265 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-H.265-MSDK-Gst1.0: GStreamer H.265 MSDK decoder for GStreamer 1.0... ✔️
+    GStreamer-H.265-NVDEC-Gst1.0: GStreamer H.265 NVDEC decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-NVDECSL-Gst1.0: GStreamer H.265 NVDECSL decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-V4L2-Gst1.0: GStreamer H.265 V4L2 decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-V4L2SL-Gst1.0: GStreamer H.265 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-H.265-VA-Gst1.0: GStreamer H.265 VA decoder for GStreamer 1.0... ✔️
+    GStreamer-H.265-VAAPI-Gst1.0: GStreamer H.265 VAAPI decoder for GStreamer 1.0... ✔️
+    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder... ❌
+    ccdec-H.265: H.265 cros-codecs decoder... ❌
+
+VP8
+    FFmpeg-VP8: FFmpeg VP8 SW decoder... ✔️
+    FFmpeg-VP8-VAAPI: FFmpeg VP8 VAAPI decoder... ✔️
+    FFmpeg-VP8-vp8_v4l2m2m: FFmpeg VP8 vp8_v4l2m2m decoder... ✔️
+    GStreamer-VP8-D3D11-Gst1.0: GStreamer VP8 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-Libav-Gst1.0: GStreamer VP8 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-VP8-NVDEC-Gst1.0: GStreamer VP8 NVDEC decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-NVDECSL-Gst1.0: GStreamer VP8 NVDECSL decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-V4L2-Gst1.0: GStreamer VP8 V4L2 decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-V4L2SL-Gst1.0: GStreamer VP8 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-VP8-VA-Gst1.0: GStreamer VP8 VA decoder for GStreamer 1.0... ✔️
+    GStreamer-VP8-VAAPI-Gst1.0: GStreamer VP8 VAAPI decoder for GStreamer 1.0... ✔️
+    GStreamer-VP8-libvpx-Gst1.0: GStreamer VP8 libvpx decoder for GStreamer 1.0... ✔️
+    ccdec-VP8: VP8 cros-codecs decoder... ❌
+    libvpx-VP8: VP8 reference decoder... ✔️
+
+VP9
+    FFmpeg-VP9: FFmpeg VP9 SW decoder... ✔️
+    FFmpeg-VP9-VAAPI: FFmpeg VP9 VAAPI decoder... ✔️
+    FFmpeg-VP9-vp9_v4l2m2m: FFmpeg VP9 vp9_v4l2m2m decoder... ✔️
+    GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-D3D12-Gst1.0: GStreamer VP9 D3D12 decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-Libav-Gst1.0: GStreamer VP9 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-VP9-NVDEC-Gst1.0: GStreamer VP9 NVDEC decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-NVDECSL-Gst1.0: GStreamer VP9 NVDECSL decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-V4L2-Gst1.0: GStreamer VP9 V4L2 decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-V4L2SL-Gst1.0: GStreamer VP9 V4L2SL decoder for GStreamer 1.0... ❌
+    GStreamer-VP9-VA-Gst1.0: GStreamer VP9 VA decoder for GStreamer 1.0... ✔️
+    GStreamer-VP9-VAAPI-Gst1.0: GStreamer VP9 VAAPI decoder for GStreamer 1.0... ✔️
+    GStreamer-VP9-libvpx-Gst1.0: GStreamer VP9 libvpx decoder for GStreamer 1.0... ✔️
+    ccdec-VP9: VP9 cros-codecs decoder... ❌
+    libvpx-VP9: VP9 reference decoder... ✔️
+
+AAC
+    Fluendo-AAC-SW-Gst1.0: Fluendo AAC SW decoder for GStreamer 1.0... ❌
+    ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder... ❌
+
+H266
+    VVdeC-H266: VVdeC H.266/VVC reference decoder... ❌
++ ./fluster.py list -c
++ grep 264
++ grep ✔
+    FFmpeg-H.264: FFmpeg H.264 SW decoder... ✔️
+    FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder... ✔️
+    FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder... ✔️
+    FFmpeg-H.264-h264_v4l2m2m: FFmpeg H.264 h264_v4l2m2m decoder... ✔️
+    GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0... ✔️
+    GStreamer-H.264-VAAPI-Gst1.0: GStreamer H.264 VAAPI decoder for GStreamer 1.0... ✔️
++ rm -rf resources/GSTCONF2023/
++ ./fluster.py download GSTCONF2023
+Downloading test suite GSTCONF2023 using 16 parallel jobs
+	Downloading test vector AUD_MW_E from /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E
+	Extracting test vector AUD_MW_E to /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E
+	Downloading test vector BA1_FT_C from /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/BA1_FT_C
+	Extracting test vector BA1_FT_C to /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/BA1_FT_C
+All downloads finished
++ set +e
++ ./fluster.py run -ts GSTCONF2023 -s
+Skipping decoder Chromium-H.264 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER     ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264) AUD_MW_E    ... Success
+[GSTCONF2023] (FFmpeg-H.264) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 0.357 secs
+Skipping decoder FFmpeg-H.264-D3D11VA because it cannot be run
+Skipping decoder FFmpeg-H.264-DXVA2 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264-VAAPI
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER           ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264-VAAPI) AUD_MW_E    ... Success
+[GSTCONF2023] (FFmpeg-H.264-VAAPI) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 0.501 secs
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264-VDPAU
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER           ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264-VDPAU) AUD_MW_E    ... Success
+[GSTCONF2023] (FFmpeg-H.264-VDPAU) BA1_FT_C    ... Fail
+
+
+=======================================================================
+FAIL: BA1_FT_C (FFmpeg-H.264-VDPAU.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 103, in _test
+    self.assertEqual(
+AssertionError: '4f2da01d1d1ae7b99bea3fe1fb9e8ef4' != '3df8e4b0908dc0cbe36f30ecc025494a'
+- 4f2da01d1d1ae7b99bea3fe1fb9e8ef4
++ 3df8e4b0908dc0cbe36f30ecc025494a
+ : BA1_FT_C
+
+Ran 1/2 tests successfully               in 19.344 secs
+Skipping decoder FFmpeg-H.264-Vulkan because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264-h264_v4l2m2m
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264-h264_v4l2m2m) BA1_FT_C    ... Error
+[GSTCONF2023] (FFmpeg-H.264-h264_v4l2m2m) AUD_MW_E    ... Error
+
+
+=======================================================================
+FAIL: BA1_FT_C (FFmpeg-H.264-h264_v4l2m2m.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/ffmpeg.py", line 104, in decode
+    run_command(cmd, timeout=timeout, verbose=verbose)
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 68, in run_command
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 64, in run_command
+    subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'ffmpeg -c:v h264_v4l2m2m -i /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/BA1_FT_C/BA1_FT_C.264 -vsync passthrough -vf format=pix_fmts=yuv420p -f rawvideo /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../results/GSTCONF2023/BA1_FT_C.out' returned non-zero exit status 1.
+
+=======================================================================
+FAIL: AUD_MW_E (FFmpeg-H.264-h264_v4l2m2m.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/ffmpeg.py", line 104, in decode
+    run_command(cmd, timeout=timeout, verbose=verbose)
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 68, in run_command
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 64, in run_command
+    subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'ffmpeg -c:v h264_v4l2m2m -i /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 -vsync passthrough -vf format=pix_fmts=yuv420p -f rawvideo /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../results/GSTCONF2023/AUD_MW_E.out' returned non-zero exit status 1.
+
+Ran 0/2 tests successfully               in 0.328 secs
+Skipping decoder Fluendo-H.264-HW-Gst1.0 because it cannot be run
+Skipping decoder Fluendo-H.264-HW-hwvah264dec-Gst1.0 because it cannot be run
+Skipping decoder Fluendo-H.264-SW-Gst0.10 because it cannot be run
+Skipping decoder Fluendo-H.264-SW-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-D3D11-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-D3D12-Gst1.0 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-Libav-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                     ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-Libav-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-Libav-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 0.268 secs
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-MSDK-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                    ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-MSDK-Gst1.0) BA1_FT_C    ... Error
+[GSTCONF2023] (GStreamer-H.264-MSDK-Gst1.0) AUD_MW_E    ... Error
+
+
+=======================================================================
+FAIL: BA1_FT_C (GStreamer-H.264-MSDK-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/gstreamer.py", line 131, in decode
+    data = run_pipe_command_with_std_output(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 104, in run_pipe_command_with_std_output
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 83, in run_pipe_command_with_std_output
+    data = subprocess.check_output(
+  File "/usr/lib/python3.8/subprocess.py", line 415, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/BA1_FT_C/BA1_FT_C.264 ! h264parse ! msdkh264dec ! video/x-raw ! videoconvert dither=none ! video/x-raw,format=I420 ! videocodectestsink -m' returned non-zero exit status 1.
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-MSDK-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/gstreamer.py", line 131, in decode
+    data = run_pipe_command_with_std_output(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 104, in run_pipe_command_with_std_output
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 83, in run_pipe_command_with_std_output
+    data = subprocess.check_output(
+  File "/usr/lib/python3.8/subprocess.py", line 415, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 ! h264parse ! msdkh264dec ! video/x-raw ! videoconvert dither=none ! video/x-raw,format=I420 ! videocodectestsink -m' returned non-zero exit status 1.
+
+Ran 0/2 tests successfully               in 0.058 secs
+Skipping decoder GStreamer-H.264-NVDEC-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-NVDECSL-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-V4L2-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-V4L2SL-Gst1.0 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Error
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-VA-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/gstreamer.py", line 131, in decode
+    data = run_pipe_command_with_std_output(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 104, in run_pipe_command_with_std_output
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 83, in run_pipe_command_with_std_output
+    data = subprocess.check_output(
+  File "/usr/lib/python3.8/subprocess.py", line 415, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 ! h264parse ! vah264dec ! video/x-raw ! videoconvert dither=none ! video/x-raw,format=I420 ! videocodectestsink -m' died with <Signals.SIGSEGV: 11>.
+
+Ran 1/2 tests successfully               in 0.342 secs
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VAAPI-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                     ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VAAPI-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VAAPI-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 0.558 secs
+Skipping decoder JCT-VT-H.264 because it cannot be run
+Skipping decoder ccdec-H.264 because it cannot be run
+Generating summary for test suite GSTCONF2023 and decoders FFmpeg-H.264, FFmpeg-H.264-VAAPI, FFmpeg-H.264-VDPAU, FFmpeg-H.264-h264_v4l2m2m, GStreamer-H.264-Libav-Gst1.0, GStreamer-H.264-MSDK-Gst1.0, GStreamer-H.264-VA-Gst1.0, GStreamer-H.264-VAAPI-Gst1.0:
+
+|Test|FFmpeg-H.264|FFmpeg-H.264-VAAPI|FFmpeg-H.264-VDPAU|FFmpeg-H.264-h264_v4l2m2m|GStreamer-H.264-Libav-Gst1.0|GStreamer-H.264-MSDK-Gst1.0|GStreamer-H.264-VA-Gst1.0|GStreamer-H.264-VAAPI-Gst1.0|
+|-|-|-|-|-|-|-|-|-|
+|TOTAL|2/2|2/2|1/2|0/2|2/2|0/2|1/2|2/2|
+|TOTAL TIME|0.357s|0.501s|19.344s|0.328s|0.268s|0.058s|0.342s|0.558s|
+|-|-|-|-|-|-|-|-|-|
+|AUD_MW_E|✔️|✔️|✔️|☠|✔️|☠|☠|✔️|
+|BA1_FT_C|✔️|✔️|❌|☠|✔️|☠|✔️|✔️|
+|-|-|-|-|-|-|-|-|-|
+|Test|FFmpeg-H.264|FFmpeg-H.264-VAAPI|FFmpeg-H.264-VDPAU|FFmpeg-H.264-h264_v4l2m2m|GStreamer-H.264-Libav-Gst1.0|GStreamer-H.264-MSDK-Gst1.0|GStreamer-H.264-VA-Gst1.0|GStreamer-H.264-VAAPI-Gst1.0|
+|TOTAL|2/2|2/2|1/2|0/2|2/2|0/2|1/2|2/2|
+|TOTAL TIME|0.357s|0.501s|19.344s|0.328s|0.268s|0.058s|0.342s|0.558s|
+
+
++ ./fluster.py run -ts GSTCONF2023 -tv AUD_MW_E -s
+Skipping decoder Chromium-H.264 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER     ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264) AUD_MW_E    ... Success
+
+
+Ran 1/1 tests successfully               in 0.207 secs
+Skipping decoder FFmpeg-H.264-D3D11VA because it cannot be run
+Skipping decoder FFmpeg-H.264-DXVA2 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264-VAAPI
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER           ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264-VAAPI) AUD_MW_E    ... Success
+
+
+Ran 1/1 tests successfully               in 0.274 secs
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264-VDPAU
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER           ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264-VDPAU) AUD_MW_E    ... Success
+
+
+Ran 1/1 tests successfully               in 0.353 secs
+Skipping decoder FFmpeg-H.264-Vulkan because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder FFmpeg-H.264-h264_v4l2m2m
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (FFmpeg-H.264-h264_v4l2m2m) AUD_MW_E    ... Error
+
+
+=======================================================================
+FAIL: AUD_MW_E (FFmpeg-H.264-h264_v4l2m2m.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/ffmpeg.py", line 104, in decode
+    run_command(cmd, timeout=timeout, verbose=verbose)
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 68, in run_command
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 64, in run_command
+    subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'ffmpeg -c:v h264_v4l2m2m -i /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 -vsync passthrough -vf format=pix_fmts=yuv420p -f rawvideo /home/rgonzalez/src/github.com/fluendo/fluster/fluster/../results/GSTCONF2023/AUD_MW_E.out' returned non-zero exit status 1.
+
+Ran 0/1 tests successfully               in 0.309 secs
+Skipping decoder Fluendo-H.264-HW-Gst1.0 because it cannot be run
+Skipping decoder Fluendo-H.264-HW-hwvah264dec-Gst1.0 because it cannot be run
+Skipping decoder Fluendo-H.264-SW-Gst0.10 because it cannot be run
+Skipping decoder Fluendo-H.264-SW-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-D3D11-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-D3D12-Gst1.0 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-Libav-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                     ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-Libav-Gst1.0) AUD_MW_E    ... Success
+
+
+Ran 1/1 tests successfully               in 0.138 secs
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-MSDK-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                    ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-MSDK-Gst1.0) AUD_MW_E    ... Error
+
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-MSDK-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 69, in _test
+    result = self.decoder.decode(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/decoders/gstreamer.py", line 131, in decode
+    data = run_pipe_command_with_std_output(
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 104, in run_pipe_command_with_std_output
+    raise ex
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/utils.py", line 83, in run_pipe_command_with_std_output
+    data = subprocess.check_output(
+  File "/usr/lib/python3.8/subprocess.py", line 415, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/usr/lib/python3.8/subprocess.py", line 516, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command 'gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 ! h264parse ! msdkh264dec ! video/x-raw ! videoconvert dither=none ! video/x-raw,format=I420 ! videocodectestsink -m' returned non-zero exit status 1.
+
+Ran 0/1 tests successfully               in 0.068 secs
+Skipping decoder GStreamer-H.264-NVDEC-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-NVDECSL-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-V4L2-Gst1.0 because it cannot be run
+Skipping decoder GStreamer-H.264-V4L2SL-Gst1.0 because it cannot be run
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Fail
+
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-VA-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 103, in _test
+    self.assertEqual(
+AssertionError: 'e96fe5054de0329a8868d06003375cdb' != '10174f0c9b4211e960ed9659ee0449d2'
+- e96fe5054de0329a8868d06003375cdb
++ 10174f0c9b4211e960ed9659ee0449d2
+ : AUD_MW_E
+
+Ran 0/1 tests successfully               in 0.100 secs
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VAAPI-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                     ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VAAPI-Gst1.0) AUD_MW_E    ... Success
+
+
+Ran 1/1 tests successfully               in 0.279 secs
+Skipping decoder JCT-VT-H.264 because it cannot be run
+Skipping decoder ccdec-H.264 because it cannot be run
+Generating summary for test suite GSTCONF2023 and decoders FFmpeg-H.264, FFmpeg-H.264-VAAPI, FFmpeg-H.264-VDPAU, FFmpeg-H.264-h264_v4l2m2m, GStreamer-H.264-Libav-Gst1.0, GStreamer-H.264-MSDK-Gst1.0, GStreamer-H.264-VA-Gst1.0, GStreamer-H.264-VAAPI-Gst1.0:
+
+|Test|FFmpeg-H.264|FFmpeg-H.264-VAAPI|FFmpeg-H.264-VDPAU|FFmpeg-H.264-h264_v4l2m2m|GStreamer-H.264-Libav-Gst1.0|GStreamer-H.264-MSDK-Gst1.0|GStreamer-H.264-VA-Gst1.0|GStreamer-H.264-VAAPI-Gst1.0|
+|-|-|-|-|-|-|-|-|-|
+|TOTAL|1/1|1/1|1/1|0/1|1/1|0/1|0/1|1/1|
+|TOTAL TIME|0.207s|0.274s|0.353s|0.309s|0.138s|0.068s|0.100s|0.279s|
+|-|-|-|-|-|-|-|-|-|
+|AUD_MW_E|✔️|✔️|✔️|☠|✔️|☠|❌|✔️|
+|-|-|-|-|-|-|-|-|-|
+|Test|FFmpeg-H.264|FFmpeg-H.264-VAAPI|FFmpeg-H.264-VDPAU|FFmpeg-H.264-h264_v4l2m2m|GStreamer-H.264-Libav-Gst1.0|GStreamer-H.264-MSDK-Gst1.0|GStreamer-H.264-VA-Gst1.0|GStreamer-H.264-VAAPI-Gst1.0|
+|TOTAL|1/1|1/1|1/1|0/1|1/1|0/1|0/1|1/1|
+|TOTAL TIME|0.207s|0.274s|0.353s|0.309s|0.138s|0.068s|0.100s|0.279s|
+
+
++ ./fluster.py run -ts GSTCONF2023 -tv AUD_MW_E -d GStreamer-H.264-VA-Gst1.0 -s
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Fail
+
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-VA-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 103, in _test
+    self.assertEqual(
+AssertionError: 'e96fe5054de0329a8868d06003375cdb' != '10174f0c9b4211e960ed9659ee0449d2'
+- e96fe5054de0329a8868d06003375cdb
++ 10174f0c9b4211e960ed9659ee0449d2
+ : AUD_MW_E
+
+Ran 0/1 tests successfully               in 0.100 secs
+Generating summary for test suite GSTCONF2023 and decoders GStreamer-H.264-VA-Gst1.0:
+
+|Test|GStreamer-H.264-VA-Gst1.0|
+|-|-|
+|TOTAL|0/1|
+|TOTAL TIME|0.100s|
+|-|-|
+|AUD_MW_E|❌|
+|-|-|
+|Test|GStreamer-H.264-VA-Gst1.0|
+|TOTAL|0/1|
+|TOTAL TIME|0.100s|
+
+
++ ./fluster.py run -ts GSTCONF2023 -tv AUD_MW_E -d GStreamer-H.264-VA-Gst1.0 -s -v
+Setting pipeline to PAUSED ...
+Pipeline is PREROLLING ...
+Got context from element 'vah264dec0': gst.va.display.handle=context, gst-display=(GstObject)"\(GstVaDisplayDrm\)\ vadisplaydrm1", description=(string)"Intel\(R\)\ Kaby\ Lake", path=(string)/dev/dri/renderD128;
+Pipeline is PREROLLED ...
+Setting pipeline to PLAYING ...
+Redistribute latency...
+New clock: GstSystemClock
+Got EOS from element "pipeline0".
+Execution ended after 0:00:00.000144425
+Setting pipeline to NULL ...
+Freeing pipeline ...
+
+Running command "gst-launch-1.0 --no-fault appsrc num-buffers=0 ! h264parse ! vah264dec ! fakesink"
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Fail
+
+Running command "gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 ! h264parse ! vah264dec ! video/x-raw ! videoconvert dither=none ! video/x-raw,format=I420 ! videocodectestsink -m"
+Setting pipeline to PAUSED ...
+Pipeline is PREROLLING ...
+Got message #21 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #22 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #23 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #24 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #25 from element "vah264dec0" (need-context): GstMessageNeedContext, context-type=(string)gst.va.display.handle;
+Got message #26 from element "vah264dec0" (have-context): GstMessageHaveContext, context=(GstContext)NULL;
+Got context from element 'vah264dec0': gst.va.display.handle=context, gst-display=(GstObject)"\(GstVaDisplayDrm\)\ vadisplaydrm1", description=(string)"Intel\(R\)\ Kaby\ Lake", path=(string)/dev/dri/renderD128;
+Got message #27 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #28 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #29 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #30 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)paused;
+Got message #32 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #33 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #34 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #35 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #39 from pad "h264parse0:sink" (stream-status): GstMessageStreamStatus, type=(GstStreamStatusType)create, owner=(GstElement)"\(GstH264Parse\)\ h264parse0", object=(GstTask)"\(GstTask\)\ h264parse0:sink";
+Got message #40 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #41 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #42 from pad "h264parse0:sink" (stream-status): GstMessageStreamStatus, type=(GstStreamStatusType)enter, owner=(GstElement)"\(GstH264Parse\)\ h264parse0", object=(GstTask)"\(GstTask\)\ h264parse0:sink";
+Got message #43 from element "pipeline0" (stream-start): GstMessageStreamStart, group-id=(uint)1;
+Got message #46 from element "h264parse0" (latency): no message details
+Redistribute latency...
+Got message #49 from element "vah264dec0" (latency): no message details
+Redistribute latency...
+Got message #57 from element "videocodectestsink0" (tag): GstMessageTag, taglist=(taglist)"taglist\,\ video-codec\=\(string\)\"H.264\\\ \\\(Constrained\\\ Baseline\\\ Profile\\\)\"\;";
+Got message #58 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #61 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Pipeline is PREROLLED ...
+Setting pipeline to PLAYING ...
+Got message #60 from element "pipeline0" (async-done): GstMessageAsyncDone, running-time=(guint64)18446744073709551615;
+Got message #62 from element "videocodectestsink0" (latency): no message details
+Redistribute latency...
+Got message #63 from element "pipeline0" (new-clock): GstMessageNewClock, clock=(GstClock)"\(GstSystemClock\)\ GstSystemClock";
+New clock: GstSystemClock
+Got message #65 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #66 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #67 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #68 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #69 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #70 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #71 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #72 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #75 from element "videocodectestsink0" (element): conformance/checksum, checksum-type=(string)MD5, checksum=(string)10174f0c9b4211e960ed9659ee0449d2;
+Got message #38 from element "pipeline0" (eos): no message details
+Got EOS from element "pipeline0".
+Execution ended after 0:00:00.042601469
+Setting pipeline to NULL ...
+Freeing pipeline ...
+
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-VA-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 103, in _test
+    self.assertEqual(
+AssertionError: 'e96fe5054de0329a8868d06003375cdb' != '10174f0c9b4211e960ed9659ee0449d2'
+- e96fe5054de0329a8868d06003375cdb
++ 10174f0c9b4211e960ed9659ee0449d2
+ : AUD_MW_E
+
+Ran 0/1 tests successfully               in 0.101 secs
+Generating summary for test suite GSTCONF2023 and decoders GStreamer-H.264-VA-Gst1.0:
+
+|Test|GStreamer-H.264-VA-Gst1.0|
+|-|-|
+|TOTAL|0/1|
+|TOTAL TIME|0.101s|
+|-|-|
+|AUD_MW_E|❌|
+|-|-|
+|Test|GStreamer-H.264-VA-Gst1.0|
+|TOTAL|0/1|
+|TOTAL TIME|0.101s|
+
+
++ gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 '!' h264parse '!' vah264dec '!' video/x-raw '!' videoconvert dither=none '!' video/x-raw,format=I420 '!' videocodectestsink -m
+Setting pipeline to PAUSED ...
+Pipeline is PREROLLING ...
+Got message #21 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #22 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #23 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #24 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #25 from element "vah264dec0" (need-context): GstMessageNeedContext, context-type=(string)gst.va.display.handle;
+Got message #26 from element "vah264dec0" (have-context): GstMessageHaveContext, context=(GstContext)NULL;
+Got context from element 'vah264dec0': gst.va.display.handle=context, gst-display=(GstObject)"\(GstVaDisplayDrm\)\ vadisplaydrm1", description=(string)"Intel\(R\)\ Kaby\ Lake", path=(string)/dev/dri/renderD128;
+Got message #27 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #28 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #29 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #30 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)paused;
+Got message #32 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #33 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #34 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #35 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #39 from pad "h264parse0:sink" (stream-status): GstMessageStreamStatus, type=(GstStreamStatusType)create, owner=(GstElement)"\(GstH264Parse\)\ h264parse0", object=(GstTask)"\(GstTask\)\ h264parse0:sink";
+Got message #40 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #41 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #42 from pad "h264parse0:sink" (stream-status): GstMessageStreamStatus, type=(GstStreamStatusType)enter, owner=(GstElement)"\(GstH264Parse\)\ h264parse0", object=(GstTask)"\(GstTask\)\ h264parse0:sink";
+Got message #43 from element "pipeline0" (stream-start): GstMessageStreamStart, group-id=(uint)1;
+Got message #46 from element "h264parse0" (latency): no message details
+Redistribute latency...
+Got message #49 from element "vah264dec0" (latency): no message details
+Redistribute latency...
+Got message #57 from element "videocodectestsink0" (tag): GstMessageTag, taglist=(taglist)"taglist\,\ video-codec\=\(string\)\"H.264\\\ \\\(Constrained\\\ Baseline\\\ Profile\\\)\"\;";
+Got message #58 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #61 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Pipeline is PREROLLED ...
+Setting pipeline to PLAYING ...
+Got message #60 from element "pipeline0" (async-done): GstMessageAsyncDone, running-time=(guint64)18446744073709551615;
+Got message #62 from element "videocodectestsink0" (latency): no message details
+Redistribute latency...
+Got message #63 from element "pipeline0" (new-clock): GstMessageNewClock, clock=(GstClock)"\(GstSystemClock\)\ GstSystemClock";
+New clock: GstSystemClock
+Got message #65 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #66 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #67 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #68 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #69 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #70 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #71 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #72 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #75 from element "videocodectestsink0" (element): conformance/checksum, checksum-type=(string)MD5, checksum=(string)10174f0c9b4211e960ed9659ee0449d2;
+Got message #38 from element "pipeline0" (eos): no message details
+Got EOS from element "pipeline0".
+Execution ended after 0:00:00.040759949
+Setting pipeline to NULL ...
+Freeing pipeline ...
++ set -e
++ LIBVA_DRIVER_NAME=iHD
++ ./fluster.py run -ts GSTCONF2023 -tv AUD_MW_E -d GStreamer-H.264-VA-Gst1.0 -s -v
+Setting pipeline to PAUSED ...
+Pipeline is PREROLLING ...
+Got context from element 'vah264dec0': gst.va.display.handle=context, gst-display=(GstObject)"\(GstVaDisplayDrm\)\ vadisplaydrm1", description=(string)"Intel\(R\)\ Gen\ Graphics", path=(string)/dev/dri/renderD128;
+Pipeline is PREROLLED ...
+Setting pipeline to PLAYING ...
+Redistribute latency...
+New clock: GstSystemClock
+Got EOS from element "pipeline0".
+Execution ended after 0:00:00.000180072
+Setting pipeline to NULL ...
+Freeing pipeline ...
+
+Running command "gst-launch-1.0 --no-fault appsrc num-buffers=0 ! h264parse ! vah264dec ! fakesink"
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Test vectors aud_mw_e
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+
+Running command "gst-launch-1.0 --no-fault filesrc location=/home/rgonzalez/src/github.com/fluendo/fluster/fluster/../resources/GSTCONF2023/AUD_MW_E/AUD_MW_E.264 ! h264parse ! vah264dec ! video/x-raw ! videoconvert dither=none ! video/x-raw,format=I420 ! videocodectestsink -m"
+Setting pipeline to PAUSED ...
+Pipeline is PREROLLING ...
+Got message #21 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #22 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #23 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #24 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #25 from element "vah264dec0" (need-context): GstMessageNeedContext, context-type=(string)gst.va.display.handle;
+Got message #26 from element "vah264dec0" (have-context): GstMessageHaveContext, context=(GstContext)NULL;
+Got context from element 'vah264dec0': gst.va.display.handle=context, gst-display=(GstObject)"\(GstVaDisplayDrm\)\ vadisplaydrm1", description=(string)"Intel\(R\)\ Gen\ Graphics", path=(string)/dev/dri/renderD128;
+Got message #27 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #28 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #29 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)void-pending;
+Got message #30 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)null, new-state=(GstState)ready, pending-state=(GstState)paused;
+Got message #32 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #33 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #34 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #35 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #39 from pad "h264parse0:sink" (stream-status): GstMessageStreamStatus, type=(GstStreamStatusType)create, owner=(GstElement)"\(GstH264Parse\)\ h264parse0", object=(GstTask)"\(GstTask\)\ h264parse0:sink";
+Got message #40 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #41 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #42 from pad "h264parse0:sink" (stream-status): GstMessageStreamStatus, type=(GstStreamStatusType)enter, owner=(GstElement)"\(GstH264Parse\)\ h264parse0", object=(GstTask)"\(GstTask\)\ h264parse0:sink";
+Got message #43 from element "pipeline0" (stream-start): GstMessageStreamStart, group-id=(uint)1;
+Got message #46 from element "h264parse0" (latency): no message details
+Redistribute latency...
+Got message #49 from element "vah264dec0" (latency): no message details
+Redistribute latency...
+Got message #57 from element "videocodectestsink0" (tag): GstMessageTag, taglist=(taglist)"taglist\,\ video-codec\=\(string\)\"H.264\\\ \\\(Constrained\\\ Baseline\\\ Profile\\\)\"\;";
+Got message #58 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Got message #61 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)ready, new-state=(GstState)paused, pending-state=(GstState)void-pending;
+Pipeline is PREROLLED ...
+Setting pipeline to PLAYING ...
+Got message #60 from element "pipeline0" (async-done): GstMessageAsyncDone, running-time=(guint64)18446744073709551615;
+Got message #62 from element "videocodectestsink0" (latency): no message details
+Redistribute latency...
+Got message #63 from element "pipeline0" (new-clock): GstMessageNewClock, clock=(GstClock)"\(GstSystemClock\)\ GstSystemClock";
+New clock: GstSystemClock
+Got message #65 from element "videocodectestsink0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #66 from element "capsfilter1" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #67 from element "videoconvert0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #68 from element "capsfilter0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #69 from element "vah264dec0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #70 from element "h264parse0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #71 from element "filesrc0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #72 from element "pipeline0" (state-changed): GstMessageStateChanged, old-state=(GstState)paused, new-state=(GstState)playing, pending-state=(GstState)void-pending;
+Got message #75 from element "videocodectestsink0" (element): conformance/checksum, checksum-type=(string)MD5, checksum=(string)e96fe5054de0329a8868d06003375cdb;
+Got message #38 from element "pipeline0" (eos): no message details
+Got EOS from element "pipeline0".
+Execution ended after 0:00:00.308683809
+Setting pipeline to NULL ...
+Freeing pipeline ...
+
+
+Ran 1/1 tests successfully               in 0.383 secs
+Generating summary for test suite GSTCONF2023 and decoders GStreamer-H.264-VA-Gst1.0:
+
+|Test|GStreamer-H.264-VA-Gst1.0|
+|-|-|
+|TOTAL|1/1|
+|TOTAL TIME|0.383s|
+|-|-|
+|AUD_MW_E|✔️|
+|-|-|
+|Test|GStreamer-H.264-VA-Gst1.0|
+|TOTAL|1/1|
+|TOTAL TIME|0.383s|
+
+
++ export LIBVA_DRIVER_NAME=iHD
++ LIBVA_DRIVER_NAME=iHD
++ ./fluster.py --no-emoji run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 -s
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 3.468 secs
+Generating summary for test suite GSTCONF2023 and decoders GStreamer-H.264-VA-Gst1.0:
+
+|Test|GStreamer-H.264-VA-Gst1.0|
+|-|-|
+|TOTAL|2/2|
+|TOTAL TIME|3.468s|
+|-|-|
+|AUD_MW_E|OK|
+|BA1_FT_C|OK|
+|-|-|
+|Test|GStreamer-H.264-VA-Gst1.0|
+|TOTAL|2/2|
+|TOTAL TIME|3.468s|
+
+
++ mkdir -p /opt/fluster_resources/
++ cp -r resources/GSTCONF2023 /opt/fluster_resources/
++ ./fluster.py -r /opt/fluster_resources run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 -s
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 3.744 secs
+Generating summary for test suite GSTCONF2023 and decoders GStreamer-H.264-VA-Gst1.0:
+
+|Test|GStreamer-H.264-VA-Gst1.0|
+|-|-|
+|TOTAL|2/2|
+|TOTAL TIME|3.744s|
+|-|-|
+|AUD_MW_E|✔️|
+|BA1_FT_C|✔️|
+|-|-|
+|Test|GStreamer-H.264-VA-Gst1.0|
+|TOTAL|2/2|
+|TOTAL TIME|3.744s|
+
+
++ ./fluster.py run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 -s -f junitxml -so /tmp/junitout.xml
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 3.483 secs
++ ./fluster.py run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 --keep
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 4.557 secs
++ ./fluster.py run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 -j 1
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 1 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 4.792 secs
++ ./fluster.py run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 -th 2
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Success
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+Ran 2/2 tests successfully               in 3.453 secs
++ LIBVA_DRIVER_NAME=i965
++ ./fluster.py run -ts GSTCONF2023 -d GStreamer-H.264-VA-Gst1.0 -th 2
+****************************************************************************************************
+Running test suite GSTCONF2023 with decoder GStreamer-H.264-VA-Gst1.0
+Using 8 parallel job(s)
+****************************************************************************************************
+
+[TEST SUITE ] (DECODER                  ) TEST VECTOR ... RESULT
+----------------------------------------------------------------------
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) AUD_MW_E    ... Fail
+[GSTCONF2023] (GStreamer-H.264-VA-Gst1.0) BA1_FT_C    ... Success
+
+
+=======================================================================
+FAIL: AUD_MW_E (GStreamer-H.264-VA-Gst1.0.GSTCONF2023)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/rgonzalez/src/github.com/fluendo/fluster/fluster/test.py", line 103, in _test
+    self.assertEqual(
+AssertionError: 'e96fe5054de0329a8868d06003375cdb' != '10174f0c9b4211e960ed9659ee0449d2'
+- e96fe5054de0329a8868d06003375cdb
++ 10174f0c9b4211e960ed9659ee0449d2
+ : AUD_MW_E
+
+Ran 1/2 tests successfully               in 0.380 secs
+Tests results below threshold: 1 vs 2
+Reporting error through exit code 2
