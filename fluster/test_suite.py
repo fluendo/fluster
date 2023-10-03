@@ -69,6 +69,7 @@ class Context:
         results_dir: str,
         reference: bool = False,
         test_vectors: Optional[List[str]] = None,
+        skip_vectors: Optional[List[str]] = None,
         failing_test_vectors: Optional[List[str]] = None,
         keep_files: bool = False,
         verbose: bool = False,
@@ -81,6 +82,7 @@ class Context:
         self.results_dir = results_dir
         self.reference = reference
         self.test_vectors = test_vectors
+        self.skip_vectors = skip_vectors
         self.failing_test_vectors = failing_test_vectors
         self.keep_files = keep_files
         self.verbose = verbose
@@ -403,6 +405,8 @@ class TestSuite:
         string = f"Running test suite {self.name} with decoder {ctx.decoder.name}\n"
         if ctx.test_vectors:
             string += f'Test vectors {" ".join(ctx.test_vectors)}\n'
+        if ctx.skip_vectors:
+            string += f'Skipping test vectors {" ".join(ctx.skip_vectors)}\n'
         string += f"Using {ctx.jobs} parallel job(s)"
         print(string)
         print("*" * 100 + "\n")
@@ -422,14 +426,19 @@ class TestSuite:
         tests = []
         test_vectors_run = {}
         for name, test_vector in self.test_vectors.items():
+            skip = False
             if ctx.test_vectors:
                 if test_vector.name.lower() not in ctx.test_vectors:
                     continue
+            if ctx.skip_vectors:
+                if test_vector.name.lower() in ctx.skip_vectors:
+                    skip = True
             tests.append(
                 Test(
                     ctx.decoder,
                     self,
                     test_vector,
+                    skip,
                     ctx.results_dir,
                     ctx.reference,
                     ctx.timeout,

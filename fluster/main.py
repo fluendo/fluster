@@ -215,6 +215,12 @@ class Main:
             nargs="+",
         )
         subparser.add_argument(
+            "-sv",
+            "--skipvectors",
+            help="skip the specific test vectors",
+            nargs="+",
+        )
+        subparser.add_argument(
             "-d",
             "--decoders",
             help="run only the specific decoders",
@@ -343,6 +349,7 @@ class Main:
             timeout=args.timeout,
             decoders=args.decoders,
             test_vectors=args.testvectors,
+            skip_vectors=args.skipvectors,
             failfast=args.failfast,
             quiet=args.quiet,
             summary=args.summary or args.summary_output,
@@ -365,6 +372,7 @@ class Main:
             test_suites=args.testsuites,
             decoders=args.decoder,
             test_vectors=[],
+            skip_vectors=[],
             quiet=args.quiet,
             verbose=args.verbose,
             reference=True,

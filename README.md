@@ -352,8 +352,9 @@ optional arguments:
 
 usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
 [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]]
-[-d DECODERS [DECODERS ...]] [-s] [-so SUMMARY_OUTPUT]
-[-f {md,csv,junitxml}] [-k] [-th THRESHOLD] [-tth TIME_THRESHOLD] [-v]
+[-sv SKIPVECTORS [SKIPVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s]
+[-so SUMMARY_OUTPUT] [-f {md,csv,junitxml}] [-k] [-th THRESHOLD]
+[-tth TIME_THRESHOLD] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -367,6 +368,8 @@ optional arguments:
                         run only the specific test suites
   -tv TESTVECTORS [TESTVECTORS ...], --testvectors TESTVECTORS [TESTVECTORS ...]
                         run only the specific test vectors
+  -sv SKIPVECTORS [SKIPVECTORS ...], --skipvectors SKIPVECTORS [SKIPVECTORS ...]
+                        skip the specific test vectors
   -d DECODERS [DECODERS ...], --decoders DECODERS [DECODERS ...]
                         run only the specific decoders
   -s, --summary         generate a summary in Markdown format for each test
