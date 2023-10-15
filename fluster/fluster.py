@@ -153,6 +153,13 @@ class Fluster:
         self.test_suites: List[TestSuite] = []
         self.decoders = DECODERS
         self.emoji = EMOJI_RESULT if use_emoji else TEXT_RESULT
+        if self.verbose:
+            print(
+                f"NOTE: Internal dirs used:\n"
+                f" * test_suites_dir: {self.test_suites_dir}\n"
+                f" * resources_dir: {self.resources_dir}\n"
+                f" * results_dir: {self.results_dir}"
+            )
 
     @lru_cache(maxsize=128)
     def _load_test_suites(self) -> None:
@@ -210,6 +217,8 @@ class Fluster:
             if show_test_vectors:
                 for test_vector in test_suite.test_vectors.values():
                     print(test_vector)
+        if len(self.test_suites) == 0:
+            print(f'    No test suites found in "{self.test_suites_dir}"')
 
     def _get_matches(
         self, in_list: List[str], check_list: List[Any], name: str
