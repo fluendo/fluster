@@ -23,6 +23,7 @@ import multiprocessing
 import sys
 from importlib import util
 from typing import Any
+from tempfile import gettempdir
 
 from fluster.fluster import Fluster, Context, SummaryFormat
 
@@ -30,7 +31,7 @@ TEST_SUITES_DIR = "test_suites"
 TEST_SUITES_DIR_SYS = "/usr/share/fluster/test_suites"
 DECODERS_DIR = "decoders"
 RESOURCES_DIR = "resources"
-RESULTS_DIR = "results"
+RESULTS_DIR = "fluster_results"
 
 
 def fluster_main() -> None:
@@ -61,9 +62,7 @@ class Main:
         self.resources_dir = os.path.join(
             os.path.join(os.path.dirname(__file__), ".."), RESOURCES_DIR
         )
-        self.results_dir = os.path.join(
-            os.path.join(os.path.dirname(__file__), ".."), RESULTS_DIR
-        )
+        self.results_dir = os.path.join(gettempdir(), RESULTS_DIR)
 
         self.parser = self._create_parser()
 
