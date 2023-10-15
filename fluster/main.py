@@ -22,11 +22,13 @@ import os
 import multiprocessing
 import sys
 from importlib import util
-from typing import Any
+from typing import Any, Tuple
 from tempfile import gettempdir
 
 from fluster.fluster import Fluster, Context, SummaryFormat
+from fluster import utils
 
+APPNAME = "fluster"
 TEST_SUITES_DIR = "test_suites"
 TEST_SUITES_DIR_SYS = "/usr/share/fluster/test_suites"
 DECODERS_DIR = "decoders"
@@ -48,21 +50,36 @@ class Main:
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
         self.test_suites_dir = os.path.join(
-            os.path.join(os.path.dirname(__file__), ".."), TEST_SUITES_DIR
+            os.path.dirname(__file__), "..", TEST_SUITES_DIR
         )
-        # Only use the system directory for test suites if the local directory
-        # doesn't exist and the system directory does exist.
-        if (
-            sys.platform.startswith("linux")
-            and not os.path.exists(self.test_suites_dir)
-            and os.path.exists(TEST_SUITES_DIR_SYS)
-        ):
-            self.test_suites_dir = TEST_SUITES_DIR_SYS
-
         self.resources_dir = os.path.join(
-            os.path.join(os.path.dirname(__file__), ".."), RESOURCES_DIR
+            os.path.dirname(__file__), "..", RESOURCES_DIR
         )
         self.results_dir = os.path.join(gettempdir(), RESULTS_DIR)
+
+        is_installed = not os.path.exists(
+            os.path.join(os.path.dirname(__file__), "..", ".git")
+        )
+        if is_installed:
+            self.resources_dir, self.test_suites_dir = self._get_installed_dirs()
+        else:
+            # Only use the system directory for test suites and resources if the
+            # local directory doesn't exist and the system directory does exist.
+            if (
+                sys.platform.startswith("linux")
+                and not os.path.exists(self.test_suites_dir)
+                and os.path.exists(TEST_SUITES_DIR_SYS)
+            ):
+                line = "=" * 100
+                print(
+                    f"{line}\n"
+                    f'WARNING: Using "{TEST_SUITES_DIR_SYS}" with fluster uninstalled.\n'
+                    "This will be deprecated in future versions.\n"
+                    "Use fluster installed versions instead.\n"
+                    "Check https://github.com/fluendo/fluster/pull/134\n"
+                    f"{line}"
+                )
+                self.test_suites_dir = TEST_SUITES_DIR_SYS
 
         self.parser = self._create_parser()
 
@@ -104,6 +121,18 @@ class Main:
                 sys.exit(
                     "error: junitparser required to use JUnit format. Please install with pip install junitparser."
                 )
+
+    def _get_installed_dirs(self) -> Tuple[str, str]:
+        site_data_dir = utils.site_data_dir(APPNAME)
+        user_data_dir = utils.user_data_dir(APPNAME)
+
+        test_suites_dir = os.path.join(site_data_dir, TEST_SUITES_DIR)
+        if not os.path.exists(test_suites_dir):
+            test_suites_dir = os.path.join(user_data_dir, TEST_SUITES_DIR)
+
+        resources_dir = os.path.join(user_data_dir, RESOURCES_DIR)
+
+        return (resources_dir, test_suites_dir)
 
     def _create_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser()

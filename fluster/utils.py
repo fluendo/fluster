@@ -20,6 +20,7 @@ import hashlib
 import os
 import shutil
 import subprocess
+import sys
 import urllib.request
 import zipfile
 import platform
@@ -140,3 +141,34 @@ def normalize_path(path: str) -> str:
     if platform.system() == "Windows":
         return path.replace("\\", "/")
     return path
+
+
+def _linux_user_data_dir(appname: str) -> str:
+    """Return data directory tied to the user"""
+    path = os.environ.get("XDG_DATA_HOME", "")
+    if not path.strip():
+        path = os.path.expanduser("~/.local/share")
+    return os.path.join(path, appname)
+
+
+def _linux_site_data_dir(appname: str) -> str:
+    """Return data directory shared by users"""
+    path = os.environ.get("XDG_DATA_DIRS", "")
+    if not path.strip():
+        path = "/usr/local/share:/usr/share"
+    path = path.split(os.pathsep)[0]
+    return os.path.join(path, appname)
+
+
+def _win_user_data_dir(appname: str) -> str:
+    """Return data directory"""
+    path = os.path.expanduser(r"~\AppData\Local")
+    return os.path.join(path, appname)
+
+
+if sys.platform == "win32":
+    site_data_dir = _win_user_data_dir  # On Windows always user_data_dir
+    user_data_dir = _win_user_data_dir
+else:
+    site_data_dir = _linux_site_data_dir
+    user_data_dir = _linux_user_data_dir
