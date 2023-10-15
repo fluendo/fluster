@@ -22,6 +22,7 @@ from functools import lru_cache
 from typing import List, Dict, Any, Tuple, Optional
 import sys
 from enum import Enum
+from shutil import rmtree
 
 # Import decoders that will auto-register
 # pylint: disable=wildcard-import, unused-wildcard-import
@@ -315,6 +316,9 @@ class Fluster:
                             sys.exit(3)
 
         self._show_summary_if_needed(ctx, results)
+
+        if not ctx.keep_files and os.path.isdir(self.results_dir):
+            rmtree(self.results_dir)
 
         if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)
