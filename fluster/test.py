@@ -19,6 +19,7 @@ import os
 from subprocess import TimeoutExpired
 import unittest
 from typing import Any
+from time import perf_counter
 
 from fluster.decoder import Decoder
 from fluster.test_vector import TestVector, TestVectorResult
@@ -75,6 +76,7 @@ class Test(unittest.TestCase):
         input_filepath = normalize_path(input_filepath)
 
         try:
+            start = perf_counter()
             result = self.decoder.decode(
                 input_filepath,
                 output_filepath,
@@ -83,15 +85,24 @@ class Test(unittest.TestCase):
                 self.verbose,
                 self.keep_files,
             )
+            self.test_suite.test_vectors[self.test_vector.name].test_time = (
+                perf_counter() - start
+            )
         except TimeoutExpired:
             self.test_suite.test_vectors[
                 self.test_vector.name
             ].test_result = TestVectorResult.TIMEOUT
+            self.test_suite.test_vectors[self.test_vector.name].test_time = (
+                perf_counter() - start
+            )
             raise
         except Exception:
             self.test_suite.test_vectors[
                 self.test_vector.name
             ].test_result = TestVectorResult.ERROR
+            self.test_suite.test_vectors[self.test_vector.name].test_time = (
+                perf_counter() - start
+            )
             raise
 
         if (
