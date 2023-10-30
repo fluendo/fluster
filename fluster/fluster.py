@@ -382,6 +382,8 @@ class Fluster:
                     ]:
                         jcase.result = _parse_vector_errors(vector)
 
+                    jcase.time = vector.test_time
+
                     jsuite.add_testcase(jcase)
 
                     if vector.test_result is TestVectorResult.TIMEOUT and ctx.jobs == 1:

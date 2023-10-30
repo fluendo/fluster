@@ -60,6 +60,7 @@ class TestVector:
 
         # Not included in JSON
         self.test_result = TestVectorResult.NOT_RUN
+        self.test_time = 0.0
         self.errors: List[List[str]] = []
 
     @classmethod
@@ -76,6 +77,7 @@ class TestVector:
         data = self.__dict__.copy()
         data.pop("test_result")
         data.pop("errors")
+        data.pop("test_time")
         data["output_format"] = str(self.output_format.value)
         return data
 
