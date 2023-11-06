@@ -160,7 +160,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/FRExt/FRExt2_Panasonic_C.zip",
             "source_checksum": "1bba9bb62c787fa771c833097c0153c5",
             "input_file": "FRExt2_Panasonic.avc",
-            "output_format": "yuv422p",
+            "output_format": "yuv420p",
             "result": "f4f02595e54be89fd9d33cb7907f5cb1"
         },
         {
