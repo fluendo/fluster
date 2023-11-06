@@ -551,6 +551,16 @@ class GStreamerVaapiAV1Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerDav1dAV1Decoder(GStreamer10Video):
+    '''GStreamer AV1 dav1d decoder implementation for GStreamer 1.0'''
+    codec = Codec.AV1
+    check_decoder_bin = ' dav1ddec '
+    decoder_bin = f' parsebin ! {check_decoder_bin} '
+    api = 'dav1d'
+    hw_acceleration = False
+
+
+@register_decoder
 class GStreamerVaVP9Gst10Decoder(GStreamer10Video):
     '''GStreamer VP9 VA decoder implementation for GStreamer 1.0'''
     codec = Codec.VP9
