@@ -25,6 +25,7 @@ from unittest.result import TestResult
 from time import perf_counter
 from shutil import rmtree
 from typing import cast, List, Dict, Optional, Type, Any
+import urllib.error
 
 
 from fluster.test_vector import TestVector
@@ -45,6 +46,7 @@ class DownloadWork:
         keep_file: bool,
         test_suite_name: str,
         test_vector: TestVector,
+        retries: int,
     ):
         self.out_dir = out_dir
         self.verify = verify
@@ -52,6 +54,7 @@ class DownloadWork:
         self.keep_file = keep_file
         self.test_suite_name = test_suite_name
         self.test_vector = test_vector
+        self.retries = retries
 
 
 class Context:
@@ -185,10 +188,23 @@ class TestSuite:
         # This avoids:
         # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
         # Reason: 'TypeError("cannot pickle '_io.BufferedReader' object")'
-        try:
-            utils.download(test_vector.source, dest_dir)
-        except Exception as ex:
-            raise Exception(str(ex)) from ex
+        for i in range(ctx.retries):
+            try:
+                exception_str = ""
+                utils.download(test_vector.source, dest_dir)
+            except urllib.error.URLError as ex:
+                exception_str = str(ex)
+                print(
+                    f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i+1}"
+                )
+                continue
+            except Exception as ex:
+                raise Exception(str(ex)) from ex
+            break
+
+        if exception_str:
+            raise Exception(exception_str)
+
         if test_vector.source_checksum != "__skip__":
             checksum = utils.file_checksum(dest_path)
             if test_vector.source_checksum != checksum:
@@ -214,6 +230,7 @@ class TestSuite:
         verify: bool,
         extract_all: bool = False,
         keep_file: bool = False,
+        retries: int = 1,
     ) -> None:
         """Download the test suite"""
         if not os.path.exists(out_dir):
@@ -235,6 +252,7 @@ class TestSuite:
                     keep_file,
                     self.name,
                     test_vector,
+                    retries,
                 )
                 downloads.append(
                     pool.apply_async(
