@@ -331,6 +331,13 @@ class Main:
             action="store_true",
         )
         subparser.add_argument(
+            "-r",
+            "--retries",
+            help="number of retries, before failing",
+            type=int,
+            default=1,
+        )
+        subparser.add_argument(
             "testsuites", help="list of testsuites to download", nargs="*"
         )
         subparser.set_defaults(func=self._download_cmd)
@@ -385,5 +392,8 @@ class Main:
     def _download_cmd(self, args: Any, fluster: Fluster) -> None:
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         fluster.download_test_suites(
-            test_suites=args.testsuites, jobs=args.jobs, keep_file=args.keep
+            test_suites=args.testsuites,
+            jobs=args.jobs,
+            keep_file=args.keep,
+            retries=args.retries,
         )

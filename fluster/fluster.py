@@ -514,7 +514,7 @@ class Fluster:
             print(output)
 
     def download_test_suites(
-        self, test_suites: List[str], jobs: int, keep_file: bool
+        self, test_suites: List[str], jobs: int, keep_file: bool, retries: int
     ) -> None:
         """Download a group of test suites"""
         self._load_test_suites()
@@ -527,5 +527,9 @@ class Fluster:
 
         for test_suite in download_test_suites:
             test_suite.download(
-                jobs, self.resources_dir, verify=True, keep_file=keep_file
+                jobs,
+                self.resources_dir,
+                verify=True,
+                keep_file=keep_file,
+                retries=retries,
             )
