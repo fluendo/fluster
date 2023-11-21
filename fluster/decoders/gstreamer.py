@@ -494,7 +494,8 @@ class GStreamerV4l2VP9Gst10Decoder(GStreamer10Video):
 class GStreamerVaAV1Gst10Decoder(GStreamer10Video):
     '''GStreamer AV1 VA decoder implementation for GStreamer 1.0'''
     codec = Codec.AV1
-    decoder_bin = ' ivfparse ! av1parse ! vaav1dec '
+    check_decoder_bin = ' vaav1dec '
+    decoder_bin = f' parsebin ! {check_decoder_bin}'
     api = 'VA'
     hw_acceleration = True
 
