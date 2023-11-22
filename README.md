@@ -317,7 +317,7 @@ optional arguments:
   -r RESOURCES, --resources RESOURCES
                         set the directory where resources are taken from
   -o OUTPUT, --output OUTPUT
-                        set the directory where test results will be stored
+                        set the directory where decoder outputs will be stored
   -ne, --no-emoji       set to use plain text instead of emojis
   -tsd TEST_SUITES_DIR, --test-suites-dir TEST_SUITES_DIR
                         set the directory where test suite will be read from

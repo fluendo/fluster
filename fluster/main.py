@@ -33,7 +33,7 @@ TEST_SUITES_DIR = "test_suites"
 TEST_SUITES_DIR_SYS = "/usr/share/fluster/test_suites"
 DECODERS_DIR = "decoders"
 RESOURCES_DIR = "resources"
-RESULTS_DIR = "fluster_results"
+OUTPUT_DIR = "fluster_output"
 
 
 def fluster_main() -> None:
@@ -55,7 +55,7 @@ class Main:
         self.resources_dir = os.path.join(
             os.path.dirname(__file__), "..", RESOURCES_DIR
         )
-        self.results_dir = os.path.join(gettempdir(), RESULTS_DIR)
+        self.output_dir = os.path.join(gettempdir(), OUTPUT_DIR)
 
         is_installed = not os.path.exists(
             os.path.join(os.path.dirname(__file__), "..", ".git")
@@ -97,7 +97,7 @@ class Main:
                 test_suites_dir=args.test_suites_dir,
                 decoders_dir=self.decoders_dir,
                 resources_dir=args.resources,
-                results_dir=args.output,
+                output_dir=args.output,
                 use_emoji=not args.no_emoji,
             )
             args.func(args, fluster)
@@ -145,8 +145,8 @@ class Main:
         parser.add_argument(
             "-o",
             "--output",
-            help="set the directory where test results will be stored",
-            default=self.results_dir,
+            help="set the directory where decoder outputs will be stored",
+            default=self.output_dir,
         )
         parser.add_argument(
             "-ne",
