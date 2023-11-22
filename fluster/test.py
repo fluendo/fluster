@@ -37,7 +37,7 @@ class Test(unittest.TestCase):
         test_suite: Any,  # can't use TestSuite type because of circular dependency
         test_vector: TestVector,
         skip: bool,
-        results_dir: str,
+        output_dir: str,
         reference: bool,
         timeout: int,
         keep_files: bool,
@@ -48,7 +48,7 @@ class Test(unittest.TestCase):
         self.test_vector = test_vector
         self.skip = skip
         self.resources_dir = self.test_suite.resources_dir
-        self.results_dir = results_dir
+        self.output_dir = output_dir
         self.reference = reference
         self.timeout = timeout
         self.keep_files = keep_files
@@ -64,7 +64,7 @@ class Test(unittest.TestCase):
 
             return
 
-        output_filepath = os.path.join(self.results_dir, self.test_vector.name + ".out")
+        output_filepath = os.path.join(self.output_dir, self.test_vector.name + ".out")
 
         input_filepath = os.path.join(
             self.resources_dir,

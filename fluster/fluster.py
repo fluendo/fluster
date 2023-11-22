@@ -85,7 +85,7 @@ class Context:
     def to_test_suite_context(
         self,
         decoder: Decoder,
-        results_dir: str,
+        output_dir: str,
         test_vectors: List[str],
         skip_vectors: List[str],
     ) -> TestSuiteContext:
@@ -96,7 +96,7 @@ class Context:
             timeout=self.timeout,
             failfast=self.failfast,
             quiet=self.quiet,
-            results_dir=results_dir,
+            output_dir=output_dir,
             reference=self.reference,
             test_vectors=test_vectors,
             skip_vectors=skip_vectors,
@@ -141,14 +141,14 @@ class Fluster:
         test_suites_dir: str,
         decoders_dir: str,
         resources_dir: str,
-        results_dir: str,
+        output_dir: str,
         verbose: bool = False,
         use_emoji: bool = True,
     ):
         self.test_suites_dir = test_suites_dir
         self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
-        self.results_dir = results_dir
+        self.output_dir = output_dir
         self.verbose = verbose
         self.test_suites: List[TestSuite] = []
         self.decoders = DECODERS
@@ -158,7 +158,7 @@ class Fluster:
                 f"NOTE: Internal dirs used:\n"
                 f" * test_suites_dir: {self.test_suites_dir}\n"
                 f" * resources_dir: {self.resources_dir}\n"
-                f" * results_dir: {self.results_dir}"
+                f" * output_dir: {self.output_dir}"
             )
 
     @lru_cache(maxsize=128)
@@ -284,7 +284,7 @@ class Fluster:
                 test_suite_res = test_suite.run(
                     ctx.to_test_suite_context(
                         decoder,
-                        self.results_dir,
+                        self.output_dir,
                         ctx.test_vectors_names,
                         ctx.skip_vectors_names,
                     )
@@ -326,8 +326,8 @@ class Fluster:
 
         self._show_summary_if_needed(ctx, results)
 
-        if not ctx.keep_files and os.path.isdir(self.results_dir):
-            rmtree(self.results_dir)
+        if not ctx.keep_files and os.path.isdir(self.output_dir):
+            rmtree(self.output_dir)
 
         if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)

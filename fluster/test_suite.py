@@ -69,7 +69,7 @@ class Context:
         timeout: int,
         failfast: bool,
         quiet: bool,
-        results_dir: str,
+        output_dir: str,
         reference: bool = False,
         test_vectors: Optional[List[str]] = None,
         skip_vectors: Optional[List[str]] = None,
@@ -82,7 +82,7 @@ class Context:
         self.timeout = timeout
         self.failfast = failfast
         self.quiet = quiet
-        self.results_dir = results_dir
+        self.output_dir = output_dir
         self.reference = reference
         self.test_vectors = test_vectors
         self.skip_vectors = skip_vectors
@@ -405,10 +405,10 @@ class TestSuite:
             print(f"Skipping decoder {ctx.decoder.name} because it cannot be run")
             return None
 
-        ctx.results_dir = os.path.join(ctx.results_dir, self.name)
-        if os.path.exists(ctx.results_dir):
-            rmtree(ctx.results_dir)
-        os.makedirs(ctx.results_dir)
+        ctx.output_dir = os.path.join(ctx.output_dir, self.name)
+        if os.path.exists(ctx.output_dir):
+            rmtree(ctx.output_dir)
+        os.makedirs(ctx.output_dir)
 
         test_suite = self.clone()
         tests = test_suite.generate_tests(ctx)
@@ -434,8 +434,8 @@ class TestSuite:
         if ctx.reference:
             test_suite.to_json_file(test_suite.filename)
 
-        if not ctx.keep_files and os.path.isdir(ctx.results_dir):
-            rmtree(ctx.results_dir)
+        if not ctx.keep_files and os.path.isdir(ctx.output_dir):
+            rmtree(ctx.output_dir)
 
         return test_suite
 
@@ -457,7 +457,7 @@ class TestSuite:
                     self,
                     test_vector,
                     skip,
-                    ctx.results_dir,
+                    ctx.output_dir,
                     ctx.reference,
                     ctx.timeout,
                     ctx.keep_files,
