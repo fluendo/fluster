@@ -68,6 +68,8 @@ class CrosCodecsDecoder(Decoder):
             input_fmt = "vp8"
         elif self.codec == Codec.VP9:
             input_fmt = "vp9"
+        elif self.codec == Codec.AV1:
+            input_fmt = "av1"
         else:
             raise Exception(f"Unsupported input codec {self.codec}")
 
@@ -109,5 +111,13 @@ class CrosCodecsVp8Decoder(CrosCodecsDecoder):
 class CrosCodecsVP9Decoder(CrosCodecsDecoder):
     '''cros-codecs decoder for VP9'''
     codec = Codec.VP9
+    hw_acceleration = True
+    api = 'VAAPI'
+
+
+@register_decoder
+class CrosCodecsAV1Decoder(CrosCodecsDecoder):
+    '''cros-codecs decoder for AV1'''
+    codec = Codec.AV1
     hw_acceleration = True
     api = 'VAAPI'
