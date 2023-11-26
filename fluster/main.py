@@ -99,6 +99,7 @@ class Main:
                 resources_dir=args.resources,
                 output_dir=args.output,
                 use_emoji=not args.no_emoji,
+                verbose=args.verbose if "verbose" in args else False,
             )
             args.func(args, fluster)
         else:
