@@ -62,24 +62,6 @@ class Main:
         )
         if is_installed:
             self.resources_dir, self.test_suites_dir = self._get_installed_dirs()
-        else:
-            # Only use the system directory for test suites and resources if the
-            # local directory doesn't exist and the system directory does exist.
-            if (
-                sys.platform.startswith("linux")
-                and not os.path.exists(self.test_suites_dir)
-                and os.path.exists(TEST_SUITES_DIR_SYS)
-            ):
-                line = "=" * 100
-                print(
-                    f"{line}\n"
-                    f'WARNING: Using "{TEST_SUITES_DIR_SYS}" with fluster uninstalled.\n'
-                    "This will be deprecated in future versions.\n"
-                    "Use fluster installed versions instead.\n"
-                    "Check https://github.com/fluendo/fluster/pull/134\n"
-                    f"{line}"
-                )
-                self.test_suites_dir = TEST_SUITES_DIR_SYS
 
         self.parser = self._create_parser()
 
