@@ -19,7 +19,7 @@ from collections import defaultdict
 import os
 import os.path
 from functools import lru_cache
-from typing import List, Dict, Any, Tuple, Optional
+from typing import List, Dict, Any, Tuple, Optional, Iterator
 import sys
 from enum import Enum
 from shutil import rmtree
@@ -161,9 +161,14 @@ class Fluster:
                 f" * output_dir: {self.output_dir}"
             )
 
+    def _walk_test_suite_dir(self) -> Iterator[Tuple[str, List[str], List[str]]]:
+        for test_suite_dir in self.test_suites_dir.split(os.pathsep):
+            for root, dirnames, files in os.walk(test_suite_dir):
+                yield (root, dirnames, files)
+
     @lru_cache(maxsize=128)
     def _load_test_suites(self) -> None:
-        for root, _, files in os.walk(self.test_suites_dir):
+        for root, _, files in self._walk_test_suite_dir():
             for file in files:
                 if os.path.splitext(file)[1] == ".json":
                     try:

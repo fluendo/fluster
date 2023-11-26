@@ -161,7 +161,10 @@ class Main:
         parser.add_argument(
             "-tsd",
             "--test-suites-dir",
-            help="set the directory where test suite will be read from",
+            help=(
+                "set directory where test suite will be read from, "
+                f"multiple directories are supported with OS path separator ({os.pathsep})"
+            ),
             default=self.test_suites_dir,
         )
         subparsers = parser.add_subparsers(title="subcommands")
