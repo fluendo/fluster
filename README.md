@@ -320,7 +320,7 @@ optional arguments:
                         set the directory where decoder outputs will be stored
   -ne, --no-emoji       set to use plain text instead of emojis
   -tsd TEST_SUITES_DIR, --test-suites-dir TEST_SUITES_DIR
-                        set the directory where test suite will be read from
+                        set directory where test suite will be read from, multiple directories are supported with OS path separator (:)
 
 subcommands:
   {list,l,run,r,download,d,reference,f}
