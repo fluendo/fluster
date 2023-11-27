@@ -41,7 +41,17 @@ class AV1Dav1dDecoder(Decoder):
         """Decodes input_filepath in output_filepath"""
         fmt = "yuv"
         run_command(
-            [self.binary, "--alllayers", "0", "--muxer", fmt, "-i", input_filepath, "-o", output_filepath],
+            [
+                self.binary,
+                "--alllayers",
+                "0",
+                "--muxer",
+                fmt,
+                "-i",
+                input_filepath,
+                "-o",
+                output_filepath,
+            ],
             timeout=timeout,
             verbose=verbose,
         )
