@@ -10,7 +10,8 @@ on:
     branches: [ master ]
 
 jobs:
-  linux:
+  min_linux:
+    name: linux with min supported deps
     runs-on: ubuntu-20.04
 
     steps:
@@ -26,6 +27,24 @@ jobs:
     - name: Check
       run: |
         make check
+
+  linux:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: |
+        make install_deps
+        sudo apt update && sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools
+    - name: Check
+      run: |
+        make check
+
 
   windows:
     runs-on: windows-latest
