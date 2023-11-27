@@ -23,11 +23,12 @@ from fluster.utils import file_checksum, run_command
 
 @register_decoder
 class H265JCTVTDecoder(Decoder):
-    '''JCT-VT H.265/HEVC reference decoder implementation'''
+    """JCT-VT H.265/HEVC reference decoder implementation"""
+
     name = "JCT-VT-H.265"
     description = "JCT-VT H.265/HEVC reference decoder"
     codec = Codec.H265
-    binary = 'TAppDecoder'
+    binary = "TAppDecoder"
 
     def decode(
         self,
@@ -38,8 +39,11 @@ class H265JCTVTDecoder(Decoder):
         verbose: bool,
         keep_files: bool,
     ) -> str:
-        '''Decodes input_filepath in output_filepath'''
+        """Decodes input_filepath in output_filepath"""
         # pylint: disable=unused-argument
-        run_command([self.binary, '-b', input_filepath,
-                     '-o', output_filepath], timeout=timeout, verbose=verbose)
+        run_command(
+            [self.binary, "-b", input_filepath, "-o", output_filepath],
+            timeout=timeout,
+            verbose=verbose,
+        )
         return file_checksum(output_filepath)

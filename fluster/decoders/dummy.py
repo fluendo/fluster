@@ -22,7 +22,8 @@ from fluster.utils import file_checksum
 
 @register_decoder
 class Dummy(Decoder):
-    '''Dummy decoder implementation'''
+    """Dummy decoder implementation"""
+
     name = "Dummy"
     codec = Codec.DUMMY
     description = "This is a dummy implementation for the dummy codec"

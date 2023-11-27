@@ -21,9 +21,9 @@ from fluster.utils import file_checksum, run_command
 
 
 class CrosCodecsDecoder(Decoder):
-    '''Generic class for cros-codecs decoder'''
+    """Generic class for cros-codecs decoder"""
 
-    binary = 'ccdec'
+    binary = "ccdec"
 
     def __init__(self) -> None:
         super().__init__()
@@ -53,12 +53,11 @@ class CrosCodecsDecoder(Decoder):
             OutputFormat.YUV444P12LE: "i412",
         }
 
-        output_fmt = ''
+        output_fmt = ""
         try:
             output_fmt = formats[output_format]
         except KeyError as exception:
-            raise Exception(
-                f"Unsupported output format {output_format}") from exception
+            raise Exception(f"Unsupported output format {output_format}") from exception
 
         if self.codec == Codec.H264:
             input_fmt = "h264"
@@ -74,8 +73,16 @@ class CrosCodecsDecoder(Decoder):
             raise Exception(f"Unsupported input codec {self.codec}")
 
         run_command(
-            [self.binary, input_filepath, "--output", output_filepath,
-                "--input-format", input_fmt, "--output-format", output_fmt],
+            [
+                self.binary,
+                input_filepath,
+                "--output",
+                output_filepath,
+                "--input-format",
+                input_fmt,
+                "--output-format",
+                output_fmt,
+            ],
             timeout=timeout,
             verbose=verbose,
         )
@@ -85,39 +92,44 @@ class CrosCodecsDecoder(Decoder):
 
 @register_decoder
 class CrosCodecsH264Decoder(CrosCodecsDecoder):
-    '''cros-codecs decoder for H.264'''
+    """cros-codecs decoder for H.264"""
+
     codec = Codec.H264
     hw_acceleration = True
-    api = 'VAAPI'
+    api = "VAAPI"
 
 
 @register_decoder
 class CrosCodecsH265Decoder(CrosCodecsDecoder):
-    '''cros-codecs decoder for H.265'''
+    """cros-codecs decoder for H.265"""
+
     codec = Codec.H265
     hw_acceleration = True
-    api = 'VAAPI'
+    api = "VAAPI"
 
 
 @register_decoder
 class CrosCodecsVp8Decoder(CrosCodecsDecoder):
-    '''cros-codecs decoder for VP8'''
+    """cros-codecs decoder for VP8"""
+
     codec = Codec.VP8
     hw_acceleration = True
-    api = 'VAAPI'
+    api = "VAAPI"
 
 
 @register_decoder
 class CrosCodecsVP9Decoder(CrosCodecsDecoder):
-    '''cros-codecs decoder for VP9'''
+    """cros-codecs decoder for VP9"""
+
     codec = Codec.VP9
     hw_acceleration = True
-    api = 'VAAPI'
+    api = "VAAPI"
 
 
 @register_decoder
 class CrosCodecsAV1Decoder(CrosCodecsDecoder):
-    '''cros-codecs decoder for AV1'''
+    """cros-codecs decoder for AV1"""
+
     codec = Codec.AV1
     hw_acceleration = True
-    api = 'VAAPI'
+    api = "VAAPI"

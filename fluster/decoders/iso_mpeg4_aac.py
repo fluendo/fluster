@@ -22,19 +22,30 @@ from fluster.utils import file_checksum, run_command
 
 @register_decoder
 class ISOAACDecoder(Decoder):
-    '''ISO MPEG4 AAC reference decoder implementation'''
+    """ISO MPEG4 AAC reference decoder implementation"""
+
     name = "ISO-MPEG4-AAC"
     description = "ISO MPEG4 AAC reference decoder"
     codec = Codec.AAC
-    binary = 'mp4audec_mc'
+    binary = "mp4audec_mc"
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: OutputFormat, timeout: int,
-               verbose: bool, keep_files: bool) -> str:
-        '''Decodes input_filepath in output_filepath'''
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
+    ) -> str:
+        """Decodes input_filepath in output_filepath"""
         # pylint: disable=unused-argument
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a
         # ".wav", which is undesirable.
         output_filepath += ".pcm"
-        run_command([self.binary, input_filepath, output_filepath],
-                    timeout=timeout, verbose=verbose)
+        run_command(
+            [self.binary, input_filepath, output_filepath],
+            timeout=timeout,
+            verbose=verbose,
+        )
         return file_checksum(output_filepath)

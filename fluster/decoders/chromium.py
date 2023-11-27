@@ -22,6 +22,7 @@ from fluster.decoder import Decoder, register_decoder
 
 try:
     from fluster_chromium import main  # type: ignore
+
     HAS_FLUSTER_CHROMIUM = True
 except ImportError:
     HAS_FLUSTER_CHROMIUM = False
@@ -30,24 +31,25 @@ except ImportError:
 @register_decoder
 class ChromiumH264(Decoder):
     """H264 class for Chromium decoder"""
-    provider = 'Chromium'
+
+    provider = "Chromium"
     codec = Codec.H264
     description = "This is an implementation for the Chromium decoder"
 
     def __init__(self) -> None:
         super().__init__()
         if not self.name:
-            self.name = f'{self.provider}-{self.codec.value}'
-        self.description = f'{self.provider} {self.codec.value} decoder for Chromium'
+            self.name = f"{self.provider}-{self.codec.value}"
+        self.description = f"{self.provider} {self.codec.value} decoder for Chromium"
 
     def decode(
-            self,
-            input_filepath: str,
-            output_filepath: str,
-            output_format: OutputFormat,
-            timeout: int,
-            verbose: bool,
-            keep_files: bool,
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
     ) -> str:
         # pylint: disable=unused-argument
         return str(main(input_filepath))

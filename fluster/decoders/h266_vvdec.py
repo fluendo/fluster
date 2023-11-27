@@ -22,16 +22,27 @@ from fluster.utils import file_checksum, run_command
 
 @register_decoder
 class H266JCTVTDecoder(Decoder):
-    '''VVdeC H.266/VVC reference decoder implementation'''
+    """VVdeC H.266/VVC reference decoder implementation"""
+
     name = "VVdeC-H266"
     description = "VVdeC H.266/VVC reference decoder"
     codec = Codec.H266
-    binary = 'vvdecapp'
+    binary = "vvdecapp"
 
-    def decode(self, input_filepath: str, output_filepath: str, output_format: OutputFormat, timeout: int,
-               verbose: bool, keep_files: bool) -> str:
-        '''Decodes input_filepath in output_filepath'''
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
+    ) -> str:
+        """Decodes input_filepath in output_filepath"""
         # pylint: disable=unused-argument
-        run_command([self.binary, '-b', input_filepath,
-                     '-o', output_filepath], timeout=timeout, verbose=verbose)
+        run_command(
+            [self.binary, "-b", input_filepath, "-o", output_filepath],
+            timeout=timeout,
+            verbose=verbose,
+        )
         return file_checksum(output_filepath)
