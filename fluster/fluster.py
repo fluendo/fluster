@@ -177,6 +177,8 @@ class Fluster:
                         self.test_suites.append(test_suite)
                     except Exception as ex:
                         print(f"Error loading test suite {file}: {ex}")
+        if len(self.test_suites) == 0:
+            raise Exception(f'No test suites found in "{self.test_suites_dir}"')
 
     def list_decoders(self, check: bool, verbose: bool) -> None:
         """List all the available decoders"""
