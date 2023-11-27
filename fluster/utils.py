@@ -151,13 +151,13 @@ def _linux_user_data_dir(appname: str) -> str:
     return os.path.join(path, appname)
 
 
-def _linux_site_data_dir(appname: str) -> str:
+def _linux_site_data_dirs(appname: str) -> List[str]:
     """Return data directory shared by users"""
     path = os.environ.get("XDG_DATA_DIRS", "")
     if not path.strip():
         path = "/usr/local/share:/usr/share"
-    path = path.split(os.pathsep)[0]
-    return os.path.join(path, appname)
+    paths = path.split(os.pathsep)
+    return [os.path.join(p, appname) for p in paths]
 
 
 def _win_user_data_dir(appname: str) -> str:
@@ -166,9 +166,15 @@ def _win_user_data_dir(appname: str) -> str:
     return os.path.join(path, appname)
 
 
+def _win_site_data_dirs(appname: str) -> List[str]:
+    """Return data directory shared by users"""
+    # On Windows always user_data_dir
+    return [_win_user_data_dir(appname)]
+
+
 if sys.platform == "win32":
-    site_data_dir = _win_user_data_dir  # On Windows always user_data_dir
+    site_data_dirs = _win_site_data_dirs
     user_data_dir = _win_user_data_dir
 else:
-    site_data_dir = _linux_site_data_dir
+    site_data_dirs = _linux_site_data_dirs
     user_data_dir = _linux_user_data_dir

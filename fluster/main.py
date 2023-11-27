@@ -124,11 +124,14 @@ class Main:
                 )
 
     def _get_installed_dirs(self) -> Tuple[str, str]:
-        site_data_dir = utils.site_data_dir(APPNAME)
+        site_data_dirs = utils.site_data_dirs(APPNAME)
         user_data_dir = utils.user_data_dir(APPNAME)
 
-        test_suites_dir = os.path.join(site_data_dir, TEST_SUITES_DIR)
-        if not os.path.exists(test_suites_dir):
+        for site_data_dir in site_data_dirs:
+            test_suites_dir = os.path.join(site_data_dir, TEST_SUITES_DIR)
+            if os.path.exists(test_suites_dir):
+                break
+        else:
             test_suites_dir = os.path.join(user_data_dir, TEST_SUITES_DIR)
 
         resources_dir = os.path.join(user_data_dir, RESOURCES_DIR)
