@@ -123,15 +123,17 @@ class GStreamer(Decoder):
             if sum_start <= 0:
                 # Skip to the next iteration if sum_start is less than or equal to 0
                 continue
-            sum_start += len(pattern)
-            sum_end = line[sum_start:].find(";")
-            if sum_end <= 0:
-                # Skip to the next iteration if sum_end is less than or equal to 0
-                continue
-            sum_end += sum_start
-            md5sum = line[sum_start:sum_end]
-            if not verbose:
-                print(md5sum)
+            else:
+                sum_start += len(pattern)
+                sum_end = line[sum_start:].find(";")
+                if sum_end <= 0:
+                    # Skip to the next iteration if sum_end is less than or equal to 0
+                    continue
+                else:
+                    sum_end += sum_start
+                    md5sum = line[sum_start:sum_end]
+                    if not verbose:
+                        return md5sum
 
         if not md5sum:
             raise Exception("No MD5 found in the program trace.")
