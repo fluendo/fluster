@@ -120,12 +120,14 @@ class GStreamer(Decoder):
                 "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
             )
             sum_start = line.find(pattern)
+            # pylint: disable=no-else-continue
             if sum_start <= 0:
                 # Skip to the next iteration if sum_start is less than or equal to 0
                 continue
             else:
                 sum_start += len(pattern)
                 sum_end = line[sum_start:].find(";")
+                # pylint: disable=no-else-continue
                 if sum_end <= 0:
                     # Skip to the next iteration if sum_end is less than or equal to 0
                     continue
@@ -134,7 +136,6 @@ class GStreamer(Decoder):
                     md5sum = line[sum_start:sum_end]
                     if not verbose:
                         return md5sum
-            # pylint: disable=no-else-continue
 
         if not md5sum:
             raise Exception("No MD5 found in the program trace.")
