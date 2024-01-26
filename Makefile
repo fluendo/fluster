@@ -16,7 +16,7 @@ help:
 install_deps: ## install Python dependencies
 	python3 -m pip install -r requirements.txt
 
-check: format-check lint ## check that very basic tests run
+check: format-check lint-check ## check that very basic tests run
 	@echo "Running dummy test..."
 	$(FLUSTER) list
 	$(FLUSTER) list -c
@@ -49,21 +49,22 @@ ifneq ($(OS),Windows_NT)
 endif
 	@echo "\nAll test finished succesfully!"
 
-format: ## format Python code using black
-	@echo "Formatting coding style with black..."
-	black $(PY_FILES)
+format: ## format python code
+	@echo "Formatting coding style with ruff..."
+	ruff format $(PY_FILES)
 
-format-check:
-	@echo "Checking coding style with black... Run '$(MAKE) format' to fix if needed"
-	black --check $(PY_FILES)
+format-check: ## check format of python code
+	@echo "Checking code format with ruff... Run '$(MAKE) format' to fix if needed"
+	ruff format --check $(PY_FILES)
 
-lint: format-check ## run static analysis using pylint, flake8 and mypy
-# ignore similar lines error: it's a bug when running parallel jobs - https://github.com/PyCQA/pylint/issues/4118
-	@echo "Checking with pylint... "
-	pylint --fail-under=10.0 $(PY_FILES)
-	@echo "Checking with flake8..."
-	flake8 --max-line-length=120 $(PY_FILES)
-	@echo "Checking with mypy..."
+lint: ## run static python code analysis - fix issues
+	@echo "Linting and fixing issues with ruff... "
+	ruff check --fix $(PY_FILES)
+
+lint-check: format-check ## run static python code analysis - does not apply fixes
+	@echo "Linting with ruff... run '$(MAKE) lint' to fix if needed"
+	ruff check $(PY_FILES)
+	@echo "Checking static types with mypy..."
 	mypy --strict $(PY_FILES)
 
 create_dirs=mkdir -p $(CONTRIB_DIR) $(DECODERS_DIR)
@@ -194,4 +195,5 @@ clean: ## remove contrib temporary folder
 dbg-%:
 	echo "Value of $* = $($*)"
 
-.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder lint check format install_deps clean
+.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder h266_reference_decoder\
+mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder check format format-check lint lint-check install_deps clean

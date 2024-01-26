@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-# pylint: disable=import-outside-toplevel
 from functools import lru_cache
+
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 
@@ -51,7 +51,6 @@ class ChromiumH264(Decoder):
         verbose: bool,
         keep_files: bool,
     ) -> str:
-        # pylint: disable=unused-argument
         return str(main(input_filepath))
 
     @lru_cache(maxsize=128)

@@ -16,20 +16,19 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-# pylint: disable=too-many-lines
 
 import shlex
 import subprocess
 from functools import lru_cache
-from typing import Optional, List
+from typing import List, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import (
     file_checksum,
+    normalize_binary_cmd,
     run_command,
     run_command_with_output,
-    normalize_binary_cmd,
 )
 
 PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
@@ -73,9 +72,7 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.YUV444P12LE: "Y444_12LE",
     }
     if output_format not in mapping:
-        raise Exception(
-            f"No matching output format found in GStreamer for {output_format}"
-        )
+        raise Exception(f"No matching output format found in GStreamer for {output_format}")
     return mapping[output_format]
 
 
@@ -93,9 +90,7 @@ class GStreamer(Decoder):
     def __init__(self) -> None:
         super().__init__()
         if not self.name:
-            self.name = (
-                f"{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}"
-            )
+            self.name = f"{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}"
         self.description = f"{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}"
         self.cmd = normalize_binary_cmd(self.cmd)
 
@@ -109,7 +104,6 @@ class GStreamer(Decoder):
         output_format: OutputFormat,
     ) -> str:
         """Generate the GStreamer pipeline used to decode the test vector"""
-        # pylint: disable=unused-argument
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
             self.cmd,
@@ -158,9 +152,7 @@ class GStreamer(Decoder):
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
             command = shlex.split(pipeline)
             command.append("-m")
-            data = run_command_with_output(
-                command, timeout=timeout, verbose=verbose
-            ).splitlines()
+            data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)
@@ -170,7 +162,6 @@ class GStreamer(Decoder):
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         """Check if GStreamer decoder is valid (better than gst-inspect)"""
-        # pylint: disable=broad-except
         try:
             binary = normalize_binary_cmd(f"gst-launch-{self.gst_api}")
             pipeline = f"{binary} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"

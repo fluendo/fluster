@@ -16,7 +16,8 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from enum import Enum
-from typing import List, Dict, Type, Any
+from typing import Any, Dict, List, Type
+
 from fluster.codec import OutputFormat
 
 
@@ -28,18 +29,11 @@ class TestVectorResult(Enum):
     FAIL = "Fail"
     TIMEOUT = "Timeout"
     ERROR = "Error"
-
-    """
-    This is only used in reference runs to indicate that
-    the decoder for this test vector run succesfully
-    """
-    REFERENCE = "Reference run"
+    REFERENCE = "Reference run"  # used in reference runs to indicate the decoder for this test vector was succesful
 
 
 class TestVector:
     """Test vector"""
-
-    # pylint: disable=too-many-instance-attributes
 
     def __init__(
         self,
