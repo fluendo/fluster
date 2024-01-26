@@ -43,9 +43,7 @@ packages = ["fluster", "fluster.decoders"]
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "pylint",
-    "flake8",
+    "ruff",
     "mypy"
 ]
 
