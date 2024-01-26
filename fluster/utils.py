@@ -18,6 +18,7 @@
 
 import hashlib
 import os
+import platform
 import random
 import shutil
 import subprocess
@@ -25,10 +26,8 @@ import sys
 import time
 import urllib.request
 import zipfile
-import platform
-from typing import List, Optional
 from threading import Lock
-
+from typing import List, Optional
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -96,9 +95,7 @@ def run_command_with_output(
         print(f'\nRunning command "{" ".join(command)}"')
 
     try:
-        output = subprocess.check_output(
-            command, stderr=serr, timeout=timeout, universal_newlines=True
-        )
+        output = subprocess.check_output(command, stderr=serr, timeout=timeout, universal_newlines=True)
         if verbose and output:
             print(output)
         return output or ""
@@ -156,9 +153,7 @@ def normalize_path(path: str) -> str:
     return path
 
 
-def find_by_ext(
-    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
-) -> Optional[str]:
+def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None) -> Optional[str]:
     """Return name by file extension"""
     excludes = excludes or []
     candidates = []

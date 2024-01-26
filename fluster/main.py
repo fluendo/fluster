@@ -18,16 +18,17 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-import os
 import multiprocessing
+import os
 import sys
 from importlib import util
-from typing import Any, Tuple
 from tempfile import gettempdir
+from typing import Any, Tuple
 
-from fluster.fluster import Fluster, Context, SummaryFormat
-from fluster.codec import Codec
+
 from fluster import utils
+from fluster.codec import Codec
+from fluster.fluster import Context, Fluster, SummaryFormat
 
 APPNAME = "fluster"
 TEST_SUITES_DIR = "test_suites"
@@ -45,21 +46,13 @@ def fluster_main() -> None:
 class Main:
     """Main class for Fluster"""
 
-    # pylint: disable=broad-except
-
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
-        self.test_suites_dir = os.path.join(
-            os.path.dirname(__file__), "..", TEST_SUITES_DIR
-        )
-        self.resources_dir = os.path.join(
-            os.path.dirname(__file__), "..", RESOURCES_DIR
-        )
+        self.test_suites_dir = os.path.join(os.path.dirname(__file__), "..", TEST_SUITES_DIR)
+        self.resources_dir = os.path.join(os.path.dirname(__file__), "..", RESOURCES_DIR)
         self.output_dir = os.path.join(gettempdir(), OUTPUT_DIR)
 
-        is_installed = not os.path.exists(
-            os.path.join(os.path.dirname(__file__), "..", ".git")
-        )
+        is_installed = not os.path.exists(os.path.join(os.path.dirname(__file__), "..", ".git"))
         if is_installed:
             self.resources_dir, self.test_suites_dir = self._get_installed_dirs()
 
@@ -90,13 +83,8 @@ class Main:
     @staticmethod
     def _validate_args(args: Any) -> None:
         if hasattr(args, "format"):
-            if (
-                args.format in [SummaryFormat.JUNITXML.value, SummaryFormat.CSV.value]
-                and not args.summary_output
-            ):
-                sys.exit(
-                    "error: please specify XML/CSV file path with -so/--summary-output option."
-                )
+            if args.format in [SummaryFormat.JUNITXML.value, SummaryFormat.CSV.value] and not args.summary_output:
+                sys.exit("error: please specify XML/CSV file path with -so/--summary-output option.")
 
     @staticmethod
     def _validate_deps(args: Any) -> None:
@@ -201,14 +189,11 @@ class Main:
         subparser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser(
-            "run", aliases=["r"], help="run test suites for decoders"
-        )
+        subparser = subparsers.add_parser("run", aliases=["r"], help="run test suites for decoders")
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default."
-            "0 means all logical cores",
+            help="number of parallel jobs to use. 1x logical cores by default." "0 means all logical cores",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -261,14 +246,12 @@ class Main:
             help="generate a summary in Markdown format for each test suite",
             action="store_true",
         )
-        subparser.add_argument(
-            "-so", "--summary-output", help="dump summary output to file"
-        )
+        subparser.add_argument("-so", "--summary-output", help="dump summary output to file")
         subparser.add_argument(
             "-f",
             "--format",
             help="specify the format for the summary file",
-            choices=list(x.value for x in SummaryFormat),
+            choices=[x.value for x in SummaryFormat],
             default=SummaryFormat.MARKDOWN.value,
         )
         subparser.add_argument(
@@ -280,15 +263,13 @@ class Main:
         subparser.add_argument(
             "-th",
             "--threshold",
-            help="set exit code to 2 if threshold tests are not success. "
-            "exit code is 0 otherwise",
+            help="set exit code to 2 if threshold tests are not success. " "exit code is 0 otherwise",
             type=int,
         )
         subparser.add_argument(
             "-tth",
             "--time-threshold",
-            help="set exit code to 3 if test suite takes longer than threshold seconds. "
-            "exit code is 0 otherwise",
+            help="set exit code to 3 if test suite takes longer than threshold seconds. " "exit code is 0 otherwise",
             type=float,
         )
         subparser.add_argument(
@@ -308,8 +289,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default."
-            "0 means all logical cores",
+            help="number of parallel jobs to use. 1x logical cores by default." "0 means all logical cores",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -341,14 +321,11 @@ class Main:
         subparser.set_defaults(func=self._reference_cmd)
 
     def _add_download_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser(
-            "download", aliases=["d"], help="downloads test suites resources"
-        )
+        subparser = subparsers.add_parser("download", aliases=["d"], help="downloads test suites resources")
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 2x logical cores by default."
-            "0 means all logical cores",
+            help="number of parallel jobs to use. 2x logical cores by default." "0 means all logical cores",
             type=int,
             default=2 * multiprocessing.cpu_count(),
         )
@@ -366,23 +343,13 @@ class Main:
             type=int,
             default=1,
         )
-        subparser.add_argument(
-            "testsuites", help="list of testsuites to download", nargs="*"
-        )
+        subparser.add_argument("testsuites", help="list of testsuites to download", nargs="*")
         subparser.set_defaults(func=self._download_cmd)
 
     @staticmethod
     def _list_cmd(args: Any, fluster: Fluster) -> None:
-        fluster.list_test_suites(
-            show_test_vectors=args.testvectors,
-            test_suites=args.testsuites,
-            codec=args.codec,
-        )
-        fluster.list_decoders(
-            check=args.check,
-            verbose=args.verbose,
-            codec=args.codec,
-        )
+        fluster.list_test_suites(show_test_vectors=args.testvectors, test_suites=args.testsuites, codec=args.codec)
+        fluster.list_decoders(check=args.check, verbose=args.verbose, codec=args.codec)
 
     @staticmethod
     def _run_cmd(args: Any, fluster: Fluster) -> None:

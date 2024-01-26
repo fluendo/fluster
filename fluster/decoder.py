@@ -19,10 +19,9 @@ from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
 from typing import List, Type
-from fluster.codec import OutputFormat, Codec
-from fluster.utils import normalize_binary_cmd
 
-# pylint: disable=broad-except
+from fluster.codec import Codec, OutputFormat
+from fluster.utils import normalize_binary_cmd
 
 
 class Decoder(ABC):

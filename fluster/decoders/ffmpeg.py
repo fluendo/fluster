@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
+import re
+import subprocess
 from functools import lru_cache
 from typing import Dict, Optional, Tuple
-import subprocess
-import re
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -72,7 +72,6 @@ class FFmpegDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
-        # pylint: disable=too-many-branches
         command = [self.binary, "-hide_banner", "-nostdin"]
 
         # Loglevel
@@ -111,9 +110,7 @@ class FFmpegDecoder(Decoder):
         download = ""
         if self.hw_acceleration and self.hw_download:
             if output_format not in self.hw_download_mapping:
-                raise Exception(
-                    f"No matching ffmpeg pixel format found for {output_format}"
-                )
+                raise Exception(f"No matching ffmpeg pixel format found for {output_format}")
             download = f"hwdownload,format={self.hw_download_mapping[output_format]},"
 
         # Output format filter
