@@ -16,7 +16,7 @@ maintainers = [
 description = "Testing framework for decoder conformance"
 readme = "README.md"
 license = {file = "LICENSE"}
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -24,10 +24,10 @@ classifiers = [
     "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Sound/Audio",
     "Topic :: Multimedia :: Video",
@@ -80,11 +80,13 @@ packages = ["fluster", "fluster.decoders"]
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "pylint",
-    "flake8",
+    "ruff",
     "mypy"
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py37"
 
 [project.scripts]
 fluster = "fluster.main:fluster_main"

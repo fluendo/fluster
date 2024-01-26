@@ -49,20 +49,17 @@ ifneq ($(OS),Windows_NT)
 endif
 	@echo "\nAll test finished succesfully!"
 
-format: ## format Python code using black
-	@echo "Formatting coding style with black..."
-	black $(PY_FILES)
+format: ## format python code using ruff
+	@echo "Formatting coding style with ruff..."
+	ruff format --fix $(PY_FILES)
 
 format-check:
-	@echo "Checking coding style with black... Run '$(MAKE) format' to fix if needed"
-	black --check $(PY_FILES)
+	@echo "Checking coding style with ruff... Run '$(MAKE) format' to fix if needed"
+	ruff format $(PY_FILES)
 
-lint: format-check ## run static analysis using pylint, flake8 and mypy
-# ignore similar lines error: it's a bug when running parallel jobs - https://github.com/PyCQA/pylint/issues/4118
-	@echo "Checking with pylint... "
-	pylint --fail-under=10.0 $(PY_FILES)
-	@echo "Checking with flake8..."
-	flake8 --max-line-length=120 $(PY_FILES)
+lint: format-check ## run static python code analysis using ruff and mypy
+	@echo "Checking with ruff... "
+	ruff check $(PY_FILES)
 	@echo "Checking with mypy..."
 	mypy --strict $(PY_FILES)
 

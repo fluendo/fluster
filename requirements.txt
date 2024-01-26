@@ -1,4 +1,2 @@
-black
-pylint
-flake8
+ruff
 mypy
