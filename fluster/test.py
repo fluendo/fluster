@@ -58,9 +58,9 @@ class Test(unittest.TestCase):
 
     def _test(self) -> None:
         if self.skip:
-            self.test_suite.test_vectors[
-                self.test_vector.name
-            ].test_result = TestVectorResult.NOT_RUN
+            self.test_suite.test_vectors[self.test_vector.name].test_result = (
+                TestVectorResult.NOT_RUN
+            )  # fmt: skip
 
             return
 
@@ -89,17 +89,17 @@ class Test(unittest.TestCase):
                 perf_counter() - start
             )
         except TimeoutExpired:
-            self.test_suite.test_vectors[
-                self.test_vector.name
-            ].test_result = TestVectorResult.TIMEOUT
+            self.test_suite.test_vectors[self.test_vector.name].test_result = (
+                TestVectorResult.TIMEOUT
+            )  # fmt: skip
             self.test_suite.test_vectors[self.test_vector.name].test_time = (
                 perf_counter() - start
             )
             raise
         except Exception:
-            self.test_suite.test_vectors[
-                self.test_vector.name
-            ].test_result = TestVectorResult.ERROR
+            self.test_suite.test_vectors[self.test_vector.name].test_result = (
+                TestVectorResult.ERROR
+            )  # fmt: skip
             self.test_suite.test_vectors[self.test_vector.name].test_time = (
                 perf_counter() - start
             )
@@ -113,20 +113,20 @@ class Test(unittest.TestCase):
             os.remove(output_filepath)
 
         if not self.reference:
-            self.test_suite.test_vectors[
-                self.test_vector.name
-            ].test_result = TestVectorResult.FAIL
+            self.test_suite.test_vectors[self.test_vector.name].test_result = (
+                TestVectorResult.FAIL
+            )  # fmt: skip
             if self.test_vector.result.lower() == result.lower():
-                self.test_suite.test_vectors[
-                    self.test_vector.name
-                ].test_result = TestVectorResult.SUCCESS
+                self.test_suite.test_vectors[self.test_vector.name].test_result = (
+                    TestVectorResult.SUCCESS
+                )  # fmt: skip
             self.assertEqual(
                 self.test_vector.result.lower(),
                 result.lower(),
                 self.test_vector.name,
             )
         else:
-            self.test_suite.test_vectors[
-                self.test_vector.name
-            ].test_result = TestVectorResult.REFERENCE
+            self.test_suite.test_vectors[self.test_vector.name].test_result = (
+                TestVectorResult.REFERENCE
+            )  # fmt: skip
             self.test_suite.test_vectors[self.test_vector.name].result = result
