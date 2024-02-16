@@ -27,7 +27,7 @@ from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
-FFMPEG_TPL = "{} -i {} {} -vf {}format=pix_fmts={} -f rawvideo {}"
+FFMPEG_TPL = "{} -nostdin -i {} {} -vf {}format=pix_fmts={} -f rawvideo {}"
 
 
 def output_format_to_ffformat(output_format: OutputFormat) -> str:
