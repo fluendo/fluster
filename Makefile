@@ -8,6 +8,7 @@ FLUSTER+=--no-emoji
 else
 KERNEL_NAME=$(shell uname -s)
 endif
+CMAKE_GENERATOR=Unix Makefiles
 
 help:
 	@awk -F ':|##' '/^[^\t].+?:.*?##/ { printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF }' $(MAKEFILE_LIST)
