@@ -900,3 +900,15 @@ class FluendoFluAACDecGst10Decoder(GStreamer10Audio):
         self.api = "SW"
         self.caps = self.caps + ",format=S16LE"
         super().__init__()
+
+
+@register_decoder
+class FluendoFluLCEVCVAH264DecGst10Decoder(GStreamer10Video):
+    """LCEVC-H264 decoder for GStreamer 1.0"""
+
+    codec = Codec.H264
+    decoder_bin = "flulcevchwvah264dec"
+    provider = "Fluendo"
+    api = "HW"
+    hw_acceleration = True
+    name = f"{provider}-{codec.value}-{api}-lcevchwvah264dec-Gst1.0"
