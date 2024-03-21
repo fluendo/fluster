@@ -244,6 +244,13 @@ class FFmpegH265VdpauDecoder(FFmpegVdpauDecoder):
     codec = Codec.H265
 
 
+@register_decoder
+class FFmpegAV1VdpauDecoder(FFmpegVdpauDecoder):
+    """FFmpeg VDPAU decoder for AV1"""
+
+    codec = Codec.AV1
+
+
 class FFmpegDxva2Decoder(FFmpegDecoder):
     """Generic class for FFmpeg DXVA2 decoder"""
 
