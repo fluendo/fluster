@@ -912,3 +912,61 @@ class FluendoFluLCEVCVAH264DecGst10Decoder(GStreamer10Video):
     api = "HW"
     hw_acceleration = True
     name = f"{provider}-{codec.value}-{api}-lcevchwvah264dec-Gst1.0"
+
+
+#  Auxiliary function for generate a H264 Fluendo decoder based on the HW API
+def __new_fluhwvah264dec(api: str) -> None:
+    name = f"FluendoHWVA{api}H264Gst10Decoder"
+
+    attributes = {
+        "provider": "Fluendo",
+        "api": api,
+        "codec": Codec.H264,
+        "decoder_bin": f" h264parse ! fluhwva{api.lower()}h264dec ",
+    }
+
+    new_class = type(name, (GStreamer10Video,), attributes)
+    register_decoder(new_class)
+
+
+# Auxiliary function for generate a H265 Fluendo decoder based on the HW API
+def __new_fluhwvah265dec(api: str, stream_format: str, alignment: str) -> None:
+    name = f"FluendoHWVA{api}H265Gst10Decoder"
+
+    def __init__(self) -> None:  # type: ignore[no-untyped-def]
+        super(GStreamer10Video, self).__init__()
+        variant = f"{self.codec.value}-{self.stream_format}-{self.alignment}"
+        self.name = f"{self.provider}-{variant}-{self.api}-Gst{self.gst_api}"
+        self.description = (
+            f"{self.provider} {variant} {self.api} decoder for GStreamer {self.gst_api}"
+        )
+
+    attributes = {
+        "__init__": __init__,
+        "provider": "Fluendo",
+        "api": api,
+        "codec": Codec.H265,
+        "stream_format": stream_format,
+        "alignment": alignment,
+        "decoder_bin": (
+            " h265parse !"
+            f" video/x-h265,stream-format={stream_format},alignment={alignment} !"
+            f" fluhwva{api.lower()}h265dec "
+        ),
+    }
+
+    new_class = type(name, (GStreamer10Video,), attributes)
+    register_decoder(new_class)
+
+
+# Auxiliary function for generate all Fluendo decoders variants
+def __generate_fluendo_decoders() -> None:
+    for api in ["VAAPI", "VDPAU", "DXVA2", "VDA", "VT"]:
+        __new_fluhwvah264dec(api)
+        for stream_format in ["byte-stream", "hev1", "hvc1"]:
+            for alignment in ["au", "nal"]:
+                __new_fluhwvah265dec(api, stream_format, alignment)
+
+
+# Generate all Fluendo decoders variants for H264 and H265
+__generate_fluendo_decoders()
