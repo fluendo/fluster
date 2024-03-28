@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
+# pylint: disable=too-many-lines
+
 import shlex
 import subprocess
 from functools import lru_cache
@@ -912,3 +914,105 @@ class FluendoFluLCEVCVAH264DecGst10Decoder(GStreamer10Video):
     api = "HW"
     hw_acceleration = True
     name = f"{provider}-{codec.value}-{api}-lcevchwvah264dec-Gst1.0"
+
+
+class FluendoFluHWVAH264DecBase(GStreamer10Video):
+    """Fluendo base class for fluhwva{backend}h264dec elements"""
+
+    provider = "Fluendo"
+    api = "INVALID"
+    codec = Codec.H264
+    decoder_bin_tmpl = " h264parse ! fluhwva{backend}h264dec "
+
+    def __init__(self) -> None:
+        self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
+        super().__init__()
+
+
+class FluendoFluHWVAH265DecBase(GStreamer10Video):
+    """Fluendo base class for fluhwva{backend}h265dec elements"""
+
+    provider = "Fluendo"
+    api = "INVALID"
+    codec = Codec.H265
+    decoder_bin_tmpl = " h265parse ! fluhwva{backend}h265dec "
+
+    def __init__(self) -> None:
+        self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
+        super().__init__()
+
+
+# fluhwva{backend}h264dec
+
+
+@register_decoder
+class FluendoFluHWVAVAAPIH264dec(FluendoFluHWVAH264DecBase):
+    """fluhwvavaapih264dec"""
+
+    api = "VAAPI"
+
+
+@register_decoder
+class FluendoFluHWVAVDPAUH264dec(FluendoFluHWVAH264DecBase):
+    """fluhwvavdpauh264dec"""
+
+    api = "VDPAU"
+
+
+@register_decoder
+class FluendoFluHWVADXVA2H264dec(FluendoFluHWVAH264DecBase):
+    """fluhwvadxva2h264dec"""
+
+    api = "DXVA2"
+
+
+@register_decoder
+class FluendoFluHWVAVDAH264dec(FluendoFluHWVAH264DecBase):
+    """fluhwvavdah264dec"""
+
+    api = "VDA"
+
+
+@register_decoder
+class FluendoFluHWVAVTH264dec(FluendoFluHWVAH264DecBase):
+    """fluhwvavth264dec"""
+
+    api = "VT"
+
+
+# fluhwva{backend}h265dec
+
+
+@register_decoder
+class FluendoFluHWVAVAAPIH265dec(FluendoFluHWVAH265DecBase):
+    """fluhwvavaapih265dec"""
+
+    api = "VAAPI"
+
+
+@register_decoder
+class FluendoFluHWVAVDPAUH265dec(FluendoFluHWVAH265DecBase):
+    """fluhwvavdpauh265dec"""
+
+    api = "VDPAU"
+
+
+@register_decoder
+class FluendoFluHWVADXVA2H265dec(FluendoFluHWVAH265DecBase):
+    """fluhwvadxva2h265dec"""
+
+    api = "DXVA2"
+
+
+@register_decoder
+class FluendoFluHWVAVDAH265dec(FluendoFluHWVAH265DecBase):
+    """fluhwvavdah265dec"""
+
+    api = "VDA"
+
+
+@register_decoder
+class FluendoFluHWVAVTH265dec(FluendoFluHWVAH265DecBase):
+    """fluhwvavth265dec"""
+
+    api = "VT"
