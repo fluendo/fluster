@@ -41,6 +41,37 @@ classifiers = [
 [tool.setuptools]
 packages = ["fluster", "fluster.decoders"]
 
+[tool.setuptools.data-files]
+"share/fluster/test_suites/aac" = [
+    "test_suites/aac/ISO_IEC_13818-4_2004.json",
+    "test_suites/aac/ISO_IEC_14496-26_2010.json"
+]
+"share/fluster/test_suites/av1" = [
+    "test_suites/av1/AV1-TEST-VECTORS.json",
+    "test_suites/av1/CHROMIUM-10bit-AV1-TEST-VECTORS.json",
+    "test_suites/av1/CHROMIUM-8bit-AV1-TEST-VECTORS.json"
+]
+"share/fluster/test_suites/h264" = [
+    "test_suites/h264/JVT-AVC_V1.json",
+    "test_suites/h264/JVT-FR-EXT.json"
+]
+"share/fluster/test_suites/h265" = [
+    "test_suites/h265/JCT-VC-HEVC-V1.json",
+    "test_suites/h265/JCT-VC-MV-HEVC.json",
+    "test_suites/h265/JCT-VC-RExt.json",
+    "test_suites/h265/JCT-VC-SCC.json"
+]
+"share/fluster/test_suites/h266" = [
+    "test_suites/h266/JVET-VVC_draft6.json",
+]
+"share/fluster/test_suites/vp8" = [
+    "test_suites/vp8/VP8-TEST-VECTORS.json",
+]
+"share/fluster/test_suites/vp9" = [
+    "test_suites/vp9/VP9-TEST-VECTORS-HIGH.json",
+    "test_suites/vp9/VP9-TEST-VECTORS.json"
+]
+
 [project.optional-dependencies]
 dev = [
     "black",
