@@ -115,10 +115,8 @@ class Main:
                 break
         else:
             test_suites_dir = os.path.join(user_data_dir, TEST_SUITES_DIR)
-            if not os.path.exists(test_suites_dir) and "VIRTUAL_ENV" in os.environ:
-                test_suites_dir = os.path.join(
-                    os.environ["VIRTUAL_ENV"], "share", APPNAME
-                )
+            if not os.path.exists(test_suites_dir):
+                test_suites_dir = os.path.join(sys.prefix, "share", APPNAME)
 
         resources_dir = os.path.join(user_data_dir, RESOURCES_DIR)
 
