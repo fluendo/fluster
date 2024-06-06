@@ -255,7 +255,8 @@ class GStreamerLibavVP8(GStreamer10Video):
     """GStreamer VP8 Libav decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! avdec_vp8 "
+    check_decoder_bin = " ivfparse ! avdec_vp8 "
+    decoder_bin = " parsebin ! avdec_vp8 "
     api = "Libav"
 
 
@@ -454,7 +455,8 @@ class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 V4L2 stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! v4l2slvp8dec "
+    check_decoder_bin = " ivfparse ! v4l2slvp8dec "
+    decoder_bin = " parsebin ! v4l2slvp8dec "
     api = "V4L2SL"
 
 
@@ -463,7 +465,8 @@ class GStreamerV4l2VP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 V4L2 stateful decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! v4l2vp8dec "
+    check_decoder_bin = " ivfparse ! v4l2vp8dec "
+    decoder_bin = " parsebin ! v4l2vp8dec "
     api = "V4L2"
 
 
@@ -472,7 +475,8 @@ class GStreamerLibvpxVP8(GStreamer10Video):
     """GStreamer VP8 Libvpx decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! vp8dec "
+    check_decoder_bin = " ivfparse ! vp8dec "
+    decoder_bin = " parsebin ! vp8dec "
     api = "libvpx"
 
 
@@ -481,7 +485,8 @@ class GStreamerVaapiVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 VAAPI decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! vaapivp8dec "
+    check_decoder_bin = " ivfparse ! vaapivp8dec "
+    decoder_bin = " parsebin ! vaapivp8dec "
     api = "VAAPI"
 
 
@@ -490,7 +495,8 @@ class GStreamerVaVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 VA decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! vavp8dec "
+    check_decoder_bin = " ivfparse ! vavp8dec "
+    decoder_bin = " parsebin ! vavp8dec "
     api = "VA"
 
 
@@ -499,7 +505,8 @@ class GStreamerD3d11VP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 D3D11 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! d3d11vp8dec "
+    check_decoder_bin = " ivfparse ! d3d11vp8dec "
+    decoder_bin = " parsebin ! d3d11vp8dec "
     api = "D3D11"
 
 
@@ -508,7 +515,8 @@ class GStreamerNvdecVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 NVDEC decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! nvvp8dec "
+    check_decoder_bin = " ivfparse ! nvvp8dec "
+    decoder_bin = " parsebin ! nvvp8dec "
     api = "NVDEC"
 
 
@@ -517,7 +525,8 @@ class GStreamerNvdecSLVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 NVDEC stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    decoder_bin = " ivfparse ! nvvp8sldec "
+    check_decoder_bin = " ivfparse ! nvvp8sldec "
+    decoder_bin = " parsebin ! nvvp8sldec "
     api = "NVDECSL"
 
 
