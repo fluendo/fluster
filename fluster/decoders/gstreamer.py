@@ -255,7 +255,7 @@ class GStreamerLibavVP8(GStreamer10Video):
     """GStreamer VP8 Libav decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! avdec_vp8 "
+    check_decoder_bin = " avdec_vp8 "
     decoder_bin = " parsebin ! avdec_vp8 "
     api = "Libav"
 
