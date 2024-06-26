@@ -239,7 +239,6 @@ class GStreamerLibavH264(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! avdec_h264 "
     api = "Libav"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -249,7 +248,6 @@ class GStreamerLibavH265(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! avdec_h265 "
     api = "Libav"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -259,7 +257,6 @@ class GStreamerLibavVP8(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! avdec_vp8 "
     api = "Libav"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -270,7 +267,6 @@ class GStreamerLibavVP9(GStreamer10Video):
     check_decoder_bin = " avdec_vp9"
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "Libav"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -280,7 +276,6 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! vaapih265dec "
     api = "VAAPI"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -290,7 +285,6 @@ class GStreamerVaH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! vah265dec "
     api = "VA"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -300,7 +294,6 @@ class GStreamerMsdkH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! msdkh265dec "
     api = "MSDK"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -310,7 +303,6 @@ class GStreamerNvdecH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! nvh265dec "
     api = "NVDEC"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -320,7 +312,6 @@ class GStreamerNvdecSLH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! nvh265sldec "
     api = "NVDECSL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -330,7 +321,6 @@ class GStreamerD3d11H265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! d3d11h265dec "
     api = "D3D11"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -340,7 +330,6 @@ class GStreamerD3d12H265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! d3d12h265dec "
     api = "D3D12"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -350,7 +339,6 @@ class GStreamerV4l2CodecsH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! v4l2slh265dec "
     api = "V4L2SL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -360,7 +348,6 @@ class GStreamerV4l2H265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! v4l2h265dec "
     api = "V4L2"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -370,7 +357,6 @@ class GStreamerVaapiH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! vaapih264dec "
     api = "VAAPI"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -380,7 +366,6 @@ class GStreamerVaH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! vah264dec "
     api = "VA"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -390,7 +375,6 @@ class GStreamerMsdkH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! msdkh264dec "
     api = "MSDK"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -400,7 +384,6 @@ class GStreamerNvdecH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! nvh264dec "
     api = "NVDEC"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -410,7 +393,6 @@ class GStreamerNvdecSLH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! nvh264sldec "
     api = "NVDECSL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -420,7 +402,6 @@ class GStreamerD3d11H264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! d3d11h264dec "
     api = "D3D11"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -430,7 +411,6 @@ class GStreamerD3d12H264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! d3d12h264dec "
     api = "D3D12"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -440,7 +420,6 @@ class GStreamerV4l2CodecsH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! v4l2slh264dec "
     api = "V4L2SL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -450,7 +429,6 @@ class GStreamerV4l2H264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! v4l2h264dec "
     api = "V4L2"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -460,7 +438,6 @@ class GStreamerVulkanH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " h264parse ! vulkanh264dec ! vulkandownload "
     api = "Vulkan"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -470,7 +447,6 @@ class GStreamerVulkanH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " h265parse ! vulkanh265dec ! vulkandownload "
     api = "Vulkan"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -480,7 +456,6 @@ class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! v4l2slvp8dec "
     api = "V4L2SL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -490,7 +465,6 @@ class GStreamerV4l2VP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! v4l2vp8dec "
     api = "V4L2"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -500,7 +474,6 @@ class GStreamerLibvpxVP8(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! vp8dec "
     api = "libvpx"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -510,7 +483,6 @@ class GStreamerVaapiVP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! vaapivp8dec "
     api = "VAAPI"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -520,7 +492,6 @@ class GStreamerVaVP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! vavp8dec "
     api = "VA"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -530,7 +501,6 @@ class GStreamerD3d11VP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! d3d11vp8dec "
     api = "D3D11"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -540,7 +510,6 @@ class GStreamerNvdecVP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! nvvp8dec "
     api = "NVDEC"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -550,7 +519,6 @@ class GStreamerNvdecSLVP8Gst10Decoder(GStreamer10Video):
     codec = Codec.VP8
     decoder_bin = " ivfparse ! nvvp8sldec "
     api = "NVDECSL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -561,7 +529,6 @@ class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " v4l2slvp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "V4L2SL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -572,7 +539,6 @@ class GStreamerV4l2VP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " v4l2vp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "V4L2"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -583,7 +549,6 @@ class GStreamerVaAV1Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " vaav1dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "VA"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -594,7 +559,6 @@ class GStreamerV4l2CodecsAV1Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " v4l2slav1dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "V4L2SL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -605,7 +569,6 @@ class GStreamerD3d11AV1Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " d3d11av1dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "D3D11"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -616,7 +579,6 @@ class GStreamerD3d12AV1Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " d3d12av1dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "D3D12"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -627,7 +589,6 @@ class GStreamerLibvpxVP9(GStreamer10Video):
     check_decoder_bin = " vp9dec  "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "libvpx"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -638,7 +599,6 @@ class GStreamerVaapiVP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " vaapivp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "VAAPI"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -649,7 +609,6 @@ class GStreamerVaapiAV1Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " vaapiav1dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "VAAPI"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -660,7 +619,6 @@ class GStreamerDav1dAV1Decoder(GStreamer10Video):
     check_decoder_bin = " dav1ddec "
     decoder_bin = f" parsebin ! {check_decoder_bin} "
     api = "dav1d"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -671,7 +629,6 @@ class GStreamerVaVP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " vavp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "VA"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -682,7 +639,6 @@ class GStreamerD3d11VP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " d3d11vp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "D3D11"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -693,7 +649,6 @@ class GStreamerD3d12VP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " d3d12vp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "D3D12"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -704,7 +659,6 @@ class GStreamerNvdecVP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " nvvp9dec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "NVDEC"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -715,7 +669,6 @@ class GStreamerNvdecSLVP9Gst10Decoder(GStreamer10Video):
     check_decoder_bin = " nvvp9sldec "
     decoder_bin = f" parsebin ! {check_decoder_bin}"
     api = "NVDECSL"
-    hw_acceleration = True
 
 
 @register_decoder
@@ -725,7 +678,6 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
     codec = Codec.H266
     decoder_bin = " h266parse ! vvdec "
     api = "VVdeC"
-    hw_acceleration = False
 
 
 @register_decoder
@@ -776,7 +728,6 @@ class FluendoH264VAGst10Decoder(GStreamer10Video):
     decoder_bin = " h264parse ! fluhwvadec "
     provider = "Fluendo"
     api = "HW"
-    hw_acceleration = True
 
 
 class FluendoH265VAGst10DecoderBase(GStreamer10Video):
@@ -790,7 +741,6 @@ class FluendoH265VAGst10DecoderBase(GStreamer10Video):
     )
     provider = "Fluendo"
     api = "HW"
-    hw_acceleration = True
     stream_format: str = ""
     alignment: str = ""
 
@@ -875,7 +825,6 @@ class FluendoFluVAH265DecGst10Decoder(GStreamer10Video):
     decoder_bin = " h265parse ! fluhwvah265dec "
     provider = "Fluendo"
     api = "HW"
-    hw_acceleration = True
     name = f"{provider}-{codec.value}-{api}-hwvah265dec-Gst1.0"
 
 
@@ -887,7 +836,6 @@ class FluendoFluVAH264DecGst10Decoder(GStreamer10Video):
     decoder_bin = " h264parse ! fluhwvah264dec "
     provider = "Fluendo"
     api = "HW"
-    hw_acceleration = True
     name = f"{provider}-{codec.value}-{api}-hwvah264dec-Gst1.0"
 
 
@@ -912,7 +860,6 @@ class FluendoFluLCEVCVAH264DecGst10Decoder(GStreamer10Video):
     decoder_bin = "flulcevchwvah264dec"
     provider = "Fluendo"
     api = "HW"
-    hw_acceleration = True
     name = f"{provider}-{codec.value}-{api}-lcevchwvah264dec-Gst1.0"
 
 
