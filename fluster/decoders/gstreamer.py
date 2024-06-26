@@ -32,7 +32,7 @@ from fluster.utils import (
     normalize_binary_cmd,
 )
 
-PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} {}"
+PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
 
 
 @lru_cache(maxsize=None)
@@ -176,14 +176,8 @@ class GStreamer(Decoder):
         """Check if GStreamer decoder is valid (better than gst-inspect)"""
         # pylint: disable=broad-except
         try:
-            if hasattr(self, "check_decoder_bin"):
-                decoder_bin = getattr(self, "check_decoder_bin")
-            else:
-                decoder_bin = self.decoder_bin
             binary = normalize_binary_cmd(f"gst-launch-{self.gst_api}")
-            pipeline = (
-                f"{binary} --no-fault appsrc num-buffers=0 ! {decoder_bin} ! fakesink"
-            )
+            pipeline = f"{binary} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
             run_command(shlex.split(pipeline), verbose=verbose)
         except Exception:
             return False
@@ -208,7 +202,13 @@ class GStreamer10Video(GStreamer):
         caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd, input_filepath, self.decoder_bin, caps, self.sink, output
+            self.cmd,
+            input_filepath,
+            "parsebin",
+            self.decoder_bin,
+            caps,
+            self.sink,
+            output,
         )
 
 
@@ -237,7 +237,7 @@ class GStreamerLibavH264(GStreamer10Video):
     """GStreamer H.264 Libav decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! avdec_h264 "
+    decoder_bin = " avdec_h264 "
     api = "Libav"
 
 
@@ -246,7 +246,7 @@ class GStreamerLibavH265(GStreamer10Video):
     """GStreamer H.265 Libav decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! avdec_h265 "
+    decoder_bin = " avdec_h265 "
     api = "Libav"
 
 
@@ -255,8 +255,7 @@ class GStreamerLibavVP8(GStreamer10Video):
     """GStreamer VP8 Libav decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " avdec_vp8 "
-    decoder_bin = " parsebin ! avdec_vp8 "
+    decoder_bin = " avdec_vp8 "
     api = "Libav"
 
 
@@ -265,8 +264,7 @@ class GStreamerLibavVP9(GStreamer10Video):
     """GStreamer VP9 Libav decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " avdec_vp9"
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " avdec_vp9"
     api = "Libav"
 
 
@@ -275,7 +273,7 @@ class GStreamerVaapiH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! vaapih265dec "
+    decoder_bin = " vaapih265dec "
     api = "VAAPI"
 
 
@@ -284,7 +282,7 @@ class GStreamerVaH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 VA decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! vah265dec "
+    decoder_bin = " vah265dec "
     api = "VA"
 
 
@@ -293,7 +291,7 @@ class GStreamerMsdkH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 Intel MSDK decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! msdkh265dec "
+    decoder_bin = " msdkh265dec "
     api = "MSDK"
 
 
@@ -302,7 +300,7 @@ class GStreamerNvdecH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 NVDEC decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! nvh265dec "
+    decoder_bin = " nvh265dec "
     api = "NVDEC"
 
 
@@ -311,7 +309,7 @@ class GStreamerNvdecSLH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 NVDEC stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! nvh265sldec "
+    decoder_bin = " nvh265sldec "
     api = "NVDECSL"
 
 
@@ -320,7 +318,7 @@ class GStreamerD3d11H265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 D3D11 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! d3d11h265dec "
+    decoder_bin = " d3d11h265dec "
     api = "D3D11"
 
 
@@ -329,7 +327,7 @@ class GStreamerD3d12H265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 D3D12 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! d3d12h265dec "
+    decoder_bin = " d3d12h265dec "
     api = "D3D12"
 
 
@@ -338,7 +336,7 @@ class GStreamerV4l2CodecsH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 V4L2 stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! v4l2slh265dec "
+    decoder_bin = " v4l2slh265dec "
     api = "V4L2SL"
 
 
@@ -347,7 +345,7 @@ class GStreamerV4l2H265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 V4L2 stateful decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! v4l2h265dec "
+    decoder_bin = " v4l2h265dec "
     api = "V4L2"
 
 
@@ -356,7 +354,7 @@ class GStreamerVaapiH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! vaapih264dec "
+    decoder_bin = " vaapih264dec "
     api = "VAAPI"
 
 
@@ -365,7 +363,7 @@ class GStreamerVaH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 VA decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! vah264dec "
+    decoder_bin = " vah264dec "
     api = "VA"
 
 
@@ -374,7 +372,7 @@ class GStreamerMsdkH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 Intel MSDK decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! msdkh264dec "
+    decoder_bin = " msdkh264dec "
     api = "MSDK"
 
 
@@ -383,7 +381,7 @@ class GStreamerNvdecH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 NVDEC decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! nvh264dec "
+    decoder_bin = " nvh264dec "
     api = "NVDEC"
 
 
@@ -392,7 +390,7 @@ class GStreamerNvdecSLH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 NVDEC stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! nvh264sldec "
+    decoder_bin = " nvh264sldec "
     api = "NVDECSL"
 
 
@@ -401,7 +399,7 @@ class GStreamerD3d11H264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 D3D11 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! d3d11h264dec "
+    decoder_bin = " d3d11h264dec "
     api = "D3D11"
 
 
@@ -410,7 +408,7 @@ class GStreamerD3d12H264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 D3D12 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! d3d12h264dec "
+    decoder_bin = " d3d12h264dec "
     api = "D3D12"
 
 
@@ -419,7 +417,7 @@ class GStreamerV4l2CodecsH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 V4L2 stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! v4l2slh264dec "
+    decoder_bin = " v4l2slh264dec "
     api = "V4L2SL"
 
 
@@ -428,7 +426,7 @@ class GStreamerV4l2H264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 V4L2 stateful decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! v4l2h264dec "
+    decoder_bin = " v4l2h264dec "
     api = "V4L2"
 
 
@@ -437,7 +435,7 @@ class GStreamerVulkanH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 Vulkan stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! vulkanh264dec ! vulkandownload "
+    decoder_bin = " vulkanh264dec ! vulkandownload "
     api = "Vulkan"
 
 
@@ -446,7 +444,7 @@ class GStreamerVulkanH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 Vulkan stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! vulkanh265dec ! vulkandownload "
+    decoder_bin = " vulkanh265dec ! vulkandownload "
     api = "Vulkan"
 
 
@@ -455,8 +453,7 @@ class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 V4L2 stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! v4l2slvp8dec "
-    decoder_bin = " parsebin ! v4l2slvp8dec "
+    decoder_bin = " v4l2slvp8dec "
     api = "V4L2SL"
 
 
@@ -465,8 +462,7 @@ class GStreamerV4l2VP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 V4L2 stateful decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! v4l2vp8dec "
-    decoder_bin = " parsebin ! v4l2vp8dec "
+    decoder_bin = " v4l2vp8dec "
     api = "V4L2"
 
 
@@ -475,8 +471,7 @@ class GStreamerLibvpxVP8(GStreamer10Video):
     """GStreamer VP8 Libvpx decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! vp8dec "
-    decoder_bin = " parsebin ! vp8dec "
+    decoder_bin = " vp8dec "
     api = "libvpx"
 
 
@@ -485,8 +480,7 @@ class GStreamerVaapiVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 VAAPI decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! vaapivp8dec "
-    decoder_bin = " parsebin ! vaapivp8dec "
+    decoder_bin = " vaapivp8dec "
     api = "VAAPI"
 
 
@@ -495,8 +489,7 @@ class GStreamerVaVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 VA decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! vavp8dec "
-    decoder_bin = " parsebin ! vavp8dec "
+    decoder_bin = " vavp8dec "
     api = "VA"
 
 
@@ -505,8 +498,7 @@ class GStreamerD3d11VP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 D3D11 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! d3d11vp8dec "
-    decoder_bin = " parsebin ! d3d11vp8dec "
+    decoder_bin = " d3d11vp8dec "
     api = "D3D11"
 
 
@@ -515,8 +507,7 @@ class GStreamerNvdecVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 NVDEC decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! nvvp8dec "
-    decoder_bin = " parsebin ! nvvp8dec "
+    decoder_bin = " nvvp8dec "
     api = "NVDEC"
 
 
@@ -525,8 +516,7 @@ class GStreamerNvdecSLVP8Gst10Decoder(GStreamer10Video):
     """GStreamer VP8 NVDEC stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP8
-    check_decoder_bin = " ivfparse ! nvvp8sldec "
-    decoder_bin = " parsebin ! nvvp8sldec "
+    decoder_bin = " nvvp8sldec "
     api = "NVDECSL"
 
 
@@ -535,8 +525,7 @@ class GStreamerV4l2CodecsVP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 V4L2 stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " v4l2slvp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " v4l2slvp9dec "
     api = "V4L2SL"
 
 
@@ -545,8 +534,7 @@ class GStreamerV4l2VP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 V4L2 stateful decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " v4l2vp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " v4l2vp9dec "
     api = "V4L2"
 
 
@@ -555,8 +543,7 @@ class GStreamerVaAV1Gst10Decoder(GStreamer10Video):
     """GStreamer AV1 VA decoder implementation for GStreamer 1.0"""
 
     codec = Codec.AV1
-    check_decoder_bin = " vaav1dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " vaav1dec "
     api = "VA"
 
 
@@ -565,8 +552,7 @@ class GStreamerV4l2CodecsAV1Gst10Decoder(GStreamer10Video):
     """GStreamer AV1 V4L2 stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.AV1
-    check_decoder_bin = " v4l2slav1dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " v4l2slav1dec "
     api = "V4L2SL"
 
 
@@ -575,8 +561,7 @@ class GStreamerD3d11AV1Gst10Decoder(GStreamer10Video):
     """GStreamer AV1 D3D11 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.AV1
-    check_decoder_bin = " d3d11av1dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " d3d11av1dec "
     api = "D3D11"
 
 
@@ -585,8 +570,7 @@ class GStreamerD3d12AV1Gst10Decoder(GStreamer10Video):
     """GStreamer AV1 D3D12 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.AV1
-    check_decoder_bin = " d3d12av1dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " d3d12av1dec "
     api = "D3D12"
 
 
@@ -595,8 +579,7 @@ class GStreamerLibvpxVP9(GStreamer10Video):
     """GStreamer VP9 Libvpx decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " vp9dec  "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " vp9dec  "
     api = "libvpx"
 
 
@@ -605,8 +588,7 @@ class GStreamerVaapiVP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 VAAPI decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " vaapivp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " vaapivp9dec "
     api = "VAAPI"
 
 
@@ -615,8 +597,7 @@ class GStreamerVaapiAV1Gst10Decoder(GStreamer10Video):
     """GStreamer AV1 VAAPI decoder implementation for GStreamer 1.0"""
 
     codec = Codec.AV1
-    check_decoder_bin = " vaapiav1dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " vaapiav1dec "
     api = "VAAPI"
 
 
@@ -625,8 +606,7 @@ class GStreamerDav1dAV1Decoder(GStreamer10Video):
     """GStreamer AV1 dav1d decoder implementation for GStreamer 1.0"""
 
     codec = Codec.AV1
-    check_decoder_bin = " dav1ddec "
-    decoder_bin = f" parsebin ! {check_decoder_bin} "
+    decoder_bin = " dav1ddec "
     api = "dav1d"
 
 
@@ -635,8 +615,7 @@ class GStreamerVaVP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 VA decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " vavp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " vavp9dec "
     api = "VA"
 
 
@@ -645,8 +624,7 @@ class GStreamerD3d11VP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 D3D11 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " d3d11vp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " d3d11vp9dec "
     api = "D3D11"
 
 
@@ -655,8 +633,7 @@ class GStreamerD3d12VP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 D3D12 decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " d3d12vp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " d3d12vp9dec "
     api = "D3D12"
 
 
@@ -665,8 +642,7 @@ class GStreamerNvdecVP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 NVDEC decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " nvvp9dec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " nvvp9dec "
     api = "NVDEC"
 
 
@@ -675,8 +651,7 @@ class GStreamerNvdecSLVP9Gst10Decoder(GStreamer10Video):
     """GStreamer VP9 NVDEC stateless decoder implementation for GStreamer 1.0"""
 
     codec = Codec.VP9
-    check_decoder_bin = " nvvp9sldec "
-    decoder_bin = f" parsebin ! {check_decoder_bin}"
+    decoder_bin = " nvvp9sldec "
     api = "NVDECSL"
 
 
@@ -685,7 +660,7 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
     """GStreamer H.266/VVC VVdeC decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H266
-    decoder_bin = " h266parse ! vvdec "
+    decoder_bin = " vvdec "
     api = "VVdeC"
 
 
@@ -694,7 +669,7 @@ class FluendoH265Gst10Decoder(GStreamer10Video):
     """Fluendo H.265 software decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! fluh265dec "
+    decoder_bin = " fluh265dec "
     provider = "Fluendo"
     api = "SW"
 
@@ -704,7 +679,7 @@ class FluendoH265Gst010Decoder(GStreamer010Video):
     """Fluendo H.265 software decoder implementation for GStreamer 0.10"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! fluh265dec "
+    decoder_bin = " fluh265dec "
     provider = "Fluendo"
     api = "SW"
 
@@ -714,7 +689,7 @@ class FluendoH264Gst10Decoder(GStreamer10Video):
     """Fluendo H.264 software decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! fluh264dec "
+    decoder_bin = " fluh264dec "
     provider = "Fluendo"
     api = "SW"
 
@@ -734,7 +709,7 @@ class FluendoH264VAGst10Decoder(GStreamer10Video):
     """Fluendo H.264 hardware decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! fluhwvadec "
+    decoder_bin = " fluhwvadec "
     provider = "Fluendo"
     api = "HW"
 
@@ -744,7 +719,6 @@ class FluendoH265VAGst10DecoderBase(GStreamer10Video):
 
     codec = Codec.H265
     decoder_bin_tmpl = (
-        " h265parse !"
         " video/x-h265,stream-format={stream_format},alignment={alignment} !"
         " fluhwvadec "
     )
@@ -831,7 +805,7 @@ class FluendoFluVAH265DecGst10Decoder(GStreamer10Video):
     """Fluendo H.265 separated plugin hardware decoder for GStreamer 1.0"""
 
     codec = Codec.H265
-    decoder_bin = " h265parse ! fluhwvah265dec "
+    decoder_bin = " fluhwvah265dec "
     provider = "Fluendo"
     api = "HW"
     name = f"{provider}-{codec.value}-{api}-hwvah265dec-Gst1.0"
@@ -842,7 +816,7 @@ class FluendoFluVAH264DecGst10Decoder(GStreamer10Video):
     """Fluendo H.264 separated plugin hardware decoder for GStreamer 1.0"""
 
     codec = Codec.H264
-    decoder_bin = " h264parse ! fluhwvah264dec "
+    decoder_bin = " fluhwvah264dec "
     provider = "Fluendo"
     api = "HW"
     name = f"{provider}-{codec.value}-{api}-hwvah264dec-Gst1.0"
@@ -878,7 +852,7 @@ class FluendoFluHWVAH264DecBase(GStreamer10Video):
     provider = "Fluendo"
     api = "INVALID"
     codec = Codec.H264
-    decoder_bin_tmpl = " h264parse ! fluhwva{backend}h264dec "
+    decoder_bin_tmpl = " fluhwva{backend}h264dec "
 
     def __init__(self) -> None:
         self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
@@ -891,7 +865,7 @@ class FluendoFluHWVAH265DecBase(GStreamer10Video):
     provider = "Fluendo"
     api = "INVALID"
     codec = Codec.H265
-    decoder_bin_tmpl = " h265parse ! fluhwva{backend}h265dec "
+    decoder_bin_tmpl = " fluhwva{backend}h265dec "
 
     def __init__(self) -> None:
         self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
