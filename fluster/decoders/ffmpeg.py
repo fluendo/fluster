@@ -84,7 +84,7 @@ class FFmpegDecoder(Decoder):
         version = self.ffmpeg_version()
         download = ""
         if self.hw_acceleration and self.hw_download:
-            download = f"hwdownload,format={output_format_to_ffformat (output_format)},"
+            download = f"hwdownload,format={output_format_to_ffformat(output_format)},"
         if version and int(version.group(0)[0]) >= 5 and int(version.group(0)[2]) >= 1:
             cmd = shlex.split(
                 FFMPEG_TPL.format(

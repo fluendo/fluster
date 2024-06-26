@@ -202,7 +202,13 @@ class GStreamer10Video(GStreamer):
         caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd, input_filepath, "parsebin", self.decoder_bin, caps, self.sink, output
+            self.cmd,
+            input_filepath,
+            "parsebin",
+            self.decoder_bin,
+            caps,
+            self.sink,
+            output,
         )
 
 
