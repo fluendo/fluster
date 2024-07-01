@@ -84,6 +84,8 @@ def run_pipe_command_with_std_output(
         data = subprocess.check_output(
             command, stderr=serr, timeout=timeout, universal_newlines=True
         )
+        if verbose:
+            print(data)
         return data.splitlines()
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
         odata: List[str] = []

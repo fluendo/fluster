@@ -111,13 +111,10 @@ class GStreamer(Decoder):
             self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output
         )
 
-    def parse_videocodectestsink_md5sum(self, data: List[str], verbose: bool) -> str:
+    def parse_videocodectestsink_md5sum(self, data: List[str]) -> str:
         """Parse the MD5 sum out of commandline output produced when using
         videocodectestsink."""
-        md5sum = None
         for line in data:
-            if verbose:
-                print(line)
             pattern = (
                 "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
             )
@@ -135,14 +132,9 @@ class GStreamer(Decoder):
                     continue
                 else:
                     sum_end += sum_start
-                    md5sum = line[sum_start:sum_end]
-                    if not verbose:
-                        return md5sum
+                    return line[sum_start:sum_end]
 
-        if not md5sum:
-            raise Exception("No MD5 found in the program trace.")
-
-        return md5sum
+        raise Exception("No MD5 found in the program trace.")
 
     def decode(
         self,
@@ -165,7 +157,7 @@ class GStreamer(Decoder):
             data = run_pipe_command_with_std_output(
                 command, timeout=timeout, verbose=verbose
             )
-            return self.parse_videocodectestsink_md5sum(data, verbose)
+            return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
