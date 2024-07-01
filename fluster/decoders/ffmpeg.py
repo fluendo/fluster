@@ -75,6 +75,10 @@ class FFmpegDecoder(Decoder):
         # pylint: disable=too-many-branches
         command = [self.binary, "-hide_banner", "-nostdin"]
 
+        # Loglevel
+        if not verbose:
+            command.extend(["-loglevel", "warning"])
+
         # Hardware acceleration
         if self.hw_acceleration:
             if self.init_hw_device:
