@@ -17,7 +17,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from functools import lru_cache
-from typing import Optional, Tuple
+from typing import Dict, Optional, Tuple
 import shlex
 import subprocess
 import re
@@ -45,21 +45,6 @@ def _run_ffmpeg_command(
         return ""
 
 
-def output_format_to_ffformat(output_format: OutputFormat) -> str:
-    """Return GStreamer pixel format"""
-    mapping = {
-        OutputFormat.YUV420P: "nv12",
-        OutputFormat.YUV422P: "nv12",  # vulkan
-        OutputFormat.YUV420P10LE: "p010",
-        OutputFormat.YUV422P10LE: "p012",
-    }
-    if output_format not in mapping:
-        raise Exception(
-            f"No matching output format found in FFmpeg for {output_format}"
-        )
-    return mapping[output_format]
-
-
 class FFmpegDecoder(Decoder):
     """Generic class for FFmpeg decoder"""
 
@@ -67,6 +52,7 @@ class FFmpegDecoder(Decoder):
     api = ""
     wrapper = False
     hw_download = False
+    hw_download_mapping: Dict[OutputFormat, str] = {}
     init_hw_device = ""
     hw_output_format = ""
 
@@ -102,7 +88,11 @@ class FFmpegDecoder(Decoder):
             passthrough = "-vsync passthrough"
         download = ""
         if self.hw_acceleration and self.hw_download:
-            download = f"hwdownload,format={output_format_to_ffformat(output_format)},"
+            if output_format not in self.hw_download_mapping:
+                raise Exception(
+                    f"No matching ffmpeg pixel format found for {output_format}"
+                )
+            download = f"hwdownload,format={self.hw_download_mapping[output_format]},"
         command = shlex.split(
             FFMPEG_TPL.format(
                 cmd,
@@ -315,6 +305,12 @@ class FFmpegVulkanDecoder(FFmpegDecoder):
     init_hw_device = "vulkan"
     hw_output_format = "vulkan"
     hw_download = True
+    hw_download_mapping = {
+        OutputFormat.YUV420P: "nv12",
+        OutputFormat.YUV422P: "nv12",
+        OutputFormat.YUV420P10LE: "p010",
+        OutputFormat.YUV422P10LE: "p012",
+    }
 
 
 @register_decoder
