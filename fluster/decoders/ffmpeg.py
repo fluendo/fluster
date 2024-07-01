@@ -17,7 +17,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from functools import lru_cache
-from typing import List, Optional, Match
+from typing import List, Optional, Tuple
 import shlex
 import subprocess
 import re
@@ -83,45 +83,28 @@ class FFmpegDecoder(Decoder):
                 self.cmd += f" -hwaccel {self.api.lower()}"
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
-
-    @lru_cache(maxsize=128)
-    def ffmpeg_version(self) -> Optional[Match[str]]:
-        """Returns the ffmpeg version as a re.Match object"""
-        cmd = shlex.split("ffmpeg -version")
-        output = subprocess.check_output(cmd, stderr=subprocess.DEVNULL).decode("utf-8")
-        version = re.search(r"\d\.\d\.\d", output)
-        return version
+        self.ffmpeg_version: Optional[Tuple[int, ...]] = None
 
     def ffmpeg_cmd(
         self, input_filepath: str, output_filepath: str, output_format: OutputFormat
     ) -> List[str]:
         """Returns the formatted ffmpeg command based on the current ffmpeg version"""
-        version = self.ffmpeg_version()
+        passthrough = "-fps_mode passthrough"
+        if self.ffmpeg_version and self.ffmpeg_version < (5, 1):
+            passthrough = "-vsync passthrough"
         download = ""
         if self.hw_acceleration and self.hw_download:
             download = f"hwdownload,format={output_format_to_ffformat(output_format)},"
-        if version and int(version.group(0)[0]) >= 5 and int(version.group(0)[2]) >= 1:
-            cmd = shlex.split(
-                FFMPEG_TPL.format(
-                    self.cmd,
-                    input_filepath,
-                    "-fps_mode passthrough",
-                    download,
-                    str(output_format.value),
-                    output_filepath,
-                )
+        cmd = shlex.split(
+            FFMPEG_TPL.format(
+                self.cmd,
+                input_filepath,
+                passthrough,
+                download,
+                str(output_format.value),
+                output_filepath,
             )
-        else:
-            cmd = shlex.split(
-                FFMPEG_TPL.format(
-                    self.cmd,
-                    input_filepath,
-                    "-vsync passthrough",
-                    download,
-                    str(output_format.value),
-                    output_filepath,
-                )
-            )
+        )
         return cmd
 
     def decode(
@@ -144,6 +127,11 @@ class FFmpegDecoder(Decoder):
         """Checks whether the decoder can be run"""
         if not super().check(verbose):
             return False
+
+        # Get ffmpeg version
+        output = _run_ffmpeg_command(self.binary, "-version", verbose=verbose)
+        version = re.search(r" version n?(\d+)\.(\d+)(?:\.(\d+))?", output)
+        self.ffmpeg_version = tuple(map(int, version.groups())) if version else None
 
         if not self.hw_acceleration:
             return True
