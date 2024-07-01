@@ -52,6 +52,7 @@ class FFmpegDecoder(Decoder):
     hw_download_mapping: Dict[OutputFormat, str] = {}
     init_hw_device = ""
     hw_output_format = ""
+    thread_count = 1
 
     def __init__(self) -> None:
         super().__init__()
@@ -71,6 +72,7 @@ class FFmpegDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
+        # pylint: disable=too-many-branches
         command = [self.binary, "-hide_banner", "-nostdin"]
 
         # Hardware acceleration
@@ -81,6 +83,10 @@ class FFmpegDecoder(Decoder):
                 command.extend(["-hwaccel", self.api.lower()])
             if self.hw_output_format:
                 command.extend(["-hwaccel_output_format", self.hw_output_format])
+
+        # Number of threads
+        if self.thread_count:
+            command.extend(["-threads", str(self.thread_count)])
 
         # Codec
         if self.hw_acceleration and self.wrapper:
