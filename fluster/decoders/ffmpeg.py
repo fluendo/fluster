@@ -57,6 +57,7 @@ class FFmpegDecoder(Decoder):
         super().__init__()
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
+        self.ffmpeg_codec: Optional[str] = None
         self.ffmpeg_version: Optional[Tuple[int, ...]] = None
 
     def decode(
@@ -84,6 +85,8 @@ class FFmpegDecoder(Decoder):
         # Codec
         if self.hw_acceleration and self.wrapper:
             command.extend(["-codec", self.api.lower()])
+        elif self.ffmpeg_codec:
+            command.extend(["-codec", self.ffmpeg_codec])
 
         # Input file
         command.extend(["-i", input_filepath])
@@ -117,10 +120,28 @@ class FFmpegDecoder(Decoder):
         if not super().check(verbose):
             return False
 
+        # Check if codec is supported
+        codec_mapping = {
+            Codec.H264: "h264",
+            Codec.H265: "hevc",
+            Codec.VP8: "vp8",
+            Codec.VP9: "vp9",
+            Codec.AV1: "av1",
+        }
+        if self.codec not in codec_mapping:
+            return False
+        self.ffmpeg_codec = codec_mapping[self.codec]
+
         # Get ffmpeg version
         output = _run_ffmpeg_command(self.binary, "-version", verbose=verbose)
         version = re.search(r" version n?(\d+)\.(\d+)(?:\.(\d+))?", output)
         self.ffmpeg_version = tuple(map(int, version.groups())) if version else None
+
+        # Check if codec can be used
+        output = _run_ffmpeg_command(self.binary, "-codecs", verbose=verbose)
+        codec = re.escape(self.ffmpeg_codec)
+        if re.search(rf"\s+{codec}\s+", output) is None:
+            return False
 
         if not self.hw_acceleration:
             return True
