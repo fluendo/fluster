@@ -324,34 +324,48 @@ class FFmpegH265D3d11vaDecoder(FFmpegD3d11vaDecoder):
     codec = Codec.H265
 
 
+class FFmpegV4L2m2mDecoder(FFmpegDecoder):
+    """Generic class for FFmpeg V4L2 mem2mem decoder"""
+
+    hw_acceleration = True
+    wrapper = True
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.name = f"FFmpeg-{self.codec.value}-v4l2m2m"
+        self.description = f"FFmpeg {self.codec.value} v4l2m2m decoder"
+
+
 @register_decoder
-class FFmpegVP8V4L2m2mDecoder(FFmpegDecoder):
-    """FFmpeg V4L2m2m decoder for VP8"""
+class FFmpegVP8V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
+    """FFmpeg V4L2 mem2mem decoder for VP8"""
 
     codec = Codec.VP8
-    hw_acceleration = True
     api = "vp8_v4l2m2m"
-    wrapper = True
 
 
 @register_decoder
-class FFmpegVP9V4L2m2mDecoder(FFmpegDecoder):
-    """FFmpeg V4L2m2m decoder for VP9"""
+class FFmpegVP9V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
+    """FFmpeg V4L2 mem2mem decoder for VP9"""
 
     codec = Codec.VP9
-    hw_acceleration = True
     api = "vp9_v4l2m2m"
-    wrapper = True
 
 
 @register_decoder
-class FFmpegH264V4L2m2mDecoder(FFmpegDecoder):
-    """FFmpeg V4L2m2m decoder for H264"""
+class FFmpegH264V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
+    """FFmpeg V4L2 mem2mem decoder for H.264"""
 
     codec = Codec.H264
-    hw_acceleration = True
     api = "h264_v4l2m2m"
-    wrapper = True
+
+
+@register_decoder
+class FFmpegH265V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
+    """FFmpeg V4L2 mem2mem decoder for H.265"""
+
+    codec = Codec.H265
+    api = "hevc_v4l2m2m"
 
 
 class FFmpegVulkanDecoder(FFmpegDecoder):
