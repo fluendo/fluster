@@ -69,38 +69,34 @@ def run_command(
         raise ex
 
 
-def run_pipe_command_with_std_output(
+def run_command_with_output(
     command: List[str],
     verbose: bool = False,
     check: bool = True,
     timeout: Optional[int] = None,
-) -> List[str]:
+) -> str:
     """Runs a command and returns std output trace"""
     serr = subprocess.DEVNULL if not verbose else subprocess.STDOUT
     if verbose:
         print(f'\nRunning command "{" ".join(command)}"')
 
     try:
-        data = subprocess.check_output(
+        output = subprocess.check_output(
             command, stderr=serr, timeout=timeout, universal_newlines=True
         )
-        if verbose:
-            print(data)
-        return data.splitlines()
+        if verbose and output:
+            print(output)
+        return output or ""
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
-        odata: List[str] = []
-        if verbose or check:
+        if verbose and ex.output:
             # Workaround inconsistent Python implementation
-            if isinstance(ex, subprocess.CalledProcessError):
-                odata = ex.output.splitlines()
+            if isinstance(ex, subprocess.TimeoutExpired):
+                print(ex.output.decode("utf-8"))
             else:
-                odata = ex.output.decode("utf-8").splitlines()
-        if verbose:
-            for line in odata:
-                print(line)
+                print(ex.output)
 
         if isinstance(ex, subprocess.CalledProcessError) and not check:
-            return odata
+            return ex.output or ""
 
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)

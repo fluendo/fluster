@@ -160,7 +160,7 @@ class JCTVTGenerator:
                            'default=nokey=1:noprint_wrappers=1',
                            absolute_input_path]
 
-                result = utils.run_pipe_command_with_std_output(command)
+                result = utils.run_command_with_output(command).splitlines()
                 pix_fmt = result[0]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
