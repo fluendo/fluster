@@ -269,6 +269,13 @@ class FFmpegH265VdpauDecoder(FFmpegVdpauDecoder):
 
 
 @register_decoder
+class FFmpegVP9VdpauDecoder(FFmpegVdpauDecoder):
+    """FFmpeg VDPAU decoder for VP9"""
+
+    codec = Codec.VP9
+
+
+@register_decoder
 class FFmpegAV1VdpauDecoder(FFmpegVdpauDecoder):
     """FFmpeg VDPAU decoder for AV1"""
 
