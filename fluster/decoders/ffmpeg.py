@@ -67,7 +67,8 @@ class FFmpegDecoder(Decoder):
     api = ""
     wrapper = False
     hw_download = False
-    init_device = ""
+    init_hw_device = ""
+    hw_output_format = ""
 
     def __init__(self) -> None:
         super().__init__()
@@ -88,8 +89,10 @@ class FFmpegDecoder(Decoder):
         # pylint: disable=unused-argument
         cmd = self.binary
         if self.hw_acceleration:
-            if self.init_device:
-                cmd += f' -init_hw_device "{self.init_device}" -hwaccel_output_format {self.api.lower()}'
+            if self.init_hw_device:
+                cmd += f' -init_hw_device "{self.init_hw_device}"'
+            if self.hw_output_format:
+                cmd += f" -hwaccel_output_format {self.hw_output_format}"
             if self.wrapper:
                 cmd += f" -c:v {self.api.lower()}"
             else:
@@ -309,7 +312,8 @@ class FFmpegVulkanDecoder(FFmpegDecoder):
 
     hw_acceleration = True
     api = "Vulkan"
-    init_device = "vulkan"
+    init_hw_device = "vulkan"
+    hw_output_format = "vulkan"
     hw_download = True
 
 
