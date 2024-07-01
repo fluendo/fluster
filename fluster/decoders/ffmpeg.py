@@ -18,15 +18,12 @@
 
 from functools import lru_cache
 from typing import Dict, Optional, Tuple
-import shlex
 import subprocess
 import re
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command, run_command_with_output
-
-FFMPEG_TPL = "{} -nostdin -i {} {} -vf {}format=pix_fmts={} -f rawvideo {}"
 
 
 @lru_cache(maxsize=128)
@@ -73,19 +70,31 @@ class FFmpegDecoder(Decoder):
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         # pylint: disable=unused-argument
-        cmd = self.binary
+        command = [self.binary, "-hide_banner", "-nostdin"]
+
+        # Hardware acceleration
         if self.hw_acceleration:
             if self.init_hw_device:
-                cmd += f' -init_hw_device "{self.init_hw_device}"'
+                command.extend(["-init_hw_device", self.init_hw_device])
+            if not self.wrapper:
+                command.extend(["-hwaccel", self.api.lower()])
             if self.hw_output_format:
-                cmd += f" -hwaccel_output_format {self.hw_output_format}"
-            if self.wrapper:
-                cmd += f" -c:v {self.api.lower()}"
-            else:
-                cmd += f" -hwaccel {self.api.lower()}"
-        passthrough = "-fps_mode passthrough"
+                command.extend(["-hwaccel_output_format", self.hw_output_format])
+
+        # Codec
+        if self.hw_acceleration and self.wrapper:
+            command.extend(["-codec", self.api.lower()])
+
+        # Input file
+        command.extend(["-i", input_filepath])
+
+        # Passthrough timestamp from the demuxer to the muxer
         if self.ffmpeg_version and self.ffmpeg_version < (5, 1):
-            passthrough = "-vsync passthrough"
+            command.extend(["-vsync", "passthrough"])
+        else:
+            command.extend(["-fps_mode", "passthrough"])
+
+        # Hardware download
         download = ""
         if self.hw_acceleration and self.hw_download:
             if output_format not in self.hw_download_mapping:
@@ -93,16 +102,12 @@ class FFmpegDecoder(Decoder):
                     f"No matching ffmpeg pixel format found for {output_format}"
                 )
             download = f"hwdownload,format={self.hw_download_mapping[output_format]},"
-        command = shlex.split(
-            FFMPEG_TPL.format(
-                cmd,
-                input_filepath,
-                passthrough,
-                download,
-                str(output_format.value),
-                output_filepath,
-            )
-        )
+
+        # Output format filter
+        command.extend(["-filter", f"{download}format=pix_fmts={output_format.value}"])
+
+        # Output file
+        command.extend(["-f", "rawvideo", output_filepath])
         run_command(command, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
