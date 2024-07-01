@@ -403,3 +403,55 @@ class FFmpegAV1VulkanDecoder(FFmpegVulkanDecoder):
     """FFmpeg Vulkan decoder for AV1"""
 
     codec = Codec.AV1
+
+
+class FFmpegCudaDecoder(FFmpegDecoder):
+    """Generic class for FFmpeg CUDA decoder"""
+
+    hw_acceleration = True
+    api = "CUDA"
+    hw_output_format = "cuda"
+    hw_download = True
+    hw_download_mapping = {
+        OutputFormat.YUV420P: "nv12",
+        OutputFormat.YUV444P: "yuv444p",
+        OutputFormat.YUV420P10LE: "p010",
+        OutputFormat.YUV444P10LE: "yuv444p16le",
+        OutputFormat.YUV420P12LE: "p016",
+        OutputFormat.YUV444P12LE: "yuv444p16le",
+    }
+
+
+@register_decoder
+class FFmpegH264CudaDecoder(FFmpegCudaDecoder):
+    """FFmpeg CUDA decoder for H.264"""
+
+    codec = Codec.H264
+
+
+@register_decoder
+class FFmpegH265CudaDecoder(FFmpegCudaDecoder):
+    """FFmpeg CUDA decoder for H.265"""
+
+    codec = Codec.H265
+
+
+@register_decoder
+class FFmpegVP8CudaDecoder(FFmpegCudaDecoder):
+    """FFmpeg CUDA decoder for VP8"""
+
+    codec = Codec.VP8
+
+
+@register_decoder
+class FFmpegVP9CudaDecoder(FFmpegCudaDecoder):
+    """FFmpeg CUDA decoder for VP9"""
+
+    codec = Codec.VP9
+
+
+@register_decoder
+class FFmpegAV1VCudaDecoder(FFmpegCudaDecoder):
+    """FFmpeg CUDA decoder for AV1"""
+
+    codec = Codec.AV1
