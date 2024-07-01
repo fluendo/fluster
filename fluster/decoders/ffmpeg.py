@@ -17,7 +17,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from functools import lru_cache
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 import shlex
 import subprocess
 import re
@@ -64,8 +64,6 @@ class FFmpegDecoder(Decoder):
     """Generic class for FFmpeg decoder"""
 
     binary = "ffmpeg"
-    description = ""
-    cmd = ""
     api = ""
     wrapper = False
     hw_download = False
@@ -73,39 +71,9 @@ class FFmpegDecoder(Decoder):
 
     def __init__(self) -> None:
         super().__init__()
-        self.cmd = self.binary
-        if self.hw_acceleration:
-            if self.init_device:
-                self.cmd += f' -init_hw_device "{self.init_device}" -hwaccel_output_format {self.api.lower()}'
-            if self.wrapper:
-                self.cmd += f" -c:v {self.api.lower()}"
-            else:
-                self.cmd += f" -hwaccel {self.api.lower()}"
         self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
         self.ffmpeg_version: Optional[Tuple[int, ...]] = None
-
-    def ffmpeg_cmd(
-        self, input_filepath: str, output_filepath: str, output_format: OutputFormat
-    ) -> List[str]:
-        """Returns the formatted ffmpeg command based on the current ffmpeg version"""
-        passthrough = "-fps_mode passthrough"
-        if self.ffmpeg_version and self.ffmpeg_version < (5, 1):
-            passthrough = "-vsync passthrough"
-        download = ""
-        if self.hw_acceleration and self.hw_download:
-            download = f"hwdownload,format={output_format_to_ffformat(output_format)},"
-        cmd = shlex.split(
-            FFMPEG_TPL.format(
-                self.cmd,
-                input_filepath,
-                passthrough,
-                download,
-                str(output_format.value),
-                output_filepath,
-            )
-        )
-        return cmd
 
     def decode(
         self,
@@ -118,8 +86,31 @@ class FFmpegDecoder(Decoder):
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         # pylint: disable=unused-argument
-        cmd = self.ffmpeg_cmd(input_filepath, output_filepath, output_format)
-        run_command(cmd, timeout=timeout, verbose=verbose)
+        cmd = self.binary
+        if self.hw_acceleration:
+            if self.init_device:
+                cmd += f' -init_hw_device "{self.init_device}" -hwaccel_output_format {self.api.lower()}'
+            if self.wrapper:
+                cmd += f" -c:v {self.api.lower()}"
+            else:
+                cmd += f" -hwaccel {self.api.lower()}"
+        passthrough = "-fps_mode passthrough"
+        if self.ffmpeg_version and self.ffmpeg_version < (5, 1):
+            passthrough = "-vsync passthrough"
+        download = ""
+        if self.hw_acceleration and self.hw_download:
+            download = f"hwdownload,format={output_format_to_ffformat(output_format)},"
+        command = shlex.split(
+            FFMPEG_TPL.format(
+                cmd,
+                input_filepath,
+                passthrough,
+                download,
+                str(output_format.value),
+                output_filepath,
+            )
+        )
+        run_command(command, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=128)
