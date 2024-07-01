@@ -28,7 +28,7 @@ from fluster.decoder import Decoder, register_decoder
 from fluster.utils import (
     file_checksum,
     run_command,
-    run_pipe_command_with_std_output,
+    run_command_with_output,
     normalize_binary_cmd,
 )
 
@@ -154,9 +154,9 @@ class GStreamer(Decoder):
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
             command = shlex.split(pipeline)
             command.append("-m")
-            data = run_pipe_command_with_std_output(
+            data = run_command_with_output(
                 command, timeout=timeout, verbose=verbose
-            )
+            ).splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)
