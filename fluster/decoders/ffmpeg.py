@@ -59,6 +59,7 @@ class FFmpegDecoder(Decoder):
         self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
         self.ffmpeg_codec: Optional[str] = None
         self.ffmpeg_version: Optional[Tuple[int, ...]] = None
+        self.use_md5_muxer: bool = False
 
     def decode(
         self,
@@ -70,7 +71,6 @@ class FFmpegDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
-        # pylint: disable=unused-argument
         command = [self.binary, "-hide_banner", "-nostdin"]
 
         # Hardware acceleration
@@ -109,6 +109,15 @@ class FFmpegDecoder(Decoder):
         # Output format filter
         command.extend(["-filter", f"{download}format=pix_fmts={output_format.value}"])
 
+        # MD5 muxer
+        if self.use_md5_muxer and not keep_files:
+            command.extend(["-f", "md5", "-"])
+            output = run_command_with_output(command, timeout=timeout, verbose=verbose)
+            md5sum = re.search(r"MD5=([0-9a-fA-F]+)\s*", output)
+            if not md5sum:
+                raise Exception("No MD5 found in the program trace.")
+            return md5sum.group(1).lower()
+
         # Output file
         command.extend(["-f", "rawvideo", output_filepath])
         run_command(command, timeout=timeout, verbose=verbose)
@@ -142,6 +151,11 @@ class FFmpegDecoder(Decoder):
         codec = re.escape(self.ffmpeg_codec)
         if re.search(rf"\s+{codec}\s+", output) is None:
             return False
+
+        # Check if MD5 muxer can be used
+        output = _run_ffmpeg_command(self.binary, "-formats", verbose=verbose)
+        muxer = re.escape("md5")
+        self.use_md5_muxer = re.search(rf"E\s+{muxer}\s+", output) is not None
 
         if not self.hw_acceleration:
             return True
