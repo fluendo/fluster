@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 from functools import lru_cache
 from typing import List, Optional, Match
 import shlex
@@ -25,9 +24,25 @@ import re
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command
+from fluster.utils import file_checksum, run_command, run_command_with_output
 
 FFMPEG_TPL = "{} -nostdin -i {} {} -vf {}format=pix_fmts={} -f rawvideo {}"
+
+
+@lru_cache(maxsize=128)
+def _run_ffmpeg_command(
+    binary: str,
+    *args: str,
+    verbose: bool = False,
+) -> str:
+    """Runs a ffmpeg command and returns the output or an empty string"""
+    try:
+        return run_command_with_output(
+            [binary, "-hide_banner", *args],
+            verbose=verbose,
+        )
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        return ""
 
 
 def output_format_to_ffformat(output_format: OutputFormat) -> str:
@@ -127,30 +142,17 @@ class FFmpegDecoder(Decoder):
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         """Checks whether the decoder can be run"""
-        # pylint: disable=broad-except
-        if self.hw_acceleration:
-            try:
-                command = None
+        if not super().check(verbose):
+            return False
 
-                if self.wrapper:
-                    command = [self.binary, "-decoders"]
-                else:
-                    command = [self.binary, "-hwaccels"]
+        if not self.hw_acceleration:
+            return True
 
-                output = subprocess.check_output(
-                    command, stderr=subprocess.DEVNULL
-                ).decode("utf-8")
-                if verbose:
-                    print(f'{" ".join(command)}\n{output}')
-
-                if self.wrapper:
-                    return self.api.lower() in output
-
-                return f"{os.linesep}{self.api.lower()}{os.linesep}" in output
-            except Exception:
-                return False
-        else:
-            return super().check(verbose)
+        # Check if hw decoder or hwaccel is supported
+        command = "-decoders" if self.wrapper else "-hwaccels"
+        output = _run_ffmpeg_command(self.binary, command, verbose=verbose)
+        api = re.escape(self.api.lower())
+        return re.search(rf"\s+{api}\s+", output) is not None
 
 
 @register_decoder
