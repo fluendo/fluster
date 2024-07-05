@@ -117,7 +117,7 @@ class GStreamer(Decoder):
         # Iterate over each line in the data
         for line in data:
             # Partition the line into three parts: before the pattern, the pattern, and after the pattern
-            before, match, after = line.partition(pattern)
+            _, match, after = line.partition(pattern)
             # If the pattern is found (match is not empty)
             if match:
                 # Partition the remaining part to find the checksum up to the first ';'
