@@ -49,8 +49,8 @@ def gst_element_exists(element: str) -> bool:
         )
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+    except Exception as error:
+        print(f"An unexpected error occurred: {error}")
         return False
     else:
         return True
