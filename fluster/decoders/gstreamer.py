@@ -50,7 +50,9 @@ def gst_element_exists(element: str) -> bool:
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
-    return False
+    except Exception as error:  # pylint: disable=broad-except
+        print(f"An unexpected error occurred: {error}")
+        return False
 
 
 def output_format_to_gst(output_format: OutputFormat) -> str:
@@ -111,28 +113,22 @@ class GStreamer(Decoder):
             self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output
         )
 
-    def parse_videocodectestsink_md5sum(self, data: List[str]) -> str:
+    @staticmethod
+    def parse_videocodectestsink_md5sum(data: List[str]) -> str:
         """Parse the MD5 sum out of commandline output produced when using
         videocodectestsink."""
+        pattern = "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
+        # Iterate over each line in the data
         for line in data:
-            pattern = (
-                "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
-            )
-            sum_start = line.find(pattern)
-            # pylint: disable=no-else-continue
-            if sum_start <= 0:
-                # Skip to the next iteration if sum_start is less than or equal to 0
-                continue
-            else:
-                sum_start += len(pattern)
-                sum_end = line[sum_start:].find(";")
-                # pylint: disable=no-else-continue
-                if sum_end <= 0:
-                    # Skip to the next iteration if sum_end is less than or equal to 0
-                    continue
-                else:
-                    sum_end += sum_start
-                    return line[sum_start:sum_end]
+            # Partition the line into three parts: before the pattern, the pattern, and after the pattern
+            _, match, after = line.partition(pattern)
+            # If the pattern is found (match is not empty)
+            if match:
+                # Partition the remaining part to find the checksum up to the first ';'
+                checksum, _, _ = after.partition(";")
+                # If a valid checksum is found
+                if checksum:
+                    return checksum
 
         raise Exception("No MD5 found in the program trace.")
 

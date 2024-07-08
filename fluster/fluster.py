@@ -227,9 +227,8 @@ class Fluster:
         if len(self.test_suites) == 0:
             print(f'    No test suites found in "{self.test_suites_dir}"')
 
-    def _get_matches(
-        self, in_list: List[str], check_list: List[Any], name: str
-    ) -> List[Any]:
+    @staticmethod
+    def _get_matches(in_list: List[str], check_list: List[Any], name: str) -> List[Any]:
         if in_list:
             in_list_names = {x.lower() for x in in_list}
             check_list_names = {x.name.lower() for x in check_list}
@@ -350,8 +349,9 @@ class Fluster:
             else:
                 self._generate_md_summary(ctx, results)
 
+    @staticmethod
     def _generate_junit_summary(
-        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+        ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
     ) -> None:
         # pylint: disable=import-outside-toplevel
 
@@ -426,8 +426,9 @@ class Fluster:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
                 xml.write(summary_file.name, pretty=True)
 
+    @staticmethod
     def _generate_csv_summary(
-        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+        ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
     ) -> None:
         # pylint: disable=too-many-locals
         result_map = {

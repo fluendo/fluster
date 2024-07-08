@@ -165,7 +165,8 @@ class TestSuite:
             ]
             json.dump(data, json_file, indent=4)
 
-    def _download_worker(self, ctx: DownloadWork) -> None:
+    @staticmethod
+    def _download_worker(ctx: DownloadWork) -> None:
         """Download and extract a test vector"""
         test_vector = ctx.test_vector
         dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, test_vector.name)
@@ -270,12 +271,14 @@ class TestSuite:
 
         print("All downloads finished")
 
-    def _rename_test(self, test: Test, module: str, qualname: str) -> None:
+    @staticmethod
+    def _rename_test(test: Test, module: str, qualname: str) -> None:
         test_cls = type(test)
         test_cls.__module__ = module
         test_cls.__qualname__ = qualname
 
-    def _collect_results(self, test_result: TestResult) -> None:
+    @staticmethod
+    def _collect_results(test_result: TestResult) -> None:
         """Collect all TestResults with error to add them into the test vectors"""
         for res in test_result.failures:
             test_vector = cast(Test, res[0]).test_vector
@@ -303,7 +306,8 @@ class TestSuite:
 
         return test.test_vector
 
-    def _get_max_length_list_name(self, _list: List[str], name: str) -> int:
+    @staticmethod
+    def _get_max_length_list_name(_list: List[str], name: str) -> int:
         max_length = len(name)
         for elem in _list:
             length = len(elem)
