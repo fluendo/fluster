@@ -50,7 +50,7 @@ def gst_element_exists(element: str) -> bool:
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
-    except Exception as error:
+    except Exception as error:  # pylint: disable=broad-except
         print(f"An unexpected error occurred: {error}")
         return False
 
