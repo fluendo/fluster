@@ -306,7 +306,8 @@ class TestSuite:
 
         return test.test_vector
 
-    def _get_max_length_list_name(self, _list: List[str], name: str) -> int:
+    @staticmethod
+    def _get_max_length_list_name(_list: List[str], name: str) -> int:
         max_length = len(name)
         for elem in _list:
             length = len(elem)
