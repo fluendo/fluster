@@ -47,9 +47,13 @@ def gst_element_exists(element: str) -> bool:
             stderr=subprocess.PIPE,
             check=True,
         )
-        return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return False
+    else:
+        return True
 
 
 def output_format_to_gst(output_format: OutputFormat) -> str:
@@ -98,10 +102,10 @@ class GStreamer(Decoder):
             self.sink = "filesink"
 
     def gen_pipeline(
-        self,
-        input_filepath: str,
-        output_filepath: Optional[str],
-        output_format: OutputFormat,
+            self,
+            input_filepath: str,
+            output_filepath: Optional[str],
+            output_format: OutputFormat,
     ) -> str:
         """Generate the GStreamer pipeline used to decode the test vector"""
         # pylint: disable=unused-argument
@@ -129,13 +133,13 @@ class GStreamer(Decoder):
         raise Exception("No MD5 found in the program trace.")
 
     def decode(
-        self,
-        input_filepath: str,
-        output_filepath: str,
-        output_format: OutputFormat,
-        timeout: int,
-        verbose: bool,
-        keep_files: bool,
+            self,
+            input_filepath: str,
+            output_filepath: str,
+            output_format: OutputFormat,
+            timeout: int,
+            verbose: bool,
+            keep_files: bool,
     ) -> str:
         """Decode the test vector and do the checksum"""
         # When using videocodectestsink we can avoid writing files to disk
@@ -178,10 +182,10 @@ class GStreamer10Video(GStreamer):
     provider = "GStreamer"
 
     def gen_pipeline(
-        self,
-        input_filepath: str,
-        output_filepath: Optional[str],
-        output_format: OutputFormat,
+            self,
+            input_filepath: str,
+            output_filepath: Optional[str],
+            output_format: OutputFormat,
     ) -> str:
         caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
         output = f"location={output_filepath}" if output_filepath else ""
