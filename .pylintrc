@@ -435,7 +435,6 @@ disable=raw-checker-failed,
         broad-exception-raised,
         too-few-public-methods,
         consider-using-generator,
-        no-self-use,
         too-many-arguments
 
 # Enable the message, report, category or checker with the given id(s). You can

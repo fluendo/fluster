@@ -87,7 +87,8 @@ class Main:
         else:
             self.parser.print_help()
 
-    def _validate_args(self, args: Any) -> None:
+    @staticmethod
+    def _validate_args(args: Any) -> None:
         if hasattr(args, "format"):
             if (
                 args.format in [SummaryFormat.JUNITXML.value, SummaryFormat.CSV.value]
@@ -97,7 +98,8 @@ class Main:
                     "error: please specify XML/CSV file path with -so/--summary-output option."
                 )
 
-    def _validate_deps(self, args: Any) -> None:
+    @staticmethod
+    def _validate_deps(args: Any) -> None:
         if hasattr(args, "format"):
             junit_spec = util.find_spec("junitparser")
             if args.format == SummaryFormat.JUNITXML.value and junit_spec is None:
@@ -105,7 +107,8 @@ class Main:
                     "error: junitparser required to use JUnit format. Please install with pip install junitparser."
                 )
 
-    def _get_installed_dirs(self) -> Tuple[str, str]:
+    @staticmethod
+    def _get_installed_dirs() -> Tuple[str, str]:
         site_data_dirs = utils.site_data_dirs(APPNAME)
         user_data_dir = utils.user_data_dir(APPNAME)
 
@@ -361,13 +364,15 @@ class Main:
         )
         subparser.set_defaults(func=self._download_cmd)
 
-    def _list_cmd(self, args: Any, fluster: Fluster) -> None:
+    @staticmethod
+    def _list_cmd(args: Any, fluster: Fluster) -> None:
         fluster.list_test_suites(
             show_test_vectors=args.testvectors, test_suites=args.testsuites
         )
         fluster.list_decoders(check=args.check, verbose=args.verbose)
 
-    def _run_cmd(self, args: Any, fluster: Fluster) -> None:
+    @staticmethod
+    def _run_cmd(args: Any, fluster: Fluster) -> None:
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         context = Context(
             jobs=args.jobs,
@@ -391,7 +396,8 @@ class Main:
         except SystemExit as exception:
             sys.exit(exception.code)
 
-    def _reference_cmd(self, args: Any, fluster: Fluster) -> None:
+    @staticmethod
+    def _reference_cmd(args: Any, fluster: Fluster) -> None:
         context = Context(
             jobs=args.jobs,
             timeout=args.timeout,
@@ -408,7 +414,8 @@ class Main:
         except SystemExit as exception:
             sys.exit(exception.code)
 
-    def _download_cmd(self, args: Any, fluster: Fluster) -> None:
+    @staticmethod
+    def _download_cmd(args: Any, fluster: Fluster) -> None:
         args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         fluster.download_test_suites(
             test_suites=args.testsuites,

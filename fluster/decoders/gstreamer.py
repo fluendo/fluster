@@ -113,7 +113,8 @@ class GStreamer(Decoder):
             self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output
         )
 
-    def parse_videocodectestsink_md5sum(self, data: List[str]) -> str:
+    @staticmethod
+    def parse_videocodectestsink_md5sum(data: List[str]) -> str:
         """Parse the MD5 sum out of commandline output produced when using
         videocodectestsink."""
         pattern = "conformance/checksum, checksum-type=(string)MD5, checksum=(string)"
