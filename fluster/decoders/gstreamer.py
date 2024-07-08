@@ -47,13 +47,12 @@ def gst_element_exists(element: str) -> bool:
             stderr=subprocess.PIPE,
             check=True,
         )
+        return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
     except Exception as error:
         print(f"An unexpected error occurred: {error}")
         return False
-    else:
-        return True
 
 
 def output_format_to_gst(output_format: OutputFormat) -> str:
