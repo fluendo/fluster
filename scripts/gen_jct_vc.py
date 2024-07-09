@@ -48,10 +48,11 @@ BITSTREAM_EXTS = (
     ".jvt",
     ".avc",
     ".26l",
+    ".bits",
 )
 MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
+RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif", ".bits", ".264")
 
 
 class HREFParser(HTMLParser):
@@ -179,16 +180,15 @@ class JCTVTGenerator:
                         "EXTPREC_MAIN_444_16_INTRA_10BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
                         "EXTPREC_HIGHTHROUGHPUT_444_16_INTRA_16BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
                         "EXTPREC_MAIN_444_16_INTRA_16BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
-                        "GENERAL_16b_400_RExt_Sony_1" : OutputFormat.GRAY16LE,
-                        "GENERAL_16b_444_highThroughput_RExt_Sony_2" : OutputFormat.YUV444P16LE,
+                        "GENERAL_16b_400_RExt_Sony_1": OutputFormat.GRAY16LE,
+                        "GENERAL_16b_444_highThroughput_RExt_Sony_2": OutputFormat.YUV444P16LE,
                         "GENERAL_16b_444_RExt_Sony_2": OutputFormat.YUV444P16LE,
-                        "WAVETILES_RExt_Sony_2" : OutputFormat.YUV444P16LE
+                        "WAVETILES_RExt_Sony_2": OutputFormat.YUV444P16LE
                     }
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
                     else:
                         raise e
-
 
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
@@ -248,9 +248,10 @@ class JCTVTGenerator:
                     break
             # Assert that we have extracted a valid MD5 from the file
             assert len(test_vector.result) == 32 and re.search(
-                r"^[a-fA-F0-9]{32}$", test_vector.result) != None, f"{test_vector.result} is not a valid MD5 hash"
+                r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
 
-    def _find_by_ext(self, dest_dir, exts, excludes=None):
+    @staticmethod
+    def _find_by_ext(dest_dir, exts, excludes=None):
         excludes = excludes or []
 
         # Respect the priority for extensions
@@ -326,10 +327,36 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVTGenerator(
-        "AVCv1", "JVT-AVC_V1", Codec.H264, "JVT AVC version 1", H264_URL
+        "AVCv1",
+        "JVT-AVC_V1",
+        Codec.H264,
+        "JVT AVC version 1",
+        H264_URL
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVTGenerator('draft6', 'JVET-VVC_draft6', Codec.H266,
-                               'JVET VVC draft6', H266_URL)
+    generator = JCTVTGenerator(
+        'draft6',
+        'JVET-VVC_draft6',
+        Codec.H266,
+        'JVET VVC draft6',
+        H266_URL)
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator(
+        "SVC",
+        "JVT-SVC_V1",
+        Codec.H264,
+        "JVT SVC version 1",
+        H264_URL
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator(
+        "Professional_profiles",
+        "JVT-Professional_profiles_V1",
+        Codec.H264,
+        "JVT professional profiles version 1",
+        H264_URL
+    )
     generator.generate(not args.skip_download, args.jobs)
