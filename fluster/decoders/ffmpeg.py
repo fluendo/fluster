@@ -455,3 +455,51 @@ class FFmpegAV1VCudaDecoder(FFmpegCudaDecoder):
     """FFmpeg CUDA decoder for AV1"""
 
     codec = Codec.AV1
+
+
+class FFmpegV4L2RequestDecoder(FFmpegDecoder):
+    """Generic class for FFmpeg V4L2 Request API decoder"""
+
+    hw_acceleration = True
+    api = "v4l2request"
+    hw_output_format = "drm_prime"
+    hw_download = True
+    hw_download_mapping = {
+        OutputFormat.YUV420P: "nv12",
+        OutputFormat.YUV422P: "nv16",
+    }
+
+
+@register_decoder
+class FFmpegH264V4L2RequestDecoder(FFmpegV4L2RequestDecoder):
+    """FFmpeg V4L2 Request API decoder for H.264"""
+
+    codec = Codec.H264
+
+
+@register_decoder
+class FFmpegH265V4L2RequestDecoder(FFmpegV4L2RequestDecoder):
+    """FFmpeg V4L2 Request API decoder for H.265"""
+
+    codec = Codec.H265
+
+
+@register_decoder
+class FFmpegVP8V4L2RequestDecoder(FFmpegV4L2RequestDecoder):
+    """FFmpeg V4L2 Request API decoder for VP8"""
+
+    codec = Codec.VP8
+
+
+@register_decoder
+class FFmpegVP9V4L2RequestDecoder(FFmpegV4L2RequestDecoder):
+    """FFmpeg V4L2 Request API decoder for VP9"""
+
+    codec = Codec.VP9
+
+
+@register_decoder
+class FFmpegAV1V4L2RequestDecoder(FFmpegV4L2RequestDecoder):
+    """FFmpeg V4L2 Request API decoder for AV1"""
+
+    codec = Codec.AV1
