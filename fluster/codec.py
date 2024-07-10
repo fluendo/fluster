@@ -49,3 +49,5 @@ class OutputFormat(Enum):
     GRAY = "gray"
     GRAY12LE = "gray12le"
     GRAY16LE = "gray16le"
+    GBRP14LE = "gbrp14le"
+    UNKNOWN = "Unknown"

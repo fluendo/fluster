@@ -345,19 +345,11 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVTGenerator(
-        "SVC",
-        "JVT-SVC_V1",
-        Codec.H264,
-        "JVT SVC version 1",
-        H264_URL
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JCTVTGenerator(
         "Professional_profiles",
         "JVT-Professional_profiles_V1",
         Codec.H264,
         "JVT professional profiles version 1",
-        H264_URL
+        H264_URL,
+        True
     )
     generator.generate(not args.skip_download, args.jobs)
