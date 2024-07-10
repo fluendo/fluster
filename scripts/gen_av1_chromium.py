@@ -17,8 +17,6 @@ import os
 import argparse
 import sys
 import multiprocessing
-import urllib.request
-import json
 import re
 
 # pylint: disable=wrong-import-position
