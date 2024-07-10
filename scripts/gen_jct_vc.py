@@ -193,17 +193,27 @@ class JCTVTGenerator:
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
             elif self.codec == Codec.H264:
-                if self.name != "Professional_profiles":
-                    self._fill_checksum_h264(test_vector, dest_dir)
+                if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
+                    if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
+                        self._fill_checksum_h264_multiple(test_vector, dest_dir)
+                    else:
+                        self._fill_checksum_h264(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
     def _fill_checksum_h264(self, test_vector, dest_dir):
         raw_file = self._find_by_ext(dest_dir, RAW_EXTS)
-        if raw_file is None:
+        if raw_file is None or len(raw_file) == 0:
             raise Exception(f"RAW file not found in {dest_dir}")
-        test_vector.result = utils.file_checksum(raw_file)
+        test_vector.result = utils.file_checksum(raw_file[0])
+
+    def _fill_checksum_h264_multiple(self, test_vector, dest_dir):
+        raw_files = self._find_by_ext_multiple(dest_dir, RAW_EXTS)
+        if not raw_files:
+            raise Exception(f"RAW file not found in {dest_dir}")
+        for raw_file in raw_files:
+            test_vector.result = utils.file_checksum(raw_file)
 
     def _fill_checksum_h265(self, test_vector, dest_dir):
         checksum_file = self._find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
@@ -270,6 +280,27 @@ class JCTVTGenerator:
                     if not excluded:
                         return filepath
         return None
+
+    @staticmethod
+    def _find_by_ext_multiple(dest_dir, exts, excludes=None):
+        excludes = excludes or []
+        found_files = []
+
+        # Respect the priority for extensions
+        for ext in exts:
+            for subdir, _, files in os.walk(dest_dir):
+                for filename in files:
+                    excluded = False
+                    filepath = subdir + os.sep + filename
+                    if not filepath.endswith(ext) or "__MACOSX" in filepath:
+                        continue
+                    for excl in excludes:
+                        if excl in filepath:
+                            excluded = True
+                            break
+                    if not excluded:
+                        found_files.append(filepath)
+        return found_files
 
 
 if __name__ == "__main__":
@@ -341,7 +372,18 @@ if __name__ == "__main__":
         'JVET-VVC_draft6',
         Codec.H266,
         'JVET VVC draft6',
-        H266_URL)
+        H266_URL
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVTGenerator(
+        "SVC",
+        "JVT-SVC_V1",
+        Codec.H264,
+        "JVT SVC version 1",
+        H264_URL,
+        True
+    )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVTGenerator(
