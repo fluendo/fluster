@@ -52,7 +52,7 @@ BITSTREAM_EXTS = (
 )
 MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif", ".bits", ".264")
+RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
 
 
 class HREFParser(HTMLParser):
@@ -193,7 +193,8 @@ class JCTVTGenerator:
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
             elif self.codec == Codec.H264:
-                self._fill_checksum_h264(test_vector, dest_dir)
+                if self.name != "Professional_profiles":
+                    self._fill_checksum_h264(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
