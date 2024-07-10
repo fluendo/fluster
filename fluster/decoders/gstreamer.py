@@ -110,7 +110,13 @@ class GStreamer(Decoder):
         # pylint: disable=unused-argument
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd, input_filepath, self.decoder_bin, self.caps, self.sink, output
+            self.cmd,
+            input_filepath,
+            "parsebin",
+            self.decoder_bin,
+            self.caps,
+            self.sink,
+            output,
         )
 
     @staticmethod
