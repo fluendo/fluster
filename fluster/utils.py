@@ -176,3 +176,46 @@ if sys.platform == "win32":
 else:
     site_data_dirs = _linux_site_data_dirs
     user_data_dir = _linux_user_data_dir
+
+
+def find_by_ext(dest_dir, exts, excludes=None):
+    """Return name by file extension"""
+    excludes = excludes or []
+
+    # Respect the priority for extensions
+    for ext in exts:
+        for subdir, _, files in os.walk(dest_dir):
+            for filename in files:
+                excluded = False
+                filepath = subdir + os.sep + filename
+                if not filepath.endswith(ext) or "__MACOSX" in filepath:
+                    continue
+                for excl in excludes:
+                    if excl in filepath:
+                        excluded = True
+                        break
+                if not excluded:
+                    return filepath
+    return None
+
+
+def find_by_ext_multiple(dest_dir, exts, excludes=None):
+    """Return multiple names by file extension"""
+    excludes = excludes or []
+    found_files = []
+
+    # Respect the priority for extensions
+    for ext in exts:
+        for subdir, _, files in os.walk(dest_dir):
+            for filename in files:
+                excluded = False
+                filepath = subdir + os.sep + filename
+                if not filepath.endswith(ext) or "__MACOSX" in filepath:
+                    continue
+                for excl in excludes:
+                    if excl in filepath:
+                        excluded = True
+                        break
+                if not excluded:
+                    found_files.append(filepath)
+    return found_files

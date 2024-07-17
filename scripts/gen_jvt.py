@@ -23,7 +23,6 @@ import os
 import sys
 import urllib.request
 import multiprocessing
-import re
 
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -73,7 +72,7 @@ class HREFParser(HTMLParser):
                     self.links.append(base_url + value)
 
 
-class JCTVTGenerator:
+class JVTGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
@@ -133,12 +132,11 @@ class JCTVTGenerator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            print("1111111111111111 " + str(test_vector))
             dest_dir = os.path.join(
                 test_suite.resources_dir, test_suite.name, test_vector.name
             )
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            test_vector.input_file = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
+            test_vector.input_file = utils.find_by_ext(dest_dir, BITSTREAM_EXTS)
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
                 os.path.join(
@@ -197,61 +195,20 @@ class JCTVTGenerator:
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
-    def _fill_checksum_h264(self, test_vector, dest_dir):
-        raw_file = self._find_by_ext(dest_dir, RAW_EXTS)
+    @staticmethod
+    def _fill_checksum_h264(test_vector, dest_dir):
+        raw_file = utils.find_by_ext(dest_dir, RAW_EXTS)
         if raw_file is None or len(raw_file) == 0:
             raise Exception(f"RAW file not found in {dest_dir}")
         test_vector.result = utils.file_checksum(raw_file)
 
-    def _fill_checksum_h264_multiple(self, test_vector, dest_dir):
-        raw_files = self._find_by_ext_multiple(dest_dir, RAW_EXTS)
+    @staticmethod
+    def _fill_checksum_h264_multiple(test_vector, dest_dir):
+        raw_files = utils.find_by_ext_multiple(dest_dir, RAW_EXTS)
         if not raw_files:
             raise Exception(f"RAW file not found in {dest_dir}")
         for raw_file in raw_files:
-            print("aaaaaaaaaaaaaaaa " + str(raw_file))
             test_vector.result = utils.file_checksum(raw_file)
-            print("eeeeeeeeeeeeeeee " + str(test_vector.result))
-
-    @staticmethod
-    def _find_by_ext(dest_dir, exts, excludes=None):
-        excludes = excludes or []
-
-        # Respect the priority for extensions
-        for ext in exts:
-            for subdir, _, files in os.walk(dest_dir):
-                for filename in files:
-                    excluded = False
-                    filepath = subdir + os.sep + filename
-                    if not filepath.endswith(ext) or "__MACOSX" in filepath:
-                        continue
-                    for excl in excludes:
-                        if excl in filepath:
-                            excluded = True
-                            break
-                    if not excluded:
-                        return filepath
-        return None
-
-    @staticmethod
-    def _find_by_ext_multiple(dest_dir, exts, excludes=None):
-        excludes = excludes or []
-        found_files = []
-
-        # Respect the priority for extensions
-        for ext in exts:
-            for subdir, _, files in os.walk(dest_dir):
-                for filename in files:
-                    excluded = False
-                    filepath = subdir + os.sep + filename
-                    if not filepath.endswith(ext) or "__MACOSX" in filepath:
-                        continue
-                    for excl in excludes:
-                        if excl in filepath:
-                            excluded = True
-                            break
-                    if not excluded:
-                        found_files.append(filepath)
-        return found_files
 
 
 if __name__ == "__main__":
@@ -270,16 +227,16 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    # generator = JCTVTGenerator(
-    #     "AVCv1",
-    #     "JVT-AVC_V1",
-    #     Codec.H264,
-    #     "JVT AVC version 1",
-    #     H264_URL
-    # )
-    # generator.generate(not args.skip_download, args.jobs)
+    generator = JVTGenerator(
+        "AVCv1",
+        "JVT-AVC_V1",
+        Codec.H264,
+        "JVT AVC version 1",
+        H264_URL
+    )
+    generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVTGenerator(
+    generator = JVTGenerator(
         "SVC",
         "JVT-SVC_V1",
         Codec.H264,
@@ -289,12 +246,12 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    # generator = JCTVTGenerator(
-    #     "Professional_profiles",
-    #     "JVT-Professional_profiles_V1",
-    #     Codec.H264,
-    #     "JVT professional profiles version 1",
-    #     H264_URL,
-    #     True
-    # )
-    # generator.generate(not args.skip_download, args.jobs)
+    generator = JVTGenerator(
+        "Professional_profiles",
+        "JVT-Professional_profiles_V1",
+        Codec.H264,
+        "JVT professional profiles version 1",
+        H264_URL,
+        True
+    )
+    generator.generate(not args.skip_download, args.jobs)

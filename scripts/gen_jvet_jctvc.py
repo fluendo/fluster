@@ -72,7 +72,7 @@ class HREFParser(HTMLParser):
                     self.links.append(base_url + value)
 
 
-class JCTVTGenerator:
+class JVET_JCTVTGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
@@ -136,7 +136,7 @@ class JCTVTGenerator:
                 test_suite.resources_dir, test_suite.name, test_vector.name
             )
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            test_vector.input_file = self._find_by_ext(dest_dir, BITSTREAM_EXTS)
+            test_vector.input_file = utils.find_by_ext(dest_dir, BITSTREAM_EXTS)
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
                 os.path.join(
@@ -193,7 +193,7 @@ class JCTVTGenerator:
         print("Generate new test suite: " + test_suite.name + ".json")
 
     def _fill_checksum_h265(self, test_vector, dest_dir):
-        checksum_file = self._find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
+        checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
         if checksum_file is None:
             raise Exception("MD5 not found")
         with open(checksum_file, "r") as checksum_file:
@@ -238,26 +238,6 @@ class JCTVTGenerator:
             assert len(test_vector.result) == 32 and re.search(
                 r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
 
-    @staticmethod
-    def _find_by_ext(dest_dir, exts, excludes=None):
-        excludes = excludes or []
-
-        # Respect the priority for extensions
-        for ext in exts:
-            for subdir, _, files in os.walk(dest_dir):
-                for filename in files:
-                    excluded = False
-                    filepath = subdir + os.sep + filename
-                    if not filepath.endswith(ext) or "__MACOSX" in filepath:
-                        continue
-                    for excl in excludes:
-                        if excl in filepath:
-                            excluded = True
-                            break
-                    if not excluded:
-                        return filepath
-        return None
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -275,7 +255,7 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    generator = JCTVTGenerator(
+    generator = JVET_JCTVTGenerator(
         "HEVC_v1",
         "JCT-VC-HEVC_V1",
         Codec.H265,
@@ -284,7 +264,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVTGenerator(
+    generator = JVET_JCTVTGenerator(
         "RExt",
         "JCT-VC-RExt",
         Codec.H265,
@@ -294,7 +274,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVTGenerator(
+    generator = JVET_JCTVTGenerator(
         "SCC",
         "JCT-VC-SCC",
         Codec.H265,
@@ -304,7 +284,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVTGenerator(
+    generator = JVET_JCTVTGenerator(
         "MV-HEVC",
         "JCT-VC-MV-HEVC",
         Codec.H265,
@@ -314,7 +294,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVTGenerator(
+    generator = JVET_JCTVTGenerator(
         'draft6',
         'JVET-VVC_draft6',
         Codec.H266,
