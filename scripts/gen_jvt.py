@@ -18,6 +18,8 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+import copy
+import re
 from html.parser import HTMLParser
 import os
 import sys
@@ -93,6 +95,7 @@ class JVTGenerator:
 
     def generate(self, download, jobs):
         """Generates the test suite and saves it to a file"""
+        new_test_vectors = []
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
@@ -188,7 +191,9 @@ class JVTGenerator:
 
             if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
                 if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
-                    self._fill_checksum_h264_multiple(test_vector, dest_dir)
+                    new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
+                    new_test_vectors.extend(new_vectors)
+                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
                 else:
                     self._fill_checksum_h264(test_vector, dest_dir)
 
@@ -204,11 +209,38 @@ class JVTGenerator:
 
     @staticmethod
     def _fill_checksum_h264_multiple(test_vector, dest_dir):
-        raw_files = utils.find_by_ext_multiple(dest_dir, RAW_EXTS)
-        if not raw_files:
-            raise Exception(f"RAW file not found in {dest_dir}")
-        for raw_file in raw_files:
-            test_vector.result = utils.file_checksum(raw_file)
+        def remove_r1_from_path(path):
+            parts = path.split('/')
+            if len(parts) >= 2:
+                parts[-2] = re.sub(r'-r1', '', parts[-2])
+                parts[-1] = re.sub(r'-r1', '', parts[-1])
+            return '/'.join(parts)
+
+        new_test_vectors = []
+
+        for suffix in [f"-L{i}" for i in range(8)]:  # L0 ... L7
+            new_vector = copy.deepcopy(test_vector)
+            new_vector.name = test_vector.name + suffix
+
+            input_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264")
+            result_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv")
+
+            corrected_input_path = remove_r1_from_path(input_file_path)
+            corrected_result_path = remove_r1_from_path(result_file_path)
+
+            if os.path.exists(corrected_input_path) and os.path.exists(corrected_result_path):
+                new_vector.input_file = os.path.relpath(corrected_input_path, dest_dir)
+                new_vector.result = utils.file_checksum(corrected_result_path)
+
+                new_test_vectors.append(new_vector)
+
+        return new_test_vectors
+
+    @staticmethod
+    def _check_path(path):
+        parts = path.split(os.sep)
+        unique_parts = parts[:3] + list(dict.fromkeys(parts[3:]))
+        return os.sep.join(unique_parts)
 
 
 if __name__ == "__main__":
