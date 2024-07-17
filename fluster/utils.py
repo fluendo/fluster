@@ -178,7 +178,9 @@ else:
     user_data_dir = _linux_user_data_dir
 
 
-def find_by_ext(dest_dir, exts, excludes=None):
+def find_by_ext(
+    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
+) -> Optional[str]:
     """Return name by file extension"""
     excludes = excludes or []
 
@@ -187,7 +189,7 @@ def find_by_ext(dest_dir, exts, excludes=None):
         for subdir, _, files in os.walk(dest_dir):
             for filename in files:
                 excluded = False
-                filepath = subdir + os.sep + filename
+                filepath = os.path.join(subdir, filename)
                 if not filepath.endswith(ext) or "__MACOSX" in filepath:
                     continue
                 for excl in excludes:
@@ -199,7 +201,9 @@ def find_by_ext(dest_dir, exts, excludes=None):
     return None
 
 
-def find_by_ext_multiple(dest_dir, exts, excludes=None):
+def find_by_ext_multiple(
+    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
+) -> List[str]:
     """Return multiple names by file extension"""
     excludes = excludes or []
     found_files = []
@@ -209,7 +213,7 @@ def find_by_ext_multiple(dest_dir, exts, excludes=None):
         for subdir, _, files in os.walk(dest_dir):
             for filename in files:
                 excluded = False
-                filepath = subdir + os.sep + filename
+                filepath = os.path.join(subdir, filename)
                 if not filepath.endswith(ext) or "__MACOSX" in filepath:
                     continue
                 for excl in excludes:
