@@ -458,7 +458,7 @@ Check out the JSON format they follow in the [test_suites](test_suites)
 directory. Add a new json file within, Fluster will automatically pick it
 up.
 
-There is also a [generator script](scripts/gen_jct_vc.py) for the [conformance
+There are also a [generator script (H.265, H.266)](scripts/gen_jvet_jct_vc.py) and a [generator script (H.264)](scripts/gen_jvt.py) for the [conformance
 test suites](#test_suites) that you can use as a base to generate automatically
 new ones.
 

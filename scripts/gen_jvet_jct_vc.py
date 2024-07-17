@@ -37,18 +37,14 @@ from fluster.test_suite import TestSuite, TestVector
 BASE_URL = "https://www.itu.int/"
 H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
-H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = (
     ".bin",
     ".bit",
-    ".264",
-    ".h264",
     ".jvc",
     ".jsv",
     ".jvt",
     ".avc",
     ".26l",
-    ".bits",
 )
 MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
@@ -192,28 +188,9 @@ class JCTVTGenerator:
 
             if self.codec == Codec.H265:
                 self._fill_checksum_h265(test_vector, dest_dir)
-            elif self.codec == Codec.H264:
-                if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
-                    if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
-                        self._fill_checksum_h264_multiple(test_vector, dest_dir)
-                    else:
-                        self._fill_checksum_h264(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
-
-    def _fill_checksum_h264(self, test_vector, dest_dir):
-        raw_file = self._find_by_ext(dest_dir, RAW_EXTS)
-        if raw_file is None or len(raw_file) == 0:
-            raise Exception(f"RAW file not found in {dest_dir}")
-        test_vector.result = utils.file_checksum(raw_file[0])
-
-    def _fill_checksum_h264_multiple(self, test_vector, dest_dir):
-        raw_files = self._find_by_ext_multiple(dest_dir, RAW_EXTS)
-        if not raw_files:
-            raise Exception(f"RAW file not found in {dest_dir}")
-        for raw_file in raw_files:
-            test_vector.result = utils.file_checksum(raw_file)
 
     def _fill_checksum_h265(self, test_vector, dest_dir):
         checksum_file = self._find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
@@ -281,27 +258,6 @@ class JCTVTGenerator:
                         return filepath
         return None
 
-    @staticmethod
-    def _find_by_ext_multiple(dest_dir, exts, excludes=None):
-        excludes = excludes or []
-        found_files = []
-
-        # Respect the priority for extensions
-        for ext in exts:
-            for subdir, _, files in os.walk(dest_dir):
-                for filename in files:
-                    excluded = False
-                    filepath = subdir + os.sep + filename
-                    if not filepath.endswith(ext) or "__MACOSX" in filepath:
-                        continue
-                    for excl in excludes:
-                        if excl in filepath:
-                            excluded = True
-                            break
-                    if not excluded:
-                        found_files.append(filepath)
-        return found_files
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -359,39 +315,10 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVTGenerator(
-        "AVCv1",
-        "JVT-AVC_V1",
-        Codec.H264,
-        "JVT AVC version 1",
-        H264_URL
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JCTVTGenerator(
         'draft6',
         'JVET-VVC_draft6',
         Codec.H266,
         'JVET VVC draft6',
         H266_URL
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JCTVTGenerator(
-        "SVC",
-        "JVT-SVC_V1",
-        Codec.H264,
-        "JVT SVC version 1",
-        H264_URL,
-        True
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JCTVTGenerator(
-        "Professional_profiles",
-        "JVT-Professional_profiles_V1",
-        Codec.H264,
-        "JVT professional profiles version 1",
-        H264_URL,
-        True
     )
     generator.generate(not args.skip_download, args.jobs)
