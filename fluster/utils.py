@@ -141,6 +141,53 @@ def normalize_path(path: str) -> str:
     return path
 
 
+def find_by_ext(
+    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
+) -> Optional[str]:
+    """Return name by file extension"""
+    excludes = excludes or []
+
+    # Respect the priority for extensions
+    for ext in exts:
+        for subdir, _, files in os.walk(dest_dir):
+            for filename in files:
+                excluded = False
+                filepath = os.path.join(subdir, filename)
+                if not filepath.endswith(ext) or "__MACOSX" in filepath:
+                    continue
+                for excl in excludes:
+                    if excl in filepath:
+                        excluded = True
+                        break
+                if not excluded:
+                    return filepath
+    return None
+
+
+def find_by_ext_multiple(
+    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
+) -> List[str]:
+    """Return multiple names by file extension"""
+    excludes = excludes or []
+    found_files = []
+
+    # Respect the priority for extensions
+    for ext in exts:
+        for subdir, _, files in os.walk(dest_dir):
+            for filename in files:
+                excluded = False
+                filepath = os.path.join(subdir, filename)
+                if not filepath.endswith(ext) or "__MACOSX" in filepath:
+                    continue
+                for excl in excludes:
+                    if excl in filepath:
+                        excluded = True
+                        break
+                if not excluded:
+                    found_files.append(filepath)
+    return found_files
+
+
 def _linux_user_data_dir(appname: str) -> str:
     """Return data directory tied to the user"""
     path = os.environ.get("XDG_DATA_HOME", "")

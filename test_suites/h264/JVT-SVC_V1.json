@@ -1,0 +1,1487 @@
+{
+    "name": "JVT-SVC_V1",
+    "codec": "H.264",
+    "description": "JVT SVC version 1",
+    "test_vectors": [
+        {
+            "name": "SVCBC-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBC-1.zip",
+            "source_checksum": "a1e031c2b79793de4764cd27ec521072",
+            "input_file": "SVCBC-1/SVCBC-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "25bf70cb68da66f6e3db267a9d0470dd"
+        },
+        {
+            "name": "SVCBC-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBC-1.zip",
+            "source_checksum": "a1e031c2b79793de4764cd27ec521072",
+            "input_file": "SVCBC-1/SVCBC-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "00d523a56a17ab2d2e6a1eb2c7dd68a0"
+        },
+        {
+            "name": "SVCBCT-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCT-1.zip",
+            "source_checksum": "df33918f277914a42970180c735b0a9b",
+            "input_file": "SVCBCT-1/SVCBCT-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "cd4fe22dbc80483f38f1cf9f6574d4ca"
+        },
+        {
+            "name": "SVCBCT-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCT-1.zip",
+            "source_checksum": "df33918f277914a42970180c735b0a9b",
+            "input_file": "SVCBCT-1/SVCBCT-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "3518c010d8383835da64861306bea61c"
+        },
+        {
+            "name": "SVCBCTS-1-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-1-r1.zip",
+            "source_checksum": "7bf6562cad3d59197cf75721c070e5e3",
+            "input_file": "SVCBCTS-1/SVCBCTS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "a13cd23fc7879604bbcd6555aa17920c"
+        },
+        {
+            "name": "SVCBCTS-1-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-1-r1.zip",
+            "source_checksum": "7bf6562cad3d59197cf75721c070e5e3",
+            "input_file": "SVCBCTS-1/SVCBCTS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "7151d816074d15d9d5a6603b1647514d"
+        },
+        {
+            "name": "SVCBCTS-1-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-1-r1.zip",
+            "source_checksum": "7bf6562cad3d59197cf75721c070e5e3",
+            "input_file": "SVCBCTS-1/SVCBCTS-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "d9f47015a77f7f5a486fc508f92a1e9d"
+        },
+        {
+            "name": "SVCBCTS-2-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-2-r1.zip",
+            "source_checksum": "885e1a3c749c21fa1f1e5448c2f8d3a8",
+            "input_file": "SVCBCTS-2/SVCBCTS-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "9dc12487ad0e87893614b0f6c99d4d34"
+        },
+        {
+            "name": "SVCBCTS-2-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-2-r1.zip",
+            "source_checksum": "885e1a3c749c21fa1f1e5448c2f8d3a8",
+            "input_file": "SVCBCTS-2/SVCBCTS-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "03849c7341d4490a8809bcd18070b888"
+        },
+        {
+            "name": "SVCBCTS-2-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-2-r1.zip",
+            "source_checksum": "885e1a3c749c21fa1f1e5448c2f8d3a8",
+            "input_file": "SVCBCTS-2/SVCBCTS-2-L2.264",
+            "output_format": "yuv420p",
+            "result": "61954fe649d7bbe51ca864d57656b6df"
+        },
+        {
+            "name": "SVCBCTS-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-3.zip",
+            "source_checksum": "7bac0e460ae3167e2df232f8412d2a37",
+            "input_file": "SVCBCTS-3/SVCBCTS-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "4a562e4e41a53310ec8bff3433a66e15"
+        },
+        {
+            "name": "SVCBCTS-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-3.zip",
+            "source_checksum": "7bac0e460ae3167e2df232f8412d2a37",
+            "input_file": "SVCBCTS-3/SVCBCTS-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "38069b20bb18023b8c0584c824fd8812"
+        },
+        {
+            "name": "SVCBCTS-3-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBCTS-3.zip",
+            "source_checksum": "7bac0e460ae3167e2df232f8412d2a37",
+            "input_file": "SVCBCTS-3/SVCBCTS-3-L2.264",
+            "output_format": "yuv420p",
+            "result": "f8c67f12e0a7f79a06105b295b4e0955"
+        },
+        {
+            "name": "SVCBM-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-1.zip",
+            "source_checksum": "d2d36757fd6fc8a37f5d28c1d26f1f45",
+            "input_file": "SVCBM-1/SVCBM-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "3ea721367ff3afdac6e387e164f840d5"
+        },
+        {
+            "name": "SVCBM-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-1.zip",
+            "source_checksum": "d2d36757fd6fc8a37f5d28c1d26f1f45",
+            "input_file": "SVCBM-1/SVCBM-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "7ea5c6ea9490e193c01f01fc7a67e3f6"
+        },
+        {
+            "name": "SVCBM-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-2.zip",
+            "source_checksum": "33a9561b8cac04c90f635d928aff39cb",
+            "input_file": "SVCBM-2/SVCBM-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "2c155c7f929f809450a91c9e0e73a756"
+        },
+        {
+            "name": "SVCBM-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-2.zip",
+            "source_checksum": "33a9561b8cac04c90f635d928aff39cb",
+            "input_file": "SVCBM-2/SVCBM-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "d9781efe0716fbe58198de7d73ac1185"
+        },
+        {
+            "name": "SVCBM-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-3.zip",
+            "source_checksum": "d13be64f30841a8312550ba6d09b5fd5",
+            "input_file": "SVCBM-3/SVCBM-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "f935b8922c220b19438c4eb26d645309"
+        },
+        {
+            "name": "SVCBM-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-3.zip",
+            "source_checksum": "d13be64f30841a8312550ba6d09b5fd5",
+            "input_file": "SVCBM-3/SVCBM-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "42efc663faa1cb7636b13abf19d74967"
+        },
+        {
+            "name": "SVCBM-4-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-4-r1.zip",
+            "source_checksum": "bd0a218eead88ef48c5902d704fe99ce",
+            "input_file": "SVCBM-4/SVCBM-4-L0.264",
+            "output_format": "yuv420p",
+            "result": "978259c74faaeed2b65c1ef17c4922fc"
+        },
+        {
+            "name": "SVCBM-4-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-4-r1.zip",
+            "source_checksum": "bd0a218eead88ef48c5902d704fe99ce",
+            "input_file": "SVCBM-4/SVCBM-4-L1.264",
+            "output_format": "yuv420p",
+            "result": "f360d3961672b52f8cfd5ca72eb6e8ef"
+        },
+        {
+            "name": "SVCBM-4-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-4-r1.zip",
+            "source_checksum": "bd0a218eead88ef48c5902d704fe99ce",
+            "input_file": "SVCBM-4/SVCBM-4-L2.264",
+            "output_format": "yuv420p",
+            "result": "26e2e2c8a6aacedc7c172c1a91dda264"
+        },
+        {
+            "name": "SVCBM-5-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-5.zip",
+            "source_checksum": "1ead349a95a8b31349d84ea16819c5a3",
+            "input_file": "SVCBM-5/SVCBM-5-L0.264",
+            "output_format": "yuv420p",
+            "result": "1e79734a549a879960783df203067204"
+        },
+        {
+            "name": "SVCBM-5-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-5.zip",
+            "source_checksum": "1ead349a95a8b31349d84ea16819c5a3",
+            "input_file": "SVCBM-5/SVCBM-5-L1.264",
+            "output_format": "yuv420p",
+            "result": "85dd6c0b4db452db299f627a18f68b4e"
+        },
+        {
+            "name": "SVCBM-5-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-5.zip",
+            "source_checksum": "1ead349a95a8b31349d84ea16819c5a3",
+            "input_file": "SVCBM-5/SVCBM-5-L2.264",
+            "output_format": "yuv420p",
+            "result": "acf09bb0d59a940168f41ce8be55b116"
+        },
+        {
+            "name": "SVCBM-5-L3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBM-5.zip",
+            "source_checksum": "1ead349a95a8b31349d84ea16819c5a3",
+            "input_file": "SVCBM-5/SVCBM-5-L3.264",
+            "output_format": "yuv420p",
+            "result": "aba434d574365614dd373d60c746d6cb"
+        },
+        {
+            "name": "SVCBMST-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-1.zip",
+            "source_checksum": "73b382345dcb94b310a09ce07413d2c2",
+            "input_file": "SVCBMST-1/SVCBMST-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "3ba403eaeaa5f4115addf459ee4985a4"
+        },
+        {
+            "name": "SVCBMST-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-1.zip",
+            "source_checksum": "73b382345dcb94b310a09ce07413d2c2",
+            "input_file": "SVCBMST-1/SVCBMST-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "638f00377fca51e47056bf5441da6ef8"
+        },
+        {
+            "name": "SVCBMST-1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-1.zip",
+            "source_checksum": "73b382345dcb94b310a09ce07413d2c2",
+            "input_file": "SVCBMST-1/SVCBMST-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "f4e5ee8d9f7c30234fc7ac41ddca3b7e"
+        },
+        {
+            "name": "SVCBMST-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-2.zip",
+            "source_checksum": "1a666e006502af19db822f29315fb913",
+            "input_file": "SVCBMST-2/SVCBMST-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "a370da5b69ac5e4e01945695bc3a814a"
+        },
+        {
+            "name": "SVCBMST-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-2.zip",
+            "source_checksum": "1a666e006502af19db822f29315fb913",
+            "input_file": "SVCBMST-2/SVCBMST-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "0deb3f3ce7a86b3f7e5e7f5ac8f14169"
+        },
+        {
+            "name": "SVCBMST-2-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-2.zip",
+            "source_checksum": "1a666e006502af19db822f29315fb913",
+            "input_file": "SVCBMST-2/SVCBMST-2-L2.264",
+            "output_format": "yuv420p",
+            "result": "fb142396bf007993bbb5e1cff1d19a32"
+        },
+        {
+            "name": "SVCBMST-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-3.zip",
+            "source_checksum": "9d95ce0c4ab7845a782453281d491bb2",
+            "input_file": "SVCBMST-3/SVCBMST-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "5b277856ce6ce34230db51b7b4fbf129"
+        },
+        {
+            "name": "SVCBMST-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-3.zip",
+            "source_checksum": "9d95ce0c4ab7845a782453281d491bb2",
+            "input_file": "SVCBMST-3/SVCBMST-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "11b685560d313523e161e74c2fb608db"
+        },
+        {
+            "name": "SVCBMST-3-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMST-3.zip",
+            "source_checksum": "9d95ce0c4ab7845a782453281d491bb2",
+            "input_file": "SVCBMST-3/SVCBMST-3-L2.264",
+            "output_format": "yuv420p",
+            "result": "84eb7e7c044f4d8871a33bc8e237febf"
+        },
+        {
+            "name": "SVCBMT-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-1.zip",
+            "source_checksum": "88d4f8c93a03ccfb2098136b3f1f54d4",
+            "input_file": "SVCBMT-1/SVCBMT-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "a1c33070fa00c2af59d8a4d61ef0e07a"
+        },
+        {
+            "name": "SVCBMT-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-1.zip",
+            "source_checksum": "88d4f8c93a03ccfb2098136b3f1f54d4",
+            "input_file": "SVCBMT-1/SVCBMT-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "620f8a6034eb79aa39450379c1328a4b"
+        },
+        {
+            "name": "SVCBMT-10-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-10.zip",
+            "source_checksum": "d010fdb19883a8346e414984fd4e3457",
+            "input_file": "SVCBMT-10/SVCBMT-10-L0.264",
+            "output_format": "yuv420p",
+            "result": "493d61ea1c238d10cee2a5a707d35ac8"
+        },
+        {
+            "name": "SVCBMT-10-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-10.zip",
+            "source_checksum": "d010fdb19883a8346e414984fd4e3457",
+            "input_file": "SVCBMT-10/SVCBMT-10-L1.264",
+            "output_format": "yuv420p",
+            "result": "85d8a8fb5c6637961a6321a5a5cb0de7"
+        },
+        {
+            "name": "SVCBMT-11-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-11.zip",
+            "source_checksum": "d58341fa361b23aa7a23f76898bf3dd0",
+            "input_file": "SVCBMT-11/SVCBMT-11-L0.264",
+            "output_format": "yuv420p",
+            "result": "73f86d38e7c980e2637fc013582d6279"
+        },
+        {
+            "name": "SVCBMT-11-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-11.zip",
+            "source_checksum": "d58341fa361b23aa7a23f76898bf3dd0",
+            "input_file": "SVCBMT-11/SVCBMT-11-L1.264",
+            "output_format": "yuv420p",
+            "result": "bf410c686c03c21cea06e3fac171ed08"
+        },
+        {
+            "name": "SVCBMT-12-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-12.zip",
+            "source_checksum": "b03a228a7fc1a873d188c6627dc53100",
+            "input_file": "SVCBMT-12/SVCBMT-12-L0.264",
+            "output_format": "yuv420p",
+            "result": "95c70d07abb78a055cd139e18567eacc"
+        },
+        {
+            "name": "SVCBMT-12-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-12.zip",
+            "source_checksum": "b03a228a7fc1a873d188c6627dc53100",
+            "input_file": "SVCBMT-12/SVCBMT-12-L1.264",
+            "output_format": "yuv420p",
+            "result": "ebfab06b8c3d8f0905ab138dddca56a8"
+        },
+        {
+            "name": "SVCBMT-13-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-13.zip",
+            "source_checksum": "759e90a4b27057b6201fbd7a16fb1173",
+            "input_file": "SVCBMT-13/SVCBMT-13-L0.264",
+            "output_format": "yuv420p",
+            "result": "c6fef267dff2ebe6d172e5d0285eea5f"
+        },
+        {
+            "name": "SVCBMT-13-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-13.zip",
+            "source_checksum": "759e90a4b27057b6201fbd7a16fb1173",
+            "input_file": "SVCBMT-13/SVCBMT-13-L1.264",
+            "output_format": "yuv420p",
+            "result": "938b4ded693391c40f802d9b8473d584"
+        },
+        {
+            "name": "SVCBMT-13-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-13.zip",
+            "source_checksum": "759e90a4b27057b6201fbd7a16fb1173",
+            "input_file": "SVCBMT-13/SVCBMT-13-L2.264",
+            "output_format": "yuv420p",
+            "result": "2cc42817a35d2d7650b73b4b53c99ed9"
+        },
+        {
+            "name": "SVCBMT-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-2.zip",
+            "source_checksum": "2a997fbffb0133108a6eac56d026c4b5",
+            "input_file": "SVCBMT-2/SVCBMT-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "a1c33070fa00c2af59d8a4d61ef0e07a"
+        },
+        {
+            "name": "SVCBMT-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-2.zip",
+            "source_checksum": "2a997fbffb0133108a6eac56d026c4b5",
+            "input_file": "SVCBMT-2/SVCBMT-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "620f8a6034eb79aa39450379c1328a4b"
+        },
+        {
+            "name": "SVCBMT-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-3.zip",
+            "source_checksum": "aee01ccae9a92317f118de2ab53ea369",
+            "input_file": "SVCBMT-3/SVCBMT-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "2aad9b72abe5855066e09e1ad65f9664"
+        },
+        {
+            "name": "SVCBMT-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-3.zip",
+            "source_checksum": "aee01ccae9a92317f118de2ab53ea369",
+            "input_file": "SVCBMT-3/SVCBMT-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "6f7ae1a0eabdb85f129c5501a9e17629"
+        },
+        {
+            "name": "SVCBMT-4-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-4.zip",
+            "source_checksum": "60bb4233f9b3baecaec9c2e2e6cef06c",
+            "input_file": "SVCBMT-4/SVCBMT-4-L0.264",
+            "output_format": "yuv420p",
+            "result": "493d61ea1c238d10cee2a5a707d35ac8"
+        },
+        {
+            "name": "SVCBMT-4-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-4.zip",
+            "source_checksum": "60bb4233f9b3baecaec9c2e2e6cef06c",
+            "input_file": "SVCBMT-4/SVCBMT-4-L1.264",
+            "output_format": "yuv420p",
+            "result": "9f60bd9d74af7900ec687f1c0c8b4ef2"
+        },
+        {
+            "name": "SVCBMT-5-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-5.zip",
+            "source_checksum": "cfdccb0716fa5c2e077b8a6ddd7ad878",
+            "input_file": "SVCBMT-5/SVCBMT-5-L0.264",
+            "output_format": "yuv420p",
+            "result": "8f8be2e40f17971ea44ca17961c40c92"
+        },
+        {
+            "name": "SVCBMT-5-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-5.zip",
+            "source_checksum": "cfdccb0716fa5c2e077b8a6ddd7ad878",
+            "input_file": "SVCBMT-5/SVCBMT-5-L1.264",
+            "output_format": "yuv420p",
+            "result": "3795eb0253f455ff318a08f2713094dc"
+        },
+        {
+            "name": "SVCBMT-6-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-6.zip",
+            "source_checksum": "4b989451de1418b86a261e84af3bc49f",
+            "input_file": "SVCBMT-6/SVCBMT-6-L0.264",
+            "output_format": "yuv420p",
+            "result": "02744aac7c52319284631d62f4c33c71"
+        },
+        {
+            "name": "SVCBMT-6-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-6.zip",
+            "source_checksum": "4b989451de1418b86a261e84af3bc49f",
+            "input_file": "SVCBMT-6/SVCBMT-6-L1.264",
+            "output_format": "yuv420p",
+            "result": "9b2009fdaedca65e6e5302206769eb02"
+        },
+        {
+            "name": "SVCBMT-7-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-7.zip",
+            "source_checksum": "601df2839c5902fc4e48bbded16ebfe9",
+            "input_file": "SVCBMT-7/SVCBMT-7-L0.264",
+            "output_format": "yuv420p",
+            "result": "02744aac7c52319284631d62f4c33c71"
+        },
+        {
+            "name": "SVCBMT-7-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-7.zip",
+            "source_checksum": "601df2839c5902fc4e48bbded16ebfe9",
+            "input_file": "SVCBMT-7/SVCBMT-7-L1.264",
+            "output_format": "yuv420p",
+            "result": "9b2009fdaedca65e6e5302206769eb02"
+        },
+        {
+            "name": "SVCBMT-8-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-8.zip",
+            "source_checksum": "da90267c4de8113be51d641964660dbe",
+            "input_file": "SVCBMT-8/SVCBMT-8-L0.264",
+            "output_format": "yuv420p",
+            "result": "d833e2960cffe18c5486f155635290b6"
+        },
+        {
+            "name": "SVCBMT-8-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-8.zip",
+            "source_checksum": "da90267c4de8113be51d641964660dbe",
+            "input_file": "SVCBMT-8/SVCBMT-8-L1.264",
+            "output_format": "yuv420p",
+            "result": "4aadd1e8783d23d6206cc547805070b3"
+        },
+        {
+            "name": "SVCBMT-9-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-9.zip",
+            "source_checksum": "3cc9937aa43ad68f00c16d6f71d0e4a0",
+            "input_file": "SVCBMT-9/SVCBMT-9-L0.264",
+            "output_format": "yuv420p",
+            "result": "9d74ce732e2d94bba2abce5db91d5e8f"
+        },
+        {
+            "name": "SVCBMT-9-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBMT-9.zip",
+            "source_checksum": "3cc9937aa43ad68f00c16d6f71d0e4a0",
+            "input_file": "SVCBMT-9/SVCBMT-9-L1.264",
+            "output_format": "yuv420p",
+            "result": "b0ad5735a9c2dec43ed6a242a5691e98"
+        },
+        {
+            "name": "SVCBS-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-1.zip",
+            "source_checksum": "e85eaba332bcc2674aed364d6f1983d7",
+            "input_file": "SVCBS-1/SVCBS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "91d9c726106a5f4ca911edcc79099410"
+        },
+        {
+            "name": "SVCBS-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-1.zip",
+            "source_checksum": "e85eaba332bcc2674aed364d6f1983d7",
+            "input_file": "SVCBS-1/SVCBS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "500e67e1a4f6bc38df2b3424305c0606"
+        },
+        {
+            "name": "SVCBS-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-2.zip",
+            "source_checksum": "e88664afde907c0550c2140bd7ea7b55",
+            "input_file": "SVCBS-2/SVCBS-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "5f8e147dbe856a2811945d3bb52b1149"
+        },
+        {
+            "name": "SVCBS-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-2.zip",
+            "source_checksum": "e88664afde907c0550c2140bd7ea7b55",
+            "input_file": "SVCBS-2/SVCBS-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "687bef0d87c6c505628232c0d8a1bab7"
+        },
+        {
+            "name": "SVCBS-3-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-3-r1.zip",
+            "source_checksum": "3074271add8d6358381de9ecbc53cda1",
+            "input_file": "SVCBS-3/SVCBS-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "e27c544347c43ee1e582d99aad0b307b"
+        },
+        {
+            "name": "SVCBS-3-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-3-r1.zip",
+            "source_checksum": "3074271add8d6358381de9ecbc53cda1",
+            "input_file": "SVCBS-3/SVCBS-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "24d081c71ff040851abf0d717fe8a89c"
+        },
+        {
+            "name": "SVCBS-4-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-4-r1.zip",
+            "source_checksum": "9b4af64cd4c4b27802c80ad0c26e78fc",
+            "input_file": "SVCBS-4/SVCBS-4-L0.264",
+            "output_format": "yuv420p",
+            "result": "1c3c27d3f9f110a99010167bc205593f"
+        },
+        {
+            "name": "SVCBS-4-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-4-r1.zip",
+            "source_checksum": "9b4af64cd4c4b27802c80ad0c26e78fc",
+            "input_file": "SVCBS-4/SVCBS-4-L1.264",
+            "output_format": "yuv420p",
+            "result": "5c1627fb2b6529f2717e1f7fcdfdf2ed"
+        },
+        {
+            "name": "SVCBS-5-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-5-r1.zip",
+            "source_checksum": "cce1cfff82f14fe3bef29e138a561a44",
+            "input_file": "SVCBS-5/SVCBS-5-L0.264",
+            "output_format": "yuv420p",
+            "result": "a209dccb4aae17e7ad7b5719357a8320"
+        },
+        {
+            "name": "SVCBS-5-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-5-r1.zip",
+            "source_checksum": "cce1cfff82f14fe3bef29e138a561a44",
+            "input_file": "SVCBS-5/SVCBS-5-L1.264",
+            "output_format": "yuv420p",
+            "result": "fedc4167405fd158bf24677c884c5776"
+        },
+        {
+            "name": "SVCBS-6-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-6-r1.zip",
+            "source_checksum": "51f2f949d20077c8bd0d65237ab14926",
+            "input_file": "SVCBS-6/SVCBS-6-L0.264",
+            "output_format": "yuv420p",
+            "result": "00e369836a9ef02979428f46cd18086f"
+        },
+        {
+            "name": "SVCBS-6-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-6-r1.zip",
+            "source_checksum": "51f2f949d20077c8bd0d65237ab14926",
+            "input_file": "SVCBS-6/SVCBS-6-L1.264",
+            "output_format": "yuv420p",
+            "result": "4211235edbb60ccfcf4ee220528dbc0e"
+        },
+        {
+            "name": "SVCBS-6-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-6-r1.zip",
+            "source_checksum": "51f2f949d20077c8bd0d65237ab14926",
+            "input_file": "SVCBS-6/SVCBS-6-L2.264",
+            "output_format": "yuv420p",
+            "result": "2145fa4937306b2a68724d3295d7a89b"
+        },
+        {
+            "name": "SVCBS-7-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-7.zip",
+            "source_checksum": "ac50fb6dd1e6eed6273deb13a626b40c",
+            "input_file": "SVCBS-7/SVCBS-7-L0.264",
+            "output_format": "yuv420p",
+            "result": "ef87ddf6cdf02a43d6ab935ab2e615b3"
+        },
+        {
+            "name": "SVCBS-7-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-7.zip",
+            "source_checksum": "ac50fb6dd1e6eed6273deb13a626b40c",
+            "input_file": "SVCBS-7/SVCBS-7-L1.264",
+            "output_format": "yuv420p",
+            "result": "9604bc729809b619ccb85e71ff29c5e8"
+        },
+        {
+            "name": "SVCBS-8-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-8.zip",
+            "source_checksum": "2c3a6130d9b0f5111c2f2cef49ee661d",
+            "input_file": "SVCBS-8/SVCBS-8-L0.264",
+            "output_format": "yuv420p",
+            "result": "d8f2a95bb364f2866624416df7fd6b2b"
+        },
+        {
+            "name": "SVCBS-8-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBS-8.zip",
+            "source_checksum": "2c3a6130d9b0f5111c2f2cef49ee661d",
+            "input_file": "SVCBS-8/SVCBS-8-L1.264",
+            "output_format": "yuv420p",
+            "result": "0e034ebf61d430bd9db6e2db0ba9f245"
+        },
+        {
+            "name": "SVCBST-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-1.zip",
+            "source_checksum": "120be4fdd9eb72e9ecf095eae1f9e8d4",
+            "input_file": "SVCBST-1/SVCBST-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "ee73dca14a1d74f8cad711b5600b032c"
+        },
+        {
+            "name": "SVCBST-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-1.zip",
+            "source_checksum": "120be4fdd9eb72e9ecf095eae1f9e8d4",
+            "input_file": "SVCBST-1/SVCBST-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "0712d5e3fcfc7d73df872d87951d4bdb"
+        },
+        {
+            "name": "SVCBST-10-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-10-r1.zip",
+            "source_checksum": "711468e7b78331e89a7c50087565a5d2",
+            "input_file": "SVCBST-10/SVCBST-10-L0.264",
+            "output_format": "yuv420p",
+            "result": "eae8a328f144b71a7eff9f0315e7ecbf"
+        },
+        {
+            "name": "SVCBST-10-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-10-r1.zip",
+            "source_checksum": "711468e7b78331e89a7c50087565a5d2",
+            "input_file": "SVCBST-10/SVCBST-10-L1.264",
+            "output_format": "yuv420p",
+            "result": "d16cde640442c7583663e5f6204dbdae"
+        },
+        {
+            "name": "SVCBST-11-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-11-r1.zip",
+            "source_checksum": "db111261fd1b0f1cc19921ac26c1b9ca",
+            "input_file": "SVCBST-11/SVCBST-11-L0.264",
+            "output_format": "yuv420p",
+            "result": "eae8a328f144b71a7eff9f0315e7ecbf"
+        },
+        {
+            "name": "SVCBST-11-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-11-r1.zip",
+            "source_checksum": "db111261fd1b0f1cc19921ac26c1b9ca",
+            "input_file": "SVCBST-11/SVCBST-11-L1.264",
+            "output_format": "yuv420p",
+            "result": "9dbb90f9a08ec26e2d58e4aaa0a63e98"
+        },
+        {
+            "name": "SVCBST-12-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-12-r1.zip",
+            "source_checksum": "2b88702fbd46aa8d5058cba9a593e87f",
+            "input_file": "SVCBST-12/SVCBST-12-L0.264",
+            "output_format": "yuv420p",
+            "result": "20ae5bd86be59ecfe9437dc677a91c82"
+        },
+        {
+            "name": "SVCBST-12-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-12-r1.zip",
+            "source_checksum": "2b88702fbd46aa8d5058cba9a593e87f",
+            "input_file": "SVCBST-12/SVCBST-12-L1.264",
+            "output_format": "yuv420p",
+            "result": "f9bbfc618e1ccfa818d4e57f81c70e66"
+        },
+        {
+            "name": "SVCBST-13-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-13.zip",
+            "source_checksum": "25ad35d41c61d8b2a9e27ba61d4e34c6",
+            "input_file": "SVCBST-13/SVCBST-13-L0.264",
+            "output_format": "yuv420p",
+            "result": "649d65454f9728f7c10d15ca3e154720"
+        },
+        {
+            "name": "SVCBST-13-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-13.zip",
+            "source_checksum": "25ad35d41c61d8b2a9e27ba61d4e34c6",
+            "input_file": "SVCBST-13/SVCBST-13-L1.264",
+            "output_format": "yuv420p",
+            "result": "06a284053df5a37ab4fb66a7e9a91f94"
+        },
+        {
+            "name": "SVCBST-14-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-14.zip",
+            "source_checksum": "07845ff04e8815206693e6104ec02266",
+            "input_file": "SVCBST-14/SVCBST-14-L0.264",
+            "output_format": "yuv420p",
+            "result": "f3fbd2ff98c16609fd02ed641ea8159c"
+        },
+        {
+            "name": "SVCBST-14-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-14.zip",
+            "source_checksum": "07845ff04e8815206693e6104ec02266",
+            "input_file": "SVCBST-14/SVCBST-14-L1.264",
+            "output_format": "yuv420p",
+            "result": "5f24ddba1a16100cb2002a7c8366c923"
+        },
+        {
+            "name": "SVCBST-14-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-14.zip",
+            "source_checksum": "07845ff04e8815206693e6104ec02266",
+            "input_file": "SVCBST-14/SVCBST-14-L2.264",
+            "output_format": "yuv420p",
+            "result": "4f9ef740d3928265403033f46c853f7e"
+        },
+        {
+            "name": "SVCBST-15-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-15.zip",
+            "source_checksum": "dc24abb58b4e52a729923f2bc67d4caa",
+            "input_file": "SVCBST-15/SVCBST-15-L0.264",
+            "output_format": "yuv420p",
+            "result": "cddcb20ca0ee134b24d34e8738f64818"
+        },
+        {
+            "name": "SVCBST-15-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-15.zip",
+            "source_checksum": "dc24abb58b4e52a729923f2bc67d4caa",
+            "input_file": "SVCBST-15/SVCBST-15-L1.264",
+            "output_format": "yuv420p",
+            "result": "b9df12817f55be92b9e88b5d9bcb6d4b"
+        },
+        {
+            "name": "SVCBST-15-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-15.zip",
+            "source_checksum": "dc24abb58b4e52a729923f2bc67d4caa",
+            "input_file": "SVCBST-15/SVCBST-15-L2.264",
+            "output_format": "yuv420p",
+            "result": "5c76c28df5a603071a7560b7908fc7e3"
+        },
+        {
+            "name": "SVCBST-16-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-16-r1.zip",
+            "source_checksum": "c6c375f3eb7e5df614b89c6666724f94",
+            "input_file": "SVCBST-16/SVCBST-16-L0.264",
+            "output_format": "yuv420p",
+            "result": "309e634f0158492932abe492d3aa9582"
+        },
+        {
+            "name": "SVCBST-16-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-16-r1.zip",
+            "source_checksum": "c6c375f3eb7e5df614b89c6666724f94",
+            "input_file": "SVCBST-16/SVCBST-16-L1.264",
+            "output_format": "yuv420p",
+            "result": "63db401e1a849aacf21ef726e17401a9"
+        },
+        {
+            "name": "SVCBST-16-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-16-r1.zip",
+            "source_checksum": "c6c375f3eb7e5df614b89c6666724f94",
+            "input_file": "SVCBST-16/SVCBST-16-L2.264",
+            "output_format": "yuv420p",
+            "result": "de9a6eaf5e5c9f56378d4789b1771fad"
+        },
+        {
+            "name": "SVCBST-17-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-17-r1.zip",
+            "source_checksum": "b855dd0f937d5646bfd8a9e34da2ed75",
+            "input_file": "SVCBST-17/SVCBST-17-L0.264",
+            "output_format": "yuv420p",
+            "result": "f764d4799b99e0ab7e48a2fcc4e378ac"
+        },
+        {
+            "name": "SVCBST-17-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-17-r1.zip",
+            "source_checksum": "b855dd0f937d5646bfd8a9e34da2ed75",
+            "input_file": "SVCBST-17/SVCBST-17-L1.264",
+            "output_format": "yuv420p",
+            "result": "bf298038f60f2395ef03dfee53330ec0"
+        },
+        {
+            "name": "SVCBST-17-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-17-r1.zip",
+            "source_checksum": "b855dd0f937d5646bfd8a9e34da2ed75",
+            "input_file": "SVCBST-17/SVCBST-17-L2.264",
+            "output_format": "yuv420p",
+            "result": "46e0d0b46ab12aa1902b0f662076b5d8"
+        },
+        {
+            "name": "SVCBST-18-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-18-r1.zip",
+            "source_checksum": "84d711ce520386df6b8ba7578215afd6",
+            "input_file": "SVCBST-18/SVCBST-18-L0.264",
+            "output_format": "yuv420p",
+            "result": "f764d4799b99e0ab7e48a2fcc4e378ac"
+        },
+        {
+            "name": "SVCBST-18-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-18-r1.zip",
+            "source_checksum": "84d711ce520386df6b8ba7578215afd6",
+            "input_file": "SVCBST-18/SVCBST-18-L1.264",
+            "output_format": "yuv420p",
+            "result": "ab4b6e682400666248b3df30b980c519"
+        },
+        {
+            "name": "SVCBST-18-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-18-r1.zip",
+            "source_checksum": "84d711ce520386df6b8ba7578215afd6",
+            "input_file": "SVCBST-18/SVCBST-18-L2.264",
+            "output_format": "yuv420p",
+            "result": "3ff5dc76904506e4bfeec9d6c0a2291b"
+        },
+        {
+            "name": "SVCBST-19-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-19.zip",
+            "source_checksum": "8f99910bc1007a48007f3e5abc330146",
+            "input_file": "SVCBST-19/SVCBST-19-L0.264",
+            "output_format": "yuv420p",
+            "result": "3062f65d01ac9c2360c2345860358def"
+        },
+        {
+            "name": "SVCBST-19-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-19.zip",
+            "source_checksum": "8f99910bc1007a48007f3e5abc330146",
+            "input_file": "SVCBST-19/SVCBST-19-L1.264",
+            "output_format": "yuv420p",
+            "result": "8e85fd925bc86abd0c9c6df34655d6bb"
+        },
+        {
+            "name": "SVCBST-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-2.zip",
+            "source_checksum": "a14170ce3cf35debe62d2c70890cf1c1",
+            "input_file": "SVCBST-2/SVCBST-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "ee73dca14a1d74f8cad711b5600b032c"
+        },
+        {
+            "name": "SVCBST-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-2.zip",
+            "source_checksum": "a14170ce3cf35debe62d2c70890cf1c1",
+            "input_file": "SVCBST-2/SVCBST-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "0712d5e3fcfc7d73df872d87951d4bdb"
+        },
+        {
+            "name": "SVCBST-20-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-20.zip",
+            "source_checksum": "8b035f5fd8a1e2c7d3b17b04917f9b0b",
+            "input_file": "SVCBST-20/SVCBST-20-L0.264",
+            "output_format": "yuv420p",
+            "result": "d590b8a96c0f2044583471c8229e1a15"
+        },
+        {
+            "name": "SVCBST-20-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-20.zip",
+            "source_checksum": "8b035f5fd8a1e2c7d3b17b04917f9b0b",
+            "input_file": "SVCBST-20/SVCBST-20-L1.264",
+            "output_format": "yuv420p",
+            "result": "38d95a90e93cf6aba4362d9ff0de01fa"
+        },
+        {
+            "name": "SVCBST-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-3.zip",
+            "source_checksum": "e885755de48203b6cc8ed171a2aa558a",
+            "input_file": "SVCBST-3/SVCBST-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "ee73dca14a1d74f8cad711b5600b032c"
+        },
+        {
+            "name": "SVCBST-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-3.zip",
+            "source_checksum": "e885755de48203b6cc8ed171a2aa558a",
+            "input_file": "SVCBST-3/SVCBST-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "b97c9b60a1b65fa975bdf89b56f7d72c"
+        },
+        {
+            "name": "SVCBST-4-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-4.zip",
+            "source_checksum": "391cd32d4afad2c199a1728126376d78",
+            "input_file": "SVCBST-4/SVCBST-4-L0.264",
+            "output_format": "yuv420p",
+            "result": "ee73dca14a1d74f8cad711b5600b032c"
+        },
+        {
+            "name": "SVCBST-4-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-4.zip",
+            "source_checksum": "391cd32d4afad2c199a1728126376d78",
+            "input_file": "SVCBST-4/SVCBST-4-L1.264",
+            "output_format": "yuv420p",
+            "result": "b97c9b60a1b65fa975bdf89b56f7d72c"
+        },
+        {
+            "name": "SVCBST-5-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-5.zip",
+            "source_checksum": "87069a4092b5bd683856e986e407f9a0",
+            "input_file": "SVCBST-5/SVCBST-5-L0.264",
+            "output_format": "yuv420p",
+            "result": "ee73dca14a1d74f8cad711b5600b032c"
+        },
+        {
+            "name": "SVCBST-5-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-5.zip",
+            "source_checksum": "87069a4092b5bd683856e986e407f9a0",
+            "input_file": "SVCBST-5/SVCBST-5-L1.264",
+            "output_format": "yuv420p",
+            "result": "bd5ca12eb63665f3a9cbe73d6cc0547a"
+        },
+        {
+            "name": "SVCBST-6-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-6-r1.zip",
+            "source_checksum": "bdde31dc63eefdda7c26b6b080661a3b",
+            "input_file": "SVCBST-6/SVCBST-6-L0.264",
+            "output_format": "yuv420p",
+            "result": "eae8a328f144b71a7eff9f0315e7ecbf"
+        },
+        {
+            "name": "SVCBST-6-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-6-r1.zip",
+            "source_checksum": "bdde31dc63eefdda7c26b6b080661a3b",
+            "input_file": "SVCBST-6/SVCBST-6-L1.264",
+            "output_format": "yuv420p",
+            "result": "5cf63fdd7be2ee664dea52d33cf80a29"
+        },
+        {
+            "name": "SVCBST-7-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-7-r1.zip",
+            "source_checksum": "701d47c5a31ac2da9dec36583765ef0a",
+            "input_file": "SVCBST-7/SVCBST-7-L0.264",
+            "output_format": "yuv420p",
+            "result": "1b71c083ffd5b949de093af7bc9b8f43"
+        },
+        {
+            "name": "SVCBST-7-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-7-r1.zip",
+            "source_checksum": "701d47c5a31ac2da9dec36583765ef0a",
+            "input_file": "SVCBST-7/SVCBST-7-L1.264",
+            "output_format": "yuv420p",
+            "result": "165f5b92cc4ba4c31c4c22388b27a3fc"
+        },
+        {
+            "name": "SVCBST-8-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-8-r1.zip",
+            "source_checksum": "43657cf1b8f9648e4058f8d1a065f512",
+            "input_file": "SVCBST-8/SVCBST-8-L0.264",
+            "output_format": "yuv420p",
+            "result": "b1148e2efdbd99305c51797c154ae936"
+        },
+        {
+            "name": "SVCBST-8-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-8-r1.zip",
+            "source_checksum": "43657cf1b8f9648e4058f8d1a065f512",
+            "input_file": "SVCBST-8/SVCBST-8-L1.264",
+            "output_format": "yuv420p",
+            "result": "cf5518d279a2453955e8c3b9231a3287"
+        },
+        {
+            "name": "SVCBST-9-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-9-r1.zip",
+            "source_checksum": "c7972186b8b66e914faa4421d2b5b379",
+            "input_file": "SVCBST-9/SVCBST-9-L0.264",
+            "output_format": "yuv420p",
+            "result": "b1148e2efdbd99305c51797c154ae936"
+        },
+        {
+            "name": "SVCBST-9-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBST-9-r1.zip",
+            "source_checksum": "c7972186b8b66e914faa4421d2b5b379",
+            "input_file": "SVCBST-9/SVCBST-9-L1.264",
+            "output_format": "yuv420p",
+            "result": "9dd1fb2e0a09502fe3634398717a75ad"
+        },
+        {
+            "name": "SVCBSTC-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBSTC-1.zip",
+            "source_checksum": "6166c0c8b6bad4ab30e8be571bdbc5f2",
+            "input_file": "SVCBSTC-1/SVCBSTC-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "4a562e4e41a53310ec8bff3433a66e15"
+        },
+        {
+            "name": "SVCBSTC-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBSTC-1.zip",
+            "source_checksum": "6166c0c8b6bad4ab30e8be571bdbc5f2",
+            "input_file": "SVCBSTC-1/SVCBSTC-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "0c843b22c4683e2d4ef3a620585b7142"
+        },
+        {
+            "name": "SVCBSTC-1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCBSTC-1.zip",
+            "source_checksum": "6166c0c8b6bad4ab30e8be571bdbc5f2",
+            "input_file": "SVCBSTC-1/SVCBSTC-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "5939efb7c4e5a68bf76176245ffa5f49"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "3eb483f41880c4319ed64bcfdb11ce98"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "1152c6ef4eaa7cafac3dfb825344958b"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "278332120ee43286c1806ff5073a7379"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L3.264",
+            "output_format": "yuv420p",
+            "result": "1a7926efccf5309b7374861fc437af72"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L4",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L4.264",
+            "output_format": "yuv420p",
+            "result": "95d6c8086d3cbe443f672d9dd154f76c"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L5",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L5.264",
+            "output_format": "yuv420p",
+            "result": "95d6c8086d3cbe443f672d9dd154f76c"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L6",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L6.264",
+            "output_format": "yuv420p",
+            "result": "1502d0729022f1a36136a65af31700dc"
+        },
+        {
+            "name": "SVCHCTS-1-r1-L7",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHCTS-1-r1.zip",
+            "source_checksum": "47834a8c16cc9957ef803d0f78eb8617",
+            "input_file": "SVCHCTS-1/SVCHCTS-1-L7.264",
+            "output_format": "yuv420p",
+            "result": "1502d0729022f1a36136a65af31700dc"
+        },
+        {
+            "name": "SVCHICS-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHICS-1.zip",
+            "source_checksum": "382093b5ce93bf4d12077921c76212e5",
+            "input_file": "SVCHICS-1/SVCHICS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "0e3762f932178957bdfec38117837783"
+        },
+        {
+            "name": "SVCHICS-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHICS-1.zip",
+            "source_checksum": "382093b5ce93bf4d12077921c76212e5",
+            "input_file": "SVCHICS-1/SVCHICS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "5d63b51a252a9ad54a282d7a51452955"
+        },
+        {
+            "name": "SVCHICS-1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHICS-1.zip",
+            "source_checksum": "382093b5ce93bf4d12077921c76212e5",
+            "input_file": "SVCHICS-1/SVCHICS-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "d2598807d29af4087cf1703737f0944a"
+        },
+        {
+            "name": "SVCHICS-1-L3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHICS-1.zip",
+            "source_checksum": "382093b5ce93bf4d12077921c76212e5",
+            "input_file": "SVCHICS-1/SVCHICS-1-L3.264",
+            "output_format": "yuv420p",
+            "result": "5cdba001dc2388438d9fd97cfa8af58c"
+        },
+        {
+            "name": "SVCHIS-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-1.zip",
+            "source_checksum": "f6deb1d600c34f0eb4b28d85ab061e01",
+            "input_file": "SVCHIS-1/SVCHIS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "5d79ee246e536b1d05793e66d0743673"
+        },
+        {
+            "name": "SVCHIS-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-1.zip",
+            "source_checksum": "f6deb1d600c34f0eb4b28d85ab061e01",
+            "input_file": "SVCHIS-1/SVCHIS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "b28fac54e73737024ffd79fda95d976f"
+        },
+        {
+            "name": "SVCHIS-1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-1.zip",
+            "source_checksum": "f6deb1d600c34f0eb4b28d85ab061e01",
+            "input_file": "SVCHIS-1/SVCHIS-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "7aef0537b4da0214762ff3818bd8b326"
+        },
+        {
+            "name": "SVCHIS-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-2.zip",
+            "source_checksum": "41b0a01f63382f279534f818cd686b4b",
+            "input_file": "SVCHIS-2/SVCHIS-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "b1c65ee31cca845a204c484c93040a8b"
+        },
+        {
+            "name": "SVCHIS-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-2.zip",
+            "source_checksum": "41b0a01f63382f279534f818cd686b4b",
+            "input_file": "SVCHIS-2/SVCHIS-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "f12a49649e890965d0a1bbe5fb2bab22"
+        },
+        {
+            "name": "SVCHIS-2-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-2.zip",
+            "source_checksum": "41b0a01f63382f279534f818cd686b4b",
+            "input_file": "SVCHIS-2/SVCHIS-2-L2.264",
+            "output_format": "yuv420p",
+            "result": "34bd17af382de7f2c9e24fc38a5187e8"
+        },
+        {
+            "name": "SVCHIS-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-3.zip",
+            "source_checksum": "b6df0d269257c386df7b93f287287a16",
+            "input_file": "SVCHIS-3/SVCHIS-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "4a63b79ace4440fb394a608744720c55"
+        },
+        {
+            "name": "SVCHIS-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-3.zip",
+            "source_checksum": "b6df0d269257c386df7b93f287287a16",
+            "input_file": "SVCHIS-3/SVCHIS-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "a3f40f728ead8398e7302d48323e0939"
+        },
+        {
+            "name": "SVCHIS-3-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHIS-3.zip",
+            "source_checksum": "b6df0d269257c386df7b93f287287a16",
+            "input_file": "SVCHIS-3/SVCHIS-3-L2.264",
+            "output_format": "yuv420p",
+            "result": "6ec5dd35085955eb87cc0a614b0bf87f"
+        },
+        {
+            "name": "SVCHM-1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-1.zip",
+            "source_checksum": "a96d2e88c6b380b09f213c1021038de4",
+            "input_file": "SVCHM-1/SVCHM-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "8532534cb0e7161aa3fc861484aef76d"
+        },
+        {
+            "name": "SVCHM-1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-1.zip",
+            "source_checksum": "a96d2e88c6b380b09f213c1021038de4",
+            "input_file": "SVCHM-1/SVCHM-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "cf613b48440c985c1ee013bfe0397fe8"
+        },
+        {
+            "name": "SVCHM-1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-1.zip",
+            "source_checksum": "a96d2e88c6b380b09f213c1021038de4",
+            "input_file": "SVCHM-1/SVCHM-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "fb2f9e99fe002a536824d79af2fa9da0"
+        },
+        {
+            "name": "SVCHM-1-L3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-1.zip",
+            "source_checksum": "a96d2e88c6b380b09f213c1021038de4",
+            "input_file": "SVCHM-1/SVCHM-1-L3.264",
+            "output_format": "yuv420p",
+            "result": "19296840e30b19cd4c81020375d8c3e5"
+        },
+        {
+            "name": "SVCHM-2-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-2.zip",
+            "source_checksum": "6e3928a578a5c379910cd248ec70faf6",
+            "input_file": "SVCHM-2/SVCHM-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "98b04b6d4537a23d785e376f3b17f67f"
+        },
+        {
+            "name": "SVCHM-2-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-2.zip",
+            "source_checksum": "6e3928a578a5c379910cd248ec70faf6",
+            "input_file": "SVCHM-2/SVCHM-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "6d2e3ec46576ecf56d952cc8fe187b95"
+        },
+        {
+            "name": "SVCHM-3-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-3.zip",
+            "source_checksum": "bba8156ae72127e49d5a38447240a093",
+            "input_file": "SVCHM-3/SVCHM-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "b58f783ea5df8765e5ef90bec7a2f84e"
+        },
+        {
+            "name": "SVCHM-3-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-3.zip",
+            "source_checksum": "bba8156ae72127e49d5a38447240a093",
+            "input_file": "SVCHM-3/SVCHM-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "1255233cea747e51ae517c54bc6446d6"
+        },
+        {
+            "name": "SVCHM-4-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-4.zip",
+            "source_checksum": "dc42a3350c3815a037d14d9e4ef28b4e",
+            "input_file": "SVCHM-4/SVCHM-4-L0.264",
+            "output_format": "yuv420p",
+            "result": "b58f783ea5df8765e5ef90bec7a2f84e"
+        },
+        {
+            "name": "SVCHM-4-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-4.zip",
+            "source_checksum": "dc42a3350c3815a037d14d9e4ef28b4e",
+            "input_file": "SVCHM-4/SVCHM-4-L1.264",
+            "output_format": "yuv420p",
+            "result": "1255233cea747e51ae517c54bc6446d6"
+        },
+        {
+            "name": "SVCHM-4-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHM-4.zip",
+            "source_checksum": "dc42a3350c3815a037d14d9e4ef28b4e",
+            "input_file": "SVCHM-4/SVCHM-4-L2.264",
+            "output_format": "yuv420p",
+            "result": "eeac217f6597d239f9d2b5f55393220d"
+        },
+        {
+            "name": "SVCHMTS-1-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-1-r1.zip",
+            "source_checksum": "426920527c0e602f9cee9972f6df55fd",
+            "input_file": "SVCHMTS-1/SVCHMTS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "19814c565261c716a0d3d49724abdaf3"
+        },
+        {
+            "name": "SVCHMTS-1-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-1-r1.zip",
+            "source_checksum": "426920527c0e602f9cee9972f6df55fd",
+            "input_file": "SVCHMTS-1/SVCHMTS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "07fc6793d8fc3f63d3f56bb1b8365842"
+        },
+        {
+            "name": "SVCHMTS-1-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-1-r1.zip",
+            "source_checksum": "426920527c0e602f9cee9972f6df55fd",
+            "input_file": "SVCHMTS-1/SVCHMTS-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "8ce8797aa0721893e5017db399e4e0a9"
+        },
+        {
+            "name": "SVCHMTS-1-r1-L3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-1-r1.zip",
+            "source_checksum": "426920527c0e602f9cee9972f6df55fd",
+            "input_file": "SVCHMTS-1/SVCHMTS-1-L3.264",
+            "output_format": "yuv420p",
+            "result": "3a0b85631d2265485126203d5ee10922"
+        },
+        {
+            "name": "SVCHMTS-1-r1-L4",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-1-r1.zip",
+            "source_checksum": "426920527c0e602f9cee9972f6df55fd",
+            "input_file": "SVCHMTS-1/SVCHMTS-1-L4.264",
+            "output_format": "yuv420p",
+            "result": "42e5fceea9686498246a4ada89f9a13e"
+        },
+        {
+            "name": "SVCHMTS-1-r1-L5",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-1-r1.zip",
+            "source_checksum": "426920527c0e602f9cee9972f6df55fd",
+            "input_file": "SVCHMTS-1/SVCHMTS-1-L5.264",
+            "output_format": "yuv420p",
+            "result": "ea87640c390e4e2f20fa8553dcecfe78"
+        },
+        {
+            "name": "SVCHMTS-2-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-2-r1.zip",
+            "source_checksum": "65d1ba943cd79dfee665599da7855f29",
+            "input_file": "SVCHMTS-2/SVCHMTS-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "5546d1a56d323fde3ddfa5a62cac186a"
+        },
+        {
+            "name": "SVCHMTS-2-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-2-r1.zip",
+            "source_checksum": "65d1ba943cd79dfee665599da7855f29",
+            "input_file": "SVCHMTS-2/SVCHMTS-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "71fb9a91cd0715fd24416722c2c49a78"
+        },
+        {
+            "name": "SVCHMTS-2-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHMTS-2-r1.zip",
+            "source_checksum": "65d1ba943cd79dfee665599da7855f29",
+            "input_file": "SVCHMTS-2/SVCHMTS-2-L2.264",
+            "output_format": "yuv420p",
+            "result": "394e0a741e77e42633a4fd3c3408103a"
+        },
+        {
+            "name": "SVCHS-1-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHS-1-r1.zip",
+            "source_checksum": "000263b3eccd7feb81ba01b819e42836",
+            "input_file": "SVCHS-1/SVCHS-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "b967a3b809c0a16243c417ffa85afcd0"
+        },
+        {
+            "name": "SVCHS-1-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHS-1-r1.zip",
+            "source_checksum": "000263b3eccd7feb81ba01b819e42836",
+            "input_file": "SVCHS-1/SVCHS-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "993972e8fb4bc93fbb214dc8e52f9ea8"
+        },
+        {
+            "name": "SVCHS-2-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHS-2-r1.zip",
+            "source_checksum": "a5b171840f27326973e690502358e92d",
+            "input_file": "SVCHS-2/SVCHS-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "b9fc111412ead50bb77737c9b1c12d13"
+        },
+        {
+            "name": "SVCHS-2-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHS-2-r1.zip",
+            "source_checksum": "a5b171840f27326973e690502358e92d",
+            "input_file": "SVCHS-2/SVCHS-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "16d3d81e5e095a79058abec4a0581006"
+        },
+        {
+            "name": "SVCHST-1-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-1-r1.zip",
+            "source_checksum": "675b8147e9ce81fbcf98eba4db9b40a9",
+            "input_file": "SVCHST-1/SVCHST-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "baba80872ef75c15b2bb24d6d4b4c6b1"
+        },
+        {
+            "name": "SVCHST-1-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-1-r1.zip",
+            "source_checksum": "675b8147e9ce81fbcf98eba4db9b40a9",
+            "input_file": "SVCHST-1/SVCHST-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "9b62015f3643ceff1f86c2e6a6eb6d49"
+        },
+        {
+            "name": "SVCHST-1-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-1-r1.zip",
+            "source_checksum": "675b8147e9ce81fbcf98eba4db9b40a9",
+            "input_file": "SVCHST-1/SVCHST-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "3edc45ae26c4434769e6e9e0cfe94e3d"
+        },
+        {
+            "name": "SVCHST-2-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-2-r1.zip",
+            "source_checksum": "a68788e24c6f5f10bec02d4eb2cc3b9c",
+            "input_file": "SVCHST-2/SVCHST-2-L0.264",
+            "output_format": "yuv420p",
+            "result": "4ab6572eebff1caa9c6088cdf43473a3"
+        },
+        {
+            "name": "SVCHST-2-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-2-r1.zip",
+            "source_checksum": "a68788e24c6f5f10bec02d4eb2cc3b9c",
+            "input_file": "SVCHST-2/SVCHST-2-L1.264",
+            "output_format": "yuv420p",
+            "result": "c14f222f729f382f94b983bbc0bdc7da"
+        },
+        {
+            "name": "SVCHST-2-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-2-r1.zip",
+            "source_checksum": "a68788e24c6f5f10bec02d4eb2cc3b9c",
+            "input_file": "SVCHST-2/SVCHST-2-L2.264",
+            "output_format": "yuv420p",
+            "result": "9ec385f7a960bbf0f7940d4ef52d6d98"
+        },
+        {
+            "name": "SVCHST-3-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-3-r1.zip",
+            "source_checksum": "38f1eca263d8638ff21d827e6b3e358a",
+            "input_file": "SVCHST-3/SVCHST-3-L0.264",
+            "output_format": "yuv420p",
+            "result": "1a2b15a4bc1af8a9efcf9569b275fae1"
+        },
+        {
+            "name": "SVCHST-3-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-3-r1.zip",
+            "source_checksum": "38f1eca263d8638ff21d827e6b3e358a",
+            "input_file": "SVCHST-3/SVCHST-3-L1.264",
+            "output_format": "yuv420p",
+            "result": "4d310c1d19716578d6305dfa4691ed8a"
+        },
+        {
+            "name": "SVCHST-4-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-4-r1.zip",
+            "source_checksum": "ef58ea26ddffb8e447397a5c720e9f9b",
+            "input_file": "SVCHST-4/SVCHST-4-L0.264",
+            "output_format": "yuv420p",
+            "result": "657085e68fe101c5063a396295e82c84"
+        },
+        {
+            "name": "SVCHST-4-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHST-4-r1.zip",
+            "source_checksum": "ef58ea26ddffb8e447397a5c720e9f9b",
+            "input_file": "SVCHST-4/SVCHST-4-L1.264",
+            "output_format": "yuv420p",
+            "result": "5d1b01654bde6f00dc9e7fad9bb1e779"
+        },
+        {
+            "name": "SVCHSTC-1-r1-L0",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHSTC-1-r1.zip",
+            "source_checksum": "c7f9b6ab9a6eb848971b24b46925eee3",
+            "input_file": "SVCHSTC-1/SVCHSTC-1-L0.264",
+            "output_format": "yuv420p",
+            "result": "5546d1a56d323fde3ddfa5a62cac186a"
+        },
+        {
+            "name": "SVCHSTC-1-r1-L1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHSTC-1-r1.zip",
+            "source_checksum": "c7f9b6ab9a6eb848971b24b46925eee3",
+            "input_file": "SVCHSTC-1/SVCHSTC-1-L1.264",
+            "output_format": "yuv420p",
+            "result": "3d95aac68d1c63d338cac5952365d414"
+        },
+        {
+            "name": "SVCHSTC-1-r1-L2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/SVCHSTC-1-r1.zip",
+            "source_checksum": "c7f9b6ab9a6eb848971b24b46925eee3",
+            "input_file": "SVCHSTC-1/SVCHSTC-1-L2.264",
+            "output_format": "yuv420p",
+            "result": "98412dc8e109897d2019451078470e3d"
+        }
+    ]
+}
