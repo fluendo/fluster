@@ -101,12 +101,6 @@ class JVETGenerator:
             hparser.feed(data)
 
         for url in hparser.links[1:]:
-            # The first item in the AVCv1 list is a readme file
-            if "00readme_H" in url:
-                continue
-            elif "replaced" in url:
-                # This is in HEVC-SHVC, we don't want that.
-                continue
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
@@ -139,9 +133,7 @@ class JVETGenerator:
             if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
-            if "main10" in test_vector.name.lower():
-                test_vector.output_format = OutputFormat.YUV420P10LE
-            elif self.use_ffprobe:
+            if self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd('ffprobe')
                 command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
                            '-show_entries', 'stream=pix_fmt', '-of',

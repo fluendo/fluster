@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2020, Fluendo, S.A.
+# Copyright (C) 2020-2024, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
+#  Author: Ruben Sanchez Sanchez <rsanchez@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -35,7 +36,6 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://www.itu.int/"
-H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
 BITSTREAM_EXTS = (
     ".bin",
@@ -285,14 +285,5 @@ if __name__ == "__main__":
         "JCT-VC HEVC Multiview Extension",
         H265_URL,
         True
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JCTVCGenerator(
-        'draft6',
-        'JVET-VVC_draft6',
-        Codec.H266,
-        'JVET VVC draft6',
-        H266_URL
     )
     generator.generate(not args.skip_download, args.jobs)
