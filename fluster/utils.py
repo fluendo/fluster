@@ -141,43 +141,6 @@ def normalize_path(path: str) -> str:
     return path
 
 
-def _linux_user_data_dir(appname: str) -> str:
-    """Return data directory tied to the user"""
-    path = os.environ.get("XDG_DATA_HOME", "")
-    if not path.strip():
-        path = os.path.expanduser("~/.local/share")
-    return os.path.join(path, appname)
-
-
-def _linux_site_data_dirs(appname: str) -> List[str]:
-    """Return data directory shared by users"""
-    path = os.environ.get("XDG_DATA_DIRS", "")
-    if not path.strip():
-        path = "/usr/local/share:/usr/share"
-    paths = path.split(os.pathsep)
-    return [os.path.join(p, appname) for p in paths]
-
-
-def _win_user_data_dir(appname: str) -> str:
-    """Return data directory"""
-    path = os.path.expanduser(r"~\AppData\Local")
-    return os.path.join(path, appname)
-
-
-def _win_site_data_dirs(appname: str) -> List[str]:
-    """Return data directory shared by users"""
-    # On Windows always user_data_dir
-    return [_win_user_data_dir(appname)]
-
-
-if sys.platform == "win32":
-    site_data_dirs = _win_site_data_dirs
-    user_data_dir = _win_user_data_dir
-else:
-    site_data_dirs = _linux_site_data_dirs
-    user_data_dir = _linux_user_data_dir
-
-
 def find_by_ext(
     dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
 ) -> Optional[str]:
@@ -223,3 +186,40 @@ def find_by_ext_multiple(
                 if not excluded:
                     found_files.append(filepath)
     return found_files
+
+
+def _linux_user_data_dir(appname: str) -> str:
+    """Return data directory tied to the user"""
+    path = os.environ.get("XDG_DATA_HOME", "")
+    if not path.strip():
+        path = os.path.expanduser("~/.local/share")
+    return os.path.join(path, appname)
+
+
+def _linux_site_data_dirs(appname: str) -> List[str]:
+    """Return data directory shared by users"""
+    path = os.environ.get("XDG_DATA_DIRS", "")
+    if not path.strip():
+        path = "/usr/local/share:/usr/share"
+    paths = path.split(os.pathsep)
+    return [os.path.join(p, appname) for p in paths]
+
+
+def _win_user_data_dir(appname: str) -> str:
+    """Return data directory"""
+    path = os.path.expanduser(r"~\AppData\Local")
+    return os.path.join(path, appname)
+
+
+def _win_site_data_dirs(appname: str) -> List[str]:
+    """Return data directory shared by users"""
+    # On Windows always user_data_dir
+    return [_win_user_data_dir(appname)]
+
+
+if sys.platform == "win32":
+    site_data_dirs = _win_site_data_dirs
+    user_data_dir = _win_user_data_dir
+else:
+    site_data_dirs = _linux_site_data_dirs
+    user_data_dir = _linux_user_data_dir

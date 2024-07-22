@@ -37,11 +37,6 @@ from fluster.test_suite import TestSuite, TestVector
 BASE_URL = "https://www.itu.int/"
 H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = (
-    ".bin",
-    ".bit",
-    ".264",
-    ".h264",
-    ".jvc",
     ".jsv",
     ".jvt",
     ".avc",
@@ -95,7 +90,7 @@ class JVTGenerator:
 
     def generate(self, download, jobs):
         """Generates the test suite and saves it to a file"""
-        new_test_vectors = []
+        multiple_test_vectors = []
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
@@ -115,9 +110,6 @@ class JVTGenerator:
         for url in hparser.links[1:]:
             # The first item in the AVCv1 list is a readme file
             if "00readme_H" in url:
-                continue
-            elif "replaced" in url:
-                # This is in HEVC-SHVC, we don't want that.
                 continue
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
@@ -151,9 +143,7 @@ class JVTGenerator:
             if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
-            if "main10" in test_vector.name.lower():
-                test_vector.output_format = OutputFormat.YUV420P10LE
-            elif self.use_ffprobe:
+            if self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd('ffprobe')
                 command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
                            '-show_entries', 'stream=pix_fmt', '-of',
@@ -165,35 +155,13 @@ class JVTGenerator:
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
                 except KeyError as e:
-                    exceptions = {
-                        # Feature: Test unequal luma and chroma bitdepth
-                        # setting. The luma bitdepth is higher than the chroma
-                        # bitdepth. Luma is 12bit, chroma is 8bit. Considering
-                        # 12bit.
-                        "Bitdepth_A_RExt_Sony_1": OutputFormat.YUV444P12LE,
-                        # Same as above, but the chroma is 12bit and luma is 8bit.
-                        "Bitdepth_B_RExt_Sony_1": OutputFormat.YUV444P12LE,
-                        # Rest is taken by examining the error displayed by ffprobe, e.g.:
-                        # The following bit-depths are currently specified: 8,
-                        # 9, 10 and 12 bits, chroma_format_idc is 3, depth is 16
-                        "EXTPREC_MAIN_444_16_INTRA_10BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
-                        "EXTPREC_HIGHTHROUGHPUT_444_16_INTRA_16BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
-                        "EXTPREC_MAIN_444_16_INTRA_16BIT_RExt_Sony_1": OutputFormat.YUV444P16LE,
-                        "GENERAL_16b_400_RExt_Sony_1": OutputFormat.GRAY16LE,
-                        "GENERAL_16b_444_highThroughput_RExt_Sony_2": OutputFormat.YUV444P16LE,
-                        "GENERAL_16b_444_RExt_Sony_2": OutputFormat.YUV444P16LE,
-                        "WAVETILES_RExt_Sony_2": OutputFormat.YUV444P16LE
-                    }
-                    if test_vector.name in exceptions.keys():
-                        test_vector.output_format = exceptions[test_vector.name]
-                    else:
-                        raise e
+                    raise e
 
             if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
                 if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
                     new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
-                    new_test_vectors.extend(new_vectors)
-                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
+                    multiple_test_vectors.extend(new_vectors)
+                    test_suite.test_vectors = {vector.name: vector for vector in multiple_test_vectors}
                 else:
                     self._fill_checksum_h264(test_vector, dest_dir)
 
@@ -216,7 +184,7 @@ class JVTGenerator:
                 parts[-1] = re.sub(r'-r1', '', parts[-1])
             return '/'.join(parts)
 
-        new_test_vectors = []
+        multiple_test_vectors = []
 
         for suffix in [f"-L{i}" for i in range(8)]:  # L0 ... L7
             new_vector = copy.deepcopy(test_vector)
@@ -232,15 +200,9 @@ class JVTGenerator:
                 new_vector.input_file = os.path.relpath(corrected_input_path, dest_dir)
                 new_vector.result = utils.file_checksum(corrected_result_path)
 
-                new_test_vectors.append(new_vector)
+                multiple_test_vectors.append(new_vector)
 
-        return new_test_vectors
-
-    @staticmethod
-    def _check_path(path):
-        parts = path.split(os.sep)
-        unique_parts = parts[:3] + list(dict.fromkeys(parts[3:]))
-        return os.sep.join(unique_parts)
+        return multiple_test_vectors
 
 
 if __name__ == "__main__":

@@ -40,11 +40,6 @@ H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conform
 BITSTREAM_EXTS = (
     ".bin",
     ".bit",
-    ".jvc",
-    ".jsv",
-    ".jvt",
-    ".avc",
-    ".26l",
 )
 MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
@@ -72,7 +67,7 @@ class HREFParser(HTMLParser):
                     self.links.append(base_url + value)
 
 
-class JVETJCTVTGenerator:
+class JVETJCTVCGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
@@ -255,7 +250,7 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    generator = JVETJCTVTGenerator(
+    generator = JVETJCTVCGenerator(
         "HEVC_v1",
         "JCT-VC-HEVC_V1",
         Codec.H265,
@@ -264,7 +259,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVTGenerator(
+    generator = JVETJCTVCGenerator(
         "RExt",
         "JCT-VC-RExt",
         Codec.H265,
@@ -274,7 +269,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVTGenerator(
+    generator = JVETJCTVCGenerator(
         "SCC",
         "JCT-VC-SCC",
         Codec.H265,
@@ -284,7 +279,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVTGenerator(
+    generator = JVETJCTVCGenerator(
         "MV-HEVC",
         "JCT-VC-MV-HEVC",
         Codec.H265,
@@ -294,7 +289,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVTGenerator(
+    generator = JVETJCTVCGenerator(
         'draft6',
         'JVET-VVC_draft6',
         Codec.H266,
