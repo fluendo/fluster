@@ -37,6 +37,9 @@ from fluster.test_suite import TestSuite, TestVector
 BASE_URL = "https://www.itu.int/"
 H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
 BITSTREAM_EXTS = (
+    ".bit",
+    ".264",
+    ".h264",
     ".jsv",
     ".jvt",
     ".avc",
@@ -90,7 +93,7 @@ class JVTGenerator:
 
     def generate(self, download, jobs):
         """Generates the test suite and saves it to a file"""
-        multiple_test_vectors = []
+        new_test_vectors = []
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
@@ -160,8 +163,8 @@ class JVTGenerator:
             if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
                 if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
                     new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
-                    multiple_test_vectors.extend(new_vectors)
-                    test_suite.test_vectors = {vector.name: vector for vector in multiple_test_vectors}
+                    new_test_vectors.extend(new_vectors)
+                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
                 else:
                     self._fill_checksum_h264(test_vector, dest_dir)
 
