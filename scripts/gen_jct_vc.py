@@ -67,7 +67,7 @@ class HREFParser(HTMLParser):
                     self.links.append(base_url + value)
 
 
-class JVETJCTVCGenerator:
+class JCTVCGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
@@ -181,8 +181,7 @@ class JVETJCTVCGenerator:
                     else:
                         raise e
 
-            if self.codec == Codec.H265:
-                self._fill_checksum_h265(test_vector, dest_dir)
+            self._fill_checksum_h265(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
@@ -250,7 +249,7 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "HEVC_v1",
         "JCT-VC-HEVC_V1",
         Codec.H265,
@@ -259,7 +258,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "RExt",
         "JCT-VC-RExt",
         Codec.H265,
@@ -269,7 +268,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "SCC",
         "JCT-VC-SCC",
         Codec.H265,
@@ -279,7 +278,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "MV-HEVC",
         "JCT-VC-MV-HEVC",
         Codec.H265,
@@ -289,7 +288,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         'draft6',
         'JVET-VVC_draft6',
         Codec.H266,

@@ -18,8 +18,6 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-import copy
-import re
 from html.parser import HTMLParser
 import os
 import sys
@@ -35,15 +33,9 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://www.itu.int/"
-H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
+H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 BITSTREAM_EXTS = (
-    ".264",
-    ".h264",
-    ".jsv",
-    ".jvt",
-    ".avc",
-    ".26l",
-    ".bits",
+    ".bit",
 )
 MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
@@ -71,7 +63,7 @@ class HREFParser(HTMLParser):
                     self.links.append(base_url + value)
 
 
-class JVTGenerator:
+class JVETGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
@@ -92,7 +84,6 @@ class JVTGenerator:
 
     def generate(self, download, jobs):
         """Generates the test suite and saves it to a file"""
-        new_test_vectors = []
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
@@ -112,6 +103,9 @@ class JVTGenerator:
         for url in hparser.links[1:]:
             # The first item in the AVCv1 list is a readme file
             if "00readme_H" in url:
+                continue
+            elif "replaced" in url:
+                # This is in HEVC-SHVC, we don't want that.
                 continue
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
@@ -145,7 +139,9 @@ class JVTGenerator:
             if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
-            if self.use_ffprobe:
+            if "main10" in test_vector.name.lower():
+                test_vector.output_format = OutputFormat.YUV420P10LE
+            elif self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd('ffprobe')
                 command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
                            '-show_entries', 'stream=pix_fmt', '-of',
@@ -159,52 +155,8 @@ class JVTGenerator:
                 except KeyError as e:
                     raise e
 
-            if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
-                if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
-                    new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
-                    new_test_vectors.extend(new_vectors)
-                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
-                else:
-                    self._fill_checksum_h264(test_vector, dest_dir)
-
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
-
-    @staticmethod
-    def _fill_checksum_h264(test_vector, dest_dir):
-        raw_file = utils.find_by_ext(dest_dir, RAW_EXTS)
-        if raw_file is None or len(raw_file) == 0:
-            raise Exception(f"RAW file not found in {dest_dir}")
-        test_vector.result = utils.file_checksum(raw_file)
-
-    @staticmethod
-    def _fill_checksum_h264_multiple(test_vector, dest_dir):
-        def remove_r1_from_path(path):
-            parts = path.split('/')
-            if len(parts) >= 2:
-                parts[-2] = re.sub(r'-r1', '', parts[-2])
-                parts[-1] = re.sub(r'-r1', '', parts[-1])
-            return '/'.join(parts)
-
-        multiple_test_vectors = []
-
-        for suffix in [f"-L{i}" for i in range(8)]:  # L0 ... L7
-            new_vector = copy.deepcopy(test_vector)
-            new_vector.name = test_vector.name + suffix
-
-            input_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264")
-            result_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv")
-
-            corrected_input_path = remove_r1_from_path(input_file_path)
-            corrected_result_path = remove_r1_from_path(result_file_path)
-
-            if os.path.exists(corrected_input_path) and os.path.exists(corrected_result_path):
-                new_vector.input_file = os.path.relpath(corrected_input_path, dest_dir)
-                new_vector.result = utils.file_checksum(corrected_result_path)
-
-                multiple_test_vectors.append(new_vector)
-
-        return multiple_test_vectors
 
 
 if __name__ == "__main__":
@@ -223,31 +175,11 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    generator = JVTGenerator(
-        "AVCv1",
-        "JVT-AVC_V1",
-        Codec.H264,
-        "JVT AVC version 1",
-        H264_URL
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JVTGenerator(
-        "SVC",
-        "JVT-SVC_V1",
-        Codec.H264,
-        "JVT SVC version 1",
-        H264_URL,
-        True
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JVTGenerator(
-        "Professional_profiles",
-        "JVT-Professional_profiles_V1",
-        Codec.H264,
-        "JVT professional profiles version 1",
-        H264_URL,
-        True
+    generator = JVETGenerator(
+        'draft6',
+        'JVET-VVC_draft6',
+        Codec.H266,
+        'JVET VVC draft6',
+        H266_URL
     )
     generator.generate(not args.skip_download, args.jobs)
