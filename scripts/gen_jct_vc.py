@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2020, Fluendo, S.A.
+# Copyright (C) 2020-2024, Fluendo, S.A.
 #  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
+#  Author: Ruben Sanchez Sanchez <rsanchez@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -35,7 +36,6 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://www.itu.int/"
-H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
 BITSTREAM_EXTS = (
     ".bin",
@@ -67,7 +67,7 @@ class HREFParser(HTMLParser):
                     self.links.append(base_url + value)
 
 
-class JVETJCTVCGenerator:
+class JCTVCGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
@@ -105,10 +105,7 @@ class JVETJCTVCGenerator:
             hparser.feed(data)
 
         for url in hparser.links[1:]:
-            # The first item in the AVCv1 list is a readme file
-            if "00readme_H" in url:
-                continue
-            elif "replaced" in url:
+            if "replaced" in url:
                 # This is in HEVC-SHVC, we don't want that.
                 continue
             file_url = os.path.basename(url)
@@ -181,8 +178,7 @@ class JVETJCTVCGenerator:
                     else:
                         raise e
 
-            if self.codec == Codec.H265:
-                self._fill_checksum_h265(test_vector, dest_dir)
+            self._fill_checksum_h265(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
@@ -214,9 +210,9 @@ class JVETJCTVCGenerator:
             lines = checksum_file.readlines()
             # If we have a line like examples 4,5,6 anywhere in the file, prefer
             # that.
-            if self.codec == Codec.H265 and any((match := regex.match(line)) for line in lines):
+            if any((match := regex.match(line)) for line in lines):
                 test_vector.result = match.group(1)[:32].lower()
-            elif self.codec == Codec.H265 and self.name == "RExt" or self.name == "MV-HEVC" or self.name == "SCC":
+            elif self.name == "RExt" or self.name == "MV-HEVC" or self.name == "SCC":
                 # If we can't match with the regex, note that these usually come
                 # with the checksum at the end
                 test_vector.result = lines[-1].split(" ")[0].split("\n")[0].lower()
@@ -250,7 +246,7 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "HEVC_v1",
         "JCT-VC-HEVC_V1",
         Codec.H265,
@@ -259,7 +255,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "RExt",
         "JCT-VC-RExt",
         Codec.H265,
@@ -269,7 +265,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "SCC",
         "JCT-VC-SCC",
         Codec.H265,
@@ -279,21 +275,12 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JVETJCTVCGenerator(
+    generator = JCTVCGenerator(
         "MV-HEVC",
         "JCT-VC-MV-HEVC",
         Codec.H265,
         "JCT-VC HEVC Multiview Extension",
         H265_URL,
         True
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JVETJCTVCGenerator(
-        'draft6',
-        'JVET-VVC_draft6',
-        Codec.H266,
-        'JVET VVC draft6',
-        H266_URL
     )
     generator.generate(not args.skip_download, args.jobs)
