@@ -105,10 +105,7 @@ class JCTVCGenerator:
             hparser.feed(data)
 
         for url in hparser.links[1:]:
-            # The first item in the AVCv1 list is a readme file
-            if "00readme_H" in url:
-                continue
-            elif "replaced" in url:
+            if "replaced" in url:
                 # This is in HEVC-SHVC, we don't want that.
                 continue
             file_url = os.path.basename(url)
@@ -213,9 +210,9 @@ class JCTVCGenerator:
             lines = checksum_file.readlines()
             # If we have a line like examples 4,5,6 anywhere in the file, prefer
             # that.
-            if self.codec == Codec.H265 and any((match := regex.match(line)) for line in lines):
+            if any((match := regex.match(line)) for line in lines):
                 test_vector.result = match.group(1)[:32].lower()
-            elif self.codec == Codec.H265 and self.name == "RExt" or self.name == "MV-HEVC" or self.name == "SCC":
+            elif self.name == "RExt" or self.name == "MV-HEVC" or self.name == "SCC":
                 # If we can't match with the regex, note that these usually come
                 # with the checksum at the end
                 test_vector.result = lines[-1].split(" ")[0].split("\n")[0].lower()
