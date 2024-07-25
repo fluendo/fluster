@@ -279,7 +279,17 @@ if __name__ == "__main__":
         "MV-HEVC",
         "JCT-VC-MV-HEVC",
         Codec.H265,
-        "JCT-VC HEVC Multiview Extension",
+        "JCT-VC MV-HEVC Multiview Extension",
+        H265_URL,
+        True
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVCGenerator(
+        "3D-HEVC",
+        "JCT-VC-3D-HEVC",
+        Codec.H265,
+        "JCT-VC 3D-HEVC 3D Extension",
         H265_URL,
         True
     )
