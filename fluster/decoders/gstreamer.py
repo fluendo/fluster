@@ -216,16 +216,6 @@ class GStreamer10Audio(GStreamer):
     provider = "GStreamer"
 
 
-class GStreamer010Video(GStreamer):
-    """Base class for GStreamer 0.10 video decoders"""
-
-    cmd = "gst-launch-0.10"
-    caps = "video/x-raw-yuv"
-    gst_api = "0.10"
-    sink = "videocodectestsink"
-    provider = "GStreamer"
-
-
 @register_decoder
 class GStreamerLibavH264(GStreamer10Video):
     """GStreamer H.264 Libav decoder implementation for GStreamer 1.0"""
@@ -669,28 +659,8 @@ class FluendoH265Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
-class FluendoH265Gst010Decoder(GStreamer010Video):
-    """Fluendo H.265 software decoder implementation for GStreamer 0.10"""
-
-    codec = Codec.H265
-    decoder_bin = " fluh265dec "
-    provider = "Fluendo"
-    api = "SW"
-
-
-@register_decoder
 class FluendoH264Gst10Decoder(GStreamer10Video):
     """Fluendo H.264 software decoder implementation for GStreamer 1.0"""
-
-    codec = Codec.H264
-    decoder_bin = " fluh264dec "
-    provider = "Fluendo"
-    api = "SW"
-
-
-@register_decoder
-class FluendoH264Gst010Decoder(GStreamer010Video):
-    """Fluendo H.264 software decoder implementation for GStreamer 0.10"""
 
     codec = Codec.H264
     decoder_bin = " fluh264dec "

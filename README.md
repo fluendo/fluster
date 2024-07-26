@@ -164,7 +164,6 @@ H264
     FFmpeg-H.264-h264_v4l2m2m: FFmpeg H.264 h264_v4l2m2m decoder... ✔️
     Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
     Fluendo-H.264-HW-hwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-SW-Gst0.10: Fluendo H.264 SW decoder for GStreamer 0.10... ❌
     Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0... ❌
     GStreamer-H.264-D3D11-Gst1.0: GStreamer H.264 D3D11 decoder for GStreamer 1.0... ❌
     GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0... ✔️
@@ -195,7 +194,6 @@ H265
     FFmpeg-H.265-VAAPI: FFmpeg H.265 VAAPI decoder... ✔️
     FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder... ✔️
     Fluendo-H.265-HW-hwvah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0... ❌
-    Fluendo-H.265-SW-Gst0.10: Fluendo H.265 SW decoder for GStreamer 0.10... ❌
     Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0... ❌
     Fluendo-H.265-byte-stream-au-HW-Gst1.0: Fluendo H.265-byte-stream-au HW decoder for GStreamer 1.0... ❌
     Fluendo-H.265-byte-stream-nal-HW-Gst1.0: Fluendo H.265-byte-stream-nal HW decoder for GStreamer 1.0... ❌
