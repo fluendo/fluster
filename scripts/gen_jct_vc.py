@@ -284,3 +284,13 @@ if __name__ == "__main__":
         True
     )
     generator.generate(not args.skip_download, args.jobs)
+
+    generator = JCTVCGenerator(
+        "3D-HEVC",
+        "JCT-VC-3D-HEVC",
+        Codec.H265,
+        "JCT-VC HEVC 3D Extension",
+        H265_URL,
+        True
+    )
+    generator.generate(not args.skip_download, args.jobs)

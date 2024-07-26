@@ -1,0 +1,223 @@
+{
+    "name": "JCT-VC-3D-HEVC",
+    "codec": "H.265",
+    "description": "JCT-VC 3D-HEVC 3D Extension",
+    "test_vectors": [
+        {
+            "name": "3DHC_C_A_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_C_A_HHI_3.zip",
+            "source_checksum": "b29d7eb608ded5dee9f90345aa0f6d5a",
+            "input_file": "3DHC_C_A.bit",
+            "output_format": "yuv420p",
+            "result": "0069c977b00a3e4d4ea913df50029bbc"
+        },
+        {
+            "name": "3DHC_C_B_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_C_B_HHI_3.zip",
+            "source_checksum": "1764026920593c98be12107d6fb42118",
+            "input_file": "3DHC_C_B.bit",
+            "output_format": "yuv420p",
+            "result": "fa1fe7e370d2d7f181853f9bc8a1a96b"
+        },
+        {
+            "name": "3DHC_C_C_Sharp_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_C_C_Sharp_3.zip",
+            "source_checksum": "fe1ddf915cb3301763ea73b7ce2da9c0",
+            "input_file": "3DHC_C_C_Sharp_3/3DHC_C_C.bit",
+            "output_format": "yuv420p",
+            "result": "22510c88d29d15c002d1f48d47a12db9"
+        },
+        {
+            "name": "3DHC_D1_A_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_A_HHI_3.zip",
+            "source_checksum": "ed8b85a159b660ecad5221811deacc3d",
+            "input_file": "3DHC_D1_A.bit",
+            "output_format": "yuv420p",
+            "result": "b5c1a8922839d253ca5fe4c055ed824e"
+        },
+        {
+            "name": "3DHC_D1_B_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_B_HHI_3.zip",
+            "source_checksum": "35bf2c0a81fe7a46de8aa660ad3d3731",
+            "input_file": "3DHC_D1_B.bit",
+            "output_format": "yuv420p",
+            "result": "a047c6b9418e60025003997aaf4dddef"
+        },
+        {
+            "name": "3DHC_D1_C_RWTH_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_C_RWTH_3.zip",
+            "source_checksum": "ffabd00dbfe4aa80770ea20f2846df3a",
+            "input_file": "3DHC_D1_C.bit",
+            "output_format": "yuv420p",
+            "result": "95f86389987436f3ca0077c3abe62158"
+        },
+        {
+            "name": "3DHC_D1_D_RWTH_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_D_RWTH_3.zip",
+            "source_checksum": "7b3f481bd50962214cf51bc25758dfed",
+            "input_file": "3DHC_D1_D.bit",
+            "output_format": "yuv420p",
+            "result": "2ae0e4d81e78f2bc9076fa3346a8d3ba"
+        },
+        {
+            "name": "3DHC_D1_E_MediaTek_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_E_MediaTek_3.zip",
+            "source_checksum": "7b5193765e5e8e20d49f9bee956012ac",
+            "input_file": "3DHC_D1_E_MediaTek_3/3DHC_D1_E.bit",
+            "output_format": "yuv420p",
+            "result": "b5c1a8922839d253ca5fe4c055ed824e"
+        },
+        {
+            "name": "3DHC_D1_F_MediaTek_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_F_MediaTek_3.zip",
+            "source_checksum": "23ae4b599d8a9e814c9b511035cf4877",
+            "input_file": "3DHC_D1_F_MediaTek_3/3DHC_D1_F.bit",
+            "output_format": "yuv420p",
+            "result": "46c20e931dba0c32dcd441006413b049"
+        },
+        {
+            "name": "3DHC_D1_G_Hisilicon_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_G_Hisilicon_3.zip",
+            "source_checksum": "77bbe8e84ae0603a098b1d4ace8cbec2",
+            "input_file": "3DHC_D1_G.bin",
+            "output_format": "yuv420p",
+            "result": "0410a215e80e2d1b0e2d107791f26f2d"
+        },
+        {
+            "name": "3DHC_D1_H_Hisilicon_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D1_H_Hisilicon_3.zip",
+            "source_checksum": "8719c7ce3448dce990703e16b7f0cab5",
+            "input_file": "3DHC_D1_H.bit",
+            "output_format": "yuv420p",
+            "result": "27faea6beae70ad4b7ce20e0c89919c4"
+        },
+        {
+            "name": "3DHC_D2_A_Samsung_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D2_A_Samsung_3.zip",
+            "source_checksum": "c24e5313ec85002337a685187e3a3257",
+            "input_file": "3DHC_D2_A.bit",
+            "output_format": "yuv420p",
+            "result": "0069c977b00a3e4d4ea913df50029bbc"
+        },
+        {
+            "name": "3DHC_D2_B_LGE_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_D2_B_LGE_3.zip",
+            "source_checksum": "e96526139c318d69d85e633ac0bb8e34",
+            "input_file": "3DHC_D2_B.bit",
+            "output_format": "yuv420p",
+            "result": "6d78a7f1febfb54dae92af2089a37812"
+        },
+        {
+            "name": "3DHC_DT_A_MediaTek_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_DT_A_MediaTek_3.zip",
+            "source_checksum": "85bee2b33fe2b235cfe32c96d717e497",
+            "input_file": "3DHC_DT_A.bit",
+            "output_format": "yuv420p",
+            "result": "5c6d1388b068671f01a5aa8fd2a3d065"
+        },
+        {
+            "name": "3DHC_DT_B_NTT_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_DT_B_NTT_3.zip",
+            "source_checksum": "20e4c8e02b4c6585a0c9303b4d123d24",
+            "input_file": "3DHC_DT_B.bit",
+            "output_format": "yuv420p",
+            "result": "6655bb03700deeb212c66b9e6e0096ed"
+        },
+        {
+            "name": "3DHC_DT_C_Hisilicon_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_DT_C_Hisilicon_3.zip",
+            "source_checksum": "f271a7beab191d436fe567ffc5460d21",
+            "input_file": "3DHC_DT_C.bit",
+            "output_format": "yuv420p",
+            "result": "0410a215e80e2d1b0e2d107791f26f2d"
+        },
+        {
+            "name": "3DHC_DT_D_NTT_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_DT_D_NTT_3.zip",
+            "source_checksum": "c0c878322fae4aa05e43d3fbbda32284",
+            "input_file": "3DHC_DT_D.bit",
+            "output_format": "yuv420p",
+            "result": "6655bb03700deeb212c66b9e6e0096ed"
+        },
+        {
+            "name": "3DHC_T_A_Qualcomm_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_T_A_Qualcomm_3.zip",
+            "source_checksum": "4a837f8d09313d2b34dc58e8e8758570",
+            "input_file": "3DHC_T_A_Qualcomm_3/3DHC_T_A.bit",
+            "output_format": "yuv420p",
+            "result": "96c07ed86f99e2e4bd3a9ce990c7c488"
+        },
+        {
+            "name": "3DHC_T_B_MediaTek_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_T_B_MediaTek_3.zip",
+            "source_checksum": "a73ccfa2ef0fbb200bb3c17a12ae1ac3",
+            "input_file": "3DHC_T_B_MediaTek_3/3DHC_T_B.bit",
+            "output_format": "yuv420p",
+            "result": "f473f05128324cb851c59bf267b3e1dd"
+        },
+        {
+            "name": "3DHC_T_C_Sharp_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_T_C_Sharp_3.zip",
+            "source_checksum": "e7e2144fe108c6ab6c5b0836859adf84",
+            "input_file": "3DHC_T_C_Sharp_3/3DHC_T_C.bit",
+            "output_format": "yuv420p",
+            "result": "22510c88d29d15c002d1f48d47a12db9"
+        },
+        {
+            "name": "3DHC_T_D_Sharp_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_T_D_Sharp_3.zip",
+            "source_checksum": "ec6e469f16d0bff5484881f912331521",
+            "input_file": "3DHC_T_D_Sharp_3/3DHC_T_D.bit",
+            "output_format": "yuv420p",
+            "result": "22510c88d29d15c002d1f48d47a12db9"
+        },
+        {
+            "name": "3DHC_T_E_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_T_E_HHI_3.zip",
+            "source_checksum": "390438bcef21d3342234b4486ca73672",
+            "input_file": "3DHC_T_E.bit",
+            "output_format": "yuv420p",
+            "result": "0069c977b00a3e4d4ea913df50029bbc"
+        },
+        {
+            "name": "3DHC_TD_A_Qualcomm_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_TD_A_Qualcomm_3.zip",
+            "source_checksum": "5ab6cff3afd3f5278217762b09824506",
+            "input_file": "3DHC_TD_A_Qualcomm_3/3DHC_TD_A.bit",
+            "output_format": "yuv420p",
+            "result": "96c07ed86f99e2e4bd3a9ce990c7c488"
+        },
+        {
+            "name": "3DHC_TD_B_MediaTek_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_TD_B_MediaTek_3.zip",
+            "source_checksum": "97f9274cbd0ab79c03eecaf5da1cef1e",
+            "input_file": "3DHC_TD_B_MediaTek_3/3DHC_TD_B.bit",
+            "output_format": "yuv420p",
+            "result": "4a49afa799f12b6762ee4689b94af10c"
+        },
+        {
+            "name": "3DHC_TD_C_MediaTek_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_TD_C_MediaTek_3.zip",
+            "source_checksum": "d5f74b63e650bf7c51011fed1f02dc4a",
+            "input_file": "3DHC_TD_C.bit",
+            "output_format": "yuv420p",
+            "result": "5c6d1388b068671f01a5aa8fd2a3d065"
+        },
+        {
+            "name": "3DHC_TD_D_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_TD_D_HHI_3.zip",
+            "source_checksum": "0cdb99f184aeca36fc374f9ed3cd6cb1",
+            "input_file": "3DHC_TD_D.bit",
+            "output_format": "yuv420p",
+            "result": "b5c1a8922839d253ca5fe4c055ed824e"
+        },
+        {
+            "name": "3DHC_TD_E_HHI_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/3D-HEVC/3DHC_TD_E_HHI_3.zip",
+            "source_checksum": "5fd1156627e59bc077408d0b497b1e24",
+            "input_file": "3DHC_TD_E.bit",
+            "output_format": "yuv420p",
+            "result": "a047c6b9418e60025003997aaf4dddef"
+        }
+    ]
+}
