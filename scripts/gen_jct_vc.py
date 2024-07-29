@@ -301,6 +301,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
+    # TODO see comment (https://fluendo.atlassian.net/browse/COM-10938?focusedCommentId=86998)
     generator = JCTVCGenerator(
         "SHVC",
         "JCT-VC-SHVC",
