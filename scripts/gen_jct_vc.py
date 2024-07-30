@@ -41,7 +41,7 @@ BITSTREAM_EXTS = (
     ".bin",
     ".bit",
 )
-MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
+MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", ".MD5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
 RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
 
@@ -122,6 +122,12 @@ class JCTVCGenerator:
                 extract_all=True,
                 keep_file=True,
             )
+
+        if "SHVC" in test_suite.name:
+            for test_vector in test_suite.test_vectors.values():
+                if "8layers" in test_vector.name.lower():  # 8LAYERS_QUALCOMM_1 not used in SHVC test suite
+                    test_suite.test_vectors.pop(test_vector.name, None)
+                    break
 
         for test_vector in test_suite.test_vectors.values():
             dest_dir = os.path.join(
@@ -208,26 +214,26 @@ class JCTVCGenerator:
             # f3e914fccdb820eac85f46642ea0e168  CCP_8bit_RExt_QCOM.gbr
             regex = re.compile(r"([a-fA-F0-9]{{32,}}).*\.(yuv|rgb|gbr)")
             lines = checksum_file.readlines()
-            # If we have a line like examples 4,5,6 anywhere in the file, prefer
-            # that.
-            if any((match := regex.match(line)) for line in lines):
-                test_vector.result = match.group(1)[:32].lower()
-            elif self.name == "RExt" or self.name == "MV-HEVC" or self.name == "SCC":
-                # If we can't match with the regex, note that these usually come
-                # with the checksum at the end
-                test_vector.result = lines[-1].split(" ")[0].split("\n")[0].lower()
+            # Filter out empty lines and lines that start with "#"
+            filtered_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
+            # Prefer lines matching the regex pattern
+            match = next((regex.match(line) for line in filtered_lines if regex.match(line)), None)
+            if match:
+                test_vector.result = match.group(1).lower()
+            elif self.name in {"RExt", "MV-HEVC", "SCC", "SHVC"}:
+                # Handle special cases where checksum is at the end
+                test_vector.result = filtered_lines[-1].split(" ")[0].strip().lower()
             else:
-                for line in lines:
-                    if line.startswith(("#", "\n")):
-                        continue
+                for line in filtered_lines:
                     if "=" in line:
                         test_vector.result = line.split("=")[-1].strip().lower()
                     else:
-                        test_vector.result = line.split(" ")[0].split("\n")[0].lower()
+                        test_vector.result = line.split(" ")[0].strip().lower()
                     break
             # Assert that we have extracted a valid MD5 from the file
             assert len(test_vector.result) == 32 and re.search(
-                r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
+                r"^[a-fA-F0-9]{32}$",
+                test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
 
 
 if __name__ == "__main__":
@@ -292,5 +298,15 @@ if __name__ == "__main__":
         "JCT-VC HEVC 3D Extension",
         H265_URL,
         True
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    # TODO see comment (https://fluendo.atlassian.net/browse/COM-10938?focusedCommentId=86998)
+    generator = JCTVCGenerator(
+        "SHVC",
+        "JCT-VC-SHVC",
+        Codec.H265,
+        "JCT-VC HEVC Scalable High Efficiency Video Coding Extension",
+        H265_URL,
     )
     generator.generate(not args.skip_download, args.jobs)

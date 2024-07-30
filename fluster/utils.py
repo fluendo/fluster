@@ -146,8 +146,8 @@ def find_by_ext(
 ) -> Optional[str]:
     """Return name by file extension"""
     excludes = excludes or []
+    candidates = []
 
-    # Respect the priority for extensions
     for ext in exts:
         for subdir, _, files in os.walk(dest_dir):
             for filename in files:
@@ -160,8 +160,15 @@ def find_by_ext(
                         excluded = True
                         break
                 if not excluded:
-                    return filepath
-    return None
+                    candidates.append(filepath)
+
+    # Prioritize files with 'L0' in the name only for JCT-VC-SHVC
+    for candidate in candidates:
+        if "L0" in candidate.upper():
+            return candidate
+
+    # If no file with 'L0' is found, return the first candidate
+    return candidates[0] if candidates else None
 
 
 def find_by_ext_multiple(

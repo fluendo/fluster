@@ -53,13 +53,17 @@ packages = ["fluster", "fluster.decoders"]
 ]
 "share/fluster/test_suites/h264" = [
     "test_suites/h264/JVT-AVC_V1.json",
-    "test_suites/h264/JVT-FR-EXT.json"
+    "test_suites/h264/JVT-FR-EXT.json",
+    "test_suites/h264/JVT-Professional_profiles_V1.json",
+    "test_suites/h264/JVT-SVC_V1.json"
 ]
 "share/fluster/test_suites/h265" = [
+    "test_suites/h265/JCT-VC-3D-HEVC.json",
     "test_suites/h265/JCT-VC-HEVC-V1.json",
     "test_suites/h265/JCT-VC-MV-HEVC.json",
     "test_suites/h265/JCT-VC-RExt.json",
-    "test_suites/h265/JCT-VC-SCC.json"
+    "test_suites/h265/JCT-VC-SCC.json",
+    "test_suites/h265/JCT-VC-SHVC.json"
 ]
 "share/fluster/test_suites/h266" = [
     "test_suites/h266/JVET-VVC_draft6.json",
