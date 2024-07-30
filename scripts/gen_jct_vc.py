@@ -212,7 +212,7 @@ class JCTVCGenerator:
             # Example 6:
             # 9cab6bcd74491062a8523b5a7ff6a540  CCP_8bit_RExt_QCOM.bin
             # f3e914fccdb820eac85f46642ea0e168  CCP_8bit_RExt_QCOM.gbr
-            regex = re.compile(r"([a-fA-F0-9]{{32,}}).*\.(yuv|rgb|gbr)")
+            regex = re.compile(rf"([a-fA-F0-9]{{32,}}).*\.(yuv|rgb|gbr)")
             lines = checksum_file.readlines()
             # Filter out empty lines and lines that start with "#"
             filtered_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
