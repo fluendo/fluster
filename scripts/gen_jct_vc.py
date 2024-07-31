@@ -159,7 +159,7 @@ class JCTVCGenerator:
                 pix_fmt = result[0]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
-                except KeyError as e:
+                except KeyError as key_err:
                     exceptions = {
                         # Feature: Test unequal luma and chroma bitdepth
                         # setting. The luma bitdepth is higher than the chroma
@@ -182,7 +182,7 @@ class JCTVCGenerator:
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
                     else:
-                        raise e
+                        raise key_err
 
             self._fill_checksum_h265(test_vector, dest_dir)
 

@@ -23,6 +23,7 @@ import os
 import sys
 import urllib.request
 import multiprocessing
+from subprocess import CalledProcessError
 
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -134,18 +135,39 @@ class JVETGenerator:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.use_ffprobe:
-                ffprobe = utils.normalize_binary_cmd('ffprobe')
-                command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
-                           '-show_entries', 'stream=pix_fmt', '-of',
-                           'default=nokey=1:noprint_wrappers=1',
-                           absolute_input_path]
-
-                result = utils.run_command_with_output(command).splitlines()
-                pix_fmt = result[0]
                 try:
+                    ffprobe = utils.normalize_binary_cmd('ffprobe')
+                    command = [ffprobe, '-v', 'error', '-strict', '-2',
+                               '-select_streams', 'v:0',
+                               '-show_entries', 'stream=pix_fmt', '-of',
+                               'default=nokey=1:noprint_wrappers=1',
+                               absolute_input_path]
+
+                    result = utils.run_command_with_output(command).splitlines()
+                    pix_fmt = result[0]
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
-                except KeyError as e:
-                    raise e
+                except KeyError as key_err:
+                    exceptions = {
+                        # All below test vectors need to be analysed with respect
+                        # to output format, for now remains undetermined
+                        "VPS_C_ERICSSON_1": OutputFormat.NONE
+                    }
+                    if test_vector.name in exceptions.keys():
+                        test_vector.output_format = exceptions[test_vector.name]
+                    else:
+                        raise key_err
+                except CalledProcessError as proc_err:
+                    exceptions = {
+                        # All below test vectors need cause ffprobe to crash
+                        "MNUT_A_Nokia_3": OutputFormat.NONE,
+                        "MNUT_B_Nokia_2": OutputFormat.NONE,
+                        "SUBPIC_C_ERICSSON_1": OutputFormat.NONE,
+                        "SUBPIC_D_ERICSSON_1": OutputFormat.NONE
+                    }
+                    if test_vector.name in exceptions.keys():
+                        test_vector.output_format = exceptions[test_vector.name]
+                    else:
+                        raise proc_err
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")

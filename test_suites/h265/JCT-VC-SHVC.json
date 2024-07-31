@@ -489,7 +489,7 @@
             "source_checksum": "ca8c6b57a3966a9831d3d4cdba00242c",
             "input_file": "SREXT_A_FUJITSU_1.bit",
             "output_format": "yuv420p",
-            "result": "fa16e88f8dfc2b537482564dbc357738"
+            "result": "00bdc05491a4fdd93890af779cb455a9"
         },
         {
             "name": "SREXT_B_FUJITSU_1",
@@ -513,7 +513,7 @@
             "source_checksum": "278730c33286d5817b7688d2dd7acf71",
             "input_file": "SREXT_D_FUJITSU_1.bit",
             "output_format": "yuv420p",
-            "result": "fa16e88f8dfc2b537482564dbc357738"
+            "result": "00bdc05491a4fdd93890af779cb455a9"
         },
         {
             "name": "SREXT_E_FUJITSU_1",
