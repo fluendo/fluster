@@ -162,12 +162,16 @@ def find_by_ext(
                 if not excluded:
                     candidates.append(filepath)
 
-    # Prioritize files with 'L0' in the name only for JCT-VC-SHVC
     for candidate in candidates:
+        # Prioritize files with 'L0' in the name (for JCT-VC-SHVC)
         if "L0" in candidate.upper():
             return candidate
+        # Prioritize files with 'norpt' in the name (for JVT-AVC_V1)
+        # Special case only for CVSEFDFT3_Sony_E.zip and CVSE3_Sony_H.zip
+        if "norpt" in candidate.lower():
+            return candidate
 
-    # If no file with 'L0' is found, return the first candidate
+    # If none of the above 2 cases is fulfilled, return the first candidate
     return candidates[0] if candidates else None
 
 

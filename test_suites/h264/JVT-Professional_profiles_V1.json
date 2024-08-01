@@ -32,7 +32,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I4_Mitsubishi_A.zip",
             "source_checksum": "078604ffd6509d9bfb9c6cae121188d8",
             "input_file": "PPCV444I4_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "6ddc08441ca450ae94c661e4978b777d"
         },
         {
@@ -40,7 +40,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I5_Mitsubishi_A.zip",
             "source_checksum": "c7a722cc6173be92c4ec170faa4d7ab7",
             "input_file": "PPCV444I5_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "679ca1edd2902c500fc137d7fdca3954"
         },
         {
@@ -48,7 +48,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I6_Mitsubishi_A.zip",
             "source_checksum": "08c7439b4fccb77f5e5e9cd8b4ad59a3",
             "input_file": "PPCV444I6_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "6ddc08441ca450ae94c661e4978b777d"
         },
         {
@@ -56,7 +56,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I7_SejongUniv_A.zip",
             "source_checksum": "410d50227f11871c334721e95f450fc0",
             "input_file": "PPCV444I-7.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "70d81a76c8722f28917e2ea2307f1988"
         },
         {
@@ -200,7 +200,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I4_Mitsubishi_A.zip",
             "source_checksum": "e2b72b15c00cce5fe58684ab6b75f25c",
             "input_file": "PPH444I4_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "65f523ebe1fd966b1f86d2b3e415d7d5"
         },
         {
@@ -208,7 +208,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I5_Mitsubishi_A.zip",
             "source_checksum": "f7901b3579c43f7681b44b37ccbe4a20",
             "input_file": "PPH444I5_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "7362fc0ab046c7f0434f1cc4f26dbeed"
         },
         {
@@ -216,7 +216,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I6_Mitsubishi_A.zip",
             "source_checksum": "86950ac7efffcbc8dd9b56eaed37dedb",
             "input_file": "PPH444I6_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "65f523ebe1fd966b1f86d2b3e415d7d5"
         },
         {
@@ -224,7 +224,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I7_SejongUniv_A.zip",
             "source_checksum": "86d97c2fde74f7172f91a3e148db25c4",
             "input_file": "PPH444I-7.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "70d81a76c8722f28917e2ea2307f1988"
         },
         {
@@ -232,7 +232,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P10_SejongUniv_A.zip",
             "source_checksum": "72273f7382842423059666d67fe57fb7",
             "input_file": "PPH444P-10.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "70d81a76c8722f28917e2ea2307f1988"
         },
         {
@@ -280,7 +280,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P6_Mitsubishi_A.zip",
             "source_checksum": "28e7b3772d79d90b648f4382f0a782c4",
             "input_file": "PPH444P6_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "80a3e16e08a662e5b784aa1380c048e1"
         },
         {
@@ -288,7 +288,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P7_Mitsubishi_A.zip",
             "source_checksum": "27e193897b21a9b732c105edd9c15bad",
             "input_file": "PPH444P7_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "2de6c4b551178c74aca5375f95bb15f8"
         },
         {
@@ -296,7 +296,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P8_Mitsubishi_A.zip",
             "source_checksum": "c0054b570abb81f036657bcf1353344a",
             "input_file": "PPH444P8_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "42c6e811b6386158811a8a10fbf72e46"
         },
         {
@@ -304,7 +304,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P9_Mitsubishi_A.zip",
             "source_checksum": "1d92115ba2820084e44f7c62cb50333f",
             "input_file": "PPH444P9_Mitsubishi_A.264",
-            "output_format": "Unknown",
+            "output_format": "None",
             "result": "3a77d0018ccb8784e298269a0c2e9aa7"
         }
     ]

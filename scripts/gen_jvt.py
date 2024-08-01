@@ -156,8 +156,29 @@ class JVTGenerator:
                 pix_fmt = result[0]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
-                except KeyError as e:
-                    raise e
+                except KeyError as key_err:
+                    exceptions = {
+                        # All below test vectors from JVT-Professional_profiles_V1
+                        # need to be analysed with respect to output format,
+                        # for now it remains undetermined
+                        "PPCV444I4_Mitsubishi_A": OutputFormat.NONE,
+                        "PPCV444I5_Mitsubishi_A": OutputFormat.NONE,
+                        "PPCV444I6_Mitsubishi_A": OutputFormat.NONE,
+                        "PPCV444I7_SejongUniv_A": OutputFormat.NONE,
+                        "PPH444I4_Mitsubishi_A": OutputFormat.NONE,
+                        "PPH444I5_Mitsubishi_A": OutputFormat.NONE,
+                        "PPH444I6_Mitsubishi_A": OutputFormat.NONE,
+                        "PPH444I7_SejongUniv_A": OutputFormat.NONE,
+                        "PPH444P10_SejongUniv_A": OutputFormat.NONE,
+                        "PPH444P6_Mitsubishi_A": OutputFormat.NONE,
+                        "PPH444P7_Mitsubishi_A": OutputFormat.NONE,
+                        "PPH444P8_Mitsubishi_A": OutputFormat.NONE,
+                        "PPH444P9_Mitsubishi_A": OutputFormat.NONE
+                    }
+                    if test_vector.name in exceptions.keys():
+                        test_vector.output_format = exceptions[test_vector.name]
+                    else:
+                        raise key_err
 
             if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
                 if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
