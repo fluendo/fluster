@@ -1,0 +1,45 @@
+{
+    "name": "AV1_ARGON_VECTORS",
+    "codec": "AV1",
+    "description": "AV1 Argon Streams",
+    "test_vectors": [{
+        "name": "test11",
+        "source": "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
+        "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test11.obu",
+        "output_format": "yuv420p",
+        "result": "a533723b58fd0207670290eea162c796"
+    },
+    {
+        "name": "test14_257_1309",
+        "source": "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
+        "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test14_257_1309.obu",
+        "output_format": "yuv420p",
+        "result": "e76319930f74e27c9c25e97745ebaadf"
+    },
+    {
+        "name": "test23",
+        "source": "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
+        "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test23.obu",
+        "output_format": "yuv420p",
+        "result": "cd5be2860cd8da2993af865ce00971f9"
+    },
+    {
+        "name": "test34",
+        "source": "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
+        "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test34.obu",
+        "output_format": "yuv420p",
+        "result": "d424f6ad6cb51cbe5323368eb23a2f79"
+    },
+    {
+        "name": "test47",
+        "source": "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
+        "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test47.obu",
+        "output_format": "yuv420p",
+        "result": "76b057be715888c0cd578575f5ba4685"
+    }]
+}
