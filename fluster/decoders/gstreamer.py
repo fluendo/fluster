@@ -653,7 +653,7 @@ class FluendoVVCdeCH266Decoder(GStreamer10Video):
     """Fluendo H.266/VVC software decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H266
-    decoder_bin = " fluvvcdec "
+    decoder_bin = " fluh266dec "
     api = "VVdeC"
 
 
