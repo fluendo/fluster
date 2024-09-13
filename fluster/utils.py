@@ -163,17 +163,15 @@ def find_by_ext(
                     candidates.append(filepath)
 
     if len(candidates) > 1:
-        for candidate in candidates:
+        for candidate in candidates.copy():
             # Prioritize files with 'L0' in the name (for JCT-VC-SHVC)
             if "L0" in candidate.upper():
                 return candidate
             # Prioritize files with 'norpt' in the name (for JVT-AVC_V1)
             # Special case only for CVSEFDFT3_Sony_E.zip and CVSE3_Sony_H.zip
-            if "norpt" in candidate.lower():
-                return candidate
             # Prioritize files with 'layer0' in the name (for JVET-VVC_draft6
             # checksum files)
-            if "layer0" in candidate.lower():
+            if "norpt" in candidate.lower() or "layer0" in candidate.lower():
                 return candidate
             # Files with 'first_picture' in the name are kicked out of the list
             # (for JVET-VVC_draft6 checksum files)
