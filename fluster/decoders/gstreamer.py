@@ -649,6 +649,15 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
 
 
 @register_decoder
+class FluendoVVCdeCH266Decoder(GStreamer10Video):
+    """Fluendo H.266/VVC software decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.H266
+    decoder_bin = " fluvvcdec "
+    api = "VVdeC"
+
+
+@register_decoder
 class FluendoH265Gst10Decoder(GStreamer10Video):
     """Fluendo H.265 software decoder implementation for GStreamer 1.0"""
 
