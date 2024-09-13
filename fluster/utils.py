@@ -104,7 +104,7 @@ def run_command_with_output(
 
 
 def is_extractable(filepath: str) -> bool:
-    """Checks is a file can be extracted from the its extension"""
+    """Checks is a file can be extracted, based on its extension"""
     return filepath.endswith(TARBALL_EXTS) or filepath.endswith(".zip")
 
 
@@ -162,41 +162,27 @@ def find_by_ext(
                 if not excluded:
                     candidates.append(filepath)
 
-    for candidate in candidates:
-        # Prioritize files with 'L0' in the name (for JCT-VC-SHVC)
-        if "L0" in candidate.upper():
-            return candidate
-        # Prioritize files with 'norpt' in the name (for JVT-AVC_V1)
-        # Special case only for CVSEFDFT3_Sony_E.zip and CVSE3_Sony_H.zip
-        if "norpt" in candidate.lower():
-            return candidate
+    if len(candidates) > 1:
+        for candidate in candidates:
+            # Prioritize files with 'L0' in the name (for JCT-VC-SHVC)
+            if "L0" in candidate.upper():
+                return candidate
+            # Prioritize files with 'norpt' in the name (for JVT-AVC_V1)
+            # Special case only for CVSEFDFT3_Sony_E.zip and CVSE3_Sony_H.zip
+            if "norpt" in candidate.lower():
+                return candidate
+            # Prioritize files with 'layer0' in the name (for JVET-VVC_draft6
+            # checksum files)
+            if "layer0" in candidate.lower():
+                return candidate
+            # Files with 'first_picture' in the name are kicked out of the list
+            # (for JVET-VVC_draft6 checksum files)
+            # Reverse logic (with not in and return) does not produce desired value
+            if "first_picture" in candidate.lower():
+                candidates.remove(candidate)
 
-    # If none of the above 2 cases is fulfilled, return the first candidate
+    # If none of the above cases is fulfilled, return the first candidate
     return candidates[0] if candidates else None
-
-
-def find_by_ext_multiple(
-    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
-) -> List[str]:
-    """Return multiple names by file extension"""
-    excludes = excludes or []
-    found_files = []
-
-    # Respect the priority for extensions
-    for ext in exts:
-        for subdir, _, files in os.walk(dest_dir):
-            for filename in files:
-                excluded = False
-                filepath = os.path.join(subdir, filename)
-                if not filepath.endswith(ext) or "__MACOSX" in filepath:
-                    continue
-                for excl in excludes:
-                    if excl in filepath:
-                        excluded = True
-                        break
-                if not excluded:
-                    found_files.append(filepath)
-    return found_files
 
 
 def _linux_user_data_dir(appname: str) -> str:
