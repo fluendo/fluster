@@ -124,6 +124,26 @@ def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
     else:
         raise Exception(f"Unknown tarball format {filepath}")
 
+def copy(origin_path, dest_path, filename):
+    """ Find and copy the file from origin folder to destination folder. """
+    if not os.path.exists(dest_path):
+        os.makedirs(dest_path)
+
+    for dirpath, dirnames, filenames in os.walk(origin_path):
+        if filename in filenames:
+            origin_file_path = os.path.join(dirpath, filename)
+            destiny_file_path = os.path.join(dest_path, filename)
+            try:
+                shutil.copy(origin_file_path, destiny_file_path)
+            except Exception as ex:
+                print(f'\tThe file "{filename}" was not found in {origin_path}')
+                raise Exception(str(ex)) from ex
+            else:
+                print(f'\tThe file "{filename}" was copied to {destiny_file_path}')
+                if os.path.exists(destiny_file_path):
+                    os.remove(origin_file_path)
+                    print(f'\tThe original file "{filename}" has been successfully removed.')
+            break
 
 def normalize_binary_cmd(cmd: str) -> str:
     """Return the OS-form binary"""
