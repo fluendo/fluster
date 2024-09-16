@@ -20,6 +20,7 @@
 import argparse
 from html.parser import HTMLParser
 import os
+import re
 import sys
 import urllib.request
 import multiprocessing
@@ -35,12 +36,11 @@ from fluster.test_suite import TestSuite, TestVector
 
 BASE_URL = "https://www.itu.int/"
 H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
-BITSTREAM_EXTS = (
-    ".bit",
-)
-MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
-MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
+# When there is only 1 element in below variables there must be a ", " at the end.
+# Otherwise utils.find_by_ext() considers each character of the string as an individual
+# element in the list
+BITSTREAM_EXTS = (".bit", )
+MD5_EXTS = (".yuv.md5", )
 
 
 class HREFParser(HTMLParser):
@@ -158,7 +158,7 @@ class JVETGenerator:
                         raise key_err
                 except CalledProcessError as proc_err:
                     exceptions = {
-                        # All below test vectors need cause ffprobe to crash
+                        # All below test vectors cause ffprobe to crash
                         "MNUT_A_Nokia_3": OutputFormat.NONE,
                         "MNUT_B_Nokia_2": OutputFormat.NONE,
                         "SUBPIC_C_ERICSSON_1": OutputFormat.NONE,
@@ -169,8 +169,29 @@ class JVETGenerator:
                     else:
                         raise proc_err
 
+            self._fill_checksum_h266(test_vector, dest_dir)
+
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
+
+    @staticmethod
+    def _fill_checksum_h266(test_vector, dest_dir):
+        checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS)
+        if checksum_file is None:
+            raise Exception("MD5 not found")
+        with open(checksum_file, "r") as checksum_file:
+            regex = re.compile(rf"([a-fA-F0-9]{{32,}}).*(?:\.(yuv|rgb|gbr))?")
+            lines = checksum_file.readlines()
+            # Filter out empty lines
+            filtered_lines = [line.strip() for line in lines if line.strip()]
+            # Prefer lines matching the regex pattern
+            match = next((regex.match(line) for line in filtered_lines if regex.match(line)), None)
+            if match:
+                test_vector.result = match.group(1).lower()
+            # Assert that we have extracted a valid MD5 from the file
+            assert len(test_vector.result) == 32 and re.search(
+                r"^[a-fA-F0-9]{32}$",
+                test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
 
 
 if __name__ == "__main__":
@@ -194,6 +215,7 @@ if __name__ == "__main__":
         'JVET-VVC_draft6',
         Codec.H266,
         'JVET VVC draft6',
-        H266_URL
+        H266_URL,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)

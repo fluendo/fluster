@@ -43,7 +43,6 @@ BITSTREAM_EXTS = (
 )
 MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", ".MD5", "md5.txt", "md5sum.txt")
 MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
 
 
 class HREFParser(HTMLParser):

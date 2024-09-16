@@ -1,7 +1,7 @@
 {
     "name": "JCT-VC-3D-HEVC",
     "codec": "H.265",
-    "description": "JCT-VC 3D-HEVC 3D Extension",
+    "description": "JCT-VC HEVC 3D Extension",
     "test_vectors": [
         {
             "name": "3DHC_C_A_HHI_3",

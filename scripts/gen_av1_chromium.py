@@ -152,7 +152,7 @@ class ChromiumAV1Generator:
             out420 = f"{dest_path}.i420"
             # Run the libaom av1 decoder to get the checksum as the .md5 in the JSONs are per-frame
             test_vector.result = self.decoder.decode(
-                dest_path, out420, test_vector.output_format, 30, False)
+                dest_path, out420, test_vector.output_format, 30, False, False)
             os.remove(out420)
 
         test_suite.to_json_file(output_filepath)
