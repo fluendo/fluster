@@ -2,7 +2,7 @@
 
 # Fluster - testing framework for decoders conformance
 # Copyright (C) 2020-2024, Fluendo, S.A.
-#  Author: Ruben Sanchez Sanchez <rsanchez@fluendo.com>, Fluendo, S.A.
+#  Author: Martin Cesarini <mcesarini@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -18,16 +18,12 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-import copy
 import re
-from html.parser import HTMLParser
 import os
-import shutil
 import sys
-import requests
 import zipfile
 import urllib.request
-import multiprocessing
+import subprocess
 
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -38,41 +34,10 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://storage.googleapis.com/"
-H264_URL = BASE_URL + "downloads.aomedia.org/assets/zip/"
-#H264_URL = "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/SVC/"
-BITSTREAM_EXTS = (
-    ".obu",
-    ".264",
-)
-MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
-MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
+ARGON_URL = BASE_URL + "downloads.aomedia.org/assets/zip/"
 
-
-class HREFParser(HTMLParser):
-    """Custom parser to find href links"""
-
-    def __init__(self):
-        self.links = []
-        super().__init__()
-
-    def error(self, message):
-        print(message)
-
-    def handle_starttag(self, tag, attrs):
-        # Only parse the 'anchor' tag.
-        if tag == "a":
-            # Check the list of defined attributes.
-            for name, value in attrs:
-                # If href is defined, print it.
-                if name == "href":
-                    base_url = BASE_URL if BASE_URL[-1] != "/" else BASE_URL[0:-1]
-                    self.links.append(base_url + value)
-
-
-class JVTGenerator:
+class AV1ArgonGenerator:
     """Generates a test suite from the conformance bitstreams"""
-
     def __init__(
         self,
         name: str,
@@ -89,147 +54,112 @@ class JVTGenerator:
         self.site = site
         self.use_ffprobe = use_ffprobe
 
-    def generate(self, download, jobs):
+    def generate(self, download):
         """Generates the test suite and saves it to a file"""
-        new_test_vectors = []
         output_filepath = os.path.join(self.suite_name + ".json")
+        extract_folder="resources"
         test_suite = TestSuite(
             output_filepath,
-            "resources",
+            extract_folder,
             self.suite_name,
             self.codec,
             self.description,
             dict(),
         )
-        print(f"NAME: {self.name}")
-        print(f"SUITE: {self.suite_name}")
-        print(f"CODEC: {self.codec}")
-        print(f"DESCRIPTION: {self.description}")
-        print(f"SITE: {self.site}")
-        print(f"FFPROBE: {self.use_ffprobe}")
-        hparser = HREFParser()
-        # Revisar desde aqui!!!!!!!!!!
-        print(f"Download list of bitstreams from {self.site + self.name}")
-        zip_filename = os.path.join("resources", self.name)
-        urllib.request.urlretrieve(self.site + self.name, zip_filename)
-
-        # try:
-        #     response = requests.get(self.site + self.name)
-        # except requests.exceptions.Timeout as err: 
-        #     print(err)
-        # with open(zip_filename, 'wb') as file:
-        #     print("OPEN ZIP")
-        #     file.write(response.content)
-        extract_folder="resources"
         os.makedirs(extract_folder, exist_ok=True)
+        # Download the zip file
+        if download:
+            print(f"Download list of bitstreams from {self.site + self.name}")
+            try:
+                exception_str = ""
+                utils.download(self.site + self.name, extract_folder)
+            except urllib.error.URLError as ex:
+                exception_str = str(ex)
+                print(f"\tUnable to download {self.site + self.name} to {extract_folder}, {exception_str}")
+            except Exception as ex:
+                raise Exception(str(ex)) from ex
+
+        # Unzip the file
+        source_url = self.site + self.name
         obu_files = []
-        with zipfile.ZipFile(zip_filename, 'r') as zip_ref:
-            print("unzip")
+        with zipfile.ZipFile(extract_folder + '/' + self.name, 'r') as zip_ref:
+            print(f"Unzip files from {self.name}")
             for file_info in zip_ref.infolist():
+
+                # Extract obu files
                 if file_info.filename.endswith('.obu'):
                     zip_ref.extract(file_info, extract_folder)
                     obu_files.append(file_info.filename)
-        # with urllib.request.urlopen(self.site + self.name) as resp:
-        #     data = str(resp.read())
-        #     hparser.feed(data)
+                    filename = os.path.splitext(os.path.basename(file_info.filename))[0]
+                    
+                # Extract md5 files
+                if file_info.filename.endswith('.md5') and 'md5_ref/' in file_info.filename and 'layers/' not in file_info.filename:
+                    zip_ref.extract(file_info, extract_folder)
 
-        for url in hparser.links[1:]:
-            # The first item in the AVCv1 list is a readme file
-            if "00readme_H" in url:
-                continue
-            file_url = os.path.basename(url)
-            name = os.path.splitext(file_url)[0]
-            file_input = f"{name}.bin"
-            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
-            test_suite.test_vectors[name] = test_vector
-        print("ANTEs DEL IF download")
-        if download:
-            test_suite.download(
-                jobs=jobs,
-                out_dir=test_suite.resources_dir,
-                verify=False,
-                extract_all=True,
-                keep_file=True,
-            )
+            # Create the test vector and test suite
+            print ("Create Test Vector")        
+            source_checksum = utils.file_checksum(extract_folder + '/' + self.name)
+            for file in obu_files:
+                filename = os.path.splitext(os.path.basename(file))[0]
+                # ffprobe execution
+                if self.use_ffprobe:
+                    full_path = os.path.abspath(extract_folder + '/' + file)
+                    ffprobe = utils.normalize_binary_cmd('ffprobe')
+                    command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
+                            '-show_entries', 'stream=pix_fmt', '-of',
+                            'default=nokey=1:noprint_wrappers=1',
+                            full_path]
+                    try:
+                        result = utils.run_command_with_output(command).splitlines()
+                        pix_fmt = result[0]
+                        if pix_fmt == "unknown":
+                            pix_fmt = "Unknown"
+                    except subprocess.CalledProcessError:
+                        pix_fmt = "None"
 
-        for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
-            dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            test_vector.input_file = utils.find_by_ext(dest_dir, BITSTREAM_EXTS)
-            absolute_input_path = test_vector.input_file
-            test_vector.input_file = test_vector.input_file.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
-                "",
-            )
-            if not test_vector.input_file:
-                raise Exception(f"Bitstream file not found in {dest_dir}")
-            test_vector.source_checksum = utils.file_checksum(dest_path)
-            if self.use_ffprobe:
-                ffprobe = utils.normalize_binary_cmd('ffprobe')
-                command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
-                           '-show_entries', 'stream=pix_fmt', '-of',
-                           'default=nokey=1:noprint_wrappers=1',
-                           absolute_input_path]
-
-                result = utils.run_command_with_output(command).splitlines()
-                pix_fmt = result[0]
-                try:
-                    test_vector.output_format = OutputFormat[pix_fmt.upper()]
-                except KeyError as e:
-                    raise e
-
-            if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
-                if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
-                    new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
-                    new_test_vectors.extend(new_vectors)
-                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
+                # Processing md5 files
+                md5_file_to_find= os.path.splitext(filename)[0] + '.md5'
+                split = full_path.split('/')
+                md5_directory = '/'.join(split[:9]) + '/' + 'md5_ref'
+                md5_path_to_file = os.path.join(md5_directory, md5_file_to_find)
+                
+                # Check the .md5 file and get checksum
+                if os.path.exists(md5_path_to_file):
+                    try:
+                        result_checksum = self._fill_checksum_argon(self,md5_path_to_file)
+                    except:
+                        raise Exception("MD5 does not match")
                 else:
-                    self._fill_checksum_h264(test_vector, dest_dir)
+                    try:
+                        result_checksum = utils.file_checksum(full_path)
+                    except:
+                        raise Exception("MD5 cannot be calculated")
+
+                # Add data to the Test vector and the Test suite
+                test_vector = TestVector(filename, source_url, source_checksum, file, OutputFormat[pix_fmt.upper()], result_checksum)
+                test_suite.test_vectors[filename] = test_vector         
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
     @staticmethod
-    def _fill_checksum_h264(test_vector, dest_dir):
-        raw_file = utils.find_by_ext(dest_dir, RAW_EXTS)
-        if raw_file is None or len(raw_file) == 0:
-            raise Exception(f"RAW file not found in {dest_dir}")
-        test_vector.result = utils.file_checksum(raw_file)
-
-    @staticmethod
-    def _fill_checksum_h264_multiple(test_vector, dest_dir):
-        def remove_r1_from_path(path):
-            parts = path.split('/')
-            if len(parts) >= 2:
-                parts[-2] = re.sub(r'-r1', '', parts[-2])
-                parts[-1] = re.sub(r'-r1', '', parts[-1])
-            return '/'.join(parts)
-
-        multiple_test_vectors = []
-
-        for suffix in [f"-L{i}" for i in range(8)]:  # L0 ... L7
-            new_vector = copy.deepcopy(test_vector)
-            new_vector.name = test_vector.name + suffix
-
-            input_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264")
-            result_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv")
-
-            corrected_input_path = remove_r1_from_path(input_file_path)
-            corrected_result_path = remove_r1_from_path(result_file_path)
-
-            if os.path.exists(corrected_input_path) and os.path.exists(corrected_result_path):
-                new_vector.input_file = os.path.relpath(corrected_input_path, dest_dir)
-                new_vector.result = utils.file_checksum(corrected_result_path)
-
-                multiple_test_vectors.append(new_vector)
-
-        return multiple_test_vectors
-
+    def _fill_checksum_argon(self, dest_dir):
+        checksum_file = dest_dir
+        if checksum_file is None:
+            raise Exception("MD5 not found")
+        with open(checksum_file, "r") as checksum_file:
+            regex = re.compile(r"([a-fA-F0-9]{32,}).*\.(yuv|rgb|gbr)")
+            lines = checksum_file.readlines()
+            if any((match := regex.match(line)) for line in lines):
+                result = match.group(1)[:32].lower()
+            else:
+                result = -1
+            # Assert that we have extracted a valid MD5 from the file
+            # assert len(test_vector.result) == 32 and re.search(
+            #     r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
+            assert len(result) == 32 and re.search(
+                r"^[a-fA-F0-9]{32}$", result) is not None, f"{result} is not a valid MD5 hash"
+            return result
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -239,21 +169,14 @@ if __name__ == "__main__":
         action="store_true",
         default=False,
     )
-    parser.add_argument(
-        "-j",
-        "--jobs",
-        help="number of parallel jobs to use. 2x logical cores by default",
-        type=int,
-        default=2 * multiprocessing.cpu_count(),
-    )
     args = parser.parse_args()
-    generator = JVTGenerator(
+    generator = AV1ArgonGenerator(
         "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
-        #"SVCBC-1.zip",
         "AV1_ARGON_VECTORS",
         Codec.AV1,
         "AV1 Argon Streams",
-        H264_URL,
+        ARGON_URL,
+        True
     )
-    generator.generate(not args.skip_download, args.jobs)
+    generator.generate(not args.skip_download)
 

@@ -233,18 +233,6 @@ class TestSuite:
         dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
-        if (
-            ctx.verify
-            and os.path.exists(dest_path)
-            and test_vector.source_checksum == utils.file_checksum(dest_path)
-        ):
-            # Remove file only in case the input file was extractable.
-            # Otherwise, we'd be removing the original file we want to work
-            # with every even time we execute the download subcommand.
-            if utils.is_extractable(dest_path) and not ctx.keep_file:
-                os.remove(dest_path)
-            #return
-        #print(f"\tDownloading test vector {test_vector.name} from {dest_dir}")
         # Catch the exception that download may throw to make sure pickle can serialize it properly
         # This avoids:
         # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
@@ -268,6 +256,15 @@ class TestSuite:
 
             if exception_str:
                 raise Exception(exception_str)
+            
+            if test_vector.source_checksum != "__skip__":
+                checksum = utils.file_checksum(dest_path)
+                if test_vector.source_checksum != checksum:
+                    raise Exception(
+                        f"Checksum error for test vector '{test_vector.name}': '{checksum}' instead of "
+                        f"'{test_vector.source_checksum}'"
+                    )
+            
         if utils.is_extractable(dest_path):
             print(f"\tExtracting test vector {test_vector.name} to {dest_dir}")
             utils.extract(
@@ -275,23 +272,6 @@ class TestSuite:
                 dest_dir,
                 file=test_vector.input_file if not ctx.extract_all else None,
             )
-        
-        copy_to_path = os.path.join(dest_dir,test_vector.name)
-        copy_from_path = os.path.join(dest_dir)
-        file_to_copy = urlparse(test_vector.input_file).path.split('/')[-1]
-        utils.copy(copy_from_path, copy_to_path, file_to_copy)
-        
-                # Move to upper level->
-                #if not ctx.keep_file:
-                #    os.remove(dest_path)
-
-        if test_vector.source_checksum != "__skip__":
-            checksum = utils.file_checksum(dest_path)
-            if test_vector.source_checksum != checksum:
-                raise Exception(
-                    f"Checksum error for test vector '{test_vector.name}': '{checksum}' instead of "
-                    f"'{test_vector.source_checksum}'"
-                )
 
     def download(
         self,
@@ -306,11 +286,24 @@ class TestSuite:
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         if self.name == "AV1_ARGON_VECTORS":
+            # Only one job to download the zip file for Argon.
             jobs = 1
+            dest_dir = os.path.join(out_dir, self.name)
+            test_vector_key = self.test_vectors[list(self.test_vectors)[0]].source
+            dest_folder = os.path.splitext(os.path.basename(test_vector_key))[0]
+            dest_path = os.path.join(dest_dir, dest_folder)
+            if (
+                verify
+                and os.path.exists(dest_path)
+                and self.test_vectors[test_vector_key].source_checksum == utils.file_checksum(dest_path)
+            ):
+                # Remove file only in case the input file was extractable.
+                # Otherwise, we'd be removing the original file we want to work
+                # with every even time we execute the download subcommand.
+                if utils.is_extractable(dest_path) and not keep_file:
+                    os.remove(dest_path)
         print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
-        global dwork
         with Pool(jobs) as pool:
-            print("DENTRO DEL POOL")
             def _callback_error(err: Any) -> None:
                 print(f"\nError downloading -> {err}\n")
                 pool.terminate()
@@ -350,7 +343,6 @@ class TestSuite:
             if not job.successful():
                 sys.exit("Some download failed")
 
-        # To check
         if self.name == "AV1_ARGON_VECTORS":
             if not dwork.keep_file:
                 os.remove(os.path.join(dwork.out_dir,dwork.test_suite_name, os.path.basename(test_vector.source)))
