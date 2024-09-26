@@ -33,6 +33,7 @@ from fluster.utils import (
 )
 
 PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
+PIPELINE_TPL_FLU_H266_DEC = "{} --no-fault filesrc location={} ! {} ! {} ! {} {}"
 
 
 @lru_cache(maxsize=None)
@@ -59,6 +60,7 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
     """Return GStreamer pixel format"""
     mapping = {
         OutputFormat.GRAY: "GRAY8",
+        OutputFormat.GRAY10LE: "GRAY10_LE32",
         OutputFormat.GRAY16LE: "GRAY16_LE",
         OutputFormat.YUV420P: "I420",
         OutputFormat.YUV422P: "Y42B",
@@ -654,7 +656,25 @@ class FluendoVVCdeCH266Decoder(GStreamer10Video):
 
     codec = Codec.H266
     decoder_bin = " fluh266dec "
-    api = "VVdeC"
+    provider = "Fluendo"
+    api = "SW"
+
+    def gen_pipeline(
+        self,
+        input_filepath: str,
+        output_filepath: Optional[str],
+        output_format: OutputFormat,
+    ) -> str:
+        caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
+        output = f"location={output_filepath}" if output_filepath else ""
+        return PIPELINE_TPL_FLU_H266_DEC.format(
+            self.cmd,
+            input_filepath,
+            self.decoder_bin,
+            caps,
+            self.sink,
+            output,
+        )
 
 
 @register_decoder
