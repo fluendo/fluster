@@ -655,9 +655,8 @@ class FluendoVVCdeCH266Decoder(GStreamer10Video):
 
     codec = Codec.H266
     decoder_bin = " fluh266dec "
-    name = "Fluendo_H.266"
-    description = "Fluendo H.266 decoder"
-    api = "VVdeC"
+    provider = "Fluendo"
+    api = "SW"
 
     def gen_pipeline(
         self,
