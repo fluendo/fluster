@@ -27,6 +27,9 @@ jobs:
     - name: Check
       run: |
         make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
 
   linux:
     runs-on: ubuntu-22.04
@@ -44,7 +47,9 @@ jobs:
     - name: Check
       run: |
         make check
-
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
 
   windows:
     runs-on: windows-latest
@@ -61,3 +66,6 @@ jobs:
     - name: Check
       run: |
         make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
