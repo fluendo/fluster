@@ -30,7 +30,6 @@ from fluster import utils
 
 APPNAME = "fluster"
 TEST_SUITES_DIR = "test_suites"
-TEST_SUITES_DIR_SYS = "/usr/share/fluster/test_suites"
 DECODERS_DIR = "decoders"
 RESOURCES_DIR = "resources"
 OUTPUT_DIR = "fluster_output"
