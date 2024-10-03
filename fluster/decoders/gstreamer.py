@@ -60,6 +60,7 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
     """Return GStreamer pixel format"""
     mapping = {
         OutputFormat.GRAY: "GRAY8",
+        OutputFormat.GRAY10LE: "GRAY10_LE32",
         OutputFormat.GRAY16LE: "GRAY16_LE",
         OutputFormat.YUV420P: "I420",
         OutputFormat.YUV422P: "Y42B",
