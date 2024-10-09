@@ -143,6 +143,7 @@ class FFmpegDecoder(Decoder):
         codec_mapping = {
             Codec.H264: "h264",
             Codec.H265: "hevc",
+            Codec.H266: "vvc",
             Codec.VP8: "vp8",
             Codec.VP9: "vp9",
             Codec.AV1: "av1",
@@ -189,6 +190,13 @@ class FFmpegH265Decoder(FFmpegDecoder):
     """FFmpeg SW decoder for H.265"""
 
     codec = Codec.H265
+
+
+@register_decoder
+class FFmpegH266Decoder(FFmpegDecoder):
+    """FFmpeg SW decoder for H.265"""
+
+    codec = Codec.H266
 
 
 @register_decoder
