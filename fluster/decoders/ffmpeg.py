@@ -194,7 +194,7 @@ class FFmpegH265Decoder(FFmpegDecoder):
 
 @register_decoder
 class FFmpegH266Decoder(FFmpegDecoder):
-    """FFmpeg SW decoder for H.265"""
+    """FFmpeg SW decoder for H.266"""
 
     codec = Codec.H266
 
