@@ -59,7 +59,7 @@ packages = ["fluster", "fluster.decoders"]
 ]
 "share/fluster/test_suites/h265" = [
     "test_suites/h265/JCT-VC-3D-HEVC.json",
-    "test_suites/h265/JCT-VC-HEVC-V1.json",
+    "test_suites/h265/JCT-VC-HEVC_V1.json",
     "test_suites/h265/JCT-VC-MV-HEVC.json",
     "test_suites/h265/JCT-VC-RExt.json",
     "test_suites/h265/JCT-VC-SCC.json",

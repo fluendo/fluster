@@ -237,6 +237,15 @@ class GStreamerLibavH265(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerLibavH266(GStreamer10Video):
+    """GStreamer H.266 Libav decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.H266
+    decoder_bin = " avdec_h266 "
+    api = "Libav"
+
+
+@register_decoder
 class GStreamerLibavVP8(GStreamer10Video):
     """GStreamer VP8 Libav decoder implementation for GStreamer 1.0"""
 
