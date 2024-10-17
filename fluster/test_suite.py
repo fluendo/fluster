@@ -224,6 +224,51 @@ class TestSuite:
             if not ctx.keep_file:
                 os.remove(dest_path)
 
+    @staticmethod
+    def _download_worker_av1_argon(ctx: DownloadWork) -> None:
+        """Download and extract a av1 argon test vector"""
+        test_vector = ctx.test_vector
+        dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name)
+        dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+        # Catch the exception that download may throw to make sure pickle can serialize it properly
+        # This avoids:
+        # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
+        # Reason: 'TypeError("cannot pickle '_io.BufferedReader' object")'
+        if not os.path.exists(dest_path):
+            print(f"\tDownloading test vector {test_vector.name} from {dest_dir}")
+            for i in range(ctx.retries):
+                try:
+                    exception_str = ""
+                    utils.download(test_vector.source, dest_dir)
+                except urllib.error.URLError as ex:
+                    exception_str = str(ex)
+                    print(
+                        f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i+1}"
+                    )
+                    continue
+                except Exception as ex:
+                    raise Exception(str(ex)) from ex
+                break
+
+            if exception_str:
+                raise Exception(exception_str)
+            if test_vector.source_checksum != "__skip__":
+                checksum = utils.file_checksum(dest_path)
+                if test_vector.source_checksum != checksum:
+                    raise Exception(
+                        f"Checksum error for test vector '{test_vector.name}': '{checksum}' instead of "
+                        f"'{test_vector.source_checksum}'"
+                    )
+        if utils.is_extractable(dest_path):
+            print(f"\tExtracting test vector {test_vector.name} to {dest_dir}")
+            utils.extract(
+                dest_path,
+                dest_dir,
+                file=test_vector.input_file if not ctx.extract_all else None,
+            )
+
     def download(
         self,
         jobs: int,
@@ -236,8 +281,25 @@ class TestSuite:
         """Download the test suite"""
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
+        if self.name == "AV1_ARGON_VECTORS":
+            # Only one job to download the zip file for Argon.
+            jobs = 1
+            dest_dir = os.path.join(out_dir, self.name)
+            test_vector_key = self.test_vectors[list(self.test_vectors)[0]].source
+            dest_folder = os.path.splitext(os.path.basename(test_vector_key))[0]
+            dest_path = os.path.join(dest_dir, dest_folder)
+            if (
+                verify
+                and os.path.exists(dest_path)
+                and self.test_vectors[test_vector_key].source_checksum
+                == utils.file_checksum(dest_path)
+            ):
+                # Remove file only in case the input file was extractable.
+                # Otherwise, we'd be removing the original file we want to work
+                # with every even time we execute the download subcommand.
+                if utils.is_extractable(dest_path) and not keep_file:
+                    os.remove(dest_path)
         print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
-
         with Pool(jobs) as pool:
 
             def _callback_error(err: Any) -> None:
@@ -255,9 +317,13 @@ class TestSuite:
                     test_vector,
                     retries,
                 )
+                if self.name == "AV1_ARGON_VECTORS":
+                    download_worker = self._download_worker_av1_argon
+                else:
+                    download_worker = self._download_worker
                 downloads.append(
                     pool.apply_async(
-                        self._download_worker,
+                        download_worker,
                         args=(dwork,),
                         error_callback=_callback_error,
                     )
@@ -268,6 +334,16 @@ class TestSuite:
         for job in downloads:
             if not job.successful():
                 sys.exit("Some download failed")
+
+        if self.name == "AV1_ARGON_VECTORS":
+            if not dwork.keep_file:
+                os.remove(
+                    os.path.join(
+                        dwork.out_dir,
+                        dwork.test_suite_name,
+                        os.path.basename(dwork.test_vector.source),
+                    )
+                )
 
         print("All downloads finished")
 
