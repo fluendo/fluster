@@ -47,7 +47,7 @@ BITSTREAM_EXTS = [
 ]
 MD5_EXTS = ["yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt"]
 MD5_EXCLUDES = [".bin.md5", "bit.md5"]
-RAW_EXTS = ["nogray.yuv", ".yuv", ".qcif"]
+RAW_EXTS = ["nogray.yuv", ".yuv", ".YUV", ".qcif"]
 
 
 class HREFParser(HTMLParser):
@@ -193,6 +193,29 @@ class JVTGenerator:
                     else:
                         raise key_err
 
+            exceptions_checksum = [
+                # Output checksum of all below test vectors from JVT-FRExt has to be calculated by means of
+                # executing a run with the reference decoder, `fluster.py -f ...`
+                "alphaconformanceG",  # Raw reference files are split streams and give false checksum value
+                "FREH10-1",
+                "FREH10-2",
+                "Hi422FR1_SONY_A",
+                "Hi422FR2_SONY_A",
+                "Hi422FR3_SONY_A",
+                "Hi422FR4_SONY_A",
+                "Hi422FR6_SONY_A",
+                "Hi422FR7_SONY_A",
+                "Hi422FR8_SONY_A",
+                "Hi422FR9_SONY_A",
+                "Hi422FREXT16_SONY_A",
+                "Hi422FREXT17_SONY_A",
+                "Hi422FREXT18_SONY_A",
+                "Hi422FREXT19_SONY_A",
+            ]
+
+            if test_vector.name in exceptions_checksum:
+                continue
+
             if self.name not in (
                 "Professional_profiles",
                 "MVC",
@@ -284,6 +307,16 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
+        "FRExt",
+        "JVT-FR-EXT",
+        Codec.H264,
+        "JVT Fidelity Range Extension test suite",
+        H264_URL,
+        True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JVTGenerator(
         "MVC",
         "JVT-MVC",
         Codec.H264,
@@ -294,20 +327,20 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
-        "SVC",
-        "JVT-SVC",
+        "Professional_profiles",
+        "JVT-Professional_profiles",
         Codec.H264,
-        "JVT Scalable Video Coding test suite",
+        "JVT Professional Profiles test suite",
         H264_URL,
         True,
     )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
-        "Professional_profiles",
-        "JVT-Professional_profiles",
+        "SVC",
+        "JVT-SVC",
         Codec.H264,
-        "JVT Professional Profiles test suite",
+        "JVT Scalable Video Coding test suite",
         H264_URL,
         True,
     )
