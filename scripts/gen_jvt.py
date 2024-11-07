@@ -36,7 +36,7 @@ from fluster.test_suite import TestSuite, TestVector
 
 BASE_URL = "https://www.itu.int/"
 H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
-BITSTREAM_EXTS = (
+BITSTREAM_EXTS = [
     ".264",
     ".h264",
     ".jsv",
@@ -44,10 +44,10 @@ BITSTREAM_EXTS = (
     ".avc",
     ".26l",
     ".bits",
-)
-MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
-MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
+]
+MD5_EXTS = ["yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt"]
+MD5_EXCLUDES = [".bin.md5", "bit.md5"]
+RAW_EXTS = ["nogray.yuv", ".yuv", ".qcif"]
 
 
 class HREFParser(HTMLParser):
@@ -81,7 +81,7 @@ class JVTGenerator:
         codec: Codec,
         description: str,
         site: str,
-        use_ffprobe: bool = False
+        use_ffprobe: bool = False,
     ):
         self.name = name
         self.suite_name = suite_name
@@ -113,10 +113,15 @@ class JVTGenerator:
             # The first item in the AVCv1 list is a readme file
             if "00readme_H" in url:
                 continue
+            # MVC contains files marked as old, we want to skip those
+            if "_old" in url:
+                continue
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
+            test_vector = TestVector(
+                name, url, "__skip__", file_input, OutputFormat.YUV420P, ""
+            )
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -146,11 +151,19 @@ class JVTGenerator:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.use_ffprobe:
-                ffprobe = utils.normalize_binary_cmd('ffprobe')
-                command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
-                           '-show_entries', 'stream=pix_fmt', '-of',
-                           'default=nokey=1:noprint_wrappers=1',
-                           absolute_input_path]
+                ffprobe = utils.normalize_binary_cmd("ffprobe")
+                command = [
+                    ffprobe,
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=pix_fmt",
+                    "-of",
+                    "default=nokey=1:noprint_wrappers=1",
+                    absolute_input_path,
+                ]
 
                 result = utils.run_command_with_output(command).splitlines()
                 pix_fmt = result[0]
@@ -173,18 +186,27 @@ class JVTGenerator:
                         "PPH444P6_Mitsubishi_A": OutputFormat.NONE,
                         "PPH444P7_Mitsubishi_A": OutputFormat.NONE,
                         "PPH444P8_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444P9_Mitsubishi_A": OutputFormat.NONE
+                        "PPH444P9_Mitsubishi_A": OutputFormat.NONE,
                     }
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
                     else:
                         raise key_err
 
-            if self.name != "Professional_profiles":  # result md5 generated from h264_reference_decoder
-                if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
-                    new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
+            if self.name not in (
+                "Professional_profiles",
+                "MVC",
+            ):  # result md5 generated from h264_reference_decoder
+                if (
+                    self.name == "SVC"
+                ):  # result md5 generated for different Lines (L0, L1...)
+                    new_vectors = self._fill_checksum_h264_multiple(
+                        test_vector, dest_dir
+                    )
                     new_test_vectors.extend(new_vectors)
-                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
+                    test_suite.test_vectors = {
+                        vector.name: vector for vector in new_test_vectors
+                    }
                 else:
                     self._fill_checksum_h264(test_vector, dest_dir)
 
@@ -201,11 +223,11 @@ class JVTGenerator:
     @staticmethod
     def _fill_checksum_h264_multiple(test_vector, dest_dir):
         def remove_r1_from_path(path):
-            parts = path.split('/')
+            parts = path.split("/")
             if len(parts) >= 2:
-                parts[-2] = re.sub(r'-r1', '', parts[-2])
-                parts[-1] = re.sub(r'-r1', '', parts[-1])
-            return '/'.join(parts)
+                parts[-2] = re.sub(r"-r1", "", parts[-2])
+                parts[-1] = re.sub(r"-r1", "", parts[-1])
+            return "/".join(parts)
 
         multiple_test_vectors = []
 
@@ -213,13 +235,19 @@ class JVTGenerator:
             new_vector = copy.deepcopy(test_vector)
             new_vector.name = test_vector.name + suffix
 
-            input_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264")
-            result_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv")
+            input_file_path = os.path.join(
+                dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264"
+            )
+            result_file_path = os.path.join(
+                dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv"
+            )
 
             corrected_input_path = remove_r1_from_path(input_file_path)
             corrected_result_path = remove_r1_from_path(result_file_path)
 
-            if os.path.exists(corrected_input_path) and os.path.exists(corrected_result_path):
+            if os.path.exists(corrected_input_path) and os.path.exists(
+                corrected_result_path
+            ):
                 new_vector.input_file = os.path.relpath(corrected_input_path, dest_dir)
                 new_vector.result = utils.file_checksum(corrected_result_path)
 
@@ -244,31 +272,43 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
+
     generator = JVTGenerator(
         "AVCv1",
-        "JVT-AVC_V1",
+        "JVT-AVC_v1",
         Codec.H264,
-        "JVT AVC version 1",
-        H264_URL
+        "JVT Advanced Video Coding v1 test suite",
+        H264_URL,
+        True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = JVTGenerator(
+        "MVC",
+        "JVT-MVC",
+        Codec.H264,
+        "JVT Multiview Video Coding test suite",
+        H264_URL,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
         "SVC",
-        "JVT-SVC_V1",
+        "JVT-SVC",
         Codec.H264,
-        "JVT SVC version 1",
+        "JVT Scalable Video Coding test suite",
         H264_URL,
-        True
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
         "Professional_profiles",
-        "JVT-Professional_profiles_V1",
+        "JVT-Professional_profiles",
         Codec.H264,
-        "JVT professional profiles version 1",
+        "JVT Professional Profiles test suite",
         H264_URL,
-        True
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)

@@ -1,0 +1,167 @@
+{
+    "name": "JVT-MVC",
+    "codec": "H.264",
+    "description": "JVT Multiview Video Coding test suite",
+    "test_vectors": [
+        {
+            "name": "MVCDS-4",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCDS-4.264",
+            "source_checksum": "ed8c2beae88bf2a52416b32683972871",
+            "input_file": "MVCDS-4.264",
+            "output_format": "yuv420p",
+            "result": "4a15b286d65dc66099398e5ac008c06f"
+        },
+        {
+            "name": "MVCDS-5",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCDS-5.264",
+            "source_checksum": "e4c19397f32be3c9d713b595763bffc0",
+            "input_file": "MVCDS-5.264",
+            "output_format": "yuv420p",
+            "result": "4a15b286d65dc66099398e5ac008c06f"
+        },
+        {
+            "name": "MVCDS-6",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCDS-6.264",
+            "source_checksum": "943bcbb29c20c24d33fe3445206f12f8",
+            "input_file": "MVCDS-6.264",
+            "output_format": "yuv420p",
+            "result": "4a15b286d65dc66099398e5ac008c06f"
+        },
+        {
+            "name": "MVCDS1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCDS1.264",
+            "source_checksum": "387c5cdeaa86d1ae3ecf58a8fa74f795",
+            "input_file": "MVCDS1.264",
+            "output_format": "yuv420p",
+            "result": "4e93953a232fa6f4cd8b72339ce8a2f4"
+        },
+        {
+            "name": "MVCDS2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCDS2.264",
+            "source_checksum": "94eee17fc3733a85372a06ad877e850b",
+            "input_file": "MVCDS2.264",
+            "output_format": "yuv420p",
+            "result": "3d279d41cf52d70ca9af8ee7e950b504"
+        },
+        {
+            "name": "MVCDS3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCDS3.264",
+            "source_checksum": "8db1c1e4148a7c989598c2dd03e69a09",
+            "input_file": "MVCDS3.264",
+            "output_format": "yuv420p",
+            "result": "505cb8ad90da9a59e42d0a08569806e9"
+        },
+        {
+            "name": "MVCICT-1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCICT-1.264",
+            "source_checksum": "0948882f217b35fcbc2f2cb82a29faf9",
+            "input_file": "MVCICT-1.264",
+            "output_format": "yuv420p",
+            "result": "cfb27cf69ad9147bff1b6b528552fdb4"
+        },
+        {
+            "name": "MVCICT-2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCICT-2.264",
+            "source_checksum": "ef6b4c8a10743180eeff103f63e7165f",
+            "input_file": "MVCICT-2.264",
+            "output_format": "yuv420p",
+            "result": "140bb029c34692b67d15d4c5c957df7b"
+        },
+        {
+            "name": "MVCNV-2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCNV-2.264",
+            "source_checksum": "fa7418ba47995d6971243933eb2143c2",
+            "input_file": "MVCNV-2.264",
+            "output_format": "yuv420p",
+            "result": "4a15b286d65dc66099398e5ac008c06f"
+        },
+        {
+            "name": "MVCNV-3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCNV-3.264",
+            "source_checksum": "ef9aa6f176bb4706d4a6dbee5676b2e2",
+            "input_file": "MVCNV-3.264",
+            "output_format": "yuv420p",
+            "result": "4a15b286d65dc66099398e5ac008c06f"
+        },
+        {
+            "name": "MVCNV1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCNV1.264",
+            "source_checksum": "883d85865bbd6df9bf4ae3d3dae039de",
+            "input_file": "MVCNV1.264",
+            "output_format": "yuv420p",
+            "result": "3d279d41cf52d70ca9af8ee7e950b504"
+        },
+        {
+            "name": "MVCNV4",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCNV4.264",
+            "source_checksum": "754cf17d50f76811142c826137f4280d",
+            "input_file": "MVCNV4.264",
+            "output_format": "yuv420p",
+            "result": "505cb8ad90da9a59e42d0a08569806e9"
+        },
+        {
+            "name": "MVCRP_1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCRP_1.264",
+            "source_checksum": "5f0b327fdd075a3d7e5f201ca86e291e",
+            "input_file": "MVCRP_1.264",
+            "output_format": "yuv420p",
+            "result": "1312ce1b578bdd66dbfaed67d3b13678"
+        },
+        {
+            "name": "MVCRP_2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCRP_2.264",
+            "source_checksum": "9f46037181092e5167efa27bcdbdfc34",
+            "input_file": "MVCRP_2.264",
+            "output_format": "yuv420p",
+            "result": "b89fdf72007d76e4611237ca113a9e47"
+        },
+        {
+            "name": "MVCRP_3",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCRP_3.264",
+            "source_checksum": "019c9c799983e858a71faf4324ee3a5e",
+            "input_file": "MVCRP_3.264",
+            "output_format": "yuv420p",
+            "result": "b89fdf72007d76e4611237ca113a9e47"
+        },
+        {
+            "name": "MVCRP_4",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCRP_4.264",
+            "source_checksum": "142e45e69f11787ffaef2df578177f44",
+            "input_file": "MVCRP_4.264",
+            "output_format": "yuv420p",
+            "result": "198afdb2a23f707b36be0c3e6e1dde96"
+        },
+        {
+            "name": "MVCRP_5",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCRP_5.264",
+            "source_checksum": "142e45e69f11787ffaef2df578177f44",
+            "input_file": "MVCRP_5.264",
+            "output_format": "yuv420p",
+            "result": "198afdb2a23f707b36be0c3e6e1dde96"
+        },
+        {
+            "name": "MVCRP_6",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCRP_6.264",
+            "source_checksum": "019c9c799983e858a71faf4324ee3a5e",
+            "input_file": "MVCRP_6.264",
+            "output_format": "yuv420p",
+            "result": "b89fdf72007d76e4611237ca113a9e47"
+        },
+        {
+            "name": "MVCSPS-1",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCSPS-1.264",
+            "source_checksum": "85db58f59ab490b0e84c241b33a7da20",
+            "input_file": "MVCSPS-1.264",
+            "output_format": "yuv420p",
+            "result": "3db35ab5bd1b052b456f2e7ea7f3fb74"
+        },
+        {
+            "name": "MVCSPS-2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/MVC/MVCSPS-2.264",
+            "source_checksum": "17c86dbe49306710455dead0bc8afad0",
+            "input_file": "MVCSPS-2.264",
+            "output_format": "yuv420p",
+            "result": "3db35ab5bd1b052b456f2e7ea7f3fb74"
+        }
+    ]
+}
