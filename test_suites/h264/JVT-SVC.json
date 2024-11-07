@@ -1,7 +1,7 @@
 {
-    "name": "JVT-SVC_V1",
+    "name": "JVT-SVC",
     "codec": "H.264",
-    "description": "JVT SVC version 1",
+    "description": "JVT Scalable Video Coding test suite",
     "test_vectors": [
         {
             "name": "SVCBC-1-L0",

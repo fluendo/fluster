@@ -36,7 +36,7 @@ from fluster.test_suite import TestSuite, TestVector
 
 BASE_URL = "https://www.itu.int/"
 H264_URL = BASE_URL + "wftp3/av-arch/jvt-site/draft_conformance/"
-BITSTREAM_EXTS = (
+BITSTREAM_EXTS = [
     ".264",
     ".h264",
     ".jsv",
@@ -44,10 +44,10 @@ BITSTREAM_EXTS = (
     ".avc",
     ".26l",
     ".bits",
-)
-MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt")
-MD5_EXCLUDES = (".bin.md5", "bit.md5")
-RAW_EXTS = ("nogray.yuv", ".yuv", ".qcif")
+]
+MD5_EXTS = ["yuv_2.md5", "yuv.md5", ".md5", "md5.txt", "md5sum.txt"]
+MD5_EXCLUDES = [".bin.md5", "bit.md5"]
+RAW_EXTS = ["nogray.yuv", ".yuv", ".qcif"]
 
 
 class HREFParser(HTMLParser):
@@ -274,7 +274,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     generator = JVTGenerator(
-        "AVCv1", "JVT-AVC_V1", Codec.H264, "JVT AVC version 1", H264_URL
+        "AVCv1",
+        "JVT-AVC_v1",
+        Codec.H264,
+        "JVT Advanced Video Coding v1 test suite",
+        H264_URL,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
 
@@ -289,15 +294,20 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
-        "SVC", "JVT-SVC_V1", Codec.H264, "JVT SVC version 1", H264_URL, True
+        "SVC",
+        "JVT-SVC",
+        Codec.H264,
+        "JVT Scalable Video Coding test suite",
+        H264_URL,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JVTGenerator(
         "Professional_profiles",
-        "JVT-Professional_profiles_V1",
+        "JVT-Professional_profiles",
         Codec.H264,
-        "JVT professional profiles version 1",
+        "JVT Professional Profiles test suite",
         H264_URL,
         True,
     )
