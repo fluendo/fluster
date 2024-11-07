@@ -1,7 +1,7 @@
 {
     "name": "JVT-FR-EXT",
     "codec": "H.264",
-    "description": "JVT Fidelity Range Extensions",
+    "description": "JVT Fidelity Range Extension test suite",
     "test_vectors": [
         {
             "name": "alphaconformanceG",
