@@ -328,7 +328,7 @@ if __name__ == "__main__":
 
     generator = JVTGenerator(
         "Professional_profiles",
-        "JVT-Professional_profiles",
+        "JVT-Professional_profiles_V1",
         Codec.H264,
         "JVT Professional Profiles test suite",
         H264_URL,
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 
     generator = JVTGenerator(
         "SVC",
-        "JVT-SVC",
+        "JVT-SVC_V1",
         Codec.H264,
         "JVT Scalable Video Coding test suite",
         H264_URL,
