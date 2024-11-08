@@ -275,7 +275,7 @@ if __name__ == "__main__":
 
     generator = JVTGenerator(
         "AVCv1",
-        "JVT-AVC_v1",
+        "JVT-AVC_V1",
         Codec.H264,
         "JVT Advanced Video Coding v1 test suite",
         H264_URL,
