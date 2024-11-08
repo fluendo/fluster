@@ -1,5 +1,5 @@
 {
-    "name": "JVT-AVC_v1",
+    "name": "JVT-AVC_V1",
     "codec": "H.264",
     "description": "JVT Advanced Video Coding v1 test suite",
     "test_vectors": [
