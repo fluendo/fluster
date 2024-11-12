@@ -1,0 +1,503 @@
+{
+    "name": "MPEG2_AAC-ADTS",
+    "codec": "AAC",
+    "description": "ISO IEC 13818-4 MPEG2 AAC ADTS test suite",
+    "test_vectors": [
+        {
+            "name": "al12_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al12_48.adts",
+            "source_checksum": "27929bfbce9d06fb61274cb013d04e9a",
+            "input_file": "al12_48.adts",
+            "output_format": "fltp",
+            "result": "bae4b43109f5689160b54890f47efd0c"
+        },
+        {
+            "name": "as20_24",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_24.adts",
+            "source_checksum": "711515116cd73b67d1f76862edc9cb10",
+            "input_file": "as20_24.adts",
+            "output_format": "fltp",
+            "result": "636e36d9061bbde4a6c7d39e676b4dfb"
+        },
+        {
+            "name": "al09_11",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_11.adts",
+            "source_checksum": "d9c69bdd4677c4998591272e6de378e7",
+            "input_file": "al09_11.adts",
+            "output_format": "fltp",
+            "result": "45f3814f5372b5e325a959de1552913c"
+        },
+        {
+            "name": "as21_44",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_44.adts",
+            "source_checksum": "8318287c05fcdde7031de892a154dc7a",
+            "input_file": "as21_44.adts",
+            "output_format": "fltp",
+            "result": "0f749b75c489016e2ca65eb54fc90966"
+        },
+        {
+            "name": "as19_44",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_44.adts",
+            "source_checksum": "5622d850cdae2178bf8cca590fdfa011",
+            "input_file": "as19_44.adts",
+            "output_format": "fltp",
+            "result": "8b41a564f3cf744dca89fd7360f42115"
+        },
+        {
+            "name": "al09_08",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_08.adts",
+            "source_checksum": "2843464c7d9b40adac27c075ef100705",
+            "input_file": "al09_08.adts",
+            "output_format": "fltp",
+            "result": "3f7da1c1bcf393002f9797fd16a4352a"
+        },
+        {
+            "name": "as19_24",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_24.adts",
+            "source_checksum": "d95b1df14e768ae90fecebab57219b58",
+            "input_file": "as19_24.adts",
+            "output_format": "fltp",
+            "result": "6d4222dd6fdf5d6dc9367abce33584f8"
+        },
+        {
+            "name": "as19_32",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_32.adts",
+            "source_checksum": "9e4044870f052175df24acdd6d04cd39",
+            "input_file": "as19_32.adts",
+            "output_format": "fltp",
+            "result": "3fab333995a90a5fc75f23833853bc06"
+        },
+        {
+            "name": "as20_96",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_96.adts",
+            "source_checksum": "0ffe6dc8a1a8817bc9f4f95bb0a272cf",
+            "input_file": "as20_96.adts",
+            "output_format": "fltp",
+            "result": "adf796a93e39217cc7aea43ea25dc987"
+        },
+        {
+            "name": "as19_88",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_88.adts",
+            "source_checksum": "5843d8d610d372283455b48f74cbe0d3",
+            "input_file": "as19_88.adts",
+            "output_format": "fltp",
+            "result": "f3d277bb3cd856d9596803ca0ad0a3be"
+        },
+        {
+            "name": "as21_11",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_11.adts",
+            "source_checksum": "09b1c407c41e2370417abb5dedffce9c",
+            "input_file": "as21_11.adts",
+            "output_format": "fltp",
+            "result": "e0532456fb45380ede0806139b525ffe"
+        },
+        {
+            "name": "as18_24",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_24.adts",
+            "source_checksum": "192ab015b67c34d36d22aa0675ca5560",
+            "input_file": "as18_24.adts",
+            "output_format": "fltp",
+            "result": "291ef2da08d74f10512523eeedbcc6d8"
+        },
+        {
+            "name": "as19_64",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_64.adts",
+            "source_checksum": "e45128742ebd2432e82c007f18a631b9",
+            "input_file": "as19_64.adts",
+            "output_format": "fltp",
+            "result": "8651fb75bfa0bac064898fefc815b3f2"
+        },
+        {
+            "name": "as20_88",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_88.adts",
+            "source_checksum": "d9a81756fa3880d19821de84ca37dd9a",
+            "input_file": "as20_88.adts",
+            "output_format": "fltp",
+            "result": "e77dd105421e7457894f3b1399886a73"
+        },
+        {
+            "name": "as20_08",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_08.adts",
+            "source_checksum": "ad7d08193b166cf1c46ff84a3f3ebb7d",
+            "input_file": "as20_08.adts",
+            "output_format": "fltp",
+            "result": "fe7804ed8d57899d6950bf0ad752b7f3"
+        },
+        {
+            "name": "as21_64",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_64.adts",
+            "source_checksum": "6c595906c5e563a765ed97c825719cc6",
+            "input_file": "as21_64.adts",
+            "output_format": "fltp",
+            "result": "e184f9f254277e80d7bef094ccb9ace4"
+        },
+        {
+            "name": "as21_24",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_24.adts",
+            "source_checksum": "7d54f1ca0dea1a42491252e61e0b0ade",
+            "input_file": "as21_24.adts",
+            "output_format": "fltp",
+            "result": "edb6c10f72ff1d9b3044dfa1bd0c7a2a"
+        },
+        {
+            "name": "as21_16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_16.adts",
+            "source_checksum": "29c98dae5c26f6739fa449607dc6adf9",
+            "input_file": "as21_16.adts",
+            "output_format": "fltp",
+            "result": "824863661814a170cfa742b9fa860989"
+        },
+        {
+            "name": "as18_88",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_88.adts",
+            "source_checksum": "c565798d39dbbc3a0c3dcb07d7210df8",
+            "input_file": "as18_88.adts",
+            "output_format": "fltp",
+            "result": "4ece0dc1422c1d40a429020cdcd48b0e"
+        },
+        {
+            "name": "as18_11",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_11.adts",
+            "source_checksum": "f5ffb91d23d125853afcb8297d925404",
+            "input_file": "as18_11.adts",
+            "output_format": "fltp",
+            "result": "0497fed5162a3f9e7596515c6a46b759"
+        },
+        {
+            "name": "as20_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_48.adts",
+            "source_checksum": "569bb98829b5a308c3bb9c7afc83cdc6",
+            "input_file": "as20_48.adts",
+            "output_format": "fltp",
+            "result": "a30ad97baeee7d8381c0a1a3f85d7d90"
+        },
+        {
+            "name": "as21_22",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_22.adts",
+            "source_checksum": "316b53896aff83108f32d2db8aa39fcf",
+            "input_file": "as21_22.adts",
+            "output_format": "fltp",
+            "result": "2c0bbe9200f2fb031e1864683ebaf367"
+        },
+        {
+            "name": "as20_22",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_22.adts",
+            "source_checksum": "3cefa90c24155f261826bebb95065fe0",
+            "input_file": "as20_22.adts",
+            "output_format": "fltp",
+            "result": "180e2fc1eae7e8cc3bcd63e03a485e21"
+        },
+        {
+            "name": "as21_08",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_08.adts",
+            "source_checksum": "a8ba0949a1e983cb076dafa6726082d4",
+            "input_file": "as21_08.adts",
+            "output_format": "fltp",
+            "result": "3d99bcabac1e06a0e619b598d157fe54"
+        },
+        {
+            "name": "as20_44",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_44.adts",
+            "source_checksum": "c6c903ccd30accc90b44dbe556bf3701",
+            "input_file": "as20_44.adts",
+            "output_format": "fltp",
+            "result": "949d889b7fc27a65f94987925bb6e3a1"
+        },
+        {
+            "name": "as20_11",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_11.adts",
+            "source_checksum": "6d3260070f0e55a02e41272edce11d23",
+            "input_file": "as20_11.adts",
+            "output_format": "fltp",
+            "result": "0272a9d25316b8f2ac024feb11d7b4ff"
+        },
+        {
+            "name": "as19_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_48.adts",
+            "source_checksum": "a7a3032f2d9abb74ba53c59f8edaefec",
+            "input_file": "as19_48.adts",
+            "output_format": "fltp",
+            "result": "8c77378bfa853a7a37ad4323ee927582"
+        },
+        {
+            "name": "as19_08",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_08.adts",
+            "source_checksum": "035f0a74173468a7940e901da1599d55",
+            "input_file": "as19_08.adts",
+            "output_format": "fltp",
+            "result": "a24bfcb0382b64ff3b828d4a97c6a598"
+        },
+        {
+            "name": "as19_16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_16.adts",
+            "source_checksum": "4a7dda41b06c18a35b9f9d7dbad42bc7",
+            "input_file": "as19_16.adts",
+            "output_format": "fltp",
+            "result": "4b1d4c8a33e99e30a42afbb781578368"
+        },
+        {
+            "name": "al09_64",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_64.adts",
+            "source_checksum": "154b9a2a184284d5f27aa9109324578a",
+            "input_file": "al09_64.adts",
+            "output_format": "fltp",
+            "result": "6b7786cdfa6a79b6261bd3eaca246e65"
+        },
+        {
+            "name": "al09_24",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_24.adts",
+            "source_checksum": "3e5a52c0c73cc9bb46d98d4c28378374",
+            "input_file": "al09_24.adts",
+            "output_format": "fltp",
+            "result": "8c4be460009dede1e84c9cc26efe0589"
+        },
+        {
+            "name": "al09_44",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_44.adts",
+            "source_checksum": "8d67429688392ceaf915ae92dc0eb14e",
+            "input_file": "al09_44.adts",
+            "output_format": "fltp",
+            "result": "e76639802041a3665dccd6bd02a20fa6"
+        },
+        {
+            "name": "al13_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al13_48.adts",
+            "source_checksum": "92e966b0c730d9dcde6373636d869534",
+            "input_file": "al13_48.adts",
+            "output_format": "fltp",
+            "result": "df98107109e884737dd74b6db0feb33d"
+        },
+        {
+            "name": "as19_96",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_96.adts",
+            "source_checksum": "78ecb299d42f2aa4aa07d15240013e78",
+            "input_file": "as19_96.adts",
+            "output_format": "fltp",
+            "result": "9e13c300fb44756929c1ecaae969ad8d"
+        },
+        {
+            "name": "as20_12",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_12.adts",
+            "source_checksum": "f694118f7ff688c2915d6fe4060bef33",
+            "input_file": "as20_12.adts",
+            "output_format": "fltp",
+            "result": "af2728b4ad681184dce08bae1a183162"
+        },
+        {
+            "name": "as20_64",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_64.adts",
+            "source_checksum": "da230df29e16888934ef7a64ca544243",
+            "input_file": "as20_64.adts",
+            "output_format": "fltp",
+            "result": "dd6c03d3bab856fdda6d83c426bea305"
+        },
+        {
+            "name": "as21_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_48.adts",
+            "source_checksum": "1c98f957869644bbc3f1095d0ee90ec4",
+            "input_file": "as21_48.adts",
+            "output_format": "fltp",
+            "result": "72eef2fe807292fbb99a5b34398420c0"
+        },
+        {
+            "name": "as18_32",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_32.adts",
+            "source_checksum": "e12fc78483b5c2a5bf4cab5aca1cd921",
+            "input_file": "as18_32.adts",
+            "output_format": "fltp",
+            "result": "c5292512cdf48ce153811a43ae36bbba"
+        },
+        {
+            "name": "al09_32",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_32.adts",
+            "source_checksum": "56e57d9b3c98efaf74c2e75e46b94707",
+            "input_file": "al09_32.adts",
+            "output_format": "fltp",
+            "result": "8674ec6187098dc77d26780cec906964"
+        },
+        {
+            "name": "as18_16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_16.adts",
+            "source_checksum": "a5bb06ebb5238ebd2539f481515aec11",
+            "input_file": "as18_16.adts",
+            "output_format": "fltp",
+            "result": "b74074eebf121f6a22b4fcb754d70088"
+        },
+        {
+            "name": "as18_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_48.adts",
+            "source_checksum": "e5fd7fb3db6bea960171e155ffcd81f2",
+            "input_file": "as18_48.adts",
+            "output_format": "fltp",
+            "result": "cdf0e52da75ae29fd5e327fc7ef1dd12"
+        },
+        {
+            "name": "as18_44",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_44.adts",
+            "source_checksum": "b4b616b26ab554ed57ea7014de845cc0",
+            "input_file": "as18_44.adts",
+            "output_format": "fltp",
+            "result": "1978712357e67e6148c1429bd35d3bfc"
+        },
+        {
+            "name": "as21_96",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_96.adts",
+            "source_checksum": "5f31709d01b272dd9434e5800dd948dd",
+            "input_file": "as21_96.adts",
+            "output_format": "fltp",
+            "result": "1e2597610c03d93e078c37fe0eb1ee46"
+        },
+        {
+            "name": "al09_22",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_22.adts",
+            "source_checksum": "683f11281b7830def34ee1f778c7130b",
+            "input_file": "al09_22.adts",
+            "output_format": "fltp",
+            "result": "9296f37fa20f0325093f0d324d7959cb"
+        },
+        {
+            "name": "as19_12",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_12.adts",
+            "source_checksum": "1e22b357bef8f7a32fb5a0655a03cc65",
+            "input_file": "as19_12.adts",
+            "output_format": "fltp",
+            "result": "14283798dcae218386885921f3e042e1"
+        },
+        {
+            "name": "al09_16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_16.adts",
+            "source_checksum": "8c91b5fc725fdba3c44c8f2390f89381",
+            "input_file": "al09_16.adts",
+            "output_format": "fltp",
+            "result": "3deda1facfc196a807a1a979926a0e26"
+        },
+        {
+            "name": "as18_64",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_64.adts",
+            "source_checksum": "8b9d9f7969f20284dcb670c51b425d93",
+            "input_file": "as18_64.adts",
+            "output_format": "fltp",
+            "result": "a4078a2db7d6e37ec859bf63847066fc"
+        },
+        {
+            "name": "as19_11",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_11.adts",
+            "source_checksum": "f6415137c41dd5ce5572659abbd61333",
+            "input_file": "as19_11.adts",
+            "output_format": "fltp",
+            "result": "b55824b9c5f438b0dcebf399c839a58b"
+        },
+        {
+            "name": "al09_12",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_12.adts",
+            "source_checksum": "cd8ae7d9c7a06f1af755a33683594a98",
+            "input_file": "al09_12.adts",
+            "output_format": "fltp",
+            "result": "9cc72882eef5f3eccffce630d54f94d1"
+        },
+        {
+            "name": "as20_16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_16.adts",
+            "source_checksum": "a8ec01e8aa200ed65dbae8459b438df6",
+            "input_file": "as20_16.adts",
+            "output_format": "fltp",
+            "result": "5ef11534ae396695374afea4a465e974"
+        },
+        {
+            "name": "al09_88",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_88.adts",
+            "source_checksum": "a4d5e526f7c0fc8fb048aad54e4d71c2",
+            "input_file": "al09_88.adts",
+            "output_format": "fltp",
+            "result": "392baa1e73e036c98ab27c105e15e8af"
+        },
+        {
+            "name": "as18_08",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_08.adts",
+            "source_checksum": "a64588993a1bb52acfedb21df39e9b78",
+            "input_file": "as18_08.adts",
+            "output_format": "fltp",
+            "result": "63413b1486834edf83df0a99bbaa81ed"
+        },
+        {
+            "name": "as18_12",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_12.adts",
+            "source_checksum": "b745ffe579e4832c214c6de012485f1f",
+            "input_file": "as18_12.adts",
+            "output_format": "fltp",
+            "result": "74649c19597a67bfd319a5e6f4c74b8a"
+        },
+        {
+            "name": "as18_22",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_22.adts",
+            "source_checksum": "5369c26e819fa6ea569007ad629ac0ec",
+            "input_file": "as18_22.adts",
+            "output_format": "fltp",
+            "result": "79e9193f9ed93d960a0f8e3feec9a47b"
+        },
+        {
+            "name": "al09_48",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_48.adts",
+            "source_checksum": "5be05f18cfcf9340c9967a0d0007e4ad",
+            "input_file": "al09_48.adts",
+            "output_format": "fltp",
+            "result": "d7b2083825a5874dcbb8908cc5735183"
+        },
+        {
+            "name": "al09_96",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/al09_96.adts",
+            "source_checksum": "5ccaa6962dbbe8a7988990834b588b61",
+            "input_file": "al09_96.adts",
+            "output_format": "fltp",
+            "result": "85210932d70e0295e10885fe0f28cb56"
+        },
+        {
+            "name": "as18_96",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as18_96.adts",
+            "source_checksum": "5fca7fa515d86d5910147cc909bfc9fb",
+            "input_file": "as18_96.adts",
+            "output_format": "fltp",
+            "result": "ad33cddc35d647740a7eec8dbc37c581"
+        },
+        {
+            "name": "as21_12",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_12.adts",
+            "source_checksum": "939556a3ce7d04dc581db45317147d08",
+            "input_file": "as21_12.adts",
+            "output_format": "fltp",
+            "result": "f7a0f91241a27bbae305f8a5b834bcc5"
+        },
+        {
+            "name": "as21_32",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_32.adts",
+            "source_checksum": "af841a1ebdefb2a40cd819c174fc1be6",
+            "input_file": "as21_32.adts",
+            "output_format": "fltp",
+            "result": "98a4083ce37f90fc25a1c6b51faa13ad"
+        },
+        {
+            "name": "as19_22",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as19_22.adts",
+            "source_checksum": "21a24c98f9c0c871422050e31ff5a27a",
+            "input_file": "as19_22.adts",
+            "output_format": "fltp",
+            "result": "dfcaf44cacd516d8aaeac250bf19d571"
+        },
+        {
+            "name": "as21_88",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as21_88.adts",
+            "source_checksum": "d1675729e2333effc6fcc50ab0b5e94b",
+            "input_file": "as21_88.adts",
+            "output_format": "fltp",
+            "result": "9f5e4921e04c68ce72d1ec7678810f80"
+        },
+        {
+            "name": "as20_32",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdts/as20_32.adts",
+            "source_checksum": "f9de9178603479f2575db585cc944622",
+            "input_file": "as20_32.adts",
+            "output_format": "fltp",
+            "result": "60f0f2fee508216ad89b977065710242"
+        }
+    ]
+}

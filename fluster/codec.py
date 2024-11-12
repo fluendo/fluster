@@ -55,3 +55,4 @@ class OutputFormat(Enum):
     GRAY12LE = "gray12le"
     GRAY16LE = "gray16le"
     UNKNOWN = "Unknown"
+    FLTP = "fltp"
