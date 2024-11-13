@@ -44,6 +44,7 @@ packages = ["fluster", "fluster.decoders"]
 [tool.setuptools.data-files]
 "share/fluster/test_suites/aac" = [
     "test_suites/aac/MPEG2_AAC-ADTS.json",
+    "test_suites/aac/MPEG4_AAC-ADIF.json",
     "test_suites/aac/ISO_IEC_14496-26_2010.json"
 ]
 "share/fluster/test_suites/av1" = [

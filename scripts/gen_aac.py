@@ -35,21 +35,18 @@ from fluster.test_suite import TestSuite, TestVector
 # pylint: enable=wrong-import-position
 
 BASE_URL = "https://standards.iso.org/"
-URL_MPEG2 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/"
-URL_MPEG2_ADTS = (
-    URL_MPEG2
-    + "compressedAdts"
-)
-URL_MPEG2_WAV_REFS = (
-    URL_MPEG2
-    + "referencesWav"
-)
-URL_MPEG2_WAV_REFS_MD5 = (
-    URL_MPEG2
-    + "referencesWav/_checksum"
-)
 
-BITSTREAM_EXTS = [".adts"]
+URL_MPEG2 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/"
+URL_MPEG2_ADTS = URL_MPEG2 + "compressedAdts"
+URL_MPEG2_WAV_REFS = URL_MPEG2 + "referencesWav"
+URL_MPEG2_WAV_REFS_MD5 = URL_MPEG2 + "referencesWav/_checksum"
+
+URL_MPEG4 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/"
+URL_MPEG4_ADIF = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedAdif/add-opt/"
+URL_MPEG4_WAV_REFS = URL_MPEG4 + "DVD2/mpeg4audio-conformance/referencesWav/"
+URL_MPEG4_WAV_REFS_MD5 = URL_MPEG4 + "DVD1/mpeg4audio-conformance/referencesWav/_checksum/"
+
+BITSTREAM_EXTS = [".adts", ".adif"]
 MD5_EXTS = [".wav.md5sum"]
 MD5_EXCLUDES = []
 RAW_EXTS = [".wav"]
@@ -204,7 +201,8 @@ class AACGenerator:
         # Match and store entries of raw_bitstream_md5_links that contain entries of raw_bitstream_md5_names
         # as substrings
         raw_bitstream_md5_links = [link for link in raw_bitstream_md5_links
-                                   if any(name in link for name in raw_bitstream_md5_names)]
+                                   if any(str(os.path.basename(link)).startswith(name)
+                                          for name in raw_bitstream_md5_names)]
 
         for source_url in compressed_bitstream_links:
             input_filename = os.path.basename(source_url)
@@ -324,5 +322,17 @@ if __name__ == "__main__":
         URL_MPEG2_WAV_REFS,
         URL_MPEG2_WAV_REFS_MD5,
         True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = AACGenerator(
+        "MPEG4_AAC-ADIF",
+        "MPEG4_AAC-ADIF",
+        Codec.AAC,
+        "ISO IEC 14496-26 MPEG4 AAC ADIF test suite",
+        URL_MPEG4_ADIF,
+        URL_MPEG4_WAV_REFS,
+        URL_MPEG4_WAV_REFS_MD5,
+        False,
     )
     generator.generate(not args.skip_download, args.jobs)
