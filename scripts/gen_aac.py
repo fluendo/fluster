@@ -38,6 +38,7 @@ BASE_URL = "https://standards.iso.org/"
 
 URL_MPEG2 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/"
 URL_MPEG2_ADTS = URL_MPEG2 + "compressedAdts"
+URL_MPEG2_ADIF = URL_MPEG2 + "compressedAdif"
 URL_MPEG2_WAV_REFS = URL_MPEG2 + "referencesWav"
 URL_MPEG2_WAV_REFS_MD5 = URL_MPEG2 + "referencesWav/_checksum"
 
@@ -322,6 +323,18 @@ if __name__ == "__main__":
         URL_MPEG2_WAV_REFS,
         URL_MPEG2_WAV_REFS_MD5,
         True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = AACGenerator(
+        "MPEG2_AAC-ADIF",
+        "MPEG2_AAC-ADIF",
+        Codec.AAC,
+        "ISO IEC 13818-4 MPEG2 AAC ADIF test suite",
+        URL_MPEG2_ADIF,
+        URL_MPEG2_WAV_REFS,
+        URL_MPEG2_WAV_REFS_MD5,
+        False,
     )
     generator.generate(not args.skip_download, args.jobs)
 
