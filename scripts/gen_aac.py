@@ -292,17 +292,26 @@ class AACGenerator:
     @staticmethod
     def _fill_checksum_aac(test_vector, dest_dir):
         base_name = test_vector.name
-        exact_wav_file = os.path.join(dest_dir, base_name + '.wav')
+        raw_file = None
+        ext = None
 
-        if os.path.exists(exact_wav_file):
-            raw_file = exact_wav_file
-        else:
-            fallback_wav_file = os.path.join(dest_dir, base_name + '_f00.wav')
+        for ext in RAW_EXTS:
+            exact_file = os.path.join(dest_dir, base_name + ext)
+            if os.path.exists(exact_file):
+                raw_file = exact_file
+                break
 
-            if os.path.exists(fallback_wav_file):
-                raw_file = fallback_wav_file
-            else:
-                raise Exception(f"Neither {exact_wav_file} nor {fallback_wav_file} found in {dest_dir}")
+        if not raw_file:
+            for ext in RAW_EXTS:
+                fallback_file = os.path.join(dest_dir, base_name + '_f00' + ext)
+                if os.path.exists(fallback_file):
+                    raw_file = fallback_file
+                    break
+
+        if not raw_file:
+            raise Exception(
+                f"Neither {base_name + ext} nor {base_name + '_f00' + ext} found with extensions {RAW_EXTS} in {dest_dir}"
+            )
 
         checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS)
         if checksum_file is None:
