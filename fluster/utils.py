@@ -18,24 +18,41 @@
 
 import hashlib
 import os
+import random
 import shutil
 import subprocess
 import sys
+import time
 import urllib.request
 import zipfile
 import platform
 from typing import List, Optional
+from threading import Lock
 
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
+download_lock = Lock()
 
-def download(url: str, dest_dir: str) -> None:
-    """Downloads a file to a directory"""
-    with urllib.request.urlopen(url) as response:
-        dest_path = os.path.join(dest_dir, url.split("/")[-1])
-        with open(dest_path, "wb") as dest:
-            shutil.copyfileobj(response, dest)
+
+def download(url: str, dest_dir: str, max_retries: int = 5) -> None:
+    """Downloads a file to a directory with a mutex lock to avoid conflicts and retries with exponential backoff."""
+    for attempt in range(max_retries):
+        try:
+            with download_lock:
+                with urllib.request.urlopen(url) as response:
+                    dest_path = os.path.join(dest_dir, url.split("/")[-1])
+                    with open(dest_path, "wb") as dest:
+                        shutil.copyfileobj(response, dest)
+            print(f"Download completed for {url}")
+            break
+        except urllib.error.URLError as e:
+            if attempt < max_retries - 1:
+                wait_time = random.uniform(1, 2 ** attempt)
+                print(f"Retrying in {wait_time:.2f} seconds...")
+                time.sleep(wait_time)
+            else:
+                print(f"Failed to download {url} after {max_retries} attempts.")
 
 
 def file_checksum(path: str) -> str:
