@@ -46,9 +46,9 @@ def download(url: str, dest_dir: str, max_retries: int = 5) -> None:
                         shutil.copyfileobj(response, dest)
             print(f"Download completed for {url}")
             break
-        except urllib.error.URLError as e:
+        except urllib.error.URLError:
             if attempt < max_retries - 1:
-                wait_time = random.uniform(1, 2 ** attempt)
+                wait_time = random.uniform(1, 2**attempt)
                 print(f"Retrying in {wait_time:.2f} seconds...")
                 time.sleep(wait_time)
             else:
