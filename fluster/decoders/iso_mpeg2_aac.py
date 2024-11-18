@@ -42,9 +42,9 @@ class ISOAACDecoder(Decoder):
         # pylint: disable=unused-argument
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a
         # ".wav", which is undesirable.
-        output_filepath += ".pcm"
+        output_filepath += ".wav"
         run_command(
-            [self.binary, input_filepath, output_filepath],
+            [self.binary, "-w", input_filepath, output_filepath],
             timeout=timeout,
             verbose=verbose,
         )

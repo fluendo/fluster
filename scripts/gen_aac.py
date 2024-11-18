@@ -38,6 +38,7 @@ BASE_URL = "https://standards.iso.org/"
 
 URL_MPEG2 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/"
 URL_MPEG2_ADTS = URL_MPEG2 + "compressedAdts"
+URL_MPEG2_ADIF = URL_MPEG2 + "compressedAdif"
 URL_MPEG2_WAV_REFS = URL_MPEG2 + "referencesWav"
 URL_MPEG2_WAV_REFS_MD5 = URL_MPEG2 + "referencesWav/_checksum"
 
@@ -98,10 +99,8 @@ class AACGenerator:
 
     def _download_raw_output_references_and_checksums(self, jobs, test_suite, raw_bitstream_links,
                                                       raw_bitstream_md5_links):
-        """Downlodas raw output reference bitstreams and their checksums"""
-
+        """Downloads raw output reference bitstreams and their checksums"""
         with Pool(jobs) as pool:
-
             def _callback_error(err):
                 print(f"\nError downloading -> {err}\n")
                 pool.terminate()
@@ -109,35 +108,39 @@ class AACGenerator:
             downloads = []
 
             print(f"\tDownloading output reference files for test suite {self.suite_name}")
+
             for link in raw_bitstream_links:
+                file_name = os.path.basename(link)
+                base_name = file_name.split('.')[0]
+                main_prefix = "_".join(base_name.split('_')[:2])
+
+                directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+
                 downloads.append(
                     pool.apply_async(
                         utils.download,
-                        args=(
-                            link,
-                            os.path.join(
-                                test_suite.resources_dir,
-                                test_suite.name,
-                                os.path.splitext(os.path.basename(link))[0],
-                            ),
-                        ),
+                        args=(link, directory),
                         error_callback=_callback_error,
                     )
                 )
 
             print(f"\tDownloading output reference checksum files for test suite {self.suite_name}")
+
             for link in raw_bitstream_md5_links:
+                file_name = os.path.basename(link)
+                base_name = file_name.split('.')[0]
+                main_prefix = "_".join(base_name.split('_')[:2])
+
+                directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
+                if not os.path.exists(directory):
+                    os.makedirs(directory)
+
                 downloads.append(
                     pool.apply_async(
                         utils.download,
-                        args=(
-                            link,
-                            os.path.join(
-                                test_suite.resources_dir,
-                                test_suite.name,
-                                os.path.splitext(os.path.splitext(os.path.basename(link))[0])[0],
-                            ),
-                        ),
+                        args=(link, directory),
                         error_callback=_callback_error,
                     )
                 )
@@ -146,8 +149,12 @@ class AACGenerator:
             pool.join()
 
         for job in downloads:
-            if not job.successful():
-                sys.exit("Some download failed")
+            try:
+                job.get()
+                if not job.successful():
+                    raise ValueError("Download task was not successful")
+            except Exception as e:
+                sys.exit(f"Some download failed: {e}")
 
     def generate(self, download, jobs):
         """Generates the test suite and saves it to a file"""
@@ -173,36 +180,47 @@ class AACGenerator:
             data = str(resp.read())
             hparser.feed(data)
         raw_bitstream_links = [url for url in hparser.links if url.endswith(tuple(RAW_EXTS))]
-        raw_bitstream_names = [os.path.splitext(os.path.basename(x))[0] for x in raw_bitstream_links]
 
-        if not set(compressed_bitstream_names).issubset(raw_bitstream_names):
-            raise Exception("Following test vectors are missing reference files {}"
-                            .format([x for x in set(compressed_bitstream_names).difference(raw_bitstream_names)]))
-        else:
-            raw_bitstream_names = compressed_bitstream_names
+        raw_bitstream_names = [
+            os.path.splitext(os.path.basename(x))[0].split('_f')[0] for x in raw_bitstream_links
+        ]
+
+        missing_files = [x for x in set(compressed_bitstream_names).difference(raw_bitstream_names)]
+        if missing_files:
+            print(f"Missing reference files: {missing_files}")
+            for missing_file in missing_files:
+                print(f"Skipping test vector {missing_file}, as the reference file is missing.")
+
+        raw_bitstream_names = [name for name in compressed_bitstream_names if name not in missing_files]
 
         # Match and store entries of raw_bitstream_links that contain entries of raw_bitstream_names as substrings
-        raw_bitstream_links = [link for link in raw_bitstream_links
-                               if any(name in link for name in raw_bitstream_names)]
+        raw_bitstream_links = [
+            link for link in raw_bitstream_links if any(name in link for name in raw_bitstream_names)
+        ]
 
         with urllib.request.urlopen(self.url_reference_vectors_checksums) as resp:
             data = str(resp.read())
             hparser.feed(data)
         raw_bitstream_md5_links = [url for url in hparser.links if url.endswith(tuple(MD5_EXTS))]
-        raw_bitstream_md5_names = [os.path.splitext(os.path.splitext(os.path.basename(x))[0])[0]
-                                   for x in raw_bitstream_md5_links]
 
-        if not set(compressed_bitstream_names).issubset(raw_bitstream_md5_names):
-            raise Exception("Following test vectors are missing reference checksum files {}"
-                            .format([x for x in set(compressed_bitstream_names).difference(raw_bitstream_md5_names)]))
-        else:
-            raw_bitstream_md5_names = compressed_bitstream_names
+        raw_bitstream_md5_names = [
+            os.path.splitext(os.path.splitext(os.path.basename(x))[0].split('_f')[0])[0] for x in
+            raw_bitstream_md5_links
+        ]
+
+        missing_checksum_files = [x for x in set(compressed_bitstream_names).difference(raw_bitstream_md5_names)]
+        if missing_checksum_files:
+            print(f"Missing reference checksum files: {missing_checksum_files}")
+            for missing_checksum in missing_checksum_files:
+                print(f"Skipping checksum for {missing_checksum}, as the reference file is missing.")
+
+        raw_bitstream_md5_names = [name for name in compressed_bitstream_names if name not in missing_checksum_files]
 
         # Match and store entries of raw_bitstream_md5_links that contain entries of raw_bitstream_md5_names
         # as substrings
-        raw_bitstream_md5_links = [link for link in raw_bitstream_md5_links
-                                   if any(str(os.path.basename(link)).startswith(name)
-                                          for name in raw_bitstream_md5_names)]
+        raw_bitstream_md5_links = [
+            link for link in raw_bitstream_md5_links if any(name in link for name in raw_bitstream_md5_names)
+        ]
 
         for source_url in compressed_bitstream_links:
             input_filename = os.path.basename(source_url)
@@ -212,7 +230,6 @@ class AACGenerator:
             )
             test_suite.test_vectors[test_vector_name] = test_vector
 
-        # Download test suite input files
         print(f"Download list of compressed bitstreams from {self.url_test_vectors}")
         if download:
             test_suite.download(
@@ -262,16 +279,40 @@ class AACGenerator:
                     raise key_err
 
             # Read or calculate checksum of expected raw output
-            self._fill_checksum_aac(test_vector, dest_dir)
+            if test_vector.name not in missing_checksum_files:
+                self._fill_checksum_aac(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
     @staticmethod
     def _fill_checksum_aac(test_vector, dest_dir):
+        base_name = test_vector.name
+        raw_file = None
+        ext = None
+
+        for ext in RAW_EXTS:
+            exact_file = os.path.join(dest_dir, base_name + ext)
+            if os.path.exists(exact_file):
+                raw_file = exact_file
+                break
+
+        if not raw_file:
+            for ext in RAW_EXTS:
+                fallback_file = os.path.join(dest_dir, base_name + '_f00' + ext)
+                if os.path.exists(fallback_file):
+                    raw_file = fallback_file
+                    break
+
+        if not raw_file:
+            raise Exception(
+                f"Neither {base_name + ext} nor {base_name + '_f00' + ext} found with extensions {RAW_EXTS} in {dest_dir}"
+            )
+
         checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS)
         if checksum_file is None:
             raise Exception("MD5 not found")
+
         with open(checksum_file, "r") as checksum_file:
             regex = re.compile(rf"([a-fA-F0-9]{{32,}}).*(?:\.(wav))?")
             lines = checksum_file.readlines()
@@ -284,15 +325,12 @@ class AACGenerator:
             )
             if match:
                 test_vector.result = match.group(1).lower()
-            # Assert that we have extracted a valid MD5 from the file
-            assert (
+        # Assert that we have extracted a valid MD5 from the file
+        assert (
                 len(test_vector.result) == 32
                 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
-            ), f"{test_vector.result} is not a valid MD5 hash"
+        ), f"{test_vector.result} is not a valid MD5 hash"
 
-        raw_file = utils.find_by_ext(dest_dir, RAW_EXTS)
-        if raw_file is None or len(raw_file) == 0:
-            raise Exception(f"RAW file not found in {dest_dir}")
         test_vector.result = utils.file_checksum(raw_file)
 
 
@@ -322,6 +360,18 @@ if __name__ == "__main__":
         URL_MPEG2_WAV_REFS,
         URL_MPEG2_WAV_REFS_MD5,
         True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = AACGenerator(
+        "MPEG2_AAC-ADIF",
+        "MPEG2_AAC-ADIF",
+        Codec.AAC,
+        "ISO IEC 13818-4 MPEG2 AAC ADIF test suite",
+        URL_MPEG2_ADIF,
+        URL_MPEG2_WAV_REFS,
+        URL_MPEG2_WAV_REFS_MD5,
+        False,
     )
     generator.generate(not args.skip_download, args.jobs)
 
