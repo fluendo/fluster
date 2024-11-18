@@ -110,7 +110,7 @@
         {
             "name": "am03_64",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_64.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "ac7639c87ac5ddd046c11095edd5d08c",
             "input_file": "am03_64.adif",
             "output_format": "Unknown",
             "result": ""
@@ -366,7 +366,7 @@
         {
             "name": "am03_32",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_32.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "fa9ab0f94e2934e87762b273c373248a",
             "input_file": "am03_32.adif",
             "output_format": "Unknown",
             "result": ""
@@ -782,7 +782,7 @@
         {
             "name": "am03_44",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_44.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "d952f2d29163e60a599df1e82865e633",
             "input_file": "am03_44.adif",
             "output_format": "Unknown",
             "result": ""
@@ -798,7 +798,7 @@
         {
             "name": "am03_12",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_12.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "2f86ee7f89c2c739b55bacd51f0d380b",
             "input_file": "am03_12.adif",
             "output_format": "Unknown",
             "result": ""
@@ -918,7 +918,7 @@
         {
             "name": "am03_16",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_16.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "136c778c455d2f06327875be6af96f2e",
             "input_file": "am03_16.adif",
             "output_format": "Unknown",
             "result": ""
@@ -1990,7 +1990,7 @@
         {
             "name": "am03_11",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_11.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "9412a5a8303420f1fa2233b3ce3b8e0a",
             "input_file": "am03_11.adif",
             "output_format": "Unknown",
             "result": ""
@@ -2334,7 +2334,7 @@
         {
             "name": "am03_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_88.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "045650406792561579df0dfec7b170bd",
             "input_file": "am03_88.adif",
             "output_format": "Unknown",
             "result": ""
@@ -2918,7 +2918,7 @@
         {
             "name": "am03_22",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_22.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "5558b006df8b5aa624c2dccc688d5cca",
             "input_file": "am03_22.adif",
             "output_format": "Unknown",
             "result": ""
@@ -3470,7 +3470,7 @@
         {
             "name": "am03_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_96.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "e763471440d7436147483ab399b8f3bc",
             "input_file": "am03_96.adif",
             "output_format": "Unknown",
             "result": ""
@@ -3526,7 +3526,7 @@
         {
             "name": "am03_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_24.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "63b50f1a63b1180c9d998970d1b53e7f",
             "input_file": "am03_24.adif",
             "output_format": "Unknown",
             "result": ""
@@ -3598,7 +3598,7 @@
         {
             "name": "am03_08",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_08.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "a5ce55db814238f0cbdc8f76beb68a4d",
             "input_file": "am03_08.adif",
             "output_format": "Unknown",
             "result": ""
@@ -3918,7 +3918,7 @@
         {
             "name": "am03_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/compressedAdif/am03_48.adif",
-            "source_checksum": "__skip__",
+            "source_checksum": "c69c313fbcd2e960d85ea6ff4b7daebb",
             "input_file": "am03_48.adif",
             "output_format": "Unknown",
             "result": ""

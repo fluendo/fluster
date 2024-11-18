@@ -244,12 +244,7 @@ class AACGenerator:
         self._download_raw_output_references_and_checksums(jobs, test_suite, raw_bitstream_links,
                                                            raw_bitstream_md5_links)
 
-        valid_test_vectors = [
-            test_vector for test_vector in test_suite.test_vectors.values()
-            if test_vector.name not in missing_checksum_files
-        ]
-
-        for test_vector in valid_test_vectors:
+        for test_vector in test_suite.test_vectors.values():
             dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             absolute_input_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
@@ -284,7 +279,8 @@ class AACGenerator:
                     raise key_err
 
             # Read or calculate checksum of expected raw output
-            self._fill_checksum_aac(test_vector, dest_dir)
+            if test_vector.name not in missing_checksum_files:
+                self._fill_checksum_aac(test_vector, dest_dir)
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
