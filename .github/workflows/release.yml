@@ -102,8 +102,8 @@ jobs:
           gh release create v$VERSION \
             --title "Release v$VERSION" \
             --notes "$(cat notes.txt)"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Clean up notes file
         run: rm notes.txt
         continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
