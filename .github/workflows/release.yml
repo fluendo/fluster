@@ -11,7 +11,7 @@ on:
       notes:
         description: 'Release notes (e.g., changelog)'
         required: false
-        default: 'Changelog: - Added feature 1\n- Added feature 2\n- Fixed issue 2'
+        default: 'Changelog: \n- Added feature 1\n- Added feature 2\n- Fixed issue 2'
   push:
     tags:
       - 'v*.*.*'
@@ -99,6 +99,7 @@ jobs:
       - name: Create GitHub Release
         run: |
           VERSION=${{ github.event.inputs.version }}
+          git archive --format=zip HEAD
           gh release create v$VERSION \
             --title "Release v$VERSION" \
             --notes "$(cat notes.txt)"
