@@ -99,7 +99,6 @@ jobs:
       - name: Create GitHub Release
         run: |
           VERSION=${{ github.event.inputs.version }}
-          NOTES=${{ github.event.inputs.notes }}
           gh release create v$VERSION \
             --title "Release v$VERSION" \
             --notes "$(cat notes.txt)"
