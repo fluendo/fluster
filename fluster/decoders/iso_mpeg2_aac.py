@@ -60,7 +60,6 @@ class ISOAACDecoder(Decoder):
         output_files = glob.glob(f"{base_output}_f[0-9][0-9].pcm")
 
         for pcm_file in output_files:
-            if os.path.exists(pcm_file):
-                return file_checksum(pcm_file)
+            return file_checksum(pcm_file)
 
         return file_checksum(output_filepath)
