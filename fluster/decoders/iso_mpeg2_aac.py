@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
+import glob
 import os
 
 from fluster.codec import Codec, OutputFormat
@@ -56,7 +57,7 @@ class ISOAACDecoder(Decoder):
         if os.path.exists(pcm_out_f00_file):
             return file_checksum(pcm_out_f00_file)
 
-        output_files = [f"{base_output}_f{str(i).zfill(2)}.pcm" for i in range(20)]
+        output_files = glob.glob(f"{base_output}_f[0-9][0-9].pcm")
 
         for pcm_file in output_files:
             if os.path.exists(pcm_file):
