@@ -1,0 +1,104 @@
+# This workflow will create ant test a new release
+
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 0.1.0)'
+        required: true
+      notes:
+        description: 'Release notes (e.g., changelog)'
+        required: false
+        default: 'Changelog: - Added feature 1\n- Fixed issue 2'
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  min_linux:
+      name: linux with min supported deps
+      runs-on: ubuntu-20.04
+
+      steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.6
+      - name: Install dependencies
+        run: |
+          make install_deps
+          sudo apt update && sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools
+      - name: Check
+        run: |
+          make check
+      - name: Test Build the wheel
+        run: |
+          pip wheel .
+
+  linux:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: |
+        make install_deps
+        sudo apt update && sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools
+    - name: Check
+      run: |
+        make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
+
+  windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.6
+    - name: Install dependencies
+      run: |
+        make install_deps
+    - name: Check
+      run: |
+        make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
+
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-20.04
+    needs:
+      - min_linux
+      - linux
+      - windows
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag v${{ github.event.inputs.version }}
+          git push origin v${{ github.event.inputs.version }}
+      - name: Create GitHub Release
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          NOTES=${{ github.event.inputs.notes }}
+          gh release create v$VERSION \
+            --title "Release v$VERSION" \
+            --notes "$NOTES"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
