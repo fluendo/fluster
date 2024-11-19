@@ -4,9 +4,9 @@
 name: fluster
 
 on:
-#  push:
-#    branches:
-#      - master # TODO add after testing
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master

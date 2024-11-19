@@ -8,6 +8,7 @@ on:
       version:
         description: 'Release version (e.g., 0.1.0)'
         required: true
+        default: 0.1.1
   push:
     branches: # TODO delete after testing
       - COM-12579
@@ -95,6 +96,6 @@ jobs:
         run: |
           gh release create v${{ github.event.inputs.version }} \
             --title "Release v${{ github.event.inputs.version }}" \
-            --notes "Changelog:\n- Added feature 1\n- Fixed issue 2"
+            --notes "Changelog:\n- Added feature 1\n- Added feature 2\n- Fixed issue 2"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
