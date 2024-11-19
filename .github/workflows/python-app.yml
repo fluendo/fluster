@@ -4,10 +4,12 @@
 name: fluster
 
 on:
-  push:
-    branches: [ master ]
+#  push:
+#    branches:
+#      - master # TODO add after testing
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   min_linux:
