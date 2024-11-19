@@ -1,0 +1,56 @@
+# This workflow will create ant test a new release
+
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 0.1.0)'
+        required: true
+  push:
+    branches:
+      - COM-12579
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create_release:
+    name: Create and Test Release
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.6
+    - name: Install dependencies
+      run: |
+        make install_deps
+        sudo apt update && sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools
+    - name: Check
+      run: |
+        make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
+    - name: Tag the commit
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git tag v${{ github.event.inputs.version }}
+        git push origin v${{ github.event.inputs.version }}
+    - name: Create Release on GitHub
+      uses: actions/create-release@v1
+      with:
+        tag_name: v${{ github.event.inputs.version }}
+        release_name: Release v${{ github.event.inputs.version }}
+        body: |
+          Changelog:
+          - Feature 1
+          - Feature 2
+          - Bug fixes
+        draft: false
+        prerelease: false
