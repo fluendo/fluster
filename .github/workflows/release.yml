@@ -11,7 +11,7 @@ on:
       notes:
         description: 'Release notes (e.g., changelog)'
         required: false
-        default: 'Changelog: - Added feature 1\n- Fixed issue 2'
+        default: 'Changelog: - Added feature 1\n- Added feature 2\n- Fixed issue 2'
   push:
     tags:
       - 'v*.*.*'
@@ -93,12 +93,18 @@ jobs:
           git config user.email "github-actions@github.com"
           git tag v${{ github.event.inputs.version }}
           git push origin v${{ github.event.inputs.version }}
+      - name: Create temporary notes file
+        run: |
+          echo -e "${{ github.event.inputs.notes }}" > notes.txt
       - name: Create GitHub Release
         run: |
           VERSION=${{ github.event.inputs.version }}
           NOTES=${{ github.event.inputs.notes }}
           gh release create v$VERSION \
             --title "Release v$VERSION" \
-            --notes "$NOTES"
+            --notes "$(cat notes.txt)"
+      - name: Clean up notes file
+        run: rm notes.txt
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
