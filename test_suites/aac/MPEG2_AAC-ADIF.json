@@ -57,7 +57,7 @@
             "source_checksum": "4c278383fa9edb672dc4791937a88594",
             "input_file": "am07_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "3e31c667670cbef6cdf7ee86a3ae285d"
         },
         {
             "name": "as17_16",
@@ -81,7 +81,7 @@
             "source_checksum": "0705453d99447b89ca3aa8c63dd50fa6",
             "input_file": "am07_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "ee5d33f95ec836e851bf19c6ae7a211d"
         },
         {
             "name": "as15_08",
@@ -161,7 +161,7 @@
             "source_checksum": "1475e6cd49ed90c4c5d05e4ad5e1da7d",
             "input_file": "am06_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "4ef096224da763ac43090955d64cfba1"
         },
         {
             "name": "as01_44",
@@ -241,7 +241,7 @@
             "source_checksum": "c98dff5e8b6e432e4b760c3dbaf4e4a8",
             "input_file": "am01_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "2fcc843014bca5b1ac137a5227478579"
         },
         {
             "name": "as11_96",
@@ -281,7 +281,7 @@
             "source_checksum": "9e9c153d09af52d1488d2dfd5c653b6d",
             "input_file": "am00_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "3fb7576e4821be816a5a20f373fe8779"
         },
         {
             "name": "al15_96",
@@ -313,7 +313,7 @@
             "source_checksum": "724abd826d9714603bdeacd89297c8a3",
             "input_file": "am02_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "81e3ce4054eac8fc69e85c305aacee0a"
         },
         {
             "name": "am00_32",
@@ -321,7 +321,7 @@
             "source_checksum": "3be458cd387a67ad17f593fd3d00f87b",
             "input_file": "am00_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "dff0a5b583b837e9b7586b54299dddba"
         },
         {
             "name": "as11_12",
@@ -449,7 +449,7 @@
             "source_checksum": "c179ce68743ccbe32eb9c0525604cfde",
             "input_file": "am05_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "5064cca0c1dee59a214d9e20165af1e1"
         },
         {
             "name": "as03_48",
@@ -481,7 +481,7 @@
             "source_checksum": "55be33373a7bc4505b919a0e1caef076",
             "input_file": "am00_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "2c28bbe633abb0995a7d9d6b2bbd163c"
         },
         {
             "name": "al01_16",
@@ -561,7 +561,7 @@
             "source_checksum": "1cc2e1231962e87ab3f04461fb352cb7",
             "input_file": "am06_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "a2c5debfac5d778137cff876f8787bb2"
         },
         {
             "name": "al07_48",
@@ -577,7 +577,7 @@
             "source_checksum": "338dcd98cded8c3f528d369a5479aaf3",
             "input_file": "am06_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "d164df2cf24ddf609c46a31a74e69f99"
         },
         {
             "name": "as13_44",
@@ -657,7 +657,7 @@
             "source_checksum": "6bfcef3f5ce0f22232fc28520e43f516",
             "input_file": "am01_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "104361bdcc1b9d4d24e5863e2c35e050"
         },
         {
             "name": "as17_08",
@@ -673,7 +673,7 @@
             "source_checksum": "2cd0217b1e1ea822e7894ea67efd111b",
             "input_file": "am04_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "6b124b1f9b0d8b5942b803db436ba439"
         },
         {
             "name": "as13_24",
@@ -729,7 +729,7 @@
             "source_checksum": "f8a86e9fc00e991edc14d197b53b1474",
             "input_file": "am01_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "12ea7bf04bce95c5c3ae286b17f6907e"
         },
         {
             "name": "as14_24",
@@ -745,7 +745,7 @@
             "source_checksum": "cec91a4c806b6b73dfc3241f62e840e9",
             "input_file": "am04_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "9526a9dca60fba036bb04ad28e8deacc"
         },
         {
             "name": "al07_44",
@@ -769,7 +769,7 @@
             "source_checksum": "ea11c15002bc0ce36cbd25a61c6a5993",
             "input_file": "am02_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "4fe01b15aaf82e7121652ffffb489d36"
         },
         {
             "name": "al14_96",
@@ -857,7 +857,7 @@
             "source_checksum": "88ac1a9710fff86f8b8e2a2d63d28b35",
             "input_file": "am00_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "60095c11878cfbedd806518168312f3d"
         },
         {
             "name": "as06_12",
@@ -873,7 +873,7 @@
             "source_checksum": "7194a61412f153fc0582ba81d817da1d",
             "input_file": "am06_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "e6494513d14046b56ab2ca98def4d2ca"
         },
         {
             "name": "al05_64",
@@ -905,7 +905,7 @@
             "source_checksum": "cd8ea7bbdb10df386596da86d68a2f6d",
             "input_file": "am05_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "938c26465f99f8c49948a749e3549f96"
         },
         {
             "name": "as02_44",
@@ -929,7 +929,7 @@
             "source_checksum": "4bcafc3db934eea2555383c7cdb575bc",
             "input_file": "am00_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "2365631d91808e0aaf921944dd078466"
         },
         {
             "name": "al17_08",
@@ -985,7 +985,7 @@
             "source_checksum": "0bda098d9898033a46f48e2720c78ccf",
             "input_file": "am02_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "f2a0570e3ee6227c76d2b151cf959347"
         },
         {
             "name": "al05_08",
@@ -1025,7 +1025,7 @@
             "source_checksum": "65e81cad01a0e6af123a9bef9799a280",
             "input_file": "am02_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "a6411c703a1ac140889d5eb6dd0d9bf1"
         },
         {
             "name": "al14_11",
@@ -1145,7 +1145,7 @@
             "source_checksum": "a07b6a477935908696a1a8754435dd7b",
             "input_file": "am05_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "c07028fc7e64703ba94ba863fcb14802"
         },
         {
             "name": "as17_11",
@@ -1193,7 +1193,7 @@
             "source_checksum": "6e16189535ee42a3b74f9b9e79907a1f",
             "input_file": "am07_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "642fcea1aa872cb9deb8051eb67b723f"
         },
         {
             "name": "am01_24",
@@ -1201,7 +1201,7 @@
             "source_checksum": "806d34a4e2cbe4e73a249e51d5dbe0fc",
             "input_file": "am01_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "383fe028008446dc9540854da6b1122a"
         },
         {
             "name": "as02_11",
@@ -1249,7 +1249,7 @@
             "source_checksum": "f9cb1b11e8571ab7b8c5c0e713cc2666",
             "input_file": "am05_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "30b703181556f60e1befb1ced67338be"
         },
         {
             "name": "al11_96",
@@ -1305,7 +1305,7 @@
             "source_checksum": "bf4a83b0b6c3b94746b3462d68f654c4",
             "input_file": "am05_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "31cc64498f9c11ed507a24ca3bd169ec"
         },
         {
             "name": "al15_22",
@@ -1329,7 +1329,7 @@
             "source_checksum": "a9421c6811dafd836da05d037f9fcbf4",
             "input_file": "am06_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "19eea88a19f933b2c6a98b555d427fa7"
         },
         {
             "name": "as16_12",
@@ -1361,7 +1361,7 @@
             "source_checksum": "3aff314027f3b08129ba3cfedca95011",
             "input_file": "am04_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "21787f144ab240452a7c0b32016f0c0c"
         },
         {
             "name": "am01_16",
@@ -1369,7 +1369,7 @@
             "source_checksum": "60fe7b6600282ba2932e052916358e20",
             "input_file": "am01_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "f49b1f4d1aa9471cf83b838eaac185a7"
         },
         {
             "name": "as03_16",
@@ -1401,7 +1401,7 @@
             "source_checksum": "75268f551cca8f1cf69755a80ca59243",
             "input_file": "am01_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "caefa9d212de6d4553691071d144d98c"
         },
         {
             "name": "al10_64",
@@ -1569,7 +1569,7 @@
             "source_checksum": "36c3ac9e1cdfaee199fece84578a89e1",
             "input_file": "am01_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "aa3b7e61c9327bd386bbddf54519a571"
         },
         {
             "name": "am06_11",
@@ -1577,7 +1577,7 @@
             "source_checksum": "463fd1a62a3d64b9f0f870c31b18cdc5",
             "input_file": "am06_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "35d539f4bf37499cf1b0f5e960ffcdc8"
         },
         {
             "name": "al06_16",
@@ -1633,7 +1633,7 @@
             "source_checksum": "486014e224f9979e004d171cb6d89301",
             "input_file": "am00_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "5421b0bfa2287dd9a0b4abbcd784d924"
         },
         {
             "name": "al15_64",
@@ -1705,7 +1705,7 @@
             "source_checksum": "2f8610445d67d522dfae66c55791844d",
             "input_file": "am04_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "82e79eac474dc6bda0337aa3871ee962"
         },
         {
             "name": "al03_22",
@@ -1761,7 +1761,7 @@
             "source_checksum": "2b26096ce17d6e6fc3cfbdb23fb36ee7",
             "input_file": "am04_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "e34d7c1761878e8a32dad69d8065ee37"
         },
         {
             "name": "as17_64",
@@ -1817,7 +1817,7 @@
             "source_checksum": "f9d9a02cd9595587cc59a2f05e9b7a58",
             "input_file": "am04_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "c38e48672d70d47fbf2712935eb94cc4"
         },
         {
             "name": "as01_16",
@@ -1865,7 +1865,7 @@
             "source_checksum": "5953a6cf627bab3032706c4f67baa709",
             "input_file": "am00_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "3a5c20bbd8e6da448b58f24fcc1406e4"
         },
         {
             "name": "al02_96",
@@ -1897,7 +1897,7 @@
             "source_checksum": "fc2f23c3e0018defc658e7ba53285fc3",
             "input_file": "am02_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "424bf0862916cb427c09a4c3a1a1f05a"
         },
         {
             "name": "as04_64",
@@ -1929,7 +1929,7 @@
             "source_checksum": "7c0c22ed3b15be29afcbc46f179fddf7",
             "input_file": "am00_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "d91800bc70282ef0bfca4c96812e03fe"
         },
         {
             "name": "al03_32",
@@ -1945,7 +1945,7 @@
             "source_checksum": "09ac88daefcf469da375592eee3d2d10",
             "input_file": "am01_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "0257eecdaaf011bd58ea3000fcbd089d"
         },
         {
             "name": "al08_32",
@@ -2033,7 +2033,7 @@
             "source_checksum": "2be3b02613dd9b680ddc3c1dec538190",
             "input_file": "am05_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "5b096940b5f4f548e8be21081dd8e188"
         },
         {
             "name": "as04_11",
@@ -2057,7 +2057,7 @@
             "source_checksum": "07592518d2fbc33f5f2e5ba04c72be05",
             "input_file": "am05_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "561255dc09da4e3cc62a6a568c023186"
         },
         {
             "name": "al00_11",
@@ -2073,7 +2073,7 @@
             "source_checksum": "75cb5ed0631e83714602af7f70c92920",
             "input_file": "am04_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "558b5b0b4eb34fc35f0a81289f710458"
         },
         {
             "name": "al01_32",
@@ -2201,7 +2201,7 @@
             "source_checksum": "6907839260332d03ab0fe526487f6a2e",
             "input_file": "am07_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "7ff6c169606329283d442bdf69017cb7"
         },
         {
             "name": "al07_64",
@@ -2257,7 +2257,7 @@
             "source_checksum": "c700995285943645467e0bca4be4203b",
             "input_file": "am01_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "a6f2f72dbb23e693d815cdcb77d4e0e7"
         },
         {
             "name": "as09_96",
@@ -2297,7 +2297,7 @@
             "source_checksum": "651df35d42e4ff5c2de6012778578a56",
             "input_file": "am04_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "ec52fee00142a4c1c7777d5ed7348ac6"
         },
         {
             "name": "as06_32",
@@ -2345,7 +2345,7 @@
             "source_checksum": "318901fe746911a3ab79b7705298a089",
             "input_file": "am02_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "5af42c51a7b2968efb484f0ad933a157"
         },
         {
             "name": "al15_08",
@@ -2409,7 +2409,7 @@
             "source_checksum": "7055d3ac07b0e7240fdb385b682bcc93",
             "input_file": "am07_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "6ecc879ff4cf68e13ac061e8408c98cd"
         },
         {
             "name": "al14_22",
@@ -2425,7 +2425,7 @@
             "source_checksum": "da2ce2e8909132d9fe7d5965b13b2398",
             "input_file": "am00_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "2f5b31721e04afd861d59a6194308565"
         },
         {
             "name": "al06_24",
@@ -2457,7 +2457,7 @@
             "source_checksum": "3bbc106d00d15af257c60ed8c919bb06",
             "input_file": "am07_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "4478b0d80332c389dfd048641dd225c8"
         },
         {
             "name": "as16_24",
@@ -2593,7 +2593,7 @@
             "source_checksum": "3595d955fc9d5b1e8f9e12bd03d784a8",
             "input_file": "am02_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "a88295fef84eb1c1d62083daec20c9b2"
         },
         {
             "name": "am07_22",
@@ -2601,7 +2601,7 @@
             "source_checksum": "3a8242c2464e4a0b3225d6a1874b638d",
             "input_file": "am07_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "bfd80104fd69bdea14cc746d185d6b44"
         },
         {
             "name": "am05_08",
@@ -2609,7 +2609,7 @@
             "source_checksum": "07a00475dd08af84b7c5b5b3a18d7bb2",
             "input_file": "am05_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "e76a4fad9680315bdebd7df663554222"
         },
         {
             "name": "al05_11",
@@ -2657,7 +2657,7 @@
             "source_checksum": "103a80fd7149ca10c77a06d0cec6b4bd",
             "input_file": "am01_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "bd59a63283c94d5f5c0c0046d06481e9"
         },
         {
             "name": "as12_08",
@@ -2705,7 +2705,7 @@
             "source_checksum": "9ee732353f7e053d2ee756f768d10a7e",
             "input_file": "am07_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "ea443195941ce65c0cf6be5e64433271"
         },
         {
             "name": "am07_64",
@@ -2713,7 +2713,7 @@
             "source_checksum": "db76927fcbc32bea6e604479f32f67d4",
             "input_file": "am07_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "c46be40e124ce8c2aea9610d61e25e26"
         },
         {
             "name": "al00_32",
@@ -2753,7 +2753,7 @@
             "source_checksum": "339a14afbdff567391e8e7637add2997",
             "input_file": "am02_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "c1e3516dadbb4efbae4dd6103276e4e2"
         },
         {
             "name": "as04_44",
@@ -2769,7 +2769,7 @@
             "source_checksum": "90a0e04fc17447cc2f788e11ebabe204",
             "input_file": "am05_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "86fb8e82f33af5d740b856f81a80eb71"
         },
         {
             "name": "am07_96",
@@ -2777,7 +2777,7 @@
             "source_checksum": "404dd06f53f9daed60c5a7b785da28e2",
             "input_file": "am07_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "06e1bc42c0173b3f1541983b8ab8d5d9"
         },
         {
             "name": "as03_11",
@@ -2817,7 +2817,7 @@
             "source_checksum": "739386e9c6d4095912e6e3a4da5d4e85",
             "input_file": "am07_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "06ef16e7803a494af0c19ad949273c62"
         },
         {
             "name": "al06_64",
@@ -2849,7 +2849,7 @@
             "source_checksum": "e6572538093228240b1b37f7114c59da",
             "input_file": "am02_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "90a57c1f6b8d6d79b8356b734c1c98e4"
         },
         {
             "name": "as07_88",
@@ -3137,7 +3137,7 @@
             "source_checksum": "06d8d6da499c16119d0e5a7780af81ea",
             "input_file": "am06_64.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "22cddc2b971b072b7f2157fd5d07f67a"
         },
         {
             "name": "as00_48",
@@ -3265,7 +3265,7 @@
             "source_checksum": "0f558fd21f4ee90728acfe660a5b2397",
             "input_file": "am05_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "ae07362973a109e13ad7aa7a01fe2eef"
         },
         {
             "name": "am06_44",
@@ -3273,7 +3273,7 @@
             "source_checksum": "bc279de3c3e7962bdf47b64216f33900",
             "input_file": "am06_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "c0bbfd973867fec9ed598abd1656761e"
         },
         {
             "name": "al04_32",
@@ -3345,7 +3345,7 @@
             "source_checksum": "5e54a0d219e31d7a264311f12ad56644",
             "input_file": "am06_12.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "4f57d72e18b9c3417387a09e27beb851"
         },
         {
             "name": "al16_64",
@@ -3409,7 +3409,7 @@
             "source_checksum": "a536f7ee51b1d842d61cc65f5cabddcd",
             "input_file": "am05_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "566d54b65ae740b80676ab9adb7feb9f"
         },
         {
             "name": "as05_08",
@@ -3425,7 +3425,7 @@
             "source_checksum": "a142562a01bd209c256a124888f1e10a",
             "input_file": "am04_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "71ef16be1fc6d6ff5bb2907959ba6f56"
         },
         {
             "name": "am01_22",
@@ -3433,7 +3433,7 @@
             "source_checksum": "441bf198af41e64289480052dba0b3f2",
             "input_file": "am01_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "7d384f1aebb4f9f6d919d534f72abf2e"
         },
         {
             "name": "al10_88",
@@ -3481,7 +3481,7 @@
             "source_checksum": "2af028a7d8538d424b1b2e27e83683b7",
             "input_file": "am00_11.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "bbb2a347eb79692e8162d364b3e2e851"
         },
         {
             "name": "am07_08",
@@ -3489,7 +3489,7 @@
             "source_checksum": "da8f616c1ff96b93de7cfcf01350fe38",
             "input_file": "am07_08.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "1eaa7584eda43146cd197cf43ee31336"
         },
         {
             "name": "as08_96",
@@ -3513,7 +3513,7 @@
             "source_checksum": "203b22bb326c936ddb9b18314f9a64b2",
             "input_file": "am04_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "3c613c9af057696d31579ec816f1dffa"
         },
         {
             "name": "am05_32",
@@ -3521,7 +3521,7 @@
             "source_checksum": "7629c8af0f38a4f3382d8fe9e887d9b7",
             "input_file": "am05_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "a19172db2537dcd34cfe08298bce7028"
         },
         {
             "name": "am03_24",
@@ -3553,7 +3553,7 @@
             "source_checksum": "e7dc757057fbfbb9c198f08f4d5a3387",
             "input_file": "am02_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "e1e025741b3432606b8ff69965b7f3d0"
         },
         {
             "name": "as14_22",
@@ -3569,7 +3569,7 @@
             "source_checksum": "3ace5dbd49daa0f5180e8c72348d80fc",
             "input_file": "am00_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "8b30d5a5a799d5f59f3cd6ab973dbed9"
         },
         {
             "name": "as10_96",
@@ -3617,7 +3617,7 @@
             "source_checksum": "bbec3d56a852642ac36f362e671c60cc",
             "input_file": "am04_88.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "c08d877e3c11ac5d6897487fc64809bb"
         },
         {
             "name": "as17_48",
@@ -3665,7 +3665,7 @@
             "source_checksum": "dce4c4c15e1dd16a0f672069ed0f530f",
             "input_file": "am06_22.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "660e495bf6ef3dbd6e4d1c0b7b62a73a"
         },
         {
             "name": "as01_08",
@@ -3681,7 +3681,7 @@
             "source_checksum": "b2aa87427e18b45f2f31fc49743c61c1",
             "input_file": "am04_24.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "b1f7a855024212ea1278a995b014dc21"
         },
         {
             "name": "am06_96",
@@ -3689,7 +3689,7 @@
             "source_checksum": "7191ad8979bc199124040cbf02aa0378",
             "input_file": "am06_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "0663053dde8e099d32d4f2acde451e2c"
         },
         {
             "name": "al11_64",
@@ -3745,7 +3745,7 @@
             "source_checksum": "d5436682dc95dfe02f76c902ce6d7910",
             "input_file": "am00_44.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "cbeb791f1771f1d0adcfff9a29fe4223"
         },
         {
             "name": "as16_11",
@@ -3801,7 +3801,7 @@
             "source_checksum": "743db775068807269bb9725720adc606",
             "input_file": "am02_48.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "41045aa7d349d9fe233869793d48f322"
         },
         {
             "name": "al03_11",
@@ -3865,7 +3865,7 @@
             "source_checksum": "166bc87d9c433afa1c0b01a184469e5b",
             "input_file": "am02_96.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "000afc3c95e38a98e52cfd70568967ab"
         },
         {
             "name": "as09_48",
@@ -3881,7 +3881,7 @@
             "source_checksum": "bdd2aa77cc5c82b1923c7d7fff1f887d",
             "input_file": "am06_16.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "f8c39576e0e2d17d1d5f14726bb1cafb"
         },
         {
             "name": "as00_12",
@@ -3905,7 +3905,7 @@
             "source_checksum": "be0d7cc4444f4950758da784ff278f90",
             "input_file": "am01_32.adif",
             "output_format": "Unknown",
-            "result": ""
+            "result": "1bcf994fb90b2f3eb5f15420a869f823"
         },
         {
             "name": "as12_44",
