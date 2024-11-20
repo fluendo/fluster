@@ -37,5 +37,4 @@ class Dummy(Decoder):
         verbose: bool,
         keep_files: bool,
     ) -> str:
-        # pylint: disable=unused-argument
         return file_checksum(input_filepath)
