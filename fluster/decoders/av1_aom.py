@@ -44,7 +44,6 @@ class AV1AOMDecoder(Decoder):
             fmt = "--i420"
         else:
             fmt = "--rawvideo"
-        # pylint: disable=unused-argument
         run_command(
             [self.binary, fmt, input_filepath, "-o", output_filepath],
             timeout=timeout,

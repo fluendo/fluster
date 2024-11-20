@@ -42,7 +42,6 @@ class ISOAACDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
-        # pylint: disable=unused-argument
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a
         # ".wav", which is undesirable.
         output_filepath += ".pcm"
