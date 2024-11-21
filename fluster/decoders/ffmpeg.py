@@ -155,7 +155,11 @@ class FFmpegDecoder(Decoder):
         # Get ffmpeg version
         output = _run_ffmpeg_command(self.binary, "-version", verbose=verbose)
         version = re.search(r" version n?(\d+)\.(\d+)(?:\.(\d+))?", output)
-        self.ffmpeg_version = tuple(map(int, version.groups())) if version else None
+        self.ffmpeg_version = (
+            tuple(map(lambda x: int(x) if x else 0, version.groups()))
+            if version
+            else None
+        )
 
         # Check if codec can be used
         output = _run_ffmpeg_command(self.binary, "-codecs", verbose=verbose)
