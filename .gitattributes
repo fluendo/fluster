@@ -2,4 +2,5 @@
 .pylintrc export-ignore
 .gitattributes export-ignore
 .github export-ignore
-*.log export-ignore
+scripts/check.sh
+scripts/install_git_hook.sh
