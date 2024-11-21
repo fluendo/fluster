@@ -1,0 +1,7 @@
+.gitignore export-ignore
+.pylintrc export-ignore
+.gitattributes export-ignore
+.github export-ignore
+scripts/check.sh export-ignore
+scripts/install_git_hook.sh export-ignore
+
