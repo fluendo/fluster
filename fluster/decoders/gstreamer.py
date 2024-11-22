@@ -652,6 +652,15 @@ class GStreamerNvdecSLVP9Gst10Decoder(GStreamer10Video):
 
 @register_decoder
 class GStreamerVVdeCH266Decoder(GStreamer10Video):
+    """GStreamer H.266/VVC VVdeC decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.H266
+    decoder_bin = " vvdec "
+    api = "VVdeC"
+
+
+@register_decoder
+class GStreamerVVdeCH266Decoder(GStreamer10Video):
     """GStreamer H.266/VVC VVCSoftware_VTM decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H266

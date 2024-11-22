@@ -1,6 +1,6 @@
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2024, Fluendo, S.A.
-#  Author: Ruben Sanchez <rsanchez@fluendo.com>, Fluendo, S.A.
+# Copyright (C) 2020, Fluendo, S.A.
+#  Author: Ruben Gonzalez <rgonzalezs@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -24,10 +24,10 @@ from fluster.utils import file_checksum, run_command
 class H266JCTVTDecoder(Decoder):
     """VVdeC H.266/VVC reference decoder implementation"""
 
-    name = "VVdeC-H266"
-    description = "VVdeC H.266/VVC reference decoder"
+    name = "VVCSoftware_VTM-H266"
+    description = "VVCSoftware_VTM H.266/VVC reference decoder"
     codec = Codec.H266
-    binary = "vvdecapp"
+    binary = "DecoderApp"
 
     def decode(
         self,
