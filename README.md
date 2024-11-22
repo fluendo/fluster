@@ -247,7 +247,7 @@ AAC
 
 H266
     GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0... ✔
-    VVdeC-H266: VVdeC H.266/VVC reference decoder... ✔️
+    VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder... ✔️
 
 ```
 

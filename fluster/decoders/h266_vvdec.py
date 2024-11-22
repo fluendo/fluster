@@ -24,10 +24,10 @@ from fluster.utils import file_checksum, run_command
 class H266JCTVTDecoder(Decoder):
     """VVdeC H.266/VVC reference decoder implementation"""
 
-    name = "VVdeC-H266"
-    description = "VVdeC H.266/VVC reference decoder"
+    name = "VVCSoftware_VTM-H266"
+    description = "VVCSoftware_VTM H.266/VVC reference decoder"
     codec = Codec.H266
-    binary = "vvdecapp"
+    binary = "DecoderApp"
 
     def decode(
         self,

@@ -72,6 +72,14 @@ all_reference_decoders: h264_reference_decoder h265_reference_decoder h266_refer
 
 h266_reference_decoder: ## build H.266 reference decoder
 	$(create_dirs)
+	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM.git --depth=1 || true
+	cd $(CONTRIB_DIR)/VVCSoftware_VTM && git pull --autostash || true
+	cd $(CONTRIB_DIR)/VVCSoftware_VTM && mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ..
+	$(MAKE) -C $(CONTRIB_DIR)/VVCSoftware_VTM/build
+	find $(CONTRIB_DIR)/VVCSoftware_VTM/bin/ -name "DecoderApp" -type f -exec cp {} $(DECODERS_DIR)/ \;
+
+h266_vvdec_decoder: ## build H.266 VVdeC, the Fraunhofer Versatile Video Decoder
+	$(create_dirs)
 	cd $(CONTRIB_DIR) && git clone https://github.com/fraunhoferhhi/vvdec.git --depth=1 || true
 	cd $(CONTRIB_DIR)/vvdec && git pull --autostash || true
 	cd $(CONTRIB_DIR)/vvdec && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-truncation -Wno-stringop-overflow" && $(MAKE) -C build vvdecapp
