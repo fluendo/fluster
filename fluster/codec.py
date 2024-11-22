@@ -31,6 +31,9 @@ class Codec(Enum):
     AAC = "AAC"
     AV1 = "AV1"
 
+    def __str__(self) -> str:
+        return self.value
+
 
 class OutputFormat(Enum):
     """Output format"""
