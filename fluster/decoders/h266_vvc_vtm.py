@@ -1,6 +1,6 @@
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2020, Fluendo, S.A.
-#  Author: Ruben Gonzalez <rgonzalezs@fluendo.com>, Fluendo, S.A.
+# Copyright (C) 2024, Fluendo, S.A.
+#  Author: Ruben Sanchez <rsanchez@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License

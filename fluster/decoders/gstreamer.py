@@ -660,15 +660,6 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
 
 
 @register_decoder
-class GStreamerVVCVTMH266Decoder(GStreamer10Video):
-    """GStreamer H.266/VVC VVCSoftware_VTM decoder implementation for GStreamer 1.0"""
-
-    codec = Codec.H266
-    decoder_bin = " Decoder "
-    api = "VVCSoftware_VTM"
-
-
-@register_decoder
 class FluendoVVCdeCH266Decoder(GStreamer10Video):
     """Fluendo H.266/VVC software decoder implementation for GStreamer 1.0"""
 
