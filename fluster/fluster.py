@@ -185,7 +185,9 @@ class Fluster:
         if len(self.test_suites) == 0:
             raise Exception(f'No test suites found in "{self.test_suites_dir}"')
 
-    def list_decoders(self, check: bool, verbose: bool) -> None:
+    def list_decoders(
+        self, check: bool, verbose: bool, codec: Optional[Codec] = None
+    ) -> None:
         """List all the available decoders"""
         print("\nList of available decoders:")
         decoders_dict: Dict[Codec, List[Decoder]] = {}
@@ -194,8 +196,10 @@ class Fluster:
                 decoders_dict[dec.codec] = []
             decoders_dict[dec.codec].append(dec)
 
-        for codec, decoder_list in decoders_dict.items():
-            print(f'\n{str(codec).split(".")[1]}')
+        for current_codec, decoder_list in decoders_dict.items():
+            if codec and codec != current_codec:
+                continue
+            print(f"\n{current_codec}")
             for decoder in decoder_list:
                 string = f"{decoder}"
                 if check:
@@ -210,16 +214,19 @@ class Fluster:
         self,
         show_test_vectors: bool = False,
         test_suites: Optional[List[str]] = None,
+        codec: Optional[Codec] = None,
     ) -> None:
         """List all test suites"""
         self._load_test_suites()
         print("\nList of available test suites:")
         if test_suites:
             test_suites = [x.lower() for x in test_suites]
+
         for test_suite in self.test_suites:
-            if test_suites:
-                if test_suite.name.lower() not in test_suites:
-                    continue
+            if test_suites and test_suite.name.lower() not in test_suites:
+                continue
+            if codec and test_suite.codec != codec:
+                continue
             print(test_suite)
             if show_test_vectors:
                 for test_vector in test_suite.test_vectors.values():

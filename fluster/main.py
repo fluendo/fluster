@@ -26,6 +26,7 @@ from typing import Any, Tuple
 from tempfile import gettempdir
 
 from fluster.fluster import Fluster, Context, SummaryFormat
+from fluster.codec import Codec
 from fluster import utils
 
 APPNAME = "fluster"
@@ -189,6 +190,13 @@ class Main:
             "--verbose",
             help="show stdout and stderr of commands executed",
             action="store_true",
+        )
+        subparser.add_argument(
+            "-d",
+            "--codec",
+            help="show decoders and test suites of a codec",
+            type=Codec,
+            choices=list(Codec),
         )
         subparser.set_defaults(func=self._list_cmd)
 
@@ -366,9 +374,15 @@ class Main:
     @staticmethod
     def _list_cmd(args: Any, fluster: Fluster) -> None:
         fluster.list_test_suites(
-            show_test_vectors=args.testvectors, test_suites=args.testsuites
+            show_test_vectors=args.testvectors,
+            test_suites=args.testsuites,
+            codec=args.codec,
         )
-        fluster.list_decoders(check=args.check, verbose=args.verbose)
+        fluster.list_decoders(
+            check=args.check,
+            verbose=args.verbose,
+            codec=args.codec,
+        )
 
     @staticmethod
     def _run_cmd(args: Any, fluster: Fluster) -> None:
