@@ -21,7 +21,7 @@ from fluster.utils import file_checksum, run_command
 
 
 @register_decoder
-class H266JCTVTDecoder(Decoder):
+class H266VVCDecoder(Decoder):
     """VVdeC H.266/VVC reference decoder implementation"""
 
     name = "VVdeC-H266"

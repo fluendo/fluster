@@ -660,7 +660,7 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
 
 
 @register_decoder
-class GStreamerVVdeCH266Decoder(GStreamer10Video):
+class GStreamerVVCVTMH266Decoder(GStreamer10Video):
     """GStreamer H.266/VVC VVCSoftware_VTM decoder implementation for GStreamer 1.0"""
 
     codec = Codec.H266
