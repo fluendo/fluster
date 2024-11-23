@@ -380,6 +380,8 @@ optional arguments:
   -tv, --testvectors    show test vectors of test suites
   -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
   -v, --verbose         show stdout and stderr of commands executed
+  -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1}
+                        show decoders and test suites of a codec
 ```
 
 ### Run
