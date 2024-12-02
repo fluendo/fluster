@@ -54,6 +54,7 @@ class AV1ArgonGenerator:
         self.description = description
         self.site = site
         self.use_ffprobe = use_ffprobe
+        self.is_single_archive = True
 
     def generate(self, download):
         """Generates the test suite and saves it to a file"""
@@ -66,6 +67,7 @@ class AV1ArgonGenerator:
             self.codec,
             self.description,
             dict(),
+            self.is_single_archive,
         )
         os.makedirs(extract_folder, exist_ok=True)
         # Download the zip file
@@ -100,10 +102,12 @@ class AV1ArgonGenerator:
                 ):
                     zip_ref.extract(file_info, extract_folder)
 
-            # Create the test vector and test suite
+            # Create test vectors and test suite
             print("Creating test vectors and test suite")
             source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
-            for file in test_vector_files:
+            for idx, file in enumerate(test_vector_files):
+                if (idx+1) % 500 == 0:
+                    print("Processing vector {} out of a total of {}".format(idx+1, len(test_vector_files)))
                 filename = os.path.splitext(os.path.basename(file))[0]
                 # ffprobe execution
                 if self.use_ffprobe:

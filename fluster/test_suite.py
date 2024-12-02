@@ -63,8 +63,8 @@ class DownloadWork:
         self.test_vector = test_vector
 
 
-class DownloadWorkAV1Argon(DownloadWork):
-    """Context to pass to AV1 Argon download worker"""
+class DownloadWorkSingleArchive(DownloadWork):
+    """Context to pass to single archive download worker"""
 
     def __init__(
         self,
@@ -134,12 +134,14 @@ class TestSuite:
         codec: Codec,
         description: str,
         test_vectors: Dict[str, TestVector],
+        is_single_archive: Optional[bool] = False,
         failing_test_vectors: Optional[Dict[str, TestVector]] = None,
     ):
         # JSON members
         self.name = name
         self.codec = codec
         self.description = description
+        self.is_single_archive = is_single_archive
         self.test_vectors = test_vectors
         self.failing_test_vectors = failing_test_vectors
 
@@ -176,6 +178,8 @@ class TestSuite:
             data.pop("filename")
             data.pop("test_vectors_success")
             data.pop("time_taken")
+            if self.is_single_archive is False:
+                data.pop("is_single_archive")
             if self.failing_test_vectors is None:
                 data.pop("failing_test_vectors")
             else:
@@ -250,8 +254,8 @@ class TestSuite:
                 os.remove(dest_path)
 
     @staticmethod
-    def _download_worker_av1_argon(ctx: DownloadWorkAV1Argon) -> None:
-        """Download AV1 Argon test suite and extract all test vectors"""
+    def _download_worker_single_archive(ctx: DownloadWorkSingleArchive) -> None:
+        """Download single archive test suite and extract all test vectors"""
 
         test_vectors = ctx.test_vectors
         # Extract 1st test vector from the Dict to use as reference for the download process of .zip source file that
@@ -346,7 +350,7 @@ class TestSuite:
 
             downloads = []
 
-            if self.name != "AV1_ARGON_VECTORS":
+            if self.is_single_archive is False:
                 print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
                 for test_vector in self.test_vectors.values():
                     dwork = DownloadWork(
@@ -369,7 +373,7 @@ class TestSuite:
                 print(
                     f"Downloading test suite {self.name} using 1 job (no parallel execution possible)"
                 )
-                dwork_av1 = DownloadWorkAV1Argon(
+                dwork_single_archive = DownloadWorkSingleArchive(
                     out_dir,
                     verify,
                     extract_all,
@@ -381,8 +385,8 @@ class TestSuite:
                 # We can only use 1 parallel job because all test vectors are inside the same .zip source file
                 downloads.append(
                     pool.apply_async(
-                        self._download_worker_av1_argon,
-                        args=(dwork_av1,),
+                        self._download_worker_single_archive,
+                        args=(dwork_single_archive,),
                         error_callback=_callback_error,
                     )
                 )
