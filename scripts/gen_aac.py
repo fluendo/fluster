@@ -22,6 +22,7 @@ import re
 from html.parser import HTMLParser
 from multiprocessing import Pool
 import os
+import subprocess
 import sys
 import urllib.request
 import multiprocessing
@@ -44,10 +45,12 @@ URL_MPEG2_WAV_REFS_MD5 = URL_MPEG2 + "referencesWav/_checksum"
 
 URL_MPEG4 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/"
 URL_MPEG4_ADIF = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedAdif/add-opt/"
+URL_MPEG4_MP4 = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedMp4/"
 URL_MPEG4_WAV_REFS = URL_MPEG4 + "DVD2/mpeg4audio-conformance/referencesWav/"
+URL_MPEG4_WAV_REFS_DVD3 = URL_MPEG4 + "DVD3/mpeg4audio-conformance/referencesWav/"
 URL_MPEG4_WAV_REFS_MD5 = URL_MPEG4 + "DVD1/mpeg4audio-conformance/referencesWav/_checksum/"
 
-BITSTREAM_EXTS = [".adts", ".adif"]
+BITSTREAM_EXTS = [".adts", ".adif", ".mp4"]
 MD5_EXTS = [".wav.md5sum"]
 MD5_EXCLUDES = []
 RAW_EXTS = [".wav"]
@@ -108,16 +111,21 @@ class AACGenerator:
             downloads = []
 
             print(f"\tDownloading output reference files for test suite {self.suite_name}")
+            regex = r"(_[a-zA-Z][0-9][0-9]$)|(_level[0-9]+$)|(_boost[0-9]+$)"
 
             for link in raw_bitstream_links:
                 file_name = os.path.basename(link)
                 base_name = file_name.split('.')[0]
-                main_prefix = "_".join(base_name.split('_')[:2])
 
-                directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
+                if re.search(regex, base_name):
+                    main_prefix = "_".join(base_name.split('_')[:2])
+                    directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
+                else:
+                    directory = os.path.join(test_suite.resources_dir, test_suite.name, base_name)
+
                 if not os.path.exists(directory):
                     os.makedirs(directory)
-
+                    
                 downloads.append(
                     pool.apply_async(
                         utils.download,
@@ -131,9 +139,13 @@ class AACGenerator:
             for link in raw_bitstream_md5_links:
                 file_name = os.path.basename(link)
                 base_name = file_name.split('.')[0]
-                main_prefix = "_".join(base_name.split('_')[:2])
 
-                directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
+                if re.search(regex, base_name):
+                    main_prefix = "_".join(base_name.split('_')[:2])
+                    directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
+                else:
+                    directory = os.path.join(test_suite.resources_dir, test_suite.name, base_name)
+
                 if not os.path.exists(directory):
                     os.makedirs(directory)
 
@@ -168,60 +180,16 @@ class AACGenerator:
             dict(),
         )
 
-        hparser = HREFParser()
+        hparser_compressed = HREFParser()
+        hparser_raw = HREFParser()
+        hparser_checksums = HREFParser()
 
         with urllib.request.urlopen(self.url_test_vectors) as resp:
             data = str(resp.read())
-            hparser.feed(data)
-        compressed_bitstream_links = [url for url in hparser.links if url.endswith(tuple(BITSTREAM_EXTS))]
-        compressed_bitstream_names = [os.path.splitext(os.path.basename(x))[0] for x in compressed_bitstream_links]
-
-        with urllib.request.urlopen(self.url_reference_vectors) as resp:
-            data = str(resp.read())
-            hparser.feed(data)
-        raw_bitstream_links = [url for url in hparser.links if url.endswith(tuple(RAW_EXTS))]
-
-        raw_bitstream_names = [
-            os.path.splitext(os.path.basename(x))[0].split('_f')[0] for x in raw_bitstream_links
-        ]
-
-        missing_files = [x for x in set(compressed_bitstream_names).difference(raw_bitstream_names)]
-        if missing_files:
-            print(f"Missing reference files: {missing_files}")
-            for missing_file in missing_files:
-                print(f"Skipping test vector {missing_file}, as the reference file is missing.")
-
-        raw_bitstream_names = [name for name in compressed_bitstream_names if name not in missing_files]
-
-        # Match and store entries of raw_bitstream_links that contain entries of raw_bitstream_names as substrings
-        raw_bitstream_links = [
-            link for link in raw_bitstream_links if any(name in link for name in raw_bitstream_names)
-        ]
-
-        with urllib.request.urlopen(self.url_reference_vectors_checksums) as resp:
-            data = str(resp.read())
-            hparser.feed(data)
-        raw_bitstream_md5_links = [url for url in hparser.links if url.endswith(tuple(MD5_EXTS))]
-
-        raw_bitstream_md5_names = [
-            os.path.splitext(os.path.splitext(os.path.basename(x))[0].split('_f')[0])[0] for x in
-            raw_bitstream_md5_links
-        ]
-
-        missing_checksum_files = [x for x in set(compressed_bitstream_names).difference(raw_bitstream_md5_names)]
-        if missing_checksum_files:
-            print(f"Missing reference checksum files: {missing_checksum_files}")
-            for missing_checksum in missing_checksum_files:
-                print(f"Skipping checksum for {missing_checksum}, as the reference file is missing.")
-
-        raw_bitstream_md5_names = [name for name in compressed_bitstream_names if name not in missing_checksum_files]
-
-        # Match and store entries of raw_bitstream_md5_links that contain entries of raw_bitstream_md5_names
-        # as substrings
-        raw_bitstream_md5_links = [
-            link for link in raw_bitstream_md5_links if any(name in link for name in raw_bitstream_md5_names)
-        ]
-
+            hparser_compressed.feed(data)
+        compressed_bitstream_links = [url for url in hparser_compressed.links if url.endswith(tuple(BITSTREAM_EXTS))]
+        
+        # Download compressed bitstream links
         for source_url in compressed_bitstream_links:
             input_filename = os.path.basename(source_url)
             test_vector_name = os.path.splitext(input_filename)[0]
@@ -240,6 +208,123 @@ class AACGenerator:
                 keep_file=True,
             )
 
+        # MPEG4_AAC-MP4 test suite
+        if test_suite.name == "MPEG4_AAC-MP4":
+            print (f"Searching MP4 audio files in test suite: {self.suite_name}")
+
+            # Validating audio files using ffprobe
+            ffprobe = utils.normalize_binary_cmd("ffprobe")
+            non_audio_test_vectors=[]
+            for test_vector in test_suite.test_vectors.values():
+                dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+                absolute_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
+                command = [
+                    ffprobe,
+                    absolute_path
+                ]
+                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+                # In case of error, create a new test vector list to be removed from the test suite
+                if result.returncode == 1:                   
+                    non_audio_test_vectors.append(test_vector.name)   
+
+            # Removing non audio files test vectors
+            if non_audio_test_vectors:
+                print(f"Removing non audio test vectors, compressed bitstream links from test suite {self.suite_name} and files and folders form hard drive")
+                
+                for name in non_audio_test_vectors:
+                    
+                    # Deleting files and folders from hard drive
+                    dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, name)
+                    absolute_path = os.path.join(os.getcwd(), dest_dir, name + ".mp4")
+                    absolute_path_folder = os.path.join(os.getcwd(), dest_dir)
+                    
+                    if os.path.exists(absolute_path):
+                        os.remove(absolute_path)
+                        os.rmdir(absolute_path_folder)
+                    else:
+                        raise Exception(f"The file {absolute_path} couldn't be deleted")
+
+                    # Remove test vectors from test suite and the corresponding links
+                    del(test_suite.test_vectors[str(name)])
+
+                    # Rewrite compressed bitstream link list
+                    compressed_bitstream_links[:] = [link for link in compressed_bitstream_links if link.split("/")[-1].split(".")[0] != name]
+
+        compressed_bitstream_names = [os.path.splitext(os.path.basename(x))[0] for x in compressed_bitstream_links]
+
+        with urllib.request.urlopen(self.url_reference_vectors) as resp:
+            data = str(resp.read())
+            hparser_raw.feed(data)
+        raw_bitstream_links = [
+            url for url in hparser_raw.links if url.endswith(tuple(RAW_EXTS))
+        ]
+
+        # The reference files are divided in two DVDs for MPEG4_AAC-MP4 test suite
+        if test_suite.name == "MPEG4_AAC-MP4":
+            hparser_raw_extra = HREFParser()
+            
+            # Get the DVD3 wav files
+            with urllib.request.urlopen(URL_MPEG4_WAV_REFS_DVD3) as resp:
+                data = str(resp.read())
+                hparser_raw_extra.feed(data)
+            
+            raw_bitstream_links_MP4 = [
+                url for url in hparser_raw_extra.links if url.endswith(tuple(RAW_EXTS))
+            ]
+
+            # Adding the DVD3 wav files to the rest of the files
+            raw_bitstream_links = raw_bitstream_links + raw_bitstream_links_MP4
+
+        raw_bitstream_names = [
+            os.path.splitext(os.path.basename(x))[0].split('_f')[0] for x in raw_bitstream_links
+        ]
+
+        missing_files = [
+            x for x in set(compressed_bitstream_names).difference(raw_bitstream_names)
+        ]
+        if missing_files:
+            #print(f"Missing reference files: {missing_files}")
+            for missing_file in missing_files:
+                print(f"Skipping test vector {missing_file}, as the reference file is missing.")
+
+        raw_bitstream_names = [
+            name for name in compressed_bitstream_names if name not in missing_files
+        ]
+
+        # Match and store entries of raw_bitstream_links that contain entries of raw_bitstream_names as substrings
+        raw_bitstream_links = [
+            link for link in raw_bitstream_links if any(name in link for name in raw_bitstream_names)
+        ]
+
+        with urllib.request.urlopen(self.url_reference_vectors_checksums) as resp:
+            data = str(resp.read())
+            hparser_checksums.feed(data)
+        raw_bitstream_md5_links = [
+            url for url in hparser_checksums.links if url.endswith(tuple(MD5_EXTS))
+        ]
+        raw_bitstream_md5_names = [
+            os.path.splitext(os.path.splitext(os.path.basename(x))[0].split('_f')[0])[0] for x in raw_bitstream_md5_links
+        ]
+
+        missing_checksum_files = [
+            x for x in set(compressed_bitstream_names).difference(raw_bitstream_md5_names)
+        ]
+        if missing_checksum_files:
+            #print(f"Missing reference checksum files: {missing_checksum_files}")
+            for missing_checksum in missing_checksum_files:
+                print(f"Skipping checksum for {missing_checksum}, as the reference file is missing.")
+
+        raw_bitstream_md5_names = [
+            name for name in compressed_bitstream_names if name not in missing_checksum_files
+        ]
+
+        # Match and store entries of raw_bitstream_md5_links that contain entries of raw_bitstream_md5_names
+        # as substrings
+        raw_bitstream_md5_links = [
+            link for link in raw_bitstream_md5_links if any(name in link for name in raw_bitstream_md5_names)
+        ]
+                
         # Download test suite output reference and md5 checksum files
         self._download_raw_output_references_and_checksums(jobs, test_suite, raw_bitstream_links,
                                                            raw_bitstream_md5_links)
@@ -381,6 +466,18 @@ if __name__ == "__main__":
         Codec.AAC,
         "ISO IEC 14496-26 MPEG4 AAC ADIF test suite",
         URL_MPEG4_ADIF,
+        URL_MPEG4_WAV_REFS,
+        URL_MPEG4_WAV_REFS_MD5,
+        False,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+    
+    generator = AACGenerator(
+        "MPEG4_AAC-MP4",
+        "MPEG4_AAC-MP4",
+        Codec.AAC,
+        "ISO IEC 14496-26 MPEG4 AAC MP4 test suite",
+        URL_MPEG4_MP4,
         URL_MPEG4_WAV_REFS,
         URL_MPEG4_WAV_REFS_MD5,
         False,
