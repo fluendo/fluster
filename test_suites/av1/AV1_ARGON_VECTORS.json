@@ -2,6 +2,7 @@
     "name": "AV1_ARGON_VECTORS",
     "codec": "AV1",
     "description": "AV1 Argon Streams",
+    "is_single_archive": true,
     "test_vectors": [
         {
             "name": "test3795_6754",
