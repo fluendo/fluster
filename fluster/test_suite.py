@@ -178,7 +178,7 @@ class TestSuite:
             data.pop("filename")
             data.pop("test_vectors_success")
             data.pop("time_taken")
-            if self.is_single_archive is False:
+            if not self.is_single_archive:
                 data.pop("is_single_archive")
             if self.failing_test_vectors is None:
                 data.pop("failing_test_vectors")
@@ -350,7 +350,7 @@ class TestSuite:
 
             downloads = []
 
-            if self.is_single_archive is False:
+            if not self.is_single_archive:
                 print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
                 for test_vector in self.test_vectors.values():
                     dwork = DownloadWork(

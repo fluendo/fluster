@@ -71,7 +71,7 @@ class Test(unittest.TestCase):
             self.test_suite.name,
             (
                 self.test_vector.name
-                if self.test_suite.is_single_archive is False
+                if not self.test_suite.is_single_archive
                 else ""
             ),
             self.test_vector.input_file,
