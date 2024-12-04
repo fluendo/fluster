@@ -45,7 +45,6 @@ class VKVSDecoder(Decoder):
             Codec.H265: "hevc",
             Codec.AV1: "av1",
         }
-        # pylint: disable=unused-argument
         run_command(
             [
                 self.binary,

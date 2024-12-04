@@ -44,7 +44,6 @@ class VPXDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
-        # pylint: disable=unused-argument
         fmt = None
         if output_format == OutputFormat.YUV420P:
             fmt = "--i420"
