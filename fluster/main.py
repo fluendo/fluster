@@ -25,7 +25,6 @@ from importlib import util
 from tempfile import gettempdir
 from typing import Any, Tuple
 
-
 from fluster import utils
 from fluster.codec import Codec
 from fluster.fluster import Context, Fluster, SummaryFormat

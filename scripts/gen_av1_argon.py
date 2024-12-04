@@ -24,14 +24,13 @@ import subprocess
 import sys
 import urllib.error
 import zipfile
+from typing import Any
 
-# pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
-from fluster.test_suite import TestSuite, TestVector
-
-# pylint: enable=wrong-import-position
+from fluster.test_suite import TestSuite
+from fluster.test_vector import TestVector
 
 ARGON_URL = "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/"
 
@@ -56,7 +55,7 @@ class AV1ArgonGenerator:
         self.use_ffprobe = use_ffprobe
         self.is_single_archive = True
 
-    def generate(self, download):
+    def generate(self, download: bool) -> None:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
         extract_folder = "resources"
@@ -66,7 +65,7 @@ class AV1ArgonGenerator:
             self.suite_name,
             self.codec,
             self.description,
-            dict(),
+            {},
             self.is_single_archive,
         )
         os.makedirs(extract_folder, exist_ok=True)
@@ -78,9 +77,7 @@ class AV1ArgonGenerator:
                 utils.download(source_url, extract_folder)
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
-                print(
-                    f"\tUnable to download {source_url} to {extract_folder}, {exception_str}"
-                )
+                print(f"\tUnable to download {source_url} to {extract_folder}, {exception_str}")
             except Exception as ex:
                 raise Exception(str(ex)) from ex
 
@@ -95,98 +92,91 @@ class AV1ArgonGenerator:
                     test_vector_files.append(file_info)
 
                 # Extract md5 files
-                if (
-                    file_info.endswith(".md5")
-                    and "md5_ref/" in file_info
-                    and "layers/" not in file_info
-                ):
+                if file_info.endswith(".md5") and "md5_ref/" in file_info and "layers/" not in file_info:
                     zip_ref.extract(file_info, extract_folder)
 
-            # Create test vectors and test suite
-            print("Creating test vectors and test suite")
-            source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
-            for idx, file in enumerate(test_vector_files):
-                if (idx+1) % 500 == 0:
-                    print("Processing vector {} out of a total of {}".format(idx+1, len(test_vector_files)))
-                filename = os.path.splitext(os.path.basename(file))[0]
-                # ffprobe execution
-                if self.use_ffprobe:
-                    full_path = os.path.abspath(extract_folder + "/" + file)
-                    ffprobe = utils.normalize_binary_cmd("ffprobe")
-                    command = [
-                        ffprobe,
-                        "-v",
-                        "error",
-                        "-select_streams",
-                        "v:0",
-                        "-show_entries",
-                        "stream=pix_fmt",
-                        "-of",
-                        "default=nokey=1:noprint_wrappers=1",
-                        full_path,
-                    ]
-                    try:
-                        result = utils.run_command_with_output(command).splitlines()
-                        pix_fmt = result[0]
-                        if pix_fmt == "unknown":
-                            pix_fmt = "Unknown"
-                    except subprocess.CalledProcessError:
-                        pix_fmt = "None"
+        # Create test vectors and test suite
+        print("Creating test vectors and test suite")
+        source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
+        for idx, file in enumerate(test_vector_files):
+            if (idx+1) % 500 == 0:
+                print("Processing vector {} out of a total of {}".format(idx+1, len(test_vector_files)))
+            filename = os.path.splitext(os.path.basename(file))[0]
+            # ffprobe execution
+            if self.use_ffprobe:
+                full_path = os.path.abspath(extract_folder + "/" + file)
+                ffprobe = utils.normalize_binary_cmd("ffprobe")
+                command = [
+                    ffprobe,
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=pix_fmt",
+                    "-of",
+                    "default=nokey=1:noprint_wrappers=1",
+                    full_path,
+                ]
+                try:
+                    result = utils.run_command_with_output(command).splitlines()
+                    pix_fmt = result[0]
+                    if pix_fmt == "unknown":
+                        pix_fmt = "Unknown"
+                except subprocess.CalledProcessError:
+                    pix_fmt = "None"
 
-                # Processing md5 files
-                md5_file_to_find = os.path.splitext(filename)[0] + ".md5"
-                full_path_split = full_path.split("/")
-                md5_directory_path = (
-                    "/".join(full_path_split[: len(full_path_split) - 2])
-                    + "/"
-                    + "md5_ref"
-                )
-                md5_file_path = os.path.join(md5_directory_path, md5_file_to_find)
+            # Processing md5 files
+            md5_file_to_find = os.path.splitext(filename)[0] + ".md5"
+            full_path_split = full_path.split("/")
+            md5_directory_path = "/".join(full_path_split[: len(full_path_split) - 2]) + "/" + "md5_ref"
+            md5_file_path = os.path.join(md5_directory_path, md5_file_to_find)
 
-                # Check the .md5 file and get checksum
-                if os.path.exists(md5_file_path):
-                    try:
-                        result_checksum = self._fill_checksum_argon(md5_file_path)
-                    except Exception as ex:
-                        print("MD5 does not match")
-                        raise ex
-                else:
-                    try:
-                        result_checksum = utils.file_checksum(full_path)
-                    except Exception as ex:
-                        print("MD5 cannot be calculated")
-                        raise ex
+            # Check the .md5 file and get checksum
+            if os.path.exists(md5_file_path):
+                try:
+                    result_checksum = self._fill_checksum_argon(md5_file_path)
+                except Exception as ex:
+                    print("MD5 does not match")
+                    raise ex
+            else:
+                try:
+                    result_checksum = utils.file_checksum(full_path)
+                except Exception as ex:
+                    print("MD5 cannot be calculated")
+                    raise ex
 
-                # Add data to the test vector and the test suite
-                test_vector = TestVector(
-                    filename,
-                    source_url,
-                    source_checksum,
-                    file,
-                    OutputFormat[pix_fmt.upper()],
-                    result_checksum,
-                )
-                test_suite.test_vectors[filename] = test_vector
+            # Add data to the test vector and the test suite
+            test_vector = TestVector(
+                filename,
+                source_url,
+                source_checksum,
+                file,
+                OutputFormat[pix_fmt.upper()],
+                result_checksum,
+            )
+            test_suite.test_vectors[filename] = test_vector
 
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
     @staticmethod
-    def _fill_checksum_argon(dest_dir):
+    def _fill_checksum_argon(dest_dir: str) -> Any:
         checksum_file = dest_dir
         if checksum_file is None:
             raise Exception("MD5 not found")
-        with open(checksum_file, "r") as checksum_file:
+        with open(checksum_file, "r") as checksum_fh:
             regex = re.compile(r"([a-fA-F0-9]{32,}).*\.(yuv|rgb|gbr)")
-            lines = checksum_file.readlines()
-            if any((match := regex.match(line)) for line in lines):
+            lines = checksum_fh.readlines()
+            # Prefer lines matching the regex pattern
+            match = next((regex.match(line) for line in lines if regex.match(line)), None)
+            if match:
                 result = match.group(1)[:32].lower()
             else:
                 result = -1
             # Assert that we have extracted a valid MD5 from the file
             assert (
-                len(result) == 32
-                and re.search(r"^[a-fA-F0-9]{32}$", result) is not None
+                len(result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", result) is not None
             ), f"{result} is not a valid MD5 hash"
             return result
 
