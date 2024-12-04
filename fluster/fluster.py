@@ -172,9 +172,7 @@ class Fluster:
         if len(self.test_suites) == 0:
             raise Exception(f'No test suites found in "{self.test_suites_dir}"')
 
-    def list_decoders(
-        self, check: bool, verbose: bool, codec: Optional[Codec] = None
-    ) -> None:
+    def list_decoders(self, check: bool, verbose: bool, codec: Optional[Codec] = None) -> None:
         """List all the available decoders"""
         print("\nList of available decoders:")
         decoders_dict: Dict[Codec, List[Decoder]] = {}

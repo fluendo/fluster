@@ -18,22 +18,21 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-import re
-from html.parser import HTMLParser
-from multiprocessing import Pool
+import multiprocessing
 import os
+import re
 import subprocess
 import sys
 import urllib.request
-import multiprocessing
+from html.parser import HTMLParser
+from multiprocessing import Pool
+from typing import Any, List, Optional, Tuple
 
-# pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
-from fluster.test_suite import TestSuite, TestVector
-
-# pylint: enable=wrong-import-position
+from fluster.test_suite import TestSuite
+from fluster.test_vector import TestVector
 
 BASE_URL = "https://standards.iso.org/"
 
@@ -52,20 +51,20 @@ URL_MPEG4_WAV_REFS_MD5 = URL_MPEG4 + "DVD1/mpeg4audio-conformance/referencesWav/
 
 BITSTREAM_EXTS = [".adts", ".adif", ".mp4"]
 MD5_EXTS = [".wav.md5sum"]
-MD5_EXCLUDES = []
+MD5_EXCLUDES: List[str] = []
 RAW_EXTS = [".wav"]
 
 class HREFParser(HTMLParser):
     """Custom parser to find href links"""
 
-    def __init__(self):
-        self.links = []
+    def __init__(self) -> None:
+        self.links: List[Any] = []
         super().__init__()
 
-    def error(self, message):
+    def error(self, message: str) -> None:
         print(message)
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, Optional[str]]]) -> None:
         # Only parse the 'anchor' tag.
         if tag == "a":
             # Check the list of defined attributes.
@@ -73,7 +72,7 @@ class HREFParser(HTMLParser):
                 # If href is defined, print it.
                 if name == "href":
                     base_url = BASE_URL if BASE_URL[-1] != "/" else BASE_URL[0:-1]
-                    self.links.append(base_url + value)
+                    self.links.append(base_url + str(value))
 
 
 class AACGenerator:
@@ -99,11 +98,13 @@ class AACGenerator:
         self.url_reference_vectors_checksums = url_reference_vectors_checksums
         self.use_ffprobe = use_ffprobe
 
-    def _download_raw_output_references_and_checksums(self, jobs, test_suite, raw_bitstream_links,
-                                                      raw_bitstream_md5_links):
+    def _download_raw_output_references_and_checksums(
+        self, jobs: int, test_suite: TestSuite, raw_bitstream_links: List[str], raw_bitstream_md5_links: List[str]
+    ) -> None:
         """Downloads raw output reference bitstreams and their checksums"""
         with Pool(jobs) as pool:
-            def _callback_error(err):
+
+            def _callback_error(err: Any) -> None:
                 print(f"\nError downloading -> {err}\n")
                 pool.terminate()
 
@@ -117,10 +118,10 @@ class AACGenerator:
 
             for link in raw_bitstream_links:
                 file_name = os.path.basename(link)
-                base_name = file_name.split('.')[0]
+                base_name = file_name.split(".")[0]
 
                 if re.search(regex, base_name):
-                    main_prefix = "_".join(base_name.split('_')[:2])
+                    main_prefix = "_".join(base_name.split("_")[:2])
                     directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
                 else:
                     directory = os.path.join(test_suite.resources_dir, test_suite.name, base_name)
@@ -140,10 +141,10 @@ class AACGenerator:
 
             for link in raw_bitstream_md5_links:
                 file_name = os.path.basename(link)
-                base_name = file_name.split('.')[0]
+                base_name = file_name.split(".")[0]
 
                 if re.search(regex, base_name):
-                    main_prefix = "_".join(base_name.split('_')[:2])
+                    main_prefix = "_".join(base_name.split("_")[:2])
                     directory = os.path.join(test_suite.resources_dir, test_suite.name, main_prefix)
                 else:
                     directory = os.path.join(test_suite.resources_dir, test_suite.name, base_name)
@@ -170,7 +171,7 @@ class AACGenerator:
             except Exception as e:
                 sys.exit(f"Some download failed: {e}")
 
-    def generate(self, download, jobs):
+    def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
@@ -179,7 +180,7 @@ class AACGenerator:
             self.suite_name,
             self.codec,
             self.description,
-            dict(),
+            {},
         )
 
         hparser_compressed = HREFParser()
@@ -195,9 +196,7 @@ class AACGenerator:
         for source_url in compressed_bitstream_links:
             input_filename = os.path.basename(source_url)
             test_vector_name = os.path.splitext(input_filename)[0]
-            test_vector = TestVector(
-                test_vector_name, source_url, "__skip__", input_filename, OutputFormat.UNKNOWN, ""
-            )
+            test_vector = TestVector(test_vector_name, source_url, "__skip__", input_filename, OutputFormat.UNKNOWN, "")
             test_suite.test_vectors[test_vector_name] = test_vector
 
         print(f"Download list of compressed bitstreams from {self.url_test_vectors}")
@@ -323,8 +322,9 @@ class AACGenerator:
         ]
 
         # Download test suite output reference and md5 checksum files
-        self._download_raw_output_references_and_checksums(jobs, test_suite, raw_bitstream_links,
-                                                           raw_bitstream_md5_links)
+        self._download_raw_output_references_and_checksums(
+            jobs, test_suite, raw_bitstream_links, raw_bitstream_md5_links
+        )
 
         for test_vector in test_suite.test_vectors.values():
             dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
@@ -368,7 +368,7 @@ class AACGenerator:
         print("Generate new test suite: " + test_suite.name + ".json")
 
     @staticmethod
-    def _fill_checksum_aac(test_vector, dest_dir):
+    def _fill_checksum_aac(test_vector: TestVector, dest_dir: str) -> None:
         base_name = test_vector.name
         raw_file = None
         ext = None
@@ -381,23 +381,24 @@ class AACGenerator:
 
         if not raw_file:
             for ext in RAW_EXTS:
-                fallback_file = os.path.join(dest_dir, base_name + '_f00' + ext)
+                fallback_file = os.path.join(dest_dir, base_name + "_f00" + ext)
                 if os.path.exists(fallback_file):
                     raw_file = fallback_file
                     break
 
         if not raw_file:
             raise Exception(
-                f"Neither {base_name + ext} nor {base_name + '_f00' + ext} found with extensions {RAW_EXTS} in {dest_dir}"
+                f"Neither {base_name + ext} nor {base_name + '_f00' + ext} found with extensions {RAW_EXTS} "
+                f"in {dest_dir}"
             )
 
         checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS)
         if checksum_file is None:
             raise Exception("MD5 not found")
 
-        with open(checksum_file, "r") as checksum_file:
-            regex = re.compile(rf"([a-fA-F0-9]{{32,}}).*(?:\.(wav))?")
-            lines = checksum_file.readlines()
+        with open(checksum_file, "r") as checksum_fh:
+            regex = re.compile(r"([a-fA-F0-9]{32,}).*(?:\.(wav))?")
+            lines = checksum_fh.readlines()
             # Filter out empty lines
             filtered_lines = [line.strip() for line in lines if line.strip()]
             # Prefer lines matching the regex pattern
@@ -409,8 +410,7 @@ class AACGenerator:
                 test_vector.result = match.group(1).lower()
         # Assert that we have extracted a valid MD5 from the file
         assert (
-                len(test_vector.result) == 32
-                and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
+            len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
         ), f"{test_vector.result} is not a valid MD5 hash"
 
         test_vector.result = utils.file_checksum(raw_file)

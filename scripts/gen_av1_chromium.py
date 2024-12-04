@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Fluster - testing framework for decoders conformance
 #
 # This library is free software; you can redistribute it and/or
@@ -13,20 +15,19 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import argparse
-import sys
 import multiprocessing
+import os
 import re
+import sys
+from typing import Any, Optional, Tuple  # noqa: F401
 
-# pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-from fluster.test_suite import TestSuite, TestVector
-from fluster.codec import Codec, OutputFormat
 from fluster import utils
+from fluster.codec import Codec, OutputFormat
 from fluster.decoders import av1_aom
-
-# pylint: enable=wrong-import-position
+from fluster.test_suite import TestSuite
+from fluster.test_vector import TestVector
 
 DOWNLOAD_URL = "https://storage.googleapis.com/chromiumos-test-assets-public/tast/cros/video/test_vectors/av1"
 
@@ -48,7 +49,7 @@ TESTS_8BPP = (
 )
 
 TESTS_10BPP = (
-    #10 bit
+    # 10 bit
     "00000671_20210310.ivf",
     "00000672_20210310.ivf",
     "00000673_20210310.ivf",
@@ -71,8 +72,9 @@ TESTS_10BPP = (
     "av1-1-b10-00-quantizer-40_20210310.ivf",
     "av1-1-b10-00-quantizer-50_20210310.ivf",
     "av1-1-b10-00-quantizer-60_20210310.ivf",
-    "av1-1-b10-23-film_grain-50_20210310.ivf"
+    "av1-1-b10-23-film_grain-50_20210310.ivf",
 )
+
 
 class ChromiumAV1Generator:
     """Generates a test suite from the conformance bitstreams used in tast tests for Chromium"""
@@ -92,8 +94,7 @@ class ChromiumAV1Generator:
         self.decoder = av1_aom.AV1AOMDecoder()
         self.bpp = bpp
 
-
-    def generate(self, download, jobs):
+    def generate(self, download: bool, jobs: int) -> Any:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
@@ -102,24 +103,24 @@ class ChromiumAV1Generator:
             self.suite_name,
             self.codec,
             self.description,
-            dict(),
+            {},
         )
 
         print(f"Download list of bitstreams from {DOWNLOAD_URL}")
 
+        tests: Optional[Tuple[str, ...]]
         if self.bpp == 10:
-            TESTS = TESTS_10BPP
+            tests = TESTS_10BPP
         elif self.bpp == 8:
-            TESTS = TESTS_8BPP
+            tests = TESTS_8BPP
         else:
             return
 
-        for test in TESTS:
+        for test in tests:
             file_url = f"{DOWNLOAD_URL}/{test}"
-            name = re.sub("_[\d]*", "", test)
+            name = re.sub(r"_[\d]*", "", test)
 
-            test_vector = TestVector(
-                name, file_url, "__skip__", test, OutputFormat.YUV420P, "")
+            test_vector = TestVector(name, file_url, "__skip__", test, OutputFormat.YUV420P, "")
 
             test_suite.test_vectors[name] = test_vector
 
@@ -133,16 +134,10 @@ class ChromiumAV1Generator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
-            dest_path = os.path.join(
-                dest_dir, os.path.basename(test_vector.source))
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+            dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = dest_path.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
+                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
                 "",
             )
 
@@ -151,8 +146,7 @@ class ChromiumAV1Generator:
             test_vector.source_checksum = utils.file_checksum(dest_path)
             out420 = f"{dest_path}.i420"
             # Run the libaom av1 decoder to get the checksum as the .md5 in the JSONs are per-frame
-            test_vector.result = self.decoder.decode(
-                dest_path, out420, test_vector.output_format, 30, False, False)
+            test_vector.result = self.decoder.decode(dest_path, out420, test_vector.output_format, 30, False, False)
             os.remove(out420)
 
         test_suite.to_json_file(output_filepath)
