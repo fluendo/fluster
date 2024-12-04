@@ -18,42 +18,41 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-from html.parser import HTMLParser
+import multiprocessing
 import os
 import re
 import sys
 import urllib.request
-import multiprocessing
+from html.parser import HTMLParser
 from subprocess import CalledProcessError
+from typing import Any, List, Optional, Tuple
 
-# pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
-from fluster.test_suite import TestSuite, TestVector
-
-# pylint: enable=wrong-import-position
+from fluster.test_suite import TestSuite
+from fluster.test_vector import TestVector
 
 BASE_URL = "https://www.itu.int/"
 H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
 # When there is only 1 element in below variables there must be a ", " at the end.
 # Otherwise utils.find_by_ext() considers each character of the string as an individual
 # element in the list
-BITSTREAM_EXTS = (".bit", )
-MD5_EXTS = (".yuv.md5", )
+BITSTREAM_EXTS = [".bit"]
+MD5_EXTS = [".yuv.md5"]
 
 
 class HREFParser(HTMLParser):
     """Custom parser to find href links"""
 
-    def __init__(self):
-        self.links = []
+    def __init__(self) -> None:
+        self.links: List[Any] = []
         super().__init__()
 
-    def error(self, message):
+    def error(self, message: str) -> None:
         print(message)
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, Optional[str]]]) -> None:
         # Only parse the 'anchor' tag.
         if tag == "a":
             # Check the list of defined attributes.
@@ -61,20 +60,14 @@ class HREFParser(HTMLParser):
                 # If href is defined, print it.
                 if name == "href":
                     base_url = BASE_URL if BASE_URL[-1] != "/" else BASE_URL[0:-1]
-                    self.links.append(base_url + value)
+                    self.links.append(base_url + str(value))
 
 
 class JVETGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
-        self,
-        name: str,
-        suite_name: str,
-        codec: Codec,
-        description: str,
-        site: str,
-        use_ffprobe: bool = False
+        self, name: str, suite_name: str, codec: Codec, description: str, site: str, use_ffprobe: bool = False
     ):
         self.name = name
         self.suite_name = suite_name
@@ -83,7 +76,7 @@ class JVETGenerator:
         self.site = site
         self.use_ffprobe = use_ffprobe
 
-    def generate(self, download, jobs):
+    def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
@@ -92,7 +85,7 @@ class JVETGenerator:
             self.suite_name,
             self.codec,
             self.description,
-            dict(),
+            {},
         )
 
         hparser = HREFParser()
@@ -118,17 +111,12 @@ class JVETGenerator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            test_vector.input_file = utils.find_by_ext(dest_dir, BITSTREAM_EXTS)
+            test_vector.input_file = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
+                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
                 "",
             )
             if not test_vector.input_file:
@@ -136,14 +124,24 @@ class JVETGenerator:
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.use_ffprobe:
                 try:
-                    ffprobe = utils.normalize_binary_cmd('ffprobe')
-                    command = [ffprobe, '-v', 'error', '-strict', '-2',
-                               '-select_streams', 'v:0',
-                               '-show_entries', 'stream=pix_fmt', '-of',
-                               'default=nokey=1:noprint_wrappers=1',
-                               absolute_input_path]
+                    ffprobe = utils.normalize_binary_cmd("ffprobe")
+                    command = [
+                        ffprobe,
+                        "-v",
+                        "error",
+                        "-strict",
+                        "-2",
+                        "-select_streams",
+                        "v:0",
+                        "-show_entries",
+                        "stream=pix_fmt",
+                        "-of",
+                        "default=nokey=1:noprint_wrappers=1",
+                        absolute_input_path,
+                    ]
 
                     result = utils.run_command_with_output(command).splitlines()
+                    print(result)
                     pix_fmt = result[0]
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
                 except KeyError as key_err:
@@ -162,7 +160,7 @@ class JVETGenerator:
                         "MNUT_A_Nokia_3": OutputFormat.NONE,
                         "MNUT_B_Nokia_2": OutputFormat.NONE,
                         "SUBPIC_C_ERICSSON_1": OutputFormat.NONE,
-                        "SUBPIC_D_ERICSSON_1": OutputFormat.NONE
+                        "SUBPIC_D_ERICSSON_1": OutputFormat.NONE,
                     }
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
@@ -175,13 +173,13 @@ class JVETGenerator:
         print("Generate new test suite: " + test_suite.name + ".json")
 
     @staticmethod
-    def _fill_checksum_h266(test_vector, dest_dir):
+    def _fill_checksum_h266(test_vector: TestVector, dest_dir: str) -> None:
         checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS)
         if checksum_file is None:
             raise Exception("MD5 not found")
-        with open(checksum_file, "r") as checksum_file:
-            regex = re.compile(rf"([a-fA-F0-9]{{32,}}).*(?:\.(yuv|rgb|gbr))?")
-            lines = checksum_file.readlines()
+        with open(checksum_file, "r") as checksum_fh:
+            regex = re.compile(r"([a-fA-F0-9]{32,}).*(?:\.(yuv|rgb|gbr))?")
+            lines = checksum_fh.readlines()
             # Filter out empty lines
             filtered_lines = [line.strip() for line in lines if line.strip()]
             # Prefer lines matching the regex pattern
@@ -189,9 +187,9 @@ class JVETGenerator:
             if match:
                 test_vector.result = match.group(1).lower()
             # Assert that we have extracted a valid MD5 from the file
-            assert len(test_vector.result) == 32 and re.search(
-                r"^[a-fA-F0-9]{32}$",
-                test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
+            assert (
+                len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
+            ), f"{test_vector.result} is not a valid MD5 hash"
 
 
 if __name__ == "__main__":
@@ -211,10 +209,10 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     generator = JVETGenerator(
-        'draft6',
-        'JVET-VVC_draft6',
+        "draft6",
+        "JVET-VVC_draft6",
         Codec.H266,
-        'JVET VVC draft6',
+        "JVET VVC draft6",
         H266_URL,
         True,
     )

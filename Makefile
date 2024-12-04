@@ -1,4 +1,4 @@
-PY_FILES=fluster
+PY_FILES=fluster scripts
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 PYTHONPATH=.
@@ -105,7 +105,7 @@ mpeg_2_aac_reference_decoder: ## build ISO MPEG2 AAC reference decoder
 	if ! dpkg -l | grep g++-multilib -c >>/dev/null; then sudo apt-get install g++-multilib; fi
 	if [ ! $(wildcard /usr/include/asm) ] && [ $(wildcard /usr/include/asm-generic) ]; then sudo ln -s /usr/include/asm-generic /usr/include/asm; fi
 
-ifeq ($(wildcard $(CONTRIB_DIR)/C039486_Electronic_inserts), )
+ifeq ($(wildcard $(CONTRIB_DIR)/C039486_Electronic_inserts),)
 	$(create_dirs)
 	cd $(CONTRIB_DIR) && rm -f iso_cookies.txt
 	cd $(CONTRIB_DIR) && wget -qO- --keep-session-cookies --save-cookies iso_cookies.txt \

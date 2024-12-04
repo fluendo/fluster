@@ -20,42 +20,38 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
-from html.parser import HTMLParser
+import multiprocessing
 import os
+import re
 import sys
 import urllib.request
-import multiprocessing
-import re
+from html.parser import HTMLParser
+from typing import Any, List, Optional, Tuple
 
-# pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
-from fluster.test_suite import TestSuite, TestVector
-
-# pylint: enable=wrong-import-position
+from fluster.test_suite import TestSuite
+from fluster.test_vector import TestVector
 
 BASE_URL = "https://www.itu.int/"
 H265_URL = BASE_URL + "wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/"
-BITSTREAM_EXTS = (
-    ".bin",
-    ".bit",
-)
-MD5_EXTS = ("yuv_2.md5", "yuv.md5", ".md5", ".MD5", "md5.txt", "md5sum.txt")
-MD5_EXCLUDES = (".bin.md5", "bit.md5")
+BITSTREAM_EXTS = [".bin", ".bit"]
+MD5_EXTS = ["yuv_2.md5", "yuv.md5", ".md5", ".MD5", "md5.txt", "md5sum.txt"]
+MD5_EXCLUDES = [".bin.md5", "bit.md5"]
 
 
 class HREFParser(HTMLParser):
     """Custom parser to find href links"""
 
-    def __init__(self):
-        self.links = []
+    def __init__(self) -> None:
+        self.links: List[Any] = []
         super().__init__()
 
-    def error(self, message):
+    def error(self, message: str) -> None:
         print(message)
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, Optional[str]]]) -> None:
         # Only parse the 'anchor' tag.
         if tag == "a":
             # Check the list of defined attributes.
@@ -63,20 +59,14 @@ class HREFParser(HTMLParser):
                 # If href is defined, print it.
                 if name == "href":
                     base_url = BASE_URL if BASE_URL[-1] != "/" else BASE_URL[0:-1]
-                    self.links.append(base_url + value)
+                    self.links.append(base_url + str(value))
 
 
 class JCTVCGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
-        self,
-        name: str,
-        suite_name: str,
-        codec: Codec,
-        description: str,
-        site: str,
-        use_ffprobe: bool = False
+        self, name: str, suite_name: str, codec: Codec, description: str, site: str, use_ffprobe: bool = False
     ):
         self.name = name
         self.suite_name = suite_name
@@ -85,7 +75,7 @@ class JCTVCGenerator:
         self.site = site
         self.use_ffprobe = use_ffprobe
 
-    def generate(self, download, jobs):
+    def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
@@ -94,7 +84,7 @@ class JCTVCGenerator:
             self.suite_name,
             self.codec,
             self.description,
-            dict(),
+            {},
         )
 
         hparser = HREFParser()
@@ -129,17 +119,12 @@ class JCTVCGenerator:
                     break
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            test_vector.input_file = utils.find_by_ext(dest_dir, BITSTREAM_EXTS)
+            test_vector.input_file = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
+                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
                 "",
             )
             if not test_vector.input_file:
@@ -148,11 +133,19 @@ class JCTVCGenerator:
             if "main10" in test_vector.name.lower():
                 test_vector.output_format = OutputFormat.YUV420P10LE
             elif self.use_ffprobe:
-                ffprobe = utils.normalize_binary_cmd('ffprobe')
-                command = [ffprobe, '-v', 'error', '-select_streams', 'v:0',
-                           '-show_entries', 'stream=pix_fmt', '-of',
-                           'default=nokey=1:noprint_wrappers=1',
-                           absolute_input_path]
+                ffprobe = utils.normalize_binary_cmd("ffprobe")
+                command = [
+                    ffprobe,
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=pix_fmt",
+                    "-of",
+                    "default=nokey=1:noprint_wrappers=1",
+                    absolute_input_path,
+                ]
 
                 result = utils.run_command_with_output(command).splitlines()
                 pix_fmt = result[0]
@@ -176,7 +169,7 @@ class JCTVCGenerator:
                         "GENERAL_16b_400_RExt_Sony_1": OutputFormat.GRAY16LE,
                         "GENERAL_16b_444_highThroughput_RExt_Sony_2": OutputFormat.YUV444P16LE,
                         "GENERAL_16b_444_RExt_Sony_2": OutputFormat.YUV444P16LE,
-                        "WAVETILES_RExt_Sony_2": OutputFormat.YUV444P16LE
+                        "WAVETILES_RExt_Sony_2": OutputFormat.YUV444P16LE,
                     }
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
@@ -188,11 +181,11 @@ class JCTVCGenerator:
         test_suite.to_json_file(output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
-    def _fill_checksum_h265(self, test_vector, dest_dir):
+    def _fill_checksum_h265(self, test_vector: TestVector, dest_dir: str) -> None:
         checksum_file = utils.find_by_ext(dest_dir, MD5_EXTS, MD5_EXCLUDES)
         if checksum_file is None:
             raise Exception("MD5 not found")
-        with open(checksum_file, "r") as checksum_file:
+        with open(checksum_file, "r") as checksum_fh:
             # The md5 is in several formats
             # Example 1
             # 158312a1a35ef4b20cb4aeee48549c03 *WP_A_Toshiba_3.bit
@@ -211,15 +204,15 @@ class JCTVCGenerator:
             # Example 6:
             # 9cab6bcd74491062a8523b5a7ff6a540  CCP_8bit_RExt_QCOM.bin
             # f3e914fccdb820eac85f46642ea0e168  CCP_8bit_RExt_QCOM.gbr
-            regex = re.compile(rf"([a-fA-F0-9]{{32,}}).*\.(yuv|rgb|gbr)")
-            lines = checksum_file.readlines()
+            regex = re.compile(r"([a-fA-F0-9]{32,}).*\.(yuv|rgb|gbr)")
+            lines = checksum_fh.readlines()
             # Filter out empty lines and lines that start with "#"
             filtered_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
             # Prefer lines matching the regex pattern
             match = next((regex.match(line) for line in filtered_lines if regex.match(line)), None)
             if match:
                 test_vector.result = match.group(1).lower()
-            elif self.name in {"RExt", "MV-HEVC", "SCC", "SHVC"}:
+            elif self.name in ["RExt", "MV-HEVC", "SCC", "SHVC"]:
                 # Handle special cases where checksum is at the end
                 test_vector.result = filtered_lines[-1].split(" ")[0].strip().lower()
             else:
@@ -230,9 +223,9 @@ class JCTVCGenerator:
                         test_vector.result = line.split(" ")[0].strip().lower()
                     break
             # Assert that we have extracted a valid MD5 from the file
-            assert len(test_vector.result) == 32 and re.search(
-                r"^[a-fA-F0-9]{32}$",
-                test_vector.result) is not None, f"{test_vector.result} is not a valid MD5 hash"
+            assert (
+                len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
+            ), f"{test_vector.result} is not a valid MD5 hash"
 
 
 if __name__ == "__main__":
@@ -260,44 +253,20 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
+    generator = JCTVCGenerator("RExt", "JCT-VC-RExt", Codec.H265, "JCT-VC HEVC Range Extension", H265_URL, True)
+    generator.generate(not args.skip_download, args.jobs)
+
     generator = JCTVCGenerator(
-        "RExt",
-        "JCT-VC-RExt",
-        Codec.H265,
-        "JCT-VC HEVC Range Extension",
-        H265_URL,
-        True
+        "SCC", "JCT-VC-SCC", Codec.H265, "JCT-VC HEVC Screen Content Coding Extension", H265_URL, True
     )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVCGenerator(
-        "SCC",
-        "JCT-VC-SCC",
-        Codec.H265,
-        "JCT-VC HEVC Screen Content Coding Extension",
-        H265_URL,
-        True
+        "MV-HEVC", "JCT-VC-MV-HEVC", Codec.H265, "JCT-VC HEVC Multiview Extension", H265_URL, True
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVCGenerator(
-        "MV-HEVC",
-        "JCT-VC-MV-HEVC",
-        Codec.H265,
-        "JCT-VC HEVC Multiview Extension",
-        H265_URL,
-        True
-    )
-    generator.generate(not args.skip_download, args.jobs)
-
-    generator = JCTVCGenerator(
-        "3D-HEVC",
-        "JCT-VC-3D-HEVC",
-        Codec.H265,
-        "JCT-VC HEVC 3D Extension",
-        H265_URL,
-        True
-    )
+    generator = JCTVCGenerator("3D-HEVC", "JCT-VC-3D-HEVC", Codec.H265, "JCT-VC HEVC 3D Extension", H265_URL, True)
     generator.generate(not args.skip_download, args.jobs)
 
     # TODO see comment (https://fluendo.atlassian.net/browse/COM-10938?focusedCommentId=86998)
