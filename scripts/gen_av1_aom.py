@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Fluster - testing framework for decoders conformance
 #
 # This library is free software; you can redistribute it and/or
@@ -13,31 +15,26 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import argparse
-import xml.etree.ElementTree as ET
-import sys
 import multiprocessing
+import os
+import sys
 import urllib.request
+import xml.etree.ElementTree as ET
+from typing import Dict
 
-# pylint: disable=wrong-import-position
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-from fluster.test_suite import TestSuite, TestVector
-from fluster.codec import Codec, OutputFormat
 from fluster import utils
+from fluster.codec import Codec, OutputFormat
 from fluster.decoders import av1_aom
-
-# pylint: enable=wrong-import-position
+from fluster.test_suite import TestSuite
+from fluster.test_vector import TestVector
 
 # Sourced from test/test_data_download_worker.cmake
 AV1_URL = "https://storage.googleapis.com/aom-test-data"
 
 # Sourced from test/test_vector_test.cc
-BITSTREAM_EXTS = (
-    ".ivf",
-    ".webm",
-    ".mkv"
-)
+BITSTREAM_EXTS = [".ivf", ".webm", ".mkv"]
 
 
 class AOMGenerator:
@@ -50,15 +47,17 @@ class AOMGenerator:
         codec: Codec,
         description: str,
         site: str,
+        use_ffprobe: bool = False,
     ):
         self.name = name
         self.suite_name = suite_name
         self.codec = codec
         self.description = description
         self.site = site
+        self.use_ffprobe = use_ffprobe
         self.decoder = av1_aom.AV1AOMDecoder()
 
-    def generate(self, download, jobs):
+    def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
@@ -67,7 +66,7 @@ class AOMGenerator:
             self.suite_name,
             self.codec,
             self.description,
-            dict(),
+            {},
         )
 
         print(f"Download list of bitstreams from {self.site + self.name}")
@@ -78,15 +77,17 @@ class AOMGenerator:
         for entry in root.findall("{*}Contents"):
             if "Contents" not in entry.tag:
                 continue
-            fname = entry.find("{*}Key").text
-            name = fname[:-4]
-            if fname[-4:] not in BITSTREAM_EXTS or "invalid" in fname:
-                continue
-
-            file_url = f"{AV1_URL}/{entry.find('{*}Key').text}"
-            test_vector = TestVector(
-                name, file_url, "__skip__", fname, OutputFormat.YUV420P, "")
-            test_suite.test_vectors[name] = test_vector
+            key_element = entry.find("{*}Key")
+            if isinstance(key_element, ET.Element) and isinstance(key_element.text, str):
+                test_vector_filename = key_element.text
+                test_vector_name = os.path.splitext(test_vector_filename)[0]
+                if os.path.splitext(test_vector_filename)[1] not in BITSTREAM_EXTS or "invalid" in test_vector_filename:
+                    continue
+                file_url = f"{AV1_URL}/{key_element.text}"
+                test_vector = TestVector(
+                    test_vector_name, file_url, "__skip__", test_vector_filename, OutputFormat.YUV420P, ""
+                )
+                test_suite.test_vectors[test_vector_name] = test_vector
 
         if download:
             test_suite.download(
@@ -98,25 +99,47 @@ class AOMGenerator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
-            dest_path = os.path.join(
-                dest_dir, os.path.basename(test_vector.source))
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+            dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = dest_path.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
+                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
                 "",
             )
+            absolute_input_path = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
+
             if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
+
+            if self.use_ffprobe:
+                ffprobe = utils.normalize_binary_cmd("ffprobe")
+                command = [
+                    ffprobe,
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=pix_fmt",
+                    "-of",
+                    "default=nokey=1:noprint_wrappers=1",
+                    absolute_input_path,
+                ]
+
+                result = utils.run_command_with_output(command).splitlines()
+                pix_fmt = result[0]
+                try:
+                    test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                except KeyError as key_err:
+                    exceptions: Dict[str, OutputFormat] = {}
+                    if test_vector.name in exceptions.keys():
+                        test_vector.output_format = exceptions[test_vector.name]
+                    else:
+                        raise key_err
+
             out420 = f"{dest_path}.i420"
             # Run the libaom av1 decoder to get the checksum as the .md5 files are per-frame
-            test_vector.result = self.decoder.decode(
-                dest_path, out420, test_vector.output_format, 30, False, False)
+            test_vector.result = self.decoder.decode(dest_path, out420, test_vector.output_format, 30, False, False)
             os.remove(out420)
 
         test_suite.to_json_file(output_filepath)
@@ -145,5 +168,6 @@ if __name__ == "__main__":
         Codec.AV1,
         "AV1 Test Vector Catalogue from https://storage.googleapis.com/aom-test-data",
         AV1_URL,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
