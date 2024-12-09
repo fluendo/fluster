@@ -99,8 +99,8 @@ class AV1ArgonGenerator:
         print("Creating test vectors and test suite")
         source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
         for idx, file in enumerate(test_vector_files):
-            if (idx+1) % 500 == 0:
-                print("Processing vector {} out of a total of {}".format(idx+1, len(test_vector_files)))
+            if (idx + 1) % 500 == 0:
+                print("Processing vector {} out of a total of {}".format(idx + 1, len(test_vector_files)))
             filename = os.path.splitext(os.path.basename(file))[0]
             # ffprobe execution
             if self.use_ffprobe:

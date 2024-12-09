@@ -54,6 +54,7 @@ MD5_EXTS = [".wav.md5sum"]
 MD5_EXCLUDES: List[str] = []
 RAW_EXTS = [".wav"]
 
+
 class HREFParser(HTMLParser):
     """Custom parser to find href links"""
 
@@ -211,11 +212,11 @@ class AACGenerator:
 
         # MPEG4_AAC-MP4 test suite
         if test_suite.name == "MPEG4_AAC-MP4":
-            print (f"Identifying MP4 files that contain audio in test suite: {self.suite_name}")
+            print(f"Identifying MP4 files that contain audio in test suite: {self.suite_name}")
 
             # Validating audio files using ffprobe
             ffprobe = utils.normalize_binary_cmd("ffprobe")
-            non_audio_test_vectors=[]
+            non_audio_test_vectors = []
             for test_vector in test_suite.test_vectors.values():
                 dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
                 absolute_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
@@ -227,9 +228,9 @@ class AACGenerator:
                     "stream=codec_name",
                     "-of",
                     "csv=p=0",
-                    absolute_path
+                    absolute_path,
                 ]
-                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
 
                 # In case of error, create a new test vector list to be removed from the test suite
                 if result.returncode != 0:
@@ -244,7 +245,6 @@ class AACGenerator:
             if non_audio_test_vectors:
                 print("Removing non-audio files and folders from hard drive")
                 for name in non_audio_test_vectors:
-
                     # Removing files and folders from hard drive
                     dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, name)
                     absolute_path = os.path.join(os.getcwd(), dest_dir, name + ".mp4")
@@ -261,11 +261,13 @@ class AACGenerator:
                             raise Exception(f"The folder {absolute_path_folder} couldn't be deleted.\n{error}")
 
                     # Remove test vectors from test suite and the corresponding links
-                    del(test_suite.test_vectors[str(name)])
+                    del test_suite.test_vectors[str(name)]
 
                     # Rewrite compressed bitstream link list
                     compressed_bitstream_links[:] = [
-                        link for link in compressed_bitstream_links if os.path.splitext(os.path.basename(link))[0] != name
+                        link
+                        for link in compressed_bitstream_links
+                        if os.path.splitext(os.path.basename(link))[0] != name
                     ]
 
         compressed_bitstream_names = [os.path.splitext(os.path.basename(x))[0] for x in compressed_bitstream_links]
@@ -288,9 +290,9 @@ class AACGenerator:
             # Adding the DVD3 wav files to the rest of the files
             raw_bitstream_links = raw_bitstream_links + raw_extra_bitstream_links
 
-        raw_bitstream_names = [os.path.splitext(os.path.basename(x))[0].split('_f')[0] for x in raw_bitstream_links]
+        raw_bitstream_names = [os.path.splitext(os.path.basename(x))[0].split("_f")[0] for x in raw_bitstream_links]
 
-        missing_files = [x for x in set(compressed_bitstream_names).difference(raw_bitstream_names)]
+        missing_files = list(set(compressed_bitstream_names).difference(raw_bitstream_names))
         if missing_files:
             for missing_file in missing_files:
                 print(f"Skipping test vector {missing_file}, as the reference file is missing.")
@@ -298,17 +300,20 @@ class AACGenerator:
         raw_bitstream_names = [name for name in compressed_bitstream_names if name not in missing_files]
 
         # Match and store entries of raw_bitstream_links that contain entries of raw_bitstream_names as substrings
-        raw_bitstream_links = [link for link in raw_bitstream_links if any(name in link for name in raw_bitstream_names)]
+        raw_bitstream_links = [
+            link for link in raw_bitstream_links if any(name in link for name in raw_bitstream_names)
+        ]
 
         with urllib.request.urlopen(self.url_reference_vectors_checksums) as resp:
             data = str(resp.read())
             hparser_raw_checksums.feed(data)
         raw_bitstream_md5_links = [url for url in hparser_raw_checksums.links if url.endswith(tuple(MD5_EXTS))]
         raw_bitstream_md5_names = [
-            os.path.splitext(os.path.splitext(os.path.basename(x))[0].split('_f')[0])[0] for x in raw_bitstream_md5_links
+            os.path.splitext(os.path.splitext(os.path.basename(x))[0].split("_f")[0])[0]
+            for x in raw_bitstream_md5_links
         ]
 
-        missing_checksum_files = [x for x in set(compressed_bitstream_names).difference(raw_bitstream_md5_names)]
+        missing_checksum_files = list(set(compressed_bitstream_names).difference(raw_bitstream_md5_names))
         if missing_checksum_files:
             for missing_checksum in missing_checksum_files:
                 print(f"Skipping checksum for {missing_checksum}, as the reference file is missing.")
