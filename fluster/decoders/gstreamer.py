@@ -70,6 +70,7 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.YUV444P: "Y444",
         OutputFormat.YUV444P10LE: "Y444_10LE",
         OutputFormat.YUV444P12LE: "Y444_12LE",
+        OutputFormat.GBRP10LE: "GBR_10LE",
     }
     if output_format not in mapping:
         raise Exception(f"No matching output format found in GStreamer for {output_format}")
