@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
+import glob
+import os
+
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
@@ -48,4 +51,15 @@ class ISOAACDecoder(Decoder):
             timeout=timeout,
             verbose=verbose,
         )
+        base_output = output_filepath[:-4]
+        pcm_out_f00_file = f"{base_output}_f00.pcm"
+
+        if os.path.exists(pcm_out_f00_file):
+            return file_checksum(pcm_out_f00_file)
+
+        output_files = glob.glob(f"{base_output}_f[0-9][0-9].pcm")
+
+        for pcm_file in output_files:
+            return file_checksum(pcm_file)
+
         return file_checksum(output_filepath)
