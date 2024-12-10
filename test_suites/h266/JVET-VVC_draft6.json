@@ -8,7 +8,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/10b400_A_Bytedance_2.zip",
             "source_checksum": "36b6db0ef4992c4f1c00d5f43e7fb405",
             "input_file": "10b400_A_Bytedance_2.bit",
-            "output_format": "gray10le",
+            "output_format": "gray10le16",
             "result": "9607a0890e78ad7b3ca728356e919670"
         },
         {
@@ -16,7 +16,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/10b400_B_Bytedance_2.zip",
             "source_checksum": "fe845074ca1771ce480956d434bb049c",
             "input_file": "10b400_B_Bytedance_2.bit",
-            "output_format": "gray10le",
+            "output_format": "gray10le16",
             "result": "b5fcc1c52de8ed51844a9bd2895bda75"
         },
         {
@@ -1824,7 +1824,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/SCALING_A_InterDigital_1.zip",
             "source_checksum": "1b5a690364dee391a28972ac2ec314cf",
             "input_file": "SCALING_A_InterDigital_1.bit",
-            "output_format": "gray10le",
+            "output_format": "gray10le16",
             "result": "f990d21ef21896b64d0ba2dfbca1b338"
         },
         {
