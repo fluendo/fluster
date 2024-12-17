@@ -23,7 +23,7 @@ from typing import Dict, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command, run_command_with_output
+from fluster.utils import file_checksum, run_command_with_output
 
 
 @lru_cache(maxsize=128)
@@ -119,16 +119,25 @@ class FFmpegDecoder(Decoder):
         # MD5 muxer
         if self.use_md5_muxer and not keep_files:
             command.extend(["-f", "md5", "-"])
-            output = run_command_with_output(command, timeout=timeout, verbose=verbose)
+        # Output file
+        else:
+            command.extend(["-f", "rawvideo", output_filepath])
+
+        output = run_command_with_output(command, timeout=timeout, verbose=verbose, keep_stderr=True)
+
+        # Detect software fallback and turn this into an error
+        if self.hw_acceleration:
+            hw_error = re.search(r"Failed setup for format", output)
+            if hw_error:
+                raise Exception("Failed to use HW accelerator.")
+
+        if self.use_md5_muxer and not keep_files:
             md5sum = re.search(r"MD5=([0-9a-fA-F]+)\s*", output)
             if not md5sum:
                 raise Exception("No MD5 found in the program trace.")
             return md5sum.group(1).lower()
-
-        # Output file
-        command.extend(["-f", "rawvideo", output_filepath])
-        run_command(command, timeout=timeout, verbose=verbose)
-        return file_checksum(output_filepath)
+        else:
+            return file_checksum(output_filepath)
 
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
