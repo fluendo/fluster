@@ -88,9 +88,12 @@ def run_command_with_output(
     verbose: bool = False,
     check: bool = True,
     timeout: Optional[int] = None,
+    keep_stderr: bool = False,
 ) -> str:
     """Runs a command and returns std output trace"""
-    serr = subprocess.DEVNULL if not verbose else subprocess.STDOUT
+    serr = subprocess.DEVNULL
+    if verbose or keep_stderr:
+        serr = subprocess.STDOUT
     if verbose:
         print(f'\nRunning command "{" ".join(command)}"')
 
