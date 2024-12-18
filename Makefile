@@ -101,8 +101,10 @@ h264_reference_decoder: ## build H.264 reference decoder
 	find $(CONTRIB_DIR)/JM/bin/umake -name "ldecod" -type f -exec cp {} $(DECODERS_DIR)/ \;
 
 mpeg_2_aac_reference_decoder: ## build ISO MPEG2 AAC reference decoder
+ifeq ($(KERNEL_NAME), Linux)
 	if ! dpkg -l | grep gcc-multilib -c >>/dev/null; then sudo apt-get install gcc-multilib; fi
 	if ! dpkg -l | grep g++-multilib -c >>/dev/null; then sudo apt-get install g++-multilib; fi
+endif
 	if [ ! $(wildcard /usr/include/asm) ] && [ $(wildcard /usr/include/asm-generic) ]; then sudo ln -s /usr/include/asm-generic /usr/include/asm; fi
 
 ifeq ($(wildcard $(CONTRIB_DIR)/C039486_Electronic_inserts),)
@@ -147,8 +149,10 @@ endif
 	sudo rm -f /usr/include/asm
 
 mpeg_4_aac_reference_decoder: ## build ISO MPEG4 AAC reference decoder
+ifeq ($(KERNEL_NAME), Linux)
 	if ! dpkg -l | grep gcc-multilib -c >>/dev/null; then sudo apt-get install gcc-multilib; fi
 	if ! dpkg -l | grep g++-multilib -c >>/dev/null; then sudo apt-get install g++-multilib; fi
+endif
 	if [ ! $(wildcard /usr/include/asm) ] && [ $(wildcard /usr/include/asm-generic) ]; then sudo ln -s /usr/include/asm-generic /usr/include/asm; fi
 
 ifeq ($(wildcard $(CONTRIB_DIR)/C050470e_Electronic_inserts), )

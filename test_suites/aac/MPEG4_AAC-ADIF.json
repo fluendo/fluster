@@ -9,7 +9,7 @@
             "source_checksum": "3681801c90588ef83398b67f36b60d1b",
             "input_file": "al18_22.adif",
             "output_format": "Unknown",
-            "result": "fd2e0aba2e326ef889891b90239d9ad2"
+            "result": "9c650228dea2c563560dcf3fbc31bff1"
         },
         {
             "name": "ap01_48",
@@ -17,7 +17,7 @@
             "source_checksum": "895521190aba64eaabfc7a1dfa4a5849",
             "input_file": "ap01_48.adif",
             "output_format": "Unknown",
-            "result": "3ca217cd1c7d40d69076ea50e920a617"
+            "result": "cb8a260c08236e342d2122496ae126d9"
         },
         {
             "name": "al18_96",
@@ -25,7 +25,7 @@
             "source_checksum": "56ead998d01a5eab736fd969a70aba93",
             "input_file": "al18_96.adif",
             "output_format": "Unknown",
-            "result": "8344466c758f6d97b6881e2bb2ba8402"
+            "result": "02b0f333d4caa37379a8ab513dbc4dbf"
         },
         {
             "name": "ap04_48",
@@ -33,7 +33,7 @@
             "source_checksum": "05027b12053bd06a0a62de4cc9cd45e6",
             "input_file": "ap04_48.adif",
             "output_format": "Unknown",
-            "result": "d9f6b86502deaebd1c83f9f0e6521c75"
+            "result": "6e1767241de43646691c21587ccbab9f"
         },
         {
             "name": "al18_08",
@@ -41,7 +41,7 @@
             "source_checksum": "41348311f534009080c69a26ec1f1855",
             "input_file": "al18_08.adif",
             "output_format": "Unknown",
-            "result": "6a75edfffdade9e095b17bc825e53999"
+            "result": "b2927751ae7a97613a9d9d0d2748eca7"
         },
         {
             "name": "al18_64",
@@ -49,7 +49,7 @@
             "source_checksum": "86ce9461e663a1fb130268d04810f6f9",
             "input_file": "al18_64.adif",
             "output_format": "Unknown",
-            "result": "c5076bea33c60f6171ab75487b257c58"
+            "result": "756d27e1b1bead05839758072cea9690"
         },
         {
             "name": "ap02_48",
@@ -57,7 +57,7 @@
             "source_checksum": "ac186216e1d85c0962cd0b9ee068c8c7",
             "input_file": "ap02_48.adif",
             "output_format": "Unknown",
-            "result": "45d73d4a1080b98de7af89f9501365ec"
+            "result": "57f4964f065c75fa825bf7c795ae621f"
         },
         {
             "name": "al18_32",
@@ -65,7 +65,7 @@
             "source_checksum": "f6d92ad51c73c1c6a00a7c3956fe43aa",
             "input_file": "al18_32.adif",
             "output_format": "Unknown",
-            "result": "7e4b8efc8b8963bda1b55017041fda54"
+            "result": "26c2430033002a138568d17ca3317ade"
         },
         {
             "name": "ap05_48",
@@ -73,7 +73,7 @@
             "source_checksum": "f96cb4c929e1de8ef35d98791aed273e",
             "input_file": "ap05_48.adif",
             "output_format": "Unknown",
-            "result": "043c032d72b4472fa25a1ad21ae41ba7"
+            "result": "e5f3db7043119313eb29f6f670989ecd"
         }
     ]
 }
