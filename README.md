@@ -97,9 +97,9 @@ ISO_IEC_13818-4_2004
     Description: ISO_IEC_13818-4_2004 ADTS conformance test suite
     Test vectors: 62
 
-ISO_IEC_14496-26_2010
+MPEG4_AAC-ADTS
     Codec: AAC
-    Description: ISO_IEC_14496-26_2010 ADTS conformance test suite
+    Description: ISO IEC 14496-26 MPEG4 AAC ADTS test suite
     Test vectors: 9
 
 JCT-VC-HEVC_V1

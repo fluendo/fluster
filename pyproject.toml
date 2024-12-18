@@ -46,7 +46,7 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/aac/MPEG2_AAC-ADTS.json",
     "test_suites/aac/MPEG2_AAC-ADIF.json",
     "test_suites/aac/MPEG4_AAC-ADIF.json",
-    "test_suites/aac/ISO_IEC_14496-26_2010.json"
+    "test_suites/aac/MPEG4_AAC-ADTS.json"
 ]
 "share/fluster/test_suites/av1" = [
     "test_suites/av1/AV1-TEST-VECTORS.json",
@@ -57,8 +57,8 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/h264/JVT-AVC_V1.json",
     "test_suites/h264/JVT-FR-EXT.json",
     "test_suites/h264/JVT-MVC.json",
-    "test_suites/h264/JVT-Professional_profiles_V1.json",
-    "test_suites/h264/JVT-SVC_V1.json"
+    "test_suites/h264/JVT-Professional_profiles.json",
+    "test_suites/h264/JVT-SVC.json"
 ]
 "share/fluster/test_suites/h265" = [
     "test_suites/h265/JCT-VC-3D-HEVC.json",
