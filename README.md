@@ -92,9 +92,9 @@ Find more about how to use Fluster in the next section.
 ```bash
 List of available test suites:
 
-ISO_IEC_13818-4_2004
+MPEG2_AAC-ADTS
     Codec: AAC
-    Description: ISO_IEC_13818-4_2004 ADTS conformance test suite
+    Description:ISO IEC 13818-4 MPEG2 AAC ADTS test suite
     Test vectors: 62
 
 MPEG4_AAC-ADTS
