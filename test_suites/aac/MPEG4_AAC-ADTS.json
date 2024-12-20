@@ -1,7 +1,7 @@
 {
-    "name": "ISO_IEC_14496-26_2010",
+    "name": "MPEG4_AAC-ADTS",
     "codec": "AAC",
-    "description": "ISO_IEC_14496-26_2010 ADTS conformance test suite",
+    "description": "ISO IEC 14496-26 MPEG4 AAC ADTS test suite",
     "test_vectors": [
         {
             "name": "al18_08",
