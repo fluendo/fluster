@@ -155,7 +155,7 @@ class JVTGenerator:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
                 except KeyError as key_err:
                     exceptions = {
-                        # All below test vectors from JVT-Professional_profiles_V1
+                        # All below test vectors from JVT-Professional_profiles
                         # need to be analysed with respect to output format,
                         # for now it remains undetermined
                         "PPCV444I4_Mitsubishi_A": OutputFormat.NONE,
@@ -300,7 +300,7 @@ if __name__ == "__main__":
 
     generator = JVTGenerator(
         "Professional_profiles",
-        "JVT-Professional_profiles_V1",
+        "JVT-Professional_profiles",
         Codec.H264,
         "JVT Professional Profiles test suite",
         H264_URL,
@@ -310,7 +310,7 @@ if __name__ == "__main__":
 
     generator = JVTGenerator(
         "SVC",
-        "JVT-SVC_V1",
+        "JVT-SVC",
         Codec.H264,
         "JVT Scalable Video Coding test suite",
         H264_URL,
