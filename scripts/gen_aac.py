@@ -88,10 +88,12 @@ class AACGenerator:
 
     def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and saves it to a file"""
+        absolut_dest_dir = os.path.dirname(os.path.abspath(__file__))
+        absolut_resources_dir = os.path.join(absolut_dest_dir, "resources")
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
-            "resources",
+            absolut_resources_dir,
             self.suite_name,
             self.codec,
             self.description,
@@ -209,7 +211,8 @@ class AACGenerator:
                 except KeyError as key_err:
                     raise key_err
 
-        test_suite.to_json_file(output_filepath)
+        absolut_output_filepath = os.path.join(absolut_dest_dir, output_filepath)
+        test_suite.to_json_file(absolut_output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
 

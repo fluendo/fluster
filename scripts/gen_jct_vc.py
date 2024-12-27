@@ -77,6 +77,8 @@ class JCTVCGenerator:
 
     def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and saves it to a file"""
+        absolut_dest_dir = os.path.dirname(os.path.abspath(__file__))
+        absolut_resources_dir = os.path.join(absolut_dest_dir, "resources")
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
@@ -178,7 +180,8 @@ class JCTVCGenerator:
 
             self._fill_checksum_h265(test_vector, dest_dir)
 
-        test_suite.to_json_file(output_filepath)
+        absolut_output_filepath = os.path.join(absolut_dest_dir, output_filepath)
+        test_suite.to_json_file(absolut_output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
     def _fill_checksum_h265(self, test_vector: TestVector, dest_dir: str) -> None:
