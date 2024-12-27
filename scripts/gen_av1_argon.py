@@ -58,7 +58,8 @@ class AV1ArgonGenerator:
     def generate(self, download: bool) -> None:
         """Generates the test suite and saves it to a file"""
         output_filepath = os.path.join(self.suite_name + ".json")
-        extract_folder = "resources"
+        absolut_dest_dir = os.path.dirname(os.path.abspath(__file__))
+        extract_folder = os.path.join(absolut_dest_dir, "resources")
         test_suite = TestSuite(
             output_filepath,
             extract_folder,
@@ -157,7 +158,8 @@ class AV1ArgonGenerator:
             )
             test_suite.test_vectors[filename] = test_vector
 
-        test_suite.to_json_file(output_filepath)
+        absolut_output_filepath = os.path.join(absolut_dest_dir, output_filepath)
+        test_suite.to_json_file(absolut_output_filepath)
         print("Generate new test suite: " + test_suite.name + ".json")
 
     @staticmethod
