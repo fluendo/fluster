@@ -83,7 +83,7 @@ class JVETGenerator:
         output_filepath = os.path.join(self.suite_name + ".json")
         test_suite = TestSuite(
             output_filepath,
-            "resources",
+            absolut_resources_dir,
             self.suite_name,
             self.codec,
             self.description,
