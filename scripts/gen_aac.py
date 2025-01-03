@@ -41,6 +41,7 @@ URL_MPEG2_ADIF = URL_MPEG2 + "compressedAdif"
 URL_MPEG4 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/"
 URL_MPEG4_ADIF = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedAdif/add-opt/"
 URL_MPEG4_MP4 = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedMp4/"
+URL_MPEG4_ADTS = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedAdts/add-opt/"
 
 BITSTREAM_EXTS = [".adts", ".adif", ".mp4"]
 
@@ -265,6 +266,16 @@ if __name__ == "__main__":
         Codec.AAC,
         "ISO IEC 14496-26 MPEG4 AAC MP4 test suite",
         URL_MPEG4_MP4,
+        True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = AACGenerator(
+        "MPEG4_AAC-ADTS",
+        "MPEG4_AAC-ADTS",
+        Codec.AAC,
+        "ISO IEC 14496-26 MPEG4 AAC ADTS test suite",
+        URL_MPEG4_ADTS,
         True,
     )
     generator.generate(not args.skip_download, args.jobs)
