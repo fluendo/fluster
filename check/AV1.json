@@ -1,0 +1,15 @@
+{
+    "name": "AV1-min",
+    "codec": "AV1",
+    "description": "AV1 Test Vector Catalogue from https://storage.googleapis.com/aom-test-data",
+    "test_vectors": [
+        {
+            "name": "av1-1-b8-01-size-200x226",
+            "source": "https://storage.googleapis.com/aom-test-data/av1-1-b8-01-size-200x226.ivf",
+            "source_checksum": "b5597b4ee41c15ccc323406ad7618c55",
+            "input_file": "av1-1-b8-01-size-200x226.ivf",
+            "output_format": "yuv420p",
+            "result": "dd58cb951625357094575a2b591781ee"
+        }
+    ]
+}
