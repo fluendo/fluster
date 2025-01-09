@@ -56,8 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Create a test suite for VP8-TEST-VECTORS.
 - Create a test suite for VP9-TEST-VECTORS.
 - Create a test suite for VP9-TEST-VECTORS-HIGH.
-- Create a test suite for  MPEG-2 AAC.
-- Create a test suite for  H.266 (VTT).
+- Create a test suite for MPEG-2 AAC.
+- Create a test suite for H.266 (VTT).
 - Create README.md.
 - Create REPORT.md.
 
