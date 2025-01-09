@@ -129,13 +129,6 @@ jobs:
             VERSION=${VERSION#v}
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-      - name: Create Git Tag
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git tag v${{ env.VERSION }}
-          git push origin v${{ env.VERSION }}
       - name: Extract release notes from CHANGELOG.md
         id: extract_notes
         run: |
@@ -145,10 +138,17 @@ jobs:
             exit 1
           fi
           NOTES=$(awk "/## \\[$VERSION\\]/ {flag=1; next} /^## \\[/ {flag=0} flag" CHANGELOG.md | sed '/^$/d')
-
+    
           echo "NOTES<<EOF" >> $GITHUB_ENV
           echo "$NOTES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+      - name: Create Git Tag
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag v${{ env.VERSION }}
+          git push origin v${{ env.VERSION }}
       - name: Create GitHub Release
         run: |
           VERSION=${{ env.VERSION }}
