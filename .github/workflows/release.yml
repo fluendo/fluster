@@ -128,18 +128,18 @@ jobs:
             VERSION=${{ github.ref_name }}
             VERSION=${VERSION#v}
           fi
-          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Create Git Tag
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag v$VERSION
-          git push origin v$VERSION
+          git tag v${{ env.VERSION }}
+          git push origin v${{ env.VERSION }}
       - name: Extract release notes from CHANGELOG.md
         id: extract_notes
         run: |
-          VERSION=$VERSION
+          VERSION=${{ env.VERSION }}
           if ! grep -q "## \\[$VERSION\\]" CHANGELOG.md; then
             echo "Release notes for version $VERSION not found in CHANGELOG.md"
             exit 1
@@ -151,7 +151,7 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
       - name: Create GitHub Release
         run: |
-          VERSION=$VERSION
+          VERSION=${{ env.VERSION }}
           gh release create v$VERSION \
             --title "Release v$VERSION" \
             --notes "$NOTES"
