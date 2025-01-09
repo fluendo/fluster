@@ -8,9 +8,6 @@ on:
       version:
         description: 'Release version (e.g., 0.1.0)'
         required: true
-      notes:
-        description: 'Release notes (CHANGELOG.md is referenced at the end of the release process)'
-        required: false
   push:
     tags:
       - 'v*.*.*'
@@ -122,18 +119,41 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Determine version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION=${{ github.event.inputs.version }}
+          else
+            VERSION=${{ github.ref_name }}
+            VERSION=${VERSION#v}
+          fi
+          echo "version=$VERSION" >> $GITHUB_ENV
       - name: Create Git Tag
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag v${{ github.event.inputs.version }}
-          git push origin v${{ github.event.inputs.version }}
+          git tag v$VERSION
+          git push origin v$VERSION
+      - name: Extract release notes from CHANGELOG.md
+        id: extract_notes
+        run: |
+          VERSION=$VERSION
+          if ! grep -q "## \\[$VERSION\\]" CHANGELOG.md; then
+            echo "Release notes for version $VERSION not found in CHANGELOG.md"
+            exit 1
+          fi
+          NOTES=$(awk "/## \\[$VERSION\\]/ {flag=1; next} /^## \\[/ {flag=0} flag" CHANGELOG.md | sed '/^$/d')
+
+          echo "NOTES<<EOF" >> $GITHUB_ENV
+          echo "$NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
       - name: Create GitHub Release
         run: |
-          VERSION=${{ github.event.inputs.version }}
-          git archive --format=zip HEAD
+          VERSION=$VERSION
           gh release create v$VERSION \
             --title "Release v$VERSION" \
-            --notes "Refer to the [CHANGELOG.md](https://github.com/fluendo/fluster/blob/master/CHANGELOG.md) for detailed changes in this release."
+            --notes "$NOTES"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
