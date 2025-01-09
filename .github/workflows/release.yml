@@ -8,10 +8,6 @@ on:
       version:
         description: 'Release version (e.g., 0.1.0)'
         required: true
-      notes:
-        description: 'Release notes (e.g., changelog)'
-        required: false
-        default: 'Changelog: \n- Added feature 1\n- Added feature 2\n- Fixed issue 2'
   push:
     tags:
       - 'v*.*.*'
@@ -40,6 +36,7 @@ jobs:
             gstreamer1.0-plugins-bad \
             ffmpeg \
             vpx-tools \
+            aom-tools \
             wget \
             unzip
       - name: Check
@@ -77,6 +74,7 @@ jobs:
           gstreamer1.0-plugins-bad \
           ffmpeg \
           vpx-tools \
+          aom-tools \
           wget \
           unzip
     - name: Check
@@ -121,24 +119,41 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Determine version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            VERSION=${{ github.event.inputs.version }}
+          else
+            VERSION=${{ github.ref_name }}
+            VERSION=${VERSION#v}
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Extract release notes from CHANGELOG.md
+        id: extract_notes
+        run: |
+          VERSION=${{ env.VERSION }}
+          if ! grep -q "## \\[$VERSION\\]" CHANGELOG.md; then
+            echo "Release notes for version $VERSION not found in CHANGELOG.md"
+            exit 1
+          fi
+          NOTES=$(awk "/## \\[$VERSION\\]/ {flag=1; next} /^## \\[/ {flag=0} flag" CHANGELOG.md | sed '/^$/d')
+
+          echo "NOTES<<EOF" >> $GITHUB_ENV
+          echo "$NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
       - name: Create Git Tag
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag v${{ github.event.inputs.version }}
-          git push origin v${{ github.event.inputs.version }}
-      - name: Create temporary notes file
-        run: |
-          echo -e "${{ github.event.inputs.notes }}" > notes.txt
+          git tag v${{ env.VERSION }}
+          git push origin v${{ env.VERSION }}
       - name: Create GitHub Release
         run: |
-          VERSION=${{ github.event.inputs.version }}
-          git archive --format=zip HEAD
+          VERSION=${{ env.VERSION }}
           gh release create v$VERSION \
             --title "Release v$VERSION" \
-            --notes "$(cat notes.txt)"
+            --notes "$NOTES"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Clean up notes file
-        run: rm notes.txt
-        continue-on-error: true
