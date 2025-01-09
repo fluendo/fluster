@@ -37,6 +37,7 @@ class H266VVCVTMDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         # pylint: disable=unused-argument

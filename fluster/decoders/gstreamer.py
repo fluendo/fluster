@@ -143,6 +143,7 @@ class GStreamer(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
         """Decode the test vector and do the checksum"""
         # When using videocodectestsink we can avoid writing files to disk

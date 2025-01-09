@@ -50,6 +50,7 @@ class ChromiumH264(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
         return str(main(input_filepath))
 

@@ -70,6 +70,7 @@ class FFmpegDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         command = [self.binary, "-hide_banner", "-nostdin"]

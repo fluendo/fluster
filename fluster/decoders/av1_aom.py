@@ -37,16 +37,32 @@ class AV1AOMDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
-        """Decodes input_filepath in output_filepath"""
-        fmt = None
-        if output_format in [OutputFormat.YUV420P, OutputFormat.YUV420P10LE]:
-            fmt = "--i420"
-        else:
+        """Decodes input_filepath to output_filepath"""
+        if multiple_layers:
             fmt = "--rawvideo"
-        run_command(
-            [self.binary, fmt, input_filepath, "-o", output_filepath],
-            timeout=timeout,
-            verbose=verbose,
-        )
+            cmd = [
+                self.binary,
+                "--annexb",
+                "--all-layers",
+                fmt,
+                input_filepath,
+                "-o",
+                output_filepath,
+            ]
+        else:
+            if output_format in [OutputFormat.YUV420P, OutputFormat.YUV420P10LE]:
+                fmt = "--i420"
+            else:
+                fmt = "--rawvideo"
+            cmd = [
+                self.binary,
+                fmt,
+                input_filepath,
+                "-o",
+                output_filepath,
+            ]
+
+        run_command(cmd, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)

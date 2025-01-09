@@ -39,6 +39,7 @@ class ISOAACDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a

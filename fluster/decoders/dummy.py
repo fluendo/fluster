@@ -36,5 +36,6 @@ class Dummy(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        multiple_layers: bool = False,
     ) -> str:
         return file_checksum(input_filepath)
