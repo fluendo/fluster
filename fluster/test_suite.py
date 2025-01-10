@@ -205,7 +205,7 @@ class TestSuite:
                 utils.download(test_vector.source, dest_dir)
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
-                print(f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i+1}")
+                print(f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i + 1}")
                 continue
             except Exception as ex:
                 raise Exception(str(ex)) from ex
@@ -264,7 +264,7 @@ class TestSuite:
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
                 print(
-                    f"\tUnable to download {test_vector_0.source} to {dest_dir}, " f"{exception_str}, retry count={i+1}"
+                    f"\tUnable to download {test_vector_0.source} to {dest_dir}, {exception_str}, retry count={i + 1}"
                 )
                 continue
             except Exception as ex:
@@ -448,7 +448,7 @@ class TestSuite:
                 TestSuite.RESULT_NAME,
                 decoder.name,
             )
-            + f'\n{"-" * 70}'
+            + f"\n{'-' * 70}"
         )
         with Pool(jobs) as pool:
 
@@ -478,7 +478,7 @@ class TestSuite:
             if test_vector_res.errors:
                 for error in test_vector_res.errors:
                     # Use same format to report errors as TextTestRunner
-                    print(f'{"=" * 71}\nFAIL: {error[0]}\n{"-" * 70}')
+                    print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
                     for line in error[1:]:
                         print(line)
             else:
@@ -519,9 +519,9 @@ class TestSuite:
         print("*" * 100)
         string = f"Running test suite {self.name} with decoder {ctx.decoder.name}\n"
         if ctx.test_vectors:
-            string += f'Test vectors {" ".join(ctx.test_vectors)}\n'
+            string += f"Test vectors {' '.join(ctx.test_vectors)}\n"
         if ctx.skip_vectors:
-            string += f'Skipping test vectors {" ".join(ctx.skip_vectors)}\n'
+            string += f"Skipping test vectors {' '.join(ctx.skip_vectors)}\n"
         string += f"Using {ctx.jobs} parallel job(s)"
         print(string)
         print("*" * 100 + "\n")

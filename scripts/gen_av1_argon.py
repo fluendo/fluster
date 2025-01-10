@@ -175,9 +175,9 @@ class AV1ArgonGenerator:
             else:
                 result = -1
             # Assert that we have extracted a valid MD5 from the file
-            assert (
-                len(result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", result) is not None
-            ), f"{result} is not a valid MD5 hash"
+            assert len(result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", result) is not None, (
+                f"{result} is not a valid MD5 hash"
+            )
             return result
 
 

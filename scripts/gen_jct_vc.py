@@ -223,9 +223,9 @@ class JCTVCGenerator:
                         test_vector.result = line.split(" ")[0].strip().lower()
                     break
             # Assert that we have extracted a valid MD5 from the file
-            assert (
-                len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
-            ), f"{test_vector.result} is not a valid MD5 hash"
+            assert len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, (
+                f"{test_vector.result} is not a valid MD5 hash"
+            )
 
 
 if __name__ == "__main__":

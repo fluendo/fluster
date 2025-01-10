@@ -56,8 +56,8 @@ class FFmpegDecoder(Decoder):
 
     def __init__(self) -> None:
         super().__init__()
-        self.name = f'FFmpeg-{self.codec.value}{"-" + self.api if self.api else ""}'
-        self.description = f'FFmpeg {self.codec.value} {self.api if self.hw_acceleration else "SW"} decoder'
+        self.name = f"FFmpeg-{self.codec.value}{'-' + self.api if self.api else ''}"
+        self.description = f"FFmpeg {self.codec.value} {self.api if self.hw_acceleration else 'SW'} decoder"
         self.ffmpeg_codec: Optional[str] = None
         self.ffmpeg_version: Optional[Tuple[int, ...]] = None
         self.use_md5_muxer: bool = False
