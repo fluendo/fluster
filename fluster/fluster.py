@@ -29,6 +29,7 @@ from fluster.decoder import DECODERS, Decoder
 
 # Import decoders that will auto-register
 from fluster.decoders import *  # noqa: F403
+from fluster.decoders.av1_aom import AV1AOMDecoder
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
@@ -269,6 +270,12 @@ class Fluster:
         for test_suite in ctx.test_suites:
             test_suite_results: List[Tuple[Decoder, TestSuite]] = []
             for decoder in ctx.decoders:
+                if isinstance(decoder, AV1AOMDecoder) and decoder.name == "libaom-AV1":
+                    if "NON-ANNEX-B" in test_suite.name:
+                        decoder.multiple_layers = True
+                    elif "ANNEX-B" in test_suite.name:
+                        decoder.annexb = True
+                        decoder.multiple_layers = True
                 if decoder.codec != test_suite.codec:
                     continue
                 test_suite_res = test_suite.run(
