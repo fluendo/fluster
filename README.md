@@ -215,137 +215,137 @@ AV1-TEST-VECTORS
 List of available decoders:
 
 H.264
-    Chromium-H.264: Chromium H.264 decoder for Chromium... ❌
-    FFmpeg-H.264: FFmpeg H.264 SW decoder... ✔️
-    FFmpeg-H.264-CUDA: FFmpeg H.264 CUDA decoder... ❌
-    FFmpeg-H.264-D3D11VA: FFmpeg H.264 D3D11VA decoder... ❌
-    FFmpeg-H.264-DXVA2: FFmpeg H.264 DXVA2 decoder... ❌
-    FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder... ✔️
-    FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder... ✔️
-    FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder... ❌
-    FFmpeg-H.264-v4l2m2m: FFmpeg H.264 v4l2m2m decoder... ✔️
-    Fluendo-H.264-DXVA2-Gst1.0: Fluendo H.264 DXVA2 decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-HW-hwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ✔️
-    Fluendo-H.264-HW-lcevchwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0... ✔️
-    Fluendo-H.264-VAAPI-Gst1.0: Fluendo H.264 VAAPI decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-VDA-Gst1.0: Fluendo H.264 VDA decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-VDPAU-Gst1.0: Fluendo H.264 VDPAU decoder for GStreamer 1.0... ❌
-    Fluendo-H.264-VT-Gst1.0: Fluendo H.264 VT decoder for GStreamer 1.0... ❌
-    GStreamer-H.264-D3D11-Gst1.0: GStreamer H.264 D3D11 decoder for GStreamer 1.0... ❌
-    GStreamer-H.264-D3D12-Gst1.0: GStreamer H.264 D3D12 decoder for GStreamer 1.0... ❌
-    GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0... ✔️
-    GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0... ❌
-    GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0... ✔️
-    GStreamer-H.264-NVDECSL-Gst1.0: GStreamer H.264 NVDECSL decoder for GStreamer 1.0... ✔️
-    GStreamer-H.264-V4L2-Gst1.0: GStreamer H.264 V4L2 decoder for GStreamer 1.0... ❌
-    GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0... ❌
-    GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0... ✔️
-    GStreamer-H.264-VAAPI-Gst1.0: GStreamer H.264 VAAPI decoder for GStreamer 1.0... ✔️
-    GStreamer-H.264-Vulkan-Gst1.0: GStreamer H.264 Vulkan decoder for GStreamer 1.0... ❌
-    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder... ❌
-    VKVS-H.264: Vulkan Video Samples H.264 decoder... ❌
-    ccdec-H.264: H.264 cros-codecs decoder... ❌
+    Chromium-H.264: Chromium H.264 decoder for Chromium
+    FFmpeg-H.264: FFmpeg H.264 SW decoder
+    FFmpeg-H.264-CUDA: FFmpeg H.264 CUDA decoder
+    FFmpeg-H.264-D3D11VA: FFmpeg H.264 D3D11VA decoder
+    FFmpeg-H.264-DXVA2: FFmpeg H.264 DXVA2 decoder
+    FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder
+    FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder
+    FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder
+    FFmpeg-H.264-v4l2m2m: FFmpeg H.264 v4l2m2m decoder
+    Fluendo-H.264-DXVA2-Gst1.0: Fluendo H.264 DXVA2 decoder for GStreamer 1.0
+    Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
+    Fluendo-H.264-HW-hwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
+    Fluendo-H.264-HW-lcevchwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
+    Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0
+    Fluendo-H.264-VAAPI-Gst1.0: Fluendo H.264 VAAPI decoder for GStreamer 1.0
+    Fluendo-H.264-VDA-Gst1.0: Fluendo H.264 VDA decoder for GStreamer 1.0
+    Fluendo-H.264-VDPAU-Gst1.0: Fluendo H.264 VDPAU decoder for GStreamer 1.0
+    Fluendo-H.264-VT-Gst1.0: Fluendo H.264 VT decoder for GStreamer 1.0
+    GStreamer-H.264-D3D11-Gst1.0: GStreamer H.264 D3D11 decoder for GStreamer 1.0
+    GStreamer-H.264-D3D12-Gst1.0: GStreamer H.264 D3D12 decoder for GStreamer 1.0
+    GStreamer-H.264-Libav-Gst1.0: GStreamer H.264 Libav decoder for GStreamer 1.0
+    GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0
+    GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0
+    GStreamer-H.264-NVDECSL-Gst1.0: GStreamer H.264 NVDECSL decoder for GStreamer 1.0
+    GStreamer-H.264-V4L2-Gst1.0: GStreamer H.264 V4L2 decoder for GStreamer 1.0
+    GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0
+    GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0
+    GStreamer-H.264-VAAPI-Gst1.0: GStreamer H.264 VAAPI decoder for GStreamer 1.0
+    GStreamer-H.264-Vulkan-Gst1.0: GStreamer H.264 Vulkan decoder for GStreamer 1.0
+    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder
+    VKVS-H.264: Vulkan Video Samples H.264 decoder
+    ccdec-H.264: H.264 cros-codecs decoder
 
 Dummy
-    Dummy: This is a dummy implementation for the dummy codec... ✔️
+    Dummy: This is a dummy implementation for the dummy codec
 
 AV1
-    FFmpeg-AV1-CUDA: FFmpeg AV1 CUDA decoder... ❌
-    FFmpeg-AV1-VAAPI: FFmpeg AV1 VAAPI decoder... ✔️
-    FFmpeg-AV1-VDPAU: FFmpeg AV1 VDPAU decoder... ✔️
-    FFmpeg-AV1-Vulkan: FFmpeg AV1 Vulkan decoder... ❌
-    GStreamer-AV1-D3D11-Gst1.0: GStreamer AV1 D3D11 decoder for GStreamer 1.0... ❌
-    GStreamer-AV1-D3D12-Gst1.0: GStreamer AV1 D3D12 decoder for GStreamer 1.0... ❌
-    GStreamer-AV1-V4L2SL-Gst1.0: GStreamer AV1 V4L2SL decoder for GStreamer 1.0... ❌
-    GStreamer-AV1-VA-Gst1.0: GStreamer AV1 VA decoder for GStreamer 1.0... ✔️
-    GStreamer-AV1-VAAPI-Gst1.0: GStreamer AV1 VAAPI decoder for GStreamer 1.0... ✔️
-    GStreamer-AV1-dav1d-Gst1.0: GStreamer AV1 dav1d decoder for GStreamer 1.0... ❌
-    VKVS-AV1: Vulkan Video Samples AV1 decoder... ❌
-    ccdec-AV1: AV1 cros-codecs decoder... ❌
-    dav1d-AV1: dav1d AV1 decoder... ❌
-    libaom-AV1: libaom AV1 reference decoder... ❌
+    FFmpeg-AV1-CUDA: FFmpeg AV1 CUDA decoder
+    FFmpeg-AV1-VAAPI: FFmpeg AV1 VAAPI decoder
+    FFmpeg-AV1-VDPAU: FFmpeg AV1 VDPAU decoder
+    FFmpeg-AV1-Vulkan: FFmpeg AV1 Vulkan decoder
+    GStreamer-AV1-D3D11-Gst1.0: GStreamer AV1 D3D11 decoder for GStreamer 1.0
+    GStreamer-AV1-D3D12-Gst1.0: GStreamer AV1 D3D12 decoder for GStreamer 1.0
+    GStreamer-AV1-V4L2SL-Gst1.0: GStreamer AV1 V4L2SL decoder for GStreamer 1.0
+    GStreamer-AV1-VA-Gst1.0: GStreamer AV1 VA decoder for GStreamer 1.0
+    GStreamer-AV1-VAAPI-Gst1.0: GStreamer AV1 VAAPI decoder for GStreamer 1.0
+    GStreamer-AV1-dav1d-Gst1.0: GStreamer AV1 dav1d decoder for GStreamer 1.0
+    VKVS-AV1: Vulkan Video Samples AV1 decoder
+    ccdec-AV1: AV1 cros-codecs decoder
+    dav1d-AV1: dav1d AV1 decoder
+    libaom-AV1: libaom AV1 reference decoder
 
 H.265
-    FFmpeg-H.265: FFmpeg H.265 SW decoder... ✔️
-    FFmpeg-H.265-CUDA: FFmpeg H.265 CUDA decoder... ❌
-    FFmpeg-H.265-D3D11VA: FFmpeg H.265 D3D11VA decoder... ❌
-    FFmpeg-H.265-DXVA2: FFmpeg H.265 DXVA2 decoder... ❌
-    FFmpeg-H.265-VAAPI: FFmpeg H.265 VAAPI decoder... ✔️
-    FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder... ✔️
-    FFmpeg-H.265-Vulkan: FFmpeg H.265 Vulkan decoder... ❌
-    FFmpeg-H.265-v4l2m2m: FFmpeg H.265 v4l2m2m decoder... ✔️
-    Fluendo-H.265-DXVA2-Gst1.0: Fluendo H.265 DXVA2 decoder for GStreamer 1.0... ❌
-    Fluendo-H.265-HW-hwvah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0... ✔️
-    Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0... ✔️
-    Fluendo-H.265-VAAPI-Gst1.0: Fluendo H.265 VAAPI decoder for GStreamer 1.0... ❌
-    Fluendo-H.265-VDA-Gst1.0: Fluendo H.265 VDA decoder for GStreamer 1.0... ❌
-    Fluendo-H.265-VDPAU-Gst1.0: Fluendo H.265 VDPAU decoder for GStreamer 1.0... ❌
-    Fluendo-H.265-VT-Gst1.0: Fluendo H.265 VT decoder for GStreamer 1.0... ❌
-    GStreamer-H.265-D3D11-Gst1.0: GStreamer H.265 D3D11 decoder for GStreamer 1.0... ❌
-    GStreamer-H.265-D3D12-Gst1.0: GStreamer H.265 D3D12 decoder for GStreamer 1.0... ❌
-    GStreamer-H.265-Libav-Gst1.0: GStreamer H.265 Libav decoder for GStreamer 1.0... ✔️
-    GStreamer-H.265-MSDK-Gst1.0: GStreamer H.265 MSDK decoder for GStreamer 1.0... ❌
-    GStreamer-H.265-NVDEC-Gst1.0: GStreamer H.265 NVDEC decoder for GStreamer 1.0... ✔️
-    GStreamer-H.265-NVDECSL-Gst1.0: GStreamer H.265 NVDECSL decoder for GStreamer 1.0... ✔️
-    GStreamer-H.265-V4L2-Gst1.0: GStreamer H.265 V4L2 decoder for GStreamer 1.0... ❌
-    GStreamer-H.265-V4L2SL-Gst1.0: GStreamer H.265 V4L2SL decoder for GStreamer 1.0... ❌
-    GStreamer-H.265-VA-Gst1.0: GStreamer H.265 VA decoder for GStreamer 1.0... ✔️
-    GStreamer-H.265-VAAPI-Gst1.0: GStreamer H.265 VAAPI decoder for GStreamer 1.0... ✔️
-    GStreamer-H.265-Vulkan-Gst1.0: GStreamer H.265 Vulkan decoder for GStreamer 1.0... ❌
-    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder... ❌
-    VKVS-H.265: Vulkan Video Samples H.265 decoder... ❌
-    ccdec-H.265: H.265 cros-codecs decoder... ❌
+    FFmpeg-H.265: FFmpeg H.265 SW decoder
+    FFmpeg-H.265-CUDA: FFmpeg H.265 CUDA decoder
+    FFmpeg-H.265-D3D11VA: FFmpeg H.265 D3D11VA decoder
+    FFmpeg-H.265-DXVA2: FFmpeg H.265 DXVA2 decoder
+    FFmpeg-H.265-VAAPI: FFmpeg H.265 VAAPI decoder
+    FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder
+    FFmpeg-H.265-Vulkan: FFmpeg H.265 Vulkan decoder
+    FFmpeg-H.265-v4l2m2m: FFmpeg H.265 v4l2m2m decoder
+    Fluendo-H.265-DXVA2-Gst1.0: Fluendo H.265 DXVA2 decoder for GStreamer 1.0
+    Fluendo-H.265-HW-hwvah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0
+    Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0
+    Fluendo-H.265-VAAPI-Gst1.0: Fluendo H.265 VAAPI decoder for GStreamer 1.0
+    Fluendo-H.265-VDA-Gst1.0: Fluendo H.265 VDA decoder for GStreamer 1.0
+    Fluendo-H.265-VDPAU-Gst1.0: Fluendo H.265 VDPAU decoder for GStreamer 1.0
+    Fluendo-H.265-VT-Gst1.0: Fluendo H.265 VT decoder for GStreamer 1.0
+    GStreamer-H.265-D3D11-Gst1.0: GStreamer H.265 D3D11 decoder for GStreamer 1.0
+    GStreamer-H.265-D3D12-Gst1.0: GStreamer H.265 D3D12 decoder for GStreamer 1.0
+    GStreamer-H.265-Libav-Gst1.0: GStreamer H.265 Libav decoder for GStreamer 1.0
+    GStreamer-H.265-MSDK-Gst1.0: GStreamer H.265 MSDK decoder for GStreamer 1.0
+    GStreamer-H.265-NVDEC-Gst1.0: GStreamer H.265 NVDEC decoder for GStreamer 1.0
+    GStreamer-H.265-NVDECSL-Gst1.0: GStreamer H.265 NVDECSL decoder for GStreamer 1.0
+    GStreamer-H.265-V4L2-Gst1.0: GStreamer H.265 V4L2 decoder for GStreamer 1.0
+    GStreamer-H.265-V4L2SL-Gst1.0: GStreamer H.265 V4L2SL decoder for GStreamer 1.0
+    GStreamer-H.265-VA-Gst1.0: GStreamer H.265 VA decoder for GStreamer 1.0
+    GStreamer-H.265-VAAPI-Gst1.0: GStreamer H.265 VAAPI decoder for GStreamer 1.0
+    GStreamer-H.265-Vulkan-Gst1.0: GStreamer H.265 Vulkan decoder for GStreamer 1.0
+    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder
+    VKVS-H.265: Vulkan Video Samples H.265 decoder
+    ccdec-H.265: H.265 cros-codecs decoder
 
 H.266
-    FFmpeg-H.266: FFmpeg H.266 SW decoder... ✔️
-    Fluendo-H.266-SW-Gst1.0: Fluendo H.266 SW decoder for GStreamer 1.0... ❌
-    GStreamer-H.266-Libav-Gst1.0: GStreamer H.266 Libav decoder for GStreamer 1.0... ❌
-    GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0... ❌
-    VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder... ❌
-    VVdeC-H266: VVdeC H.266/VVC decoder... ❌
+    FFmpeg-H.266: FFmpeg H.266 SW decoder
+    Fluendo-H.266-SW-Gst1.0: Fluendo H.266 SW decoder for GStreamer 1.0
+    GStreamer-H.266-Libav-Gst1.0: GStreamer H.266 Libav decoder for GStreamer 1.0
+    GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0
+    VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder
+    VVdeC-H266: VVdeC H.266/VVC decoder
 
 VP8
-    FFmpeg-VP8: FFmpeg VP8 SW decoder... ✔️
-    FFmpeg-VP8-CUDA: FFmpeg VP8 CUDA decoder... ❌
-    FFmpeg-VP8-VAAPI: FFmpeg VP8 VAAPI decoder... ✔️
-    FFmpeg-VP8-v4l2m2m: FFmpeg VP8 v4l2m2m decoder... ✔️
-    GStreamer-VP8-D3D11-Gst1.0: GStreamer VP8 D3D11 decoder for GStreamer 1.0... ❌
-    GStreamer-VP8-Libav-Gst1.0: GStreamer VP8 Libav decoder for GStreamer 1.0... ✔️
-    GStreamer-VP8-NVDEC-Gst1.0: GStreamer VP8 NVDEC decoder for GStreamer 1.0... ✔️
-    GStreamer-VP8-NVDECSL-Gst1.0: GStreamer VP8 NVDECSL decoder for GStreamer 1.0... ✔️
-    GStreamer-VP8-V4L2-Gst1.0: GStreamer VP8 V4L2 decoder for GStreamer 1.0... ❌
-    GStreamer-VP8-V4L2SL-Gst1.0: GStreamer VP8 V4L2SL decoder for GStreamer 1.0... ❌
-    GStreamer-VP8-VA-Gst1.0: GStreamer VP8 VA decoder for GStreamer 1.0... ✔️
-    GStreamer-VP8-VAAPI-Gst1.0: GStreamer VP8 VAAPI decoder for GStreamer 1.0... ✔️
-    GStreamer-VP8-libvpx-Gst1.0: GStreamer VP8 libvpx decoder for GStreamer 1.0... ✔️
-    ccdec-VP8: VP8 cros-codecs decoder... ❌
-    libvpx-VP8: VP8 reference decoder... ❌
+    FFmpeg-VP8: FFmpeg VP8 SW decoder
+    FFmpeg-VP8-CUDA: FFmpeg VP8 CUDA decoder
+    FFmpeg-VP8-VAAPI: FFmpeg VP8 VAAPI decoder
+    FFmpeg-VP8-v4l2m2m: FFmpeg VP8 v4l2m2m decoder
+    GStreamer-VP8-D3D11-Gst1.0: GStreamer VP8 D3D11 decoder for GStreamer 1.0
+    GStreamer-VP8-Libav-Gst1.0: GStreamer VP8 Libav decoder for GStreamer 1.0
+    GStreamer-VP8-NVDEC-Gst1.0: GStreamer VP8 NVDEC decoder for GStreamer 1.0
+    GStreamer-VP8-NVDECSL-Gst1.0: GStreamer VP8 NVDECSL decoder for GStreamer 1.0
+    GStreamer-VP8-V4L2-Gst1.0: GStreamer VP8 V4L2 decoder for GStreamer 1.0
+    GStreamer-VP8-V4L2SL-Gst1.0: GStreamer VP8 V4L2SL decoder for GStreamer 1.0
+    GStreamer-VP8-VA-Gst1.0: GStreamer VP8 VA decoder for GStreamer 1.0
+    GStreamer-VP8-VAAPI-Gst1.0: GStreamer VP8 VAAPI decoder for GStreamer 1.0
+    GStreamer-VP8-libvpx-Gst1.0: GStreamer VP8 libvpx decoder for GStreamer 1.0
+    ccdec-VP8: VP8 cros-codecs decoder
+    libvpx-VP8: VP8 reference decoder
 
 VP9
-    FFmpeg-VP9: FFmpeg VP9 SW decoder... ✔️
-    FFmpeg-VP9-CUDA: FFmpeg VP9 CUDA decoder... ❌
-    FFmpeg-VP9-VAAPI: FFmpeg VP9 VAAPI decoder... ✔️
-    FFmpeg-VP9-VDPAU: FFmpeg VP9 VDPAU decoder... ✔️
-    FFmpeg-VP9-v4l2m2m: FFmpeg VP9 v4l2m2m decoder... ✔️
-    GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0... ❌
-    GStreamer-VP9-D3D12-Gst1.0: GStreamer VP9 D3D12 decoder for GStreamer 1.0... ❌
-    GStreamer-VP9-Libav-Gst1.0: GStreamer VP9 Libav decoder for GStreamer 1.0... ✔️
-    GStreamer-VP9-NVDEC-Gst1.0: GStreamer VP9 NVDEC decoder for GStreamer 1.0... ✔️
-    GStreamer-VP9-NVDECSL-Gst1.0: GStreamer VP9 NVDECSL decoder for GStreamer 1.0... ✔️
-    GStreamer-VP9-V4L2-Gst1.0: GStreamer VP9 V4L2 decoder for GStreamer 1.0... ❌
-    GStreamer-VP9-V4L2SL-Gst1.0: GStreamer VP9 V4L2SL decoder for GStreamer 1.0... ❌
-    GStreamer-VP9-VA-Gst1.0: GStreamer VP9 VA decoder for GStreamer 1.0... ✔️
-    GStreamer-VP9-VAAPI-Gst1.0: GStreamer VP9 VAAPI decoder for GStreamer 1.0... ✔️
-    GStreamer-VP9-libvpx-Gst1.0: GStreamer VP9 libvpx decoder for GStreamer 1.0... ✔️
-    ccdec-VP9: VP9 cros-codecs decoder... ❌
-    libvpx-VP9: VP9 reference decoder... ❌
+    FFmpeg-VP9: FFmpeg VP9 SW decoder
+    FFmpeg-VP9-CUDA: FFmpeg VP9 CUDA decoder
+    FFmpeg-VP9-VAAPI: FFmpeg VP9 VAAPI decoder
+    FFmpeg-VP9-VDPAU: FFmpeg VP9 VDPAU decoder
+    FFmpeg-VP9-v4l2m2m: FFmpeg VP9 v4l2m2m decoder
+    GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0
+    GStreamer-VP9-D3D12-Gst1.0: GStreamer VP9 D3D12 decoder for GStreamer 1.0
+    GStreamer-VP9-Libav-Gst1.0: GStreamer VP9 Libav decoder for GStreamer 1.0
+    GStreamer-VP9-NVDEC-Gst1.0: GStreamer VP9 NVDEC decoder for GStreamer 1.0
+    GStreamer-VP9-NVDECSL-Gst1.0: GStreamer VP9 NVDECSL decoder for GStreamer 1.0
+    GStreamer-VP9-V4L2-Gst1.0: GStreamer VP9 V4L2 decoder for GStreamer 1.0
+    GStreamer-VP9-V4L2SL-Gst1.0: GStreamer VP9 V4L2SL decoder for GStreamer 1.0
+    GStreamer-VP9-VA-Gst1.0: GStreamer VP9 VA decoder for GStreamer 1.0
+    GStreamer-VP9-VAAPI-Gst1.0: GStreamer VP9 VAAPI decoder for GStreamer 1.0
+    GStreamer-VP9-libvpx-Gst1.0: GStreamer VP9 libvpx decoder for GStreamer 1.0
+    ccdec-VP9: VP9 cros-codecs decoder
+    libvpx-VP9: VP9 reference decoder
 
 AAC
-    Fluendo-AAC-SW-Gst1.0: Fluendo AAC SW decoder for GStreamer 1.0... ✔️
-    ISO-MPEG2-AAC: ISO MPEG2 AAC reference decoder... ❌
-    ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder... ✔️
+    Fluendo-AAC-SW-Gst1.0: Fluendo AAC SW decoder for GStreamer 1.0
+    ISO-MPEG2-AAC: ISO MPEG2 AAC reference decoder
+    ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
@@ -437,7 +437,7 @@ optional arguments:
   -ts TESTSUITES [TESTSUITES ...], --testsuites TESTSUITES [TESTSUITES ...]
                         show only the test suites given
   -tv, --testvectors    show test vectors of test suites
-  -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
+  -c, --check           check which decoders can be run successfully. Reports  or 
   -v, --verbose         show stdout and stderr of commands executed
   -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1}
                         show decoders and test suites of a codec
