@@ -28,6 +28,8 @@ class AV1AOMDecoder(Decoder):
     description = "libaom AV1 reference decoder"
     binary = "aomdec"
     codec = Codec.AV1
+    multiple_layers = False
+    annexb = False
 
     def decode(
         self,
@@ -39,14 +41,21 @@ class AV1AOMDecoder(Decoder):
         keep_files: bool,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
-        fmt = None
-        if output_format in [OutputFormat.YUV420P, OutputFormat.YUV420P10LE]:
-            fmt = "--i420"
-        else:
-            fmt = "--rawvideo"
-        run_command(
-            [self.binary, fmt, input_filepath, "-o", output_filepath],
-            timeout=timeout,
-            verbose=verbose,
-        )
+        fmt = "--rawvideo"
+        if not self.multiple_layers and not self.annexb:
+            if output_format in [OutputFormat.YUV420P, OutputFormat.YUV420P10LE]:
+                fmt = "--i420"
+
+        cmd = [
+            self.binary,
+            "--annexb" if self.annexb else "",
+            "--all-layers" if self.multiple_layers else "",
+            fmt,
+            input_filepath,
+            "-o",
+            output_filepath,
+        ]
+
+        cmd = [arg for arg in cmd if arg]
+        run_command(cmd, timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
