@@ -192,7 +192,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default." "0 means all logical cores",
+            help="number of parallel jobs to use. 1x logical cores by default.0 means all logical cores",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -262,13 +262,13 @@ class Main:
         subparser.add_argument(
             "-th",
             "--threshold",
-            help="set exit code to 2 if threshold tests are not success. " "exit code is 0 otherwise",
+            help="set exit code to 2 if threshold tests are not success. exit code is 0 otherwise",
             type=int,
         )
         subparser.add_argument(
             "-tth",
             "--time-threshold",
-            help="set exit code to 3 if test suite takes longer than threshold seconds. " "exit code is 0 otherwise",
+            help="set exit code to 3 if test suite takes longer than threshold seconds. exit code is 0 otherwise",
             type=float,
         )
         subparser.add_argument(
@@ -288,7 +288,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default." "0 means all logical cores",
+            help="number of parallel jobs to use. 1x logical cores by default.0 means all logical cores",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -324,7 +324,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 2x logical cores by default." "0 means all logical cores",
+            help="number of parallel jobs to use. 2x logical cores by default.0 means all logical cores",
             type=int,
             default=2 * multiprocessing.cpu_count(),
         )

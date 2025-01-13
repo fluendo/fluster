@@ -226,7 +226,7 @@ class Fluster:
             check_list_names = {x.name.lower() for x in check_list}
             matches = in_list_names & check_list_names
             if len(matches) != len(in_list):
-                sys.exit(f'No {name} found for: {", ".join(in_list_names - check_list_names)}')
+                sys.exit(f"No {name} found for: {', '.join(in_list_names - check_list_names)}")
             matches_ret = [x for x in check_list if x.name.lower() in matches]
         else:
             matches_ret = check_list
@@ -253,11 +253,11 @@ class Fluster:
 
         if ctx.reference and (not ctx.decoders or len(ctx.decoders) > 1):
             dec_names = [dec.name for dec in ctx.decoders]
-            raise Exception(f'Only one decoder can be the reference. Given: {", ".join(dec_names)}')
+            raise Exception(f"Only one decoder can be the reference. Given: {', '.join(dec_names)}")
 
         if ctx.threshold and len(ctx.test_suites) > 1:
             raise Exception(
-                "Threshold for success tests can only be applied running a single test " "suite for a single decoder"
+                "Threshold for success tests can only be applied running a single test suite for a single decoder"
             )
 
         if ctx.reference:
@@ -448,7 +448,7 @@ class Fluster:
             test_suites: List[TestSuite],
             first: bool,
         ) -> str:
-            separator = f'\n|-|{"-|" * len(results)}'
+            separator = f"\n|-|{'-|' * len(results)}"
             output = separator if not first else ""
             output += "\n|Test|" if not first else "|Test|"
             for decoder, _ in results:
@@ -486,7 +486,7 @@ class Fluster:
         for test_suite_name, test_suite_results in results.items():
             decoders_names = [decoder.name for decoder, _ in test_suite_results]
             test_suites = [res[1] for res in test_suite_results]
-            print(f'Generating summary for test suite {test_suite_name} and decoders {", ".join(decoders_names)}:\n')
+            print(f"Generating summary for test suite {test_suite_name} and decoders {', '.join(decoders_names)}:\n")
             output += _global_stats(test_suite_results, test_suites, True)
             for test_vector in test_suite_results[0][1].test_vectors.values():
                 output += f"\n|{test_vector.name}|"
