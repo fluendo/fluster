@@ -1,13 +1,13 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "fluster-conformance"
-version = "0.1"
+version = "0.2.0.0" # TODO: Ensure that version 0.2.0 is marked as the final version in the CI release workflow only when we are certain about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading the same version.
 authors = [
-    {name = "Pablo Marcos Oltra"},
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
+    {name = "Pablo Marcos Oltra"},
 ]
 maintainers = [
     {name = "Michalis Dimopoulos", email="mdimopoulos@fluendo.com"},
@@ -27,6 +27,9 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Sound/Audio",
@@ -34,6 +37,9 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Software Development :: Testing",
 ]
+
+[tool.setuptools.package-data]
+"additional_documents" = ["REPORT.md"]
 
 [project.urls]
 "Github repository" = "https://github.com/fluendo/fluster/"
