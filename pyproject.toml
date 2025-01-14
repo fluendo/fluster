@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fluster-conformance"
-version = "0.1"
+version = "0.2"
 authors = [
     {name = "Pablo Marcos Oltra"},
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
@@ -27,47 +27,15 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Sound/Audio",
     "Topic :: Multimedia :: Video",
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Software Development :: Testing",
-]
-
-[tool.poetry]
-name = "fluster-conformance"
-version = "0.1"
-authors = [
-    "Pablo Marcos Oltra",
-    "Andoni Morales Alastruey <amorales@fluendo.com>"
-]
-maintainers = [
-    "Michalis Dimopoulos <mdimopoulos@fluendo.com>",
-    "Ruben Gonzalez <rgonzalez@fluendo.com>"
-]
-description = "Testing framework for decoder conformance"
-license = "LICENSE"
-readme = "README.md"
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Intended Audience :: Telecommunications Industry",
-    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
-    "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.13",
-    "Topic :: Multimedia",
-    "Topic :: Multimedia :: Sound/Audio",
-    "Topic :: Multimedia :: Video",
-    "Topic :: Software Development :: Quality Assurance",
-    "Topic :: Software Development :: Testing",
-]
-packages = [
-    { include = "fluster" }
 ]
 
 [project.urls]
@@ -116,12 +84,11 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/vp9/VP9-TEST-VECTORS.json"
 ]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-
-[tool.poetry.dev-dependencies]
-ruff = "*"
-mypy = "*"
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy"
+]
 
 # https://docs.astral.sh/ruff/configuration/#configuring-ruff
 [tool.ruff]
