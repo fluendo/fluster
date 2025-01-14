@@ -2,6 +2,39 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "fluster-conformance"
+version = "0.1"
+authors = [
+    {name = "Pablo Marcos Oltra"},
+    {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
+]
+maintainers = [
+    {name = "Michalis Dimopoulos", email="mdimopoulos@fluendo.com"},
+    {name = "Ruben Gonzalez", email="rgonzalez@fluendo.com"},
+]
+description = "Testing framework for decoder conformance"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Telecommunications Industry",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+
 [tool.poetry]
 name = "fluster-conformance"
 version = "0.1"
