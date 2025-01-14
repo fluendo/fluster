@@ -2,21 +2,20 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[project]
+[tool.poetry]
 name = "fluster-conformance"
 version = "0.1"
 authors = [
-    {name = "Pablo Marcos Oltra"},
-    {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
+    "Pablo Marcos Oltra",
+    "Andoni Morales Alastruey <amorales@fluendo.com>"
 ]
 maintainers = [
-    {name = "Michalis Dimopoulos", email="mdimopoulos@fluendo.com"},
-    {name = "Ruben Gonzalez", email="rgonzalez@fluendo.com"},
+    "Michalis Dimopoulos <mdimopoulos@fluendo.com>",
+    "Ruben Gonzalez <rgonzalez@fluendo.com>"
 ]
 description = "Testing framework for decoder conformance"
+license = "LICENSE"
 readme = "README.md"
-license = {file = "LICENSE"}
-requires-python = ">=3.7"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -33,6 +32,9 @@ classifiers = [
     "Topic :: Multimedia :: Video",
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Software Development :: Testing",
+]
+packages = [
+    { include = "fluster" }
 ]
 
 [project.urls]
@@ -81,11 +83,12 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/vp9/VP9-TEST-VECTORS.json"
 ]
 
-[project.optional-dependencies]
-dev = [
-    "ruff",
-    "mypy"
-]
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+ruff = "*"
+mypy = "*"
 
 # https://docs.astral.sh/ruff/configuration/#configuring-ruff
 [tool.ruff]
