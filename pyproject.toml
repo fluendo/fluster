@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=60", "setuptools-scm>=8.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -37,6 +37,9 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
     "Topic :: Software Development :: Testing",
 ]
+
+[tool.setuptools.package-data]
+"additional_documents" = ["REPORT.md"]
 
 [project.urls]
 "Github repository" = "https://github.com/fluendo/fluster/"
