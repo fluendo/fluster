@@ -176,7 +176,7 @@ jobs:
           cache-dependency-path: '**/pyproject.toml'
       - name: Install dependencies
         run: |
-          pip install setuptools wheel build
+          pip install setuptools setuptools-scm wheel build
       - name: Build
         run: |
           python -m build
