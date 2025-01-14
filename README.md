@@ -38,24 +38,24 @@ suites.
 ## Description
 
 Fluster requires **Python 3.6+** to work. It has zero dependencies apart from
-that. The [requirements.txt](requirements.txt) file includes Python's modules
+that. The [requirements.txt](https://github.com/fluendo/fluster/blob/master/requirements.txt) file includes Python's modules
 used only for development.
 
 The framework works with test suites. Each test suite is associated with one
 codec and contains a number of test vectors. Each test vector consists of an
 input file and and the expected result. The input file will be fed into each
 decoder that supports the codec of the test suite. The file format is a JSON
-file. You can find the ones included in the [test_suites](test_suites)
+file. You can find the ones included in the [test_suites](https://github.com/fluendo/fluster/tree/master/test_suites)
 directory.
 
 The decoders are the ones in charge of doing the decoding given an input file.
 They implement two methods: `decode` which is mandatory and `check` which is
-optional. Check out the [decoder class](fluster/decoder.py) for reference. The
+optional. Check out the [decoder class](https://github.com/fluendo/fluster/blob/master/fluster/decoder.py) for reference. The
 `@register_decoder` decorator is used to ensure the framework takes them into
 account. Fluster is agnostic as to how the decoding itself is done. So far, all
 decoders are external processes that need to run with a number of parameters,
 but they could actually be decoders written in Python as far as Fluster is
-concerned. The [decoders](fluster/decoders) directory contains all supported
+concerned. The [decoders](https://github.com/fluendo/fluster/tree/master/fluster/decoders) directory contains all supported
 decoders.
 
 In order to run the tests for the different test suites and decoders, a
@@ -528,7 +528,7 @@ optional arguments:
 
 ## Report
 
-[Go to report](REPORT.md)
+[Go to report](https://github.com/fluendo/fluster/blob/master/REPORT.md)
 
 ## FAQ
 
@@ -540,7 +540,7 @@ very appropriate name for testing decoders.
 
 ### How can I add a new decoder?
 
-1. Create a new decoder in [fluster/decoders](fluster/decoders) directory.
+1. Create a new decoder in [fluster/decoders](https://github.com/fluendo/fluster/tree/master/fluster/decoders) directory.
 2. Implement the `decode` method.
 3. Use the `register_decoder` decorator.
 4. Ensure to set `hw_acceleration = True` if it requires hardware.
@@ -549,12 +549,12 @@ very appropriate name for testing decoders.
 
 ### How can I create a new test suite?
 
-Check out the JSON format they follow in the [test_suites](test_suites)
+Check out the JSON format they follow in the [test_suites](https://github.com/fluendo/fluster/tree/master/test_suites)
 directory. Add a new json file within, Fluster will automatically pick it
 up.
 
-There is also a [generator script (H.264)](scripts/gen_jvt.py), [generator script (H.265)](scripts/gen_jct_vc.py), and a [generator script (H.266)](scripts/gen_jvet.py) for the [conformance
-test suites](#test_suites) that you can use as a base to generate automatically
+There is also a [generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), [generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a [generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the [conformance
+test suites](#test-suites) that you can use as a base to generate automatically
 new ones.
 
 ### How can I use it to test regressions?
@@ -596,7 +596,7 @@ results are obtained, we can do the following procedure:
 1. Fork the repo.
 2. Install the required Python modules for development using `pip3 install -r
    requirements.txt`.
-3. Install the [git hook](scripts/install_git_hook.sh) that will run for every
+3. Install the [git hook](https://github.com/fluendo/fluster/blob/master/scripts/install_git_hook.sh) that will run for every
    commit to ensure it works before pushing. [About git
    hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
 4. Modify the code. Make sure the git hook is properly checking that the basic
@@ -616,7 +616,7 @@ results are obtained, we can do the following procedure:
 ### How can I report an issue?
 
 In case you find any problem or want to report something, don't hesitate to
-search for similar [issues](issues). Only when the issue can't be found, a new
+search for similar [issues](https://github.com/fluendo/fluster/issues). Only when the issue can't be found, a new
 one should be created. Please try to provide as many details and context as
 possible to help us diagnose it.
 
