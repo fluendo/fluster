@@ -600,14 +600,14 @@ results are obtained, we can do the following procedure:
    commit to ensure it works before pushing. [About git
    hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
 4. Follow the Conventional Commits guidelines for commit messages. This ensures
-   your commits follow the correct format for versioning and changelog generation. 
+   your commits follow the correct format for versioning and changelog generation.
    You can learn more about Conventional Commits here: [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/).
     - Example commit messages:
         - feat: add new feature
         - fix: fix bug in feature
         - docs: update documentation
-    - The pre-commit hook will automatically check that your commit messages 
-      follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format. 
+    - The pre-commit hook will automatically check that your commit messages
+      follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
       Any commit that doesn't adhere to the format will be rejected.
 5. Modify the code. Make sure the git hook is properly checking that the basic
    functionality still works. You can also execute `make check` manually. Take
