@@ -127,6 +127,6 @@ match = "(main|master)"
 prerelease = false
 
 [tool.semantic_release.branches.feature]
-match = "COM-*"
+match = "^(?!main$|master$).*"
 prerelease = true
 prerelease_token = "rc"
