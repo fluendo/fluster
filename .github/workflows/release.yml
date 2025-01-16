@@ -9,101 +9,136 @@ on:
       - 'v*.*.*'
 
 jobs:
+  commit-validation:
+    name: Validate commit messages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Install pre-commit hooks
+        run: pre-commit install
+
+      - name: Get last commit message (skip merge commits)
+        id: get_commit_message
+        run: |
+          git fetch --prune --unshallow
+          git log --no-merges -1 --pretty=%B > commit-msg.txt
+
+      - name: Validate commit message
+        run: |
+          epre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt
+
   min_linux:
     name: linux with min supported deps
     runs-on: ubuntu-20.04
+    needs:
+      - commit-validation
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          make install_deps
-          sudo apt update && sudo apt install \
-            git \
-            cmake \
-            gcc-multilib \
-            g++-multilib \
-            gstreamer1.0-tools \
-            gstreamer1.0-libav \
-            gstreamer1.0-plugins-bad \
-            ffmpeg \
-            vpx-tools \
-            aom-tools \
-            wget \
-            unzip
-      - name: Check
-        run: |
-          make check
-      - name: Test Build the wheel
-        run: |
-          pip wheel .
-      - name: Build all reference decoders
-        run: |
-          make all_reference_decoders
-      - name: Clean up
-        run: |
-          make clean
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        make install_deps
+        sudo apt update && sudo apt install \
+          git \
+          cmake \
+          gcc-multilib \
+          g++-multilib \
+          gstreamer1.0-tools \
+          gstreamer1.0-libav \
+          gstreamer1.0-plugins-bad \
+          ffmpeg \
+          vpx-tools \
+          aom-tools \
+          wget \
+          unzip
+    - name: Check
+      run: |
+        make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
+    - name: Build all reference decoders
+      run: |
+        make all_reference_decoders
+    - name: Clean up
+      run: |
+        make clean
 
   linux:
     runs-on: ubuntu-24.04
+    needs:
+      - commit-validation
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install dependencies
-        run: |
-          make install_deps
-          sudo apt update && sudo apt install \
-            git \
-            cmake \
-            gcc-multilib \
-            g++-multilib \
-            gstreamer1.0-tools \
-            gstreamer1.0-libav \
-            gstreamer1.0-plugins-bad \
-            ffmpeg \
-            vpx-tools \
-            aom-tools \
-            wget \
-            unzip
-      - name: Check
-        run: |
-          make check
-      - name: Test Build the wheel
-        run: |
-          pip wheel .
-      - name: Build all reference decoders
-        run: |
-          make all_reference_decoders
-      - name: Clean up
-        run: |
-          make clean
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.13
+    - name: Install dependencies
+      run: |
+        make install_deps
+        sudo apt update && sudo apt install \
+          git \
+          cmake \
+          gcc-multilib \
+          g++-multilib \
+          gstreamer1.0-tools \
+          gstreamer1.0-libav \
+          gstreamer1.0-plugins-bad \
+          ffmpeg \
+          vpx-tools \
+          aom-tools \
+          wget \
+          unzip
+    - name: Check
+      run: |
+        make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
+    - name: Build all reference decoders
+      run: |
+        make all_reference_decoders
+    - name: Clean up
+      run: |
+        make clean
 
   windows:
     runs-on: windows-latest
+    needs:
+      - commit-validation
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          make install_deps
-      - name: Check
-        run: |
-          make check
-      - name: Test Build the wheel
-        run: |
-          pip wheel .
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        make install_deps
+    - name: Check
+      run: |
+        make check
+    - name: Test Build the wheel
+      run: |
+        pip wheel .
 
   create_release:
     name: Create Release and Publish
@@ -119,46 +154,42 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository at workflow sha
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.sha }}
-      - name: Force correct release branch on workflow sha
-        run: |
-          git checkout -B ${{ github.ref_name }} ${{ github.sha }}
-      - name: Validate pre-commit hooks
-        uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: --all-files
-      - name: Create semantic version release
-        id: release
-        uses: python-semantic-release/python-semantic-release@v9.16.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          git_committer_name: "github-actions"
-          git_committer_email: "actions@users.noreply.github.com"
-          changelog: false
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-          cache: pip
-          cache-dependency-path: '**/pyproject.toml'
-      - name: Install dependencies
-        run: |
-          pip install setuptools setuptools-scm wheel build
-      - name: Build package
-        run: |
-          python -m build
-      - name: Publish and upload package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        if: steps.release.outputs.released == 'true'
-        with:
-          password: ${{ secrets.PYPI_TOKEN }}
-      - name: Publish and upload to GitHub Release Assets
-        uses: python-semantic-release/publish-action@v9.16.1
-        if: steps.release.outputs.released == 'true'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ steps.release.outputs.tag }}
+    - name: Checkout repository at workflow sha
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.sha }}
+    - name: Force correct release branch on workflow sha
+      run: |
+        git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+    - name: Create semantic version release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v9.16.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        git_committer_name: "github-actions"
+        git_committer_email: "actions@users.noreply.github.com"
+        changelog: false
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: pip
+        cache-dependency-path: '**/pyproject.toml'
+    - name: Install dependencies
+      run: |
+        pip install setuptools setuptools-scm wheel build
+    - name: Build package
+      run: |
+        python -m build
+    - name: Publish and upload package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      if: steps.release.outputs.released == 'true'
+      with:
+        password: ${{ secrets.PYPI_TOKEN }}
+    - name: Publish and upload to GitHub Release Assets
+      uses: python-semantic-release/publish-action@v9.16.1
+      if: steps.release.outputs.released == 'true'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ steps.release.outputs.tag }}
