@@ -56,7 +56,9 @@ class Test(unittest.TestCase):
 
     def _test(self) -> None:
         if self.skip:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.NOT_RUN
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.NOT_RUN
             return
 
         output_filepath = os.path.join(self.output_dir, self.test_vector.name + ".out")
@@ -80,28 +82,48 @@ class Test(unittest.TestCase):
                 self.verbose,
                 self.keep_files,
             )
-            self.test_suite.test_vectors[self.test_vector.name].test_time = perf_counter() - start
+            self.test_suite.test_vectors[self.test_vector.name].test_time = (
+                perf_counter() - start
+            )
         except TimeoutExpired:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.TIMEOUT
-            self.test_suite.test_vectors[self.test_vector.name].test_time = perf_counter() - start
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.TIMEOUT
+            self.test_suite.test_vectors[self.test_vector.name].test_time = (
+                perf_counter() - start
+            )
             raise
         except Exception:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.ERROR
-            self.test_suite.test_vectors[self.test_vector.name].test_time = perf_counter() - start
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.ERROR
+            self.test_suite.test_vectors[self.test_vector.name].test_time = (
+                perf_counter() - start
+            )
             raise
 
-        if not self.keep_files and os.path.exists(output_filepath) and os.path.isfile(output_filepath):
+        if (
+            not self.keep_files
+            and os.path.exists(output_filepath)
+            and os.path.isfile(output_filepath)
+        ):
             os.remove(output_filepath)
 
         if not self.reference:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.FAIL
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.FAIL
             if self.test_vector.result.lower() == result.lower():
-                self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.SUCCESS
+                self.test_suite.test_vectors[
+                    self.test_vector.name
+                ].test_result = TestVectorResult.SUCCESS
             self.assertEqual(
                 self.test_vector.result.lower(),
                 result.lower(),
                 self.test_vector.name,
             )
         else:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.REFERENCE
+            self.test_suite.test_vectors[
+                self.test_vector.name
+            ].test_result = TestVectorResult.REFERENCE
             self.test_suite.test_vectors[self.test_vector.name].result = result

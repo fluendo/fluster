@@ -98,7 +98,9 @@ def run_command_with_output(
         print(f'\nRunning command "{" ".join(command)}"')
 
     try:
-        output = subprocess.check_output(command, stderr=serr, timeout=timeout, universal_newlines=True)
+        output = subprocess.check_output(
+            command, stderr=serr, timeout=timeout, universal_newlines=True
+        )
         if verbose and output:
             print(output)
         return output or ""
@@ -156,7 +158,9 @@ def normalize_path(path: str) -> str:
     return path
 
 
-def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None) -> Optional[str]:
+def find_by_ext(
+    dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None
+) -> Optional[str]:
     """Return name by file extension"""
     excludes = excludes or []
     candidates = []

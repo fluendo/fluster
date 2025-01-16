@@ -78,7 +78,9 @@ class AV1ArgonGenerator:
                 utils.download(source_url, extract_folder)
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
-                print(f"\tUnable to download {source_url} to {extract_folder}, {exception_str}")
+                print(
+                    f"\tUnable to download {source_url} to {extract_folder}, {exception_str}"
+                )
             except Exception as ex:
                 raise Exception(str(ex)) from ex
 
@@ -93,7 +95,11 @@ class AV1ArgonGenerator:
                     test_vector_files.append(file_info)
 
                 # Extract md5 files
-                if file_info.endswith(".md5") and "md5_ref/" in file_info and "layers/" not in file_info:
+                if (
+                    file_info.endswith(".md5")
+                    and "md5_ref/" in file_info
+                    and "layers/" not in file_info
+                ):
                     zip_ref.extract(file_info, extract_folder)
 
         # Create test vectors and test suite
@@ -101,7 +107,11 @@ class AV1ArgonGenerator:
         source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
         for idx, file in enumerate(test_vector_files):
             if (idx + 1) % 500 == 0:
-                print("Processing vector {} out of a total of {}".format(idx + 1, len(test_vector_files)))
+                print(
+                    "Processing vector {} out of a total of {}".format(
+                        idx + 1, len(test_vector_files)
+                    )
+                )
             filename = os.path.splitext(os.path.basename(file))[0]
             # ffprobe execution
             if self.use_ffprobe:
@@ -130,7 +140,9 @@ class AV1ArgonGenerator:
             # Processing md5 files
             md5_file_to_find = os.path.splitext(filename)[0] + ".md5"
             full_path_split = full_path.split("/")
-            md5_directory_path = "/".join(full_path_split[: len(full_path_split) - 2]) + "/" + "md5_ref"
+            md5_directory_path = (
+                "/".join(full_path_split[: len(full_path_split) - 2]) + "/" + "md5_ref"
+            )
             md5_file_path = os.path.join(md5_directory_path, md5_file_to_find)
 
             # Check the .md5 file and get checksum
@@ -171,15 +183,18 @@ class AV1ArgonGenerator:
             regex = re.compile(r"([a-fA-F0-9]{32,}).*\.(yuv|rgb|gbr)")
             lines = checksum_fh.readlines()
             # Prefer lines matching the regex pattern
-            match = next((regex.match(line) for line in lines if regex.match(line)), None)
+            match = next(
+                (regex.match(line) for line in lines if regex.match(line)), None
+            )
             if match:
                 result = match.group(1)[:32].lower()
             else:
                 result = -1
             # Assert that we have extracted a valid MD5 from the file
-            assert len(result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", result) is not None, (
-                f"{result} is not a valid MD5 hash"
-            )
+            assert (
+                len(result) == 32
+                and re.search(r"^[a-fA-F0-9]{32}$", result) is not None
+            ), f"{result} is not a valid MD5 hash"
             return result
 
 

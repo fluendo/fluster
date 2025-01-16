@@ -9,125 +9,29 @@ on:
       - 'v*.*.*'
 
 jobs:
-  min_linux:
-    name: linux with min supported deps
-    runs-on: ubuntu-20.04
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          make install_deps
-          sudo apt update && sudo apt install \
-            git \
-            cmake \
-            gcc-multilib \
-            g++-multilib \
-            gstreamer1.0-tools \
-            gstreamer1.0-libav \
-            gstreamer1.0-plugins-bad \
-            ffmpeg \
-            vpx-tools \
-            aom-tools \
-            wget \
-            unzip
-      - name: Check
-        run: |
-          make check
-      - name: Test Build the wheel
-        run: |
-          pip wheel .
-      - name: Build all reference decoders
-        run: |
-          make all_reference_decoders
-      - name: Clean up
-        run: |
-          make clean
-
-  linux:
-    runs-on: ubuntu-24.04
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-      - name: Install dependencies
-        run: |
-          make install_deps
-          sudo apt update && sudo apt install \
-            git \
-            cmake \
-            gcc-multilib \
-            g++-multilib \
-            gstreamer1.0-tools \
-            gstreamer1.0-libav \
-            gstreamer1.0-plugins-bad \
-            ffmpeg \
-            vpx-tools \
-            aom-tools \
-            wget \
-            unzip
-      - name: Check
-        run: |
-          make check
-      - name: Test Build the wheel
-        run: |
-          pip wheel .
-      - name: Build all reference decoders
-        run: |
-          make all_reference_decoders
-      - name: Clean up
-        run: |
-          make clean
-
-  windows:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: |
-          make install_deps
-      - name: Check
-        run: |
-          make check
-      - name: Test Build the wheel
-        run: |
-          pip wheel .
-
   create_release:
     name: Create Release and Publish
     runs-on: ubuntu-latest
     concurrency: create_release
-    needs:
-      - min_linux
-      - linux
-      - windows
 
     permissions:
       id-token: write
       contents: write
 
     steps:
-      - name: Setup | Checkout Repository at workflow sha
+      - name: Checkout repository at workflow sha
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
-      - name: Setup | Force correct release branch on workflow sha
+      - name: Force correct release branch on workflow sha
         run: |
           git checkout -B ${{ github.ref_name }} ${{ github.sha }}
-      - name: Action | Semantic Version Release
+      - name: Validate | Pre-Commit Hooks
+        uses: pre-commit/action@v4.5.3
+        with:
+          extra_args: --all-files
+      - name: Create semantic version release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.16.1
         with:
@@ -147,12 +51,7 @@ jobs:
       - name: Build package
         run: |
           python -m build
-      - name: Publish | Upload package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        if: steps.release.outputs.released == 'true'
-        with:
-          password: ${{ secrets.PYPI_TOKEN }}
-      - name: Publish | Upload to GitHub Release Assets
+      - name: Publish and upload to GitHub Release Assets
         uses: python-semantic-release/publish-action@v9.16.1
         if: steps.release.outputs.released == 'true'
         with:

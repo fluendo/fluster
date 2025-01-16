@@ -163,16 +163,22 @@ class Fluster:
             for file in files:
                 if os.path.splitext(file)[1] == ".json":
                     try:
-                        test_suite = TestSuite.from_json_file(os.path.join(root, file), self.resources_dir)
+                        test_suite = TestSuite.from_json_file(
+                            os.path.join(root, file), self.resources_dir
+                        )
                         if test_suite.name in [ts.name for ts in self.test_suites]:
-                            raise Exception(f'Repeated test suite with name "{test_suite.name}"')
+                            raise Exception(
+                                f'Repeated test suite with name "{test_suite.name}"'
+                            )
                         self.test_suites.append(test_suite)
                     except Exception as ex:
                         print(f"Error loading test suite {file}: {ex}")
         if len(self.test_suites) == 0:
             raise Exception(f'No test suites found in "{self.test_suites_dir}"')
 
-    def list_decoders(self, check: bool, verbose: bool, codec: Optional[Codec] = None) -> None:
+    def list_decoders(
+        self, check: bool, verbose: bool, codec: Optional[Codec] = None
+    ) -> None:
         """List all the available decoders"""
         print("\nList of available decoders:")
         decoders_dict: Dict[Codec, List[Decoder]] = {}
@@ -226,7 +232,9 @@ class Fluster:
             check_list_names = {x.name.lower() for x in check_list}
             matches = in_list_names & check_list_names
             if len(matches) != len(in_list):
-                sys.exit(f"No {name} found for: {', '.join(in_list_names - check_list_names)}")
+                sys.exit(
+                    f"No {name} found for: {', '.join(in_list_names - check_list_names)}"
+                )
             matches_ret = [x for x in check_list if x.name.lower() in matches]
         else:
             matches_ret = check_list
@@ -242,7 +250,9 @@ class Fluster:
             ctx.test_vectors_names = [x.lower() for x in ctx.test_vectors_names]
         if ctx.skip_vectors_names:
             ctx.skip_vectors_names = [x.lower() for x in ctx.skip_vectors_names]
-        ctx.test_suites = self._get_matches(ctx.test_suites_names, self.test_suites, "test suite")
+        ctx.test_suites = self._get_matches(
+            ctx.test_suites_names, self.test_suites, "test suite"
+        )
         ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
 
     def run_test_suites(self, ctx: Context) -> None:
@@ -253,7 +263,9 @@ class Fluster:
 
         if ctx.reference and (not ctx.decoders or len(ctx.decoders) > 1):
             dec_names = [dec.name for dec in ctx.decoders]
-            raise Exception(f"Only one decoder can be the reference. Given: {', '.join(dec_names)}")
+            raise Exception(
+                f"Only one decoder can be the reference. Given: {', '.join(dec_names)}"
+            )
 
         if ctx.threshold and len(ctx.test_suites) > 1:
             raise Exception(
@@ -322,7 +334,9 @@ class Fluster:
         if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)
 
-    def _show_summary_if_needed(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _show_summary_if_needed(
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> None:
         if ctx.summary and results:
             if ctx.summary_format == SummaryFormat.JUNITXML.value:
                 self._generate_junit_summary(ctx, results)
@@ -332,11 +346,15 @@ class Fluster:
                 self._generate_md_summary(ctx, results)
 
     @staticmethod
-    def _generate_junit_summary(ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_junit_summary(
+        ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> None:
         try:
             import junitparser as junitp  # type: ignore
         except ImportError:
-            sys.exit("error: junitparser required to use JUnit format. Please install with pip install junitparser.")
+            sys.exit(
+                "error: junitparser required to use JUnit format. Please install with pip install junitparser."
+            )
 
         def _parse_vector_errors(vector: TestVector) -> List[junitp.Error]:
             junit_err_map = {
@@ -403,7 +421,9 @@ class Fluster:
                 xml.write(summary_file.name, pretty=True)
 
     @staticmethod
-    def _generate_csv_summary(ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_csv_summary(
+        ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> None:
         result_map = {
             TestVectorResult.SUCCESS: "Success",
             TestVectorResult.REFERENCE: "Reference",
@@ -420,7 +440,9 @@ class Fluster:
                 max_vectors = max(max_vectors, len(vectors.test_vectors.values()))
                 for vector in vectors.test_vectors.values():
                     vector_name = str(vector.name)
-                    content[str(test_suite)][decoder_name][vector_name] = result_map[vector.test_result]
+                    content[str(test_suite)][decoder_name][vector_name] = result_map[
+                        vector.test_result
+                    ]
 
         suite_row = []
         decoder_row = []
@@ -442,7 +464,9 @@ class Fluster:
             with open(ctx.summary_output, mode="w", encoding="utf8") as file:
                 file.writelines([",".join(row) + "\n" for row in rows])
 
-    def _generate_md_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_md_summary(
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> None:
         def _global_stats(
             results: List[Tuple[Decoder, TestSuite]],
             test_suites: List[TestSuite],
@@ -456,7 +480,9 @@ class Fluster:
             output += separator if first else ""
             output += "\n|TOTAL|"
             for test_suite in test_suites:
-                output += f"{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|"
+                output += (
+                    f"{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|"
+                )
             output += "\n|TOTAL TIME|"
             for test_suite in test_suites:
                 # Substract from the total time that took running a test suite on a decoder
@@ -486,7 +512,9 @@ class Fluster:
         for test_suite_name, test_suite_results in results.items():
             decoders_names = [decoder.name for decoder, _ in test_suite_results]
             test_suites = [res[1] for res in test_suite_results]
-            print(f"Generating summary for test suite {test_suite_name} and decoders {', '.join(decoders_names)}:\n")
+            print(
+                f"Generating summary for test suite {test_suite_name} and decoders {', '.join(decoders_names)}:\n"
+            )
             output += _global_stats(test_suite_results, test_suites, True)
             for test_vector in test_suite_results[0][1].test_vectors.values():
                 output += f"\n|{test_vector.name}|"
@@ -501,13 +529,17 @@ class Fluster:
         else:
             print(output)
 
-    def download_test_suites(self, test_suites: List[str], jobs: int, keep_file: bool, retries: int) -> None:
+    def download_test_suites(
+        self, test_suites: List[str], jobs: int, keep_file: bool, retries: int
+    ) -> None:
         """Download a group of test suites"""
         self._load_test_suites()
         if not test_suites:
             download_test_suites = self.test_suites
         else:
-            download_test_suites = self._get_matches(test_suites, self.test_suites, "test suites")
+            download_test_suites = self._get_matches(
+                test_suites, self.test_suites, "test suites"
+            )
 
         for test_suite in download_test_suites:
             test_suite.download(

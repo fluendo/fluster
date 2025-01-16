@@ -34,11 +34,16 @@ from fluster.test_vector import TestVector
 
 BASE_URL = "https://standards.iso.org/"
 
-URL_MPEG2 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/"
+URL_MPEG2 = (
+    BASE_URL
+    + "ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/"
+)
 URL_MPEG2_ADTS = URL_MPEG2 + "compressedAdts"
 URL_MPEG2_ADIF = URL_MPEG2 + "compressedAdif"
 
-URL_MPEG4 = BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/"
+URL_MPEG4 = (
+    BASE_URL + "ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/"
+)
 URL_MPEG4_ADIF = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedAdif/add-opt/"
 URL_MPEG4_MP4 = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedMp4/"
 URL_MPEG4_ADTS = URL_MPEG4 + "DVD1/mpeg4audio-conformance/compressedAdts/add-opt/"
@@ -105,13 +110,24 @@ class AACGenerator:
         with urllib.request.urlopen(self.url_test_vectors) as resp:
             data = str(resp.read())
             hparser_compressed.feed(data)
-        compressed_bitstream_links = [url for url in hparser_compressed.links if url.endswith(tuple(BITSTREAM_EXTS))]
+        compressed_bitstream_links = [
+            url
+            for url in hparser_compressed.links
+            if url.endswith(tuple(BITSTREAM_EXTS))
+        ]
 
         # Download compressed bitstream links
         for source_url in compressed_bitstream_links:
             input_filename = os.path.basename(source_url)
             test_vector_name = os.path.splitext(input_filename)[0]
-            test_vector = TestVector(test_vector_name, source_url, "__skip__", input_filename, OutputFormat.UNKNOWN, "")
+            test_vector = TestVector(
+                test_vector_name,
+                source_url,
+                "__skip__",
+                input_filename,
+                OutputFormat.UNKNOWN,
+                "",
+            )
             test_suite.test_vectors[test_vector_name] = test_vector
 
         print(f"Download list of compressed bitstreams from {self.url_test_vectors}")
@@ -126,14 +142,20 @@ class AACGenerator:
 
         # MPEG4_AAC-MP4 test suite
         if test_suite.name == "MPEG4_AAC-MP4":
-            print(f"Identifying MP4 files that contain audio in test suite: {self.suite_name}")
+            print(
+                f"Identifying MP4 files that contain audio in test suite: {self.suite_name}"
+            )
 
             # Validating audio files using ffprobe
             ffprobe = utils.normalize_binary_cmd("ffprobe")
             non_audio_test_vectors = []
             for test_vector in test_suite.test_vectors.values():
-                dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
-                absolute_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
+                dest_dir = os.path.join(
+                    test_suite.resources_dir, test_suite.name, test_vector.name
+                )
+                absolute_path = os.path.join(
+                    os.getcwd(), dest_dir, test_vector.input_file
+                )
                 command = [
                     ffprobe,
                     "-loglevel",
@@ -144,7 +166,13 @@ class AACGenerator:
                     "csv=p=0",
                     absolute_path,
                 ]
-                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
+                result = subprocess.run(
+                    command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    check=False,
+                )
 
                 # In case of error, create a new test vector list to be removed from the test suite
                 if result.returncode != 0:
@@ -160,7 +188,9 @@ class AACGenerator:
                 print("Removing non-audio files and folders from hard drive")
                 for name in non_audio_test_vectors:
                     # Removing files and folders from hard drive
-                    dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, name)
+                    dest_dir = os.path.join(
+                        test_suite.resources_dir, test_suite.name, name
+                    )
                     absolute_path = os.path.join(os.getcwd(), dest_dir, name + ".mp4")
                     absolute_path_folder = os.path.join(os.getcwd(), dest_dir)
 
@@ -168,23 +198,33 @@ class AACGenerator:
                         try:
                             os.remove(absolute_path)
                         except OSError as error:
-                            raise Exception(f"The file {absolute_path} couldn't be deleted.\n{error}")
+                            raise Exception(
+                                f"The file {absolute_path} couldn't be deleted.\n{error}"
+                            )
                         try:
                             os.rmdir(absolute_path_folder)
                         except OSError as error:
-                            raise Exception(f"The folder {absolute_path_folder} couldn't be deleted.\n{error}")
+                            raise Exception(
+                                f"The folder {absolute_path_folder} couldn't be deleted.\n{error}"
+                            )
 
                     # Remove test vectors from test suite and the corresponding links
                     del test_suite.test_vectors[str(name)]
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+            dest_dir = os.path.join(
+                test_suite.resources_dir, test_suite.name, test_vector.name
+            )
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            absolute_input_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
+            absolute_input_path = os.path.join(
+                os.getcwd(), dest_dir, test_vector.input_file
+            )
 
             # Check that bitstream file is located inside the corresponding test vector folder
             if not os.path.isfile(absolute_input_path):
-                raise Exception(f"Bitstream file {test_vector.input_file} not found in {dest_dir}")
+                raise Exception(
+                    f"Bitstream file {test_vector.input_file} not found in {dest_dir}"
+                )
 
             # Calculate source file checksum
             test_vector.source_checksum = utils.file_checksum(dest_path)

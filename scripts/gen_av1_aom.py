@@ -80,14 +80,24 @@ class AOMGenerator:
             if "Contents" not in entry.tag:
                 continue
             key_element = entry.find("{*}Key")
-            if isinstance(key_element, ET.Element) and isinstance(key_element.text, str):
+            if isinstance(key_element, ET.Element) and isinstance(
+                key_element.text, str
+            ):
                 test_vector_filename = key_element.text
                 test_vector_name = os.path.splitext(test_vector_filename)[0]
-                if os.path.splitext(test_vector_filename)[1] not in BITSTREAM_EXTS or "invalid" in test_vector_filename:
+                if (
+                    os.path.splitext(test_vector_filename)[1] not in BITSTREAM_EXTS
+                    or "invalid" in test_vector_filename
+                ):
                     continue
                 file_url = f"{AV1_URL}/{key_element.text}"
                 test_vector = TestVector(
-                    test_vector_name, file_url, "__skip__", test_vector_filename, OutputFormat.YUV420P, ""
+                    test_vector_name,
+                    file_url,
+                    "__skip__",
+                    test_vector_filename,
+                    OutputFormat.YUV420P,
+                    "",
                 )
                 test_suite.test_vectors[test_vector_name] = test_vector
 
@@ -101,10 +111,15 @@ class AOMGenerator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+            dest_dir = os.path.join(
+                test_suite.resources_dir, test_suite.name, test_vector.name
+            )
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = dest_path.replace(
-                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
+                os.path.join(
+                    test_suite.resources_dir, test_suite.name, test_vector.name
+                )
+                + os.sep,
                 "",
             )
             absolute_input_path = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
@@ -141,7 +156,9 @@ class AOMGenerator:
 
             out420 = f"{dest_path}.i420"
             # Run the libaom av1 decoder to get the checksum as the .md5 files are per-frame
-            test_vector.result = self.decoder.decode(dest_path, out420, test_vector.output_format, 30, False, False)
+            test_vector.result = self.decoder.decode(
+                dest_path, out420, test_vector.output_format, 30, False, False
+            )
             os.remove(out420)
 
         absolute_output_filepath = os.path.join(absolute_dest_dir, output_filepath)

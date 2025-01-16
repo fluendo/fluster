@@ -73,7 +73,9 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.GBRP10LE: "GBR_10LE",
     }
     if output_format not in mapping:
-        raise Exception(f"No matching output format found in GStreamer for {output_format}")
+        raise Exception(
+            f"No matching output format found in GStreamer for {output_format}"
+        )
     return mapping[output_format]
 
 
@@ -91,7 +93,9 @@ class GStreamer(Decoder):
     def __init__(self) -> None:
         super().__init__()
         if not self.name:
-            self.name = f"{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}"
+            self.name = (
+                f"{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}"
+            )
         self.description = f"{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}"
         self.cmd = normalize_binary_cmd(self.cmd)
 
@@ -153,7 +157,9 @@ class GStreamer(Decoder):
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
             command = shlex.split(pipeline)
             command.append("-m")
-            data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
+            data = run_command_with_output(
+                command, timeout=timeout, verbose=verbose
+            ).splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)

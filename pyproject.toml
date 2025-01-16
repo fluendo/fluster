@@ -120,6 +120,7 @@ fluster = "fluster.main:fluster_main"
 [tool.semantic_release]
 version_source = "file"
 version_file = "pyproject.toml"
+branch = "COM-12827"
 version_pattern = 'version\\s*=\\s*"(.*)"'
 
 [tool.semantic_release.branches.main]

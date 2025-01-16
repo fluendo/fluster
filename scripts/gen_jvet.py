@@ -34,7 +34,9 @@ from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
 BASE_URL = "https://www.itu.int/"
-H266_URL = BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
+H266_URL = (
+    BASE_URL + "wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/"
+)
 # When there is only 1 element in below variables there must be a ", " at the end.
 # Otherwise utils.find_by_ext() considers each character of the string as an individual
 # element in the list
@@ -67,7 +69,13 @@ class JVETGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
-        self, name: str, suite_name: str, codec: Codec, description: str, site: str, use_ffprobe: bool = False
+        self,
+        name: str,
+        suite_name: str,
+        codec: Codec,
+        description: str,
+        site: str,
+        use_ffprobe: bool = False,
     ):
         self.name = name
         self.suite_name = suite_name
@@ -100,7 +108,9 @@ class JVETGenerator:
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
+            test_vector = TestVector(
+                name, url, "__skip__", file_input, OutputFormat.YUV420P, ""
+            )
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -113,12 +123,17 @@ class JVETGenerator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+            dest_dir = os.path.join(
+                test_suite.resources_dir, test_suite.name, test_vector.name
+            )
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
-                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
+                os.path.join(
+                    test_suite.resources_dir, test_suite.name, test_vector.name
+                )
+                + os.sep,
                 "",
             )
             if not test_vector.input_file:
@@ -186,13 +201,17 @@ class JVETGenerator:
             # Filter out empty lines
             filtered_lines = [line.strip() for line in lines if line.strip()]
             # Prefer lines matching the regex pattern
-            match = next((regex.match(line) for line in filtered_lines if regex.match(line)), None)
+            match = next(
+                (regex.match(line) for line in filtered_lines if regex.match(line)),
+                None,
+            )
             if match:
                 test_vector.result = match.group(1).lower()
             # Assert that we have extracted a valid MD5 from the file
-            assert len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, (
-                f"{test_vector.result} is not a valid MD5 hash"
-            )
+            assert (
+                len(test_vector.result) == 32
+                and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
+            ), f"{test_vector.result} is not a valid MD5 hash"
 
 
 if __name__ == "__main__":
