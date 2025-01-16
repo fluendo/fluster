@@ -87,7 +87,12 @@ class AOMGenerator:
                     continue
                 file_url = f"{AV1_URL}/{key_element.text}"
                 test_vector = TestVector(
-                    test_vector_name, file_url, "__skip__", test_vector_filename, OutputFormat.YUV420P, ""
+                    test_vector_name,
+                    file_url,
+                    "__skip__",
+                    test_vector_filename,
+                    OutputFormat.YUV420P,
+                    "",
                 )
                 test_suite.test_vectors[test_vector_name] = test_vector
 

@@ -111,7 +111,14 @@ class AACGenerator:
         for source_url in compressed_bitstream_links:
             input_filename = os.path.basename(source_url)
             test_vector_name = os.path.splitext(input_filename)[0]
-            test_vector = TestVector(test_vector_name, source_url, "__skip__", input_filename, OutputFormat.UNKNOWN, "")
+            test_vector = TestVector(
+                test_vector_name,
+                source_url,
+                "__skip__",
+                input_filename,
+                OutputFormat.UNKNOWN,
+                "",
+            )
             test_suite.test_vectors[test_vector_name] = test_vector
 
         print(f"Download list of compressed bitstreams from {self.url_test_vectors}")
@@ -144,7 +151,13 @@ class AACGenerator:
                     "csv=p=0",
                     absolute_path,
                 ]
-                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
+                result = subprocess.run(
+                    command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    check=False,
+                )
 
                 # In case of error, create a new test vector list to be removed from the test suite
                 if result.returncode != 0:

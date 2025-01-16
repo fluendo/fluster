@@ -599,7 +599,17 @@ results are obtained, we can do the following procedure:
 3. Install the [git hook](https://github.com/fluendo/fluster/blob/master/scripts/install_git_hook.sh) that will run for every
    commit to ensure it works before pushing. [About git
    hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
-4. Modify the code. Make sure the git hook is properly checking that the basic
+4. Follow the Conventional Commits guidelines for commit messages. This ensures
+   your commits follow the correct format for versioning and changelog generation.
+   You can learn more about Conventional Commits here: [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/).
+    - Example commit messages:
+        - feat: add new feature
+        - fix: fix bug in feature
+        - docs: update documentation
+    - The pre-commit hook will automatically check that your commit messages
+      follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
+      Any commit that doesn't adhere to the format will be rejected.
+5. Modify the code. Make sure the git hook is properly checking that the basic
    functionality still works. You can also execute `make check` manually. Take
    into account that some basic tests are run to ensure that GStreamer, FFmpeg
    and libvpx decoders are working fine. Thus, you need to have them available.
@@ -610,8 +620,8 @@ results are obtained, we can do the following procedure:
    vpx-tools aom-tools
    ```
 
-5. Create a new PR with your changes.
-6. Make sure the GitHub Actions is running and its result is a pass.
+6. Create a new PR with your changes.
+7. Make sure the GitHub Actions is running and its result is a pass.
 
 ### How can I report an issue?
 

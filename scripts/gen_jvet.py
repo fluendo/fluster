@@ -67,7 +67,13 @@ class JVETGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
-        self, name: str, suite_name: str, codec: Codec, description: str, site: str, use_ffprobe: bool = False
+        self,
+        name: str,
+        suite_name: str,
+        codec: Codec,
+        description: str,
+        site: str,
+        use_ffprobe: bool = False,
     ):
         self.name = name
         self.suite_name = suite_name
@@ -186,7 +192,10 @@ class JVETGenerator:
             # Filter out empty lines
             filtered_lines = [line.strip() for line in lines if line.strip()]
             # Prefer lines matching the regex pattern
-            match = next((regex.match(line) for line in filtered_lines if regex.match(line)), None)
+            match = next(
+                (regex.match(line) for line in filtered_lines if regex.match(line)),
+                None,
+            )
             if match:
                 test_vector.result = match.group(1).lower()
             # Assert that we have extracted a valid MD5 from the file
