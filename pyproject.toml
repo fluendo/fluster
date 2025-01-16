@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fluster-conformance"
-version = "0.2.0.0" # TODO: Ensure that version 0.2.0 is marked as the final version in the CI release workflow only when we are certain about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading the same version.
+version = "0.2.0.rc3" # TODO: Ensure that version 0.2.0 is marked as the final version in the CI release workflow only when we are certain about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading the same version.
 authors = [
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
-    {name = "Pablo Marcos Oltra"},
+    # {name = "Pablo Marcos Oltra"}, wait to (https://github.com/pypi/warehouse/issues/12877)
 ]
 maintainers = [
     {name = "Michalis Dimopoulos", email="mdimopoulos@fluendo.com"},
@@ -116,3 +116,18 @@ line-ending = "auto"
 
 [project.scripts]
 fluster = "fluster.main:fluster_main"
+
+[tool.semantic_release]
+version_source = "file"
+version_file = "pyproject.toml"
+branch = "COM-12827"
+version_pattern = 'version\\s*=\\s*"(.*)"'
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+prerelease = false
+
+[tool.semantic_release.branches.feature]
+match = "COM-*"
+prerelease = true
+prerelease_token = "rc"
