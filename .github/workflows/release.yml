@@ -28,7 +28,7 @@ jobs:
         run: |
           git checkout -B ${{ github.ref_name }} ${{ github.sha }}
       - name: Validate | Pre-Commit Hooks
-        uses: pre-commit/action@v4.5.3
+        uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files
       - name: Create semantic version release
