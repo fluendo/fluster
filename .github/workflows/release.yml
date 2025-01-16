@@ -27,6 +27,9 @@ jobs:
       - name: Setup | Force correct release branch on workflow sha
         run: |
           git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+      - name: Setup | Temporarily treat branch as main
+        run: |
+          sed -i 's/match = "(main|master)"/match = "(main|master|COM-12827)"/' pyproject.toml
       - name: Action | Semantic Version Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.16.1
