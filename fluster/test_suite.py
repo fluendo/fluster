@@ -74,9 +74,7 @@ class DownloadWorkSingleArchive(DownloadWork):
         test_vectors: Dict[str, TestVector],
         retries: int,
     ):
-        super().__init__(
-            out_dir, verify, extract_all, keep_file, test_suite_name, retries
-        )
+        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries)
         self.test_vectors = test_vectors
 
 
@@ -150,16 +148,12 @@ class TestSuite:
         return copy.deepcopy(self)
 
     @classmethod
-    def from_json_file(
-        cls: Type["TestSuite"], filename: str, resources_dir: str
-    ) -> "TestSuite":
+    def from_json_file(cls: Type["TestSuite"], filename: str, resources_dir: str) -> "TestSuite":
         """Create a TestSuite instance from a file"""
         with open(filename, encoding="utf-8") as json_file:
             data = json.load(json_file)
             if "failing_test_vectors" in data:
-                data["failing_test_vectors"] = dict(
-                    map(TestVector.from_json, data["failing_test_vectors"])
-                )
+                data["failing_test_vectors"] = dict(map(TestVector.from_json, data["failing_test_vectors"]))
             data["test_vectors"] = dict(map(TestVector.from_json, data["test_vectors"]))
             data["codec"] = Codec(data["codec"])
             return cls(filename, resources_dir, **data)
@@ -182,10 +176,7 @@ class TestSuite:
                     for failing_test_vector in self.failing_test_vectors.values()
                 ]
             data["codec"] = str(self.codec.value)
-            data["test_vectors"] = [
-                test_vector.data_to_serialize()
-                for test_vector in self.test_vectors.values()
-            ]
+            data["test_vectors"] = [test_vector.data_to_serialize() for test_vector in self.test_vectors.values()]
             json.dump(data, json_file, indent=4)
 
     @staticmethod
@@ -196,11 +187,7 @@ class TestSuite:
         dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
-        if (
-            ctx.verify
-            and os.path.exists(dest_path)
-            and test_vector.source_checksum == utils.file_checksum(dest_path)
-        ):
+        if ctx.verify and os.path.exists(dest_path) and test_vector.source_checksum == utils.file_checksum(dest_path):
             # Remove file only in case the input file was extractable.
             # Otherwise, we'd be removing the original file we want to work
             # with every even time we execute the download subcommand.
@@ -218,9 +205,7 @@ class TestSuite:
                 utils.download(test_vector.source, dest_dir)
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
-                print(
-                    f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i + 1}"
-                )
+                print(f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i + 1}")
                 continue
             except Exception as ex:
                 raise Exception(str(ex)) from ex
@@ -267,9 +252,7 @@ class TestSuite:
             and test_vector_0.source_checksum != utils.file_checksum(dest_path)
         ):
             os.remove(dest_path)
-            print(
-                f"\tRemoved source file {dest_path} from path, checksum doesn't match with expected"
-            )
+            print(f"\tRemoved source file {dest_path} from path, checksum doesn't match with expected")
 
         os.makedirs(dest_dir, exist_ok=True)
 
@@ -303,9 +286,7 @@ class TestSuite:
         # Extract all test vectors from compressed source file
         try:
             with zipfile.ZipFile(dest_path, "r") as zip_file:
-                print(
-                    f"\tExtracting test vectors from {os.path.basename(test_vector_0.source)}"
-                )
+                print(f"\tExtracting test vectors from {os.path.basename(test_vector_0.source)}")
                 for test_vector_iter in test_vectors.values():
                     if test_vector_iter.input_file in zip_file.namelist():
                         zip_file.extract(test_vector_iter.input_file, dest_dir)
@@ -363,9 +344,7 @@ class TestSuite:
                         )
                     )
             else:
-                print(
-                    f"Downloading test suite {self.name} using 1 job (no parallel execution possible)"
-                )
+                print(f"Downloading test suite {self.name} using 1 job (no parallel execution possible)")
                 dwork_single_archive = DownloadWorkSingleArchive(
                     out_dir,
                     verify,
@@ -445,12 +424,8 @@ class TestSuite:
         decoder_name: Optional[str] = None,
     ) -> str:
         decoder_name = decoder_text if not decoder_name else decoder_name
-        tests_suite_max_len = self._get_max_length_list_name(
-            [self.name], TestSuite.TEST_SUITE_NAME
-        )
-        decoder_max_len = self._get_max_length_list_name(
-            [decoder_name], TestSuite.DECODER_NAME
-        )
+        tests_suite_max_len = self._get_max_length_list_name([self.name], TestSuite.TEST_SUITE_NAME)
+        decoder_max_len = self._get_max_length_list_name([decoder_name], TestSuite.DECODER_NAME)
         test_vectors_max_len = self._get_max_length_list_name(
             list(self.test_vectors.keys()), TestSuite.TEST_VECTOR_NAME
         )
@@ -460,9 +435,7 @@ class TestSuite:
             f"{test_vector_text:{test_vectors_max_len}} ... {result_text}"
         )
 
-    def run_test_suite_in_parallel(
-        self, jobs: int, tests: List[Test], failfast: bool
-    ) -> None:
+    def run_test_suite_in_parallel(self, jobs: int, tests: List[Test], failfast: bool) -> None:
         """Run the test suite in parallel"""
         test_vector_results: List[TestVector] = []
         decoder = tests[0].decoder

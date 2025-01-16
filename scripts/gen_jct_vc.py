@@ -108,9 +108,7 @@ class JCTVCGenerator:
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(
-                name, url, "__skip__", file_input, OutputFormat.YUV420P, ""
-            )
+            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -124,24 +122,17 @@ class JCTVCGenerator:
 
         if "SHVC" in test_suite.name:
             for test_vector in test_suite.test_vectors.values():
-                if (
-                    "8layers" in test_vector.name.lower()
-                ):  # 8LAYERS_QUALCOMM_1 not used in SHVC test suite
+                if "8layers" in test_vector.name.lower():  # 8LAYERS_QUALCOMM_1 not used in SHVC test suite
                     test_suite.test_vectors.pop(test_vector.name, None)
                     break
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
+                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
                 "",
             )
             if not test_vector.input_file:
@@ -225,11 +216,7 @@ class JCTVCGenerator:
             regex = re.compile(r"([a-fA-F0-9]{32,}).*\.(yuv|rgb|gbr)")
             lines = checksum_fh.readlines()
             # Filter out empty lines and lines that start with "#"
-            filtered_lines = [
-                line.strip()
-                for line in lines
-                if line.strip() and not line.strip().startswith("#")
-            ]
+            filtered_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
             # Prefer lines matching the regex pattern
             match = next(
                 (regex.match(line) for line in filtered_lines if regex.match(line)),
@@ -248,10 +235,9 @@ class JCTVCGenerator:
                         test_vector.result = line.split(" ")[0].strip().lower()
                     break
             # Assert that we have extracted a valid MD5 from the file
-            assert (
-                len(test_vector.result) == 32
-                and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None
-            ), f"{test_vector.result} is not a valid MD5 hash"
+            assert len(test_vector.result) == 32 and re.search(r"^[a-fA-F0-9]{32}$", test_vector.result) is not None, (
+                f"{test_vector.result} is not a valid MD5 hash"
+            )
 
 
 if __name__ == "__main__":
@@ -279,9 +265,7 @@ if __name__ == "__main__":
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVCGenerator(
-        "RExt", "JCT-VC-RExt", Codec.H265, "JCT-VC HEVC Range Extension", H265_URL, True
-    )
+    generator = JCTVCGenerator("RExt", "JCT-VC-RExt", Codec.H265, "JCT-VC HEVC Range Extension", H265_URL, True)
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVCGenerator(

@@ -112,9 +112,7 @@ class JVTGenerator:
             file_url = os.path.basename(url)
             name = os.path.splitext(file_url)[0]
             file_input = f"{name}.bin"
-            test_vector = TestVector(
-                name, url, "__skip__", file_input, OutputFormat.YUV420P, ""
-            )
+            test_vector = TestVector(name, url, "__skip__", file_input, OutputFormat.YUV420P, "")
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -127,17 +125,12 @@ class JVTGenerator:
             )
 
         for test_vector in test_suite.test_vectors.values():
-            dest_dir = os.path.join(
-                test_suite.resources_dir, test_suite.name, test_vector.name
-            )
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
             test_vector.input_file = str(utils.find_by_ext(dest_dir, BITSTREAM_EXTS))
             absolute_input_path = test_vector.input_file
             test_vector.input_file = test_vector.input_file.replace(
-                os.path.join(
-                    test_suite.resources_dir, test_suite.name, test_vector.name
-                )
-                + os.sep,
+                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
                 "",
             )
             if not test_vector.input_file:
@@ -213,16 +206,10 @@ class JVTGenerator:
                 "Professional_profiles",
                 "MVC",
             ):  # result md5 generated from h264_reference_decoder
-                if (
-                    self.name == "SVC"
-                ):  # result md5 generated for different Lines (L0, L1...)
-                    new_vectors = self._fill_checksum_h264_multiple(
-                        test_vector, dest_dir
-                    )
+                if self.name == "SVC":  # result md5 generated for different Lines (L0, L1...)
+                    new_vectors = self._fill_checksum_h264_multiple(test_vector, dest_dir)
                     new_test_vectors.extend(new_vectors)
-                    test_suite.test_vectors = {
-                        vector.name: vector for vector in new_test_vectors
-                    }
+                    test_suite.test_vectors = {vector.name: vector for vector in new_test_vectors}
                 else:
                     self._fill_checksum_h264(test_vector, dest_dir)
 
@@ -238,9 +225,7 @@ class JVTGenerator:
         test_vector.result = utils.file_checksum(raw_file)
 
     @staticmethod
-    def _fill_checksum_h264_multiple(
-        test_vector: TestVector, dest_dir: str
-    ) -> List[TestVector]:
+    def _fill_checksum_h264_multiple(test_vector: TestVector, dest_dir: str) -> List[TestVector]:
         def remove_r1_from_path(path: str) -> str:
             parts = path.split("/")
             if len(parts) >= 2:
@@ -254,19 +239,13 @@ class JVTGenerator:
             new_vector = copy.deepcopy(test_vector)
             new_vector.name = test_vector.name + suffix
 
-            input_file_path = os.path.join(
-                dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264"
-            )
-            result_file_path = os.path.join(
-                dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv"
-            )
+            input_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.264")
+            result_file_path = os.path.join(dest_dir, test_vector.name, f"{test_vector.name}{suffix}.yuv")
 
             corrected_input_path = remove_r1_from_path(input_file_path)
             corrected_result_path = remove_r1_from_path(result_file_path)
 
-            if os.path.exists(corrected_input_path) and os.path.exists(
-                corrected_result_path
-            ):
+            if os.path.exists(corrected_input_path) and os.path.exists(corrected_result_path):
                 new_vector.input_file = os.path.relpath(corrected_input_path, dest_dir)
                 new_vector.result = utils.file_checksum(corrected_result_path)
 

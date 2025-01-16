@@ -47,17 +47,11 @@ class Main:
 
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
-        self.test_suites_dir = os.path.join(
-            os.path.dirname(__file__), "..", TEST_SUITES_DIR
-        )
-        self.resources_dir = os.path.join(
-            os.path.dirname(__file__), "..", RESOURCES_DIR
-        )
+        self.test_suites_dir = os.path.join(os.path.dirname(__file__), "..", TEST_SUITES_DIR)
+        self.resources_dir = os.path.join(os.path.dirname(__file__), "..", RESOURCES_DIR)
         self.output_dir = os.path.join(gettempdir(), OUTPUT_DIR)
 
-        is_installed = not os.path.exists(
-            os.path.join(os.path.dirname(__file__), "..", ".git")
-        )
+        is_installed = not os.path.exists(os.path.join(os.path.dirname(__file__), "..", ".git"))
         if is_installed:
             self.resources_dir, self.test_suites_dir = self._get_installed_dirs()
 
@@ -88,13 +82,8 @@ class Main:
     @staticmethod
     def _validate_args(args: Any) -> None:
         if hasattr(args, "format"):
-            if (
-                args.format in [SummaryFormat.JUNITXML.value, SummaryFormat.CSV.value]
-                and not args.summary_output
-            ):
-                sys.exit(
-                    "error: please specify XML/CSV file path with -so/--summary-output option."
-                )
+            if args.format in [SummaryFormat.JUNITXML.value, SummaryFormat.CSV.value] and not args.summary_output:
+                sys.exit("error: please specify XML/CSV file path with -so/--summary-output option.")
 
     @staticmethod
     def _validate_deps(args: Any) -> None:
@@ -199,9 +188,7 @@ class Main:
         subparser.set_defaults(func=self._list_cmd)
 
     def _add_run_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser(
-            "run", aliases=["r"], help="run test suites for decoders"
-        )
+        subparser = subparsers.add_parser("run", aliases=["r"], help="run test suites for decoders")
         subparser.add_argument(
             "-j",
             "--jobs",
@@ -258,9 +245,7 @@ class Main:
             help="generate a summary in Markdown format for each test suite",
             action="store_true",
         )
-        subparser.add_argument(
-            "-so", "--summary-output", help="dump summary output to file"
-        )
+        subparser.add_argument("-so", "--summary-output", help="dump summary output to file")
         subparser.add_argument(
             "-f",
             "--format",
@@ -335,9 +320,7 @@ class Main:
         subparser.set_defaults(func=self._reference_cmd)
 
     def _add_download_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser(
-            "download", aliases=["d"], help="downloads test suites resources"
-        )
+        subparser = subparsers.add_parser("download", aliases=["d"], help="downloads test suites resources")
         subparser.add_argument(
             "-j",
             "--jobs",
@@ -359,9 +342,7 @@ class Main:
             type=int,
             default=1,
         )
-        subparser.add_argument(
-            "testsuites", help="list of testsuites to download", nargs="*"
-        )
+        subparser.add_argument("testsuites", help="list of testsuites to download", nargs="*")
         subparser.set_defaults(func=self._download_cmd)
 
     @staticmethod
