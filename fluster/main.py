@@ -347,7 +347,11 @@ class Main:
 
     @staticmethod
     def _list_cmd(args: Any, fluster: Fluster) -> None:
-        fluster.list_test_suites(show_test_vectors=args.testvectors, test_suites=args.testsuites, codec=args.codec)
+        fluster.list_test_suites(
+            show_test_vectors=args.testvectors,
+            test_suites=args.testsuites,
+            codec=args.codec,
+        )
         fluster.list_decoders(check=args.check, verbose=args.verbose, codec=args.codec)
 
     @staticmethod

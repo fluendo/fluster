@@ -702,12 +702,12 @@ Video surface:
 
 name   width height types
 -------------------------------------------
-420     8192  8192  NV12 YV12 
-422     8192  8192  UYVY YUYV 
-444     8192  8192  NV24 YV24 
-420_16  8192  8192  P010 P016 
-422_16  8192  8192  UYVY YUYV 
-444_16  8192  8192  Y_U_V_444_16 
+420     8192  8192  NV12 YV12
+422     8192  8192  UYVY YUYV
+444     8192  8192  NV24 YV24
+420_16  8192  8192  P010 P016
+422_16  8192  8192  UYVY YUYV
+444_16  8192  8192  Y_U_V_444_16
 
 Decoder capabilities:
 
@@ -753,8 +753,8 @@ Output surface:
 
 name              width height nat types
 ----------------------------------------------------
-B8G8R8A8         32768 32768    y  Y8U8V8A8 V8U8Y8A8 A4I4 I4A4 A8I8 I8A8 
-R10G10B10A2      32768 32768    y  Y8U8V8A8 V8U8Y8A8 A4I4 I4A4 A8I8 I8A8 
+B8G8R8A8         32768 32768    y  Y8U8V8A8 V8U8Y8A8 A4I4 I4A4 A8I8 I8A8
+R10G10B10A2      32768 32768    y  Y8U8V8A8 V8U8Y8A8 A4I4 I4A4 A8I8 I8A8
 
 Bitmap surface:
 
@@ -790,17 +790,17 @@ parameter name                  sup      min      max
 -----------------------------------------------------
 VIDEO_SURFACE_WIDTH              y         1     8192
 VIDEO_SURFACE_HEIGHT             y         1     8192
-CHROMA_TYPE                      y  
+CHROMA_TYPE                      y
 LAYERS                           y         0        4
 
 attribute name                  sup      min      max
 -----------------------------------------------------
-BACKGROUND_COLOR                 y  
-CSC_MATRIX                       y  
+BACKGROUND_COLOR                 y
+CSC_MATRIX                       y
 NOISE_REDUCTION_LEVEL            y      0.00     1.00
 SHARPNESS_LEVEL                  y     -1.00     1.00
-LUMA_KEY_MIN_LUMA                y  
-LUMA_KEY_MAX_LUMA                y  
+LUMA_KEY_MIN_LUMA                y
+LUMA_KEY_MAX_LUMA                y
 ```
 
 GStreamer:
