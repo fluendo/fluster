@@ -609,7 +609,9 @@ results are obtained, we can do the following procedure:
     - The pre-commit hook will automatically check that your commit messages
       follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
       Any commit that doesn't adhere to the format will be rejected.
-5. Modify the code. Make sure the git hook is properly checking that the basic
+    - Please correct the following errors:
+        - Expected value for type from: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test.
+5. Modify the code. Make sure git hooks are properly checking that the basic
    functionality still works. You can also execute `make check` manually. Take
    into account that some basic tests are run to ensure that GStreamer, FFmpeg
    and libvpx decoders are working fine. Thus, you need to have them available.
@@ -621,7 +623,7 @@ results are obtained, we can do the following procedure:
    ```
 
 6. Create a new PR with your changes.
-7. Make sure the GitHub Actions is running and its result is a pass.
+7. Make sure GitHub Actions jobs are launched and all results are a pass.
 
 ### How can I report an issue?
 
