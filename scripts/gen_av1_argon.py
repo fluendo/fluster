@@ -24,7 +24,8 @@ import subprocess
 import sys
 import urllib.error
 import zipfile
-from typing import Any
+from time import sleep
+from typing import Any, List
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
@@ -45,6 +46,7 @@ class AV1ArgonGenerator:
         codec: Codec,
         description: str,
         site: str,
+        test_vector_groups: List[str],
         use_ffprobe: bool = False,
     ):
         self.name = name
@@ -52,6 +54,7 @@ class AV1ArgonGenerator:
         self.codec = codec
         self.description = description
         self.site = site
+        self.test_vector_groups = test_vector_groups
         self.use_ffprobe = use_ffprobe
         self.is_single_archive = True
 
@@ -70,38 +73,64 @@ class AV1ArgonGenerator:
             self.is_single_archive,
         )
         os.makedirs(extract_folder, exist_ok=True)
-        # Download the zip file
         source_url = self.site + self.name
-        if download:
+        source_checksum_ref_url = self.site + self.name + ".md5sum"
+
+        # Download source checksum reference file
+        try:
+            utils.download(source_checksum_ref_url, extract_folder)
+            source_checksum_ref = self._fill_checksum_argon(extract_folder + "/" + self.name + ".md5sum")
+        except urllib.error.URLError as ex:
+            raise Exception(f"\tUnable to download {source_checksum_ref_url} to {extract_folder}, {str(ex)}") from ex
+        except Exception as ex:
+            raise Exception(str(ex)) from ex
+
+        # Calculate checksum of source file on disk
+        try:
+            source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
+        except Exception as ex:
+            source_checksum = ""
+            print(f"{ex}")
+
+        # Download the zip file
+        if download and source_checksum != source_checksum_ref:
             print(f"Download test suite archive from {source_url}")
             try:
                 utils.download(source_url, extract_folder)
+                source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
             except urllib.error.URLError as ex:
-                exception_str = str(ex)
-                print(f"\tUnable to download {source_url} to {extract_folder}, {exception_str}")
+                raise Exception(f"\tUnable to download {source_url} to {extract_folder}, {str(ex)}") from ex
             except Exception as ex:
                 raise Exception(str(ex)) from ex
+        elif not download and source_checksum and source_checksum != source_checksum_ref:
+            print(
+                "WARNING: You have chosen not to download the source file. However the checksum of the source file "
+                "on disk does not coincide with its reference checksum, indicating some kind of issue. Please enable "
+                "download and execute the script again. Reporting error through exit code 1"
+            )
+            sleep(10)
 
-        # Unzip the file
+        # Unzip the source file
         test_vector_files = []
         with zipfile.ZipFile(extract_folder + "/" + self.name, "r") as zip_ref:
-            print(f"Unzip files from {self.name}")
+            print(f"Unzip test streams and checksums from {self.name}")
             for file_info in zip_ref.namelist():
-                # Extract test vector files
-                if file_info.endswith(".obu"):
-                    zip_ref.extract(file_info, extract_folder)
-                    test_vector_files.append(file_info)
+                # Process test vector groups
+                file_info_split = file_info.split("/")
+                test_vector_group = file_info_split[1]
+                if test_vector_group in self.test_vector_groups:
+                    # Extract test vector files
+                    if file_info.endswith(".obu"):
+                        zip_ref.extract(file_info, extract_folder)
+                        test_vector_files.append(file_info)
 
-                # Extract md5 files
-                if file_info.endswith(".md5") and "md5_ref/" in file_info and "layers/" not in file_info:
-                    zip_ref.extract(file_info, extract_folder)
+                    # Extract md5 files
+                    if file_info.endswith(".md5") and "md5_ref/" in file_info and "layers/" not in file_info:
+                        zip_ref.extract(file_info, extract_folder)
 
         # Create test vectors and test suite
         print("Creating test vectors and test suite")
-        source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
         for idx, file in enumerate(test_vector_files):
-            if (idx + 1) % 500 == 0:
-                print("Processing vector {} out of a total of {}".format(idx + 1, len(test_vector_files)))
             filename = os.path.splitext(os.path.basename(file))[0]
             # ffprobe execution
             if self.use_ffprobe:
@@ -168,10 +197,10 @@ class AV1ArgonGenerator:
         if checksum_file is None:
             raise Exception("MD5 not found")
         with open(checksum_file, "r") as checksum_fh:
-            regex = re.compile(r"([a-fA-F0-9]{32,}).*\.(yuv|rgb|gbr)")
+            regex = re.compile(r"\b([a-fA-F0-9]{32})\b")
             lines = checksum_fh.readlines()
             # Prefer lines matching the regex pattern
-            match = next((regex.match(line) for line in lines if regex.match(line)), None)
+            match = next((regex.search(line) for line in lines if regex.search(line)), None)
             if match:
                 result = match.group(1)[:32].lower()
             else:
@@ -187,17 +216,107 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--skip-download",
-        help="skip extracting tarball",
+        help="skip downloading zip",
         action="store_true",
         default=False,
     )
     args = parser.parse_args()
+
     generator = AV1ArgonGenerator(
         "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
-        "AV1_ARGON_VECTORS",
+        "AV1-ARGON-PROFILE0-CORE-ANNEX-B",
         Codec.AV1,
-        "AV1 Argon Streams",
+        "AV1 Argon Profile0 Core Annex B test suite",
         ARGON_URL,
+        ["profile0_core", "profile0_core_special"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE0-NON-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile 0 Non-Annex B test suite",
+        ARGON_URL,
+        ["profile0_error", "profile0_not_annexb", "profile0_not_annexb_special"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE0-STRESS-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile0 Stress Annex B test suite",
+        ARGON_URL,
+        ["profile0_stress"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE1-CORE-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile1 Core Annex B test suite",
+        ARGON_URL,
+        ["profile1_core", "profile1_core_special"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE1-NON-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile 1 Non-Annex B test suite",
+        ARGON_URL,
+        ["profile1_error", "profile1_not_annexb", "profile1_not_annexb_special"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE1-STRESS-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile1 Stress Annex B test suite",
+        ARGON_URL,
+        ["profile1_stress"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE2-CORE-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile2 Core Annex B test suite",
+        ARGON_URL,
+        ["profile2_core", "profile2_core_special"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE2-NON-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile 2 Non-Annex B test suite",
+        ARGON_URL,
+        ["profile2_error", "profile2_not_annexb", "profile2_not_annexb_special"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE2-STRESS-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile2 Stress Annex B test suite",
+        ARGON_URL,
+        ["profile2_stress"],
         True,
     )
     generator.generate(not args.skip_download)
