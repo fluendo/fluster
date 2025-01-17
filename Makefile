@@ -54,11 +54,11 @@ format: ## format python code
 	@echo "Formatting coding style with ruff..."
 	ruff format $(PY_FILES)
 
-format-check: ## check format of python code
+format-check: ## check format of python code (manual check, pre-commit already covers this)
 	@echo "Checking code format with ruff... Run '$(MAKE) format' to fix if needed"
 	ruff format --check $(PY_FILES)
 
-lint: ## run static python code analysis - fix issues
+lint: ## run static python code analysis - fix issues (manual fix, complements pre-commit)
 	@echo "Linting and fixing issues with ruff... "
 	ruff check --fix $(PY_FILES)
 
