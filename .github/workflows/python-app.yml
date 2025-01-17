@@ -17,29 +17,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-      - name: Install pre-commit
-        run: pip install pre-commit
+    - name: Install pre-commit
+      run: pip install pre-commit
 
-      - name: Install pre-commit hooks
-        run: pre-commit install
+    - name: Install pre-commit hooks
+      run: pre-commit install
 
-      - name: Get last commit message (skip merge commits)
-        id: get_commit_message
-        run: |
-          git fetch --prune --unshallow
-          git log --no-merges -1 --pretty=%B > commit-msg.txt
+    - name: Get last commit message (skip merge commits)
+      id: get_commit_message
+      run: |
+        git fetch --prune --unshallow
+        git log --no-merges -1 --pretty=%B > commit-msg.txt
 
-      - name: Validate commit message
-        run: |
-          pre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt
+    - name: Validate commit message
+      run: |
+        pre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt
 
   min_linux:
     name: linux with min supported deps
