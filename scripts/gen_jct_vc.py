@@ -66,13 +66,7 @@ class JCTVCGenerator:
     """Generates a test suite from the conformance bitstreams"""
 
     def __init__(
-        self,
-        name: str,
-        suite_name: str,
-        codec: Codec,
-        description: str,
-        site: str,
-        use_ffprobe: bool = False,
+        self, name: str, suite_name: str, codec: Codec, description: str, site: str, use_ffprobe: bool = False
     ):
         self.name = name
         self.suite_name = suite_name
@@ -218,10 +212,7 @@ class JCTVCGenerator:
             # Filter out empty lines and lines that start with "#"
             filtered_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
             # Prefer lines matching the regex pattern
-            match = next(
-                (regex.match(line) for line in filtered_lines if regex.match(line)),
-                None,
-            )
+            match = next((regex.match(line) for line in filtered_lines if regex.match(line)), None)
             if match:
                 test_vector.result = match.group(1).lower()
             elif self.name in ["RExt", "MV-HEVC", "SCC", "SHVC"]:
@@ -269,33 +260,16 @@ if __name__ == "__main__":
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVCGenerator(
-        "SCC",
-        "JCT-VC-SCC",
-        Codec.H265,
-        "JCT-VC HEVC Screen Content Coding Extension",
-        H265_URL,
-        True,
+        "SCC", "JCT-VC-SCC", Codec.H265, "JCT-VC HEVC Screen Content Coding Extension", H265_URL, True
     )
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVCGenerator(
-        "MV-HEVC",
-        "JCT-VC-MV-HEVC",
-        Codec.H265,
-        "JCT-VC HEVC Multiview Extension",
-        H265_URL,
-        True,
+        "MV-HEVC", "JCT-VC-MV-HEVC", Codec.H265, "JCT-VC HEVC Multiview Extension", H265_URL, True
     )
     generator.generate(not args.skip_download, args.jobs)
 
-    generator = JCTVCGenerator(
-        "3D-HEVC",
-        "JCT-VC-3D-HEVC",
-        Codec.H265,
-        "JCT-VC HEVC 3D Extension",
-        H265_URL,
-        True,
-    )
+    generator = JCTVCGenerator("3D-HEVC", "JCT-VC-3D-HEVC", Codec.H265, "JCT-VC HEVC 3D Extension", H265_URL, True)
     generator.generate(not args.skip_download, args.jobs)
 
     # TODO see comment (https://fluendo.atlassian.net/browse/COM-10938?focusedCommentId=86998)
