@@ -23,7 +23,7 @@ jobs:
         python-version: '3.10'
 
     - name: Install pre-commit
-      run: pip install pre-commit==3.6.0
+      run: pip install pre-commit==2.21.0
 
     - name: Install pre-commit hooks
       run: pre-commit install
