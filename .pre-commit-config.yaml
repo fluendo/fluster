@@ -7,8 +7,9 @@ repos:
     rev: v0.9.2
     hooks:
       - id: ruff
-        args: [ --fix, --show-fixes ]
+        args: [ --check ]
       - id: ruff-format
+        args: [ --check ]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.0.0
