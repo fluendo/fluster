@@ -31,15 +31,19 @@ jobs:
     - name: Install pre-commit hooks
       run: pre-commit install
 
-    - name: Get last commit message (skip merge commits)
-      id: get_commit_message
+    - name: Get all commit messages in the push
+      id: get_commit_messages
       run: |
         git fetch --prune --unshallow
-        git log --no-merges -1 --pretty=%B > commit-msg.txt
+        git rev-list --no-merges origin/master..${{ github.sha }} > commits.txt
 
-    - name: Validate commit message
+    - name: Validate all commit messages
       run: |
-        pre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt
+        while read commit; do
+          echo "Validate commit: $commit"
+          git show -s --format=%B $commit > commit-msg.txt
+          pre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt || exit 1
+        done < commits.txt
 
   min_linux:
     name: linux with min supported deps
