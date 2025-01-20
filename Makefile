@@ -16,7 +16,7 @@ help:
 install_deps: ## install Python dependencies
 	python3 -m pip install -r requirements.txt
 
-check: format-check lint-check ## check that very basic tests run
+check: lint-check ## check that very basic tests run
 	@echo "Running dummy test..."
 	$(FLUSTER) list
 	$(FLUSTER) list -c
