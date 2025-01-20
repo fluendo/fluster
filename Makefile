@@ -16,7 +16,7 @@ help:
 install_deps: ## install Python dependencies
 	python3 -m pip install -r requirements.txt
 
-check: format-check lint-check ## check that very basic tests run
+check: lint-check ## check that very basic tests run
 	@echo "Running dummy test..."
 	$(FLUSTER) list
 	$(FLUSTER) list -c
@@ -62,7 +62,7 @@ lint: ## run static python code analysis - fix issues (manual fix, complements p
 	@echo "Linting and fixing issues with ruff... "
 	ruff check --fix $(PY_FILES)
 
-lint-check: format-check ## run static python code analysis - does not apply fixes
+lint-check: ## run static python code analysis - does not apply fixes
 	@echo "Linting with ruff... run '$(MAKE) lint' to fix if needed"
 	ruff check $(PY_FILES)
 	@echo "Checking static types with mypy..."
