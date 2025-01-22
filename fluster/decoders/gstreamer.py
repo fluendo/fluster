@@ -434,6 +434,13 @@ class GStreamerVulkanH265Gst10Decoder(GStreamer10Video):
     decoder_bin = " vulkanh265dec ! vulkandownload "
     api = "Vulkan"
 
+@register_decoder
+class GStreamerVulkanAV1Gst10Decoder(GStreamer10Video):
+    """GStreamer AV1 Vulkan stateless decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.AV1
+    decoder_bin = " vulkanav1dec ! vulkandownload "
+    api = "Vulkan"
 
 @register_decoder
 class GStreamerV4l2CodecsVP8Gst10Decoder(GStreamer10Video):
