@@ -13,7 +13,7 @@ on:
 
 jobs:
   commit-validation:
-    name: Validate commit messages
+    name: Validate commits
     runs-on: ubuntu-latest
 
     steps:
@@ -44,6 +44,10 @@ jobs:
           git show -s --format=%B $commit > commit-msg.txt
           pre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt || exit 1
         done < commits.txt
+
+    - name: Validate all files
+      run: |
+        pre-commit run --all-files --show-diff-on-failure
 
   min_linux:
     name: linux with min supported deps
