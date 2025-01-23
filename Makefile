@@ -54,17 +54,11 @@ format: ## format python code
 	@echo "Formatting coding style with ruff..."
 	ruff format $(PY_FILES)
 
-format-check: ## check format of python code (manual check, pre-commit already covers this)
-	@echo "Checking code format with ruff... Run '$(MAKE) format' to fix if needed"
-	ruff format --check $(PY_FILES)
-
 lint: ## run static python code analysis - fix issues (manual fix, complements pre-commit)
 	@echo "Linting and fixing issues with ruff... "
 	ruff check --fix $(PY_FILES)
 
 lint-check: ## run static python code analysis - does not apply fixes
-	@echo "Linting with ruff... run '$(MAKE) lint' to fix if needed"
-	ruff check $(PY_FILES)
 	@echo "Checking static types with mypy..."
 	mypy --strict $(PY_FILES)
 
@@ -201,4 +195,4 @@ dbg-%:
 	echo "Value of $* = $($*)"
 
 .PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder h266_reference_decoder\
-mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder check format format-check lint lint-check install_deps clean
+mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder check format lint lint-check install_deps clean
