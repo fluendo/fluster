@@ -31,18 +31,14 @@ jobs:
     - name: Install pre-commit hooks
       run: pre-commit install
 
-    - name: Get all commit messages in the push
-      id: get_commit_messages
-      run: |
-        git fetch --prune --unshallow
-        git rev-list --no-merges origin/master..${{ github.sha }} > commits.txt
-
     - name: Validate all commit messages
       run: |
+        git fetch --prune --unshallow
+        git rev-list --no-merges origin/${{ github.base_ref }}..${{ github.sha }} > commits.txt
         while read commit; do
           echo "Validate commit: $commit"
           git show -s --format=%B $commit > commit-msg.txt
-          pre-commit run --hook-stage commit-msg --commit-msg-filename commit-msg.txt --files commit-msg.txt || exit 1
+          pre-commit run conventional-pre-commit --hook-stage commit-msg --commit-msg-filename commit-msg.txt || exit 1
         done < commits.txt
 
     - name: Validate all files
