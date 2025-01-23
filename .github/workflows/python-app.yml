@@ -35,6 +35,11 @@ jobs:
       id: get_commit_messages
       run: |
         git fetch --prune --unshallow
+        echo ${{ github.base_ref }}
+        echo ${{ github.sha }}
+        echo ${{ github.event.pull_request.head.sha }}
+        echo $GITHUB_SHA
+        echo $GITHUB_REF
         git rev-list --no-merges origin/master..${{ github.sha }} > commits.txt
 
     - name: Validate all commit messages
