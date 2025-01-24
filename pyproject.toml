@@ -57,7 +57,15 @@ packages = ["fluster", "fluster.decoders"]
 ]
 "share/fluster/test_suites/av1" = [
     "test_suites/av1/AV1-TEST-VECTORS.json",
-    "test_suites/av1/AV1_ARGON_VECTORS.json",
+    "test_suites/av1/AV1-ARGON-PROFILE0-CORE-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE0-NON-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE0-STRESS-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE1-CORE-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE1-NON-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE1-STRESS-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE2-CORE-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE2-NON-ANNEX-B.json",
+    "test_suites/av1/AV1-ARGON-PROFILE2-STRESS-ANNEX-B.json",
     "test_suites/av1/CHROMIUM-10bit-AV1-TEST-VECTORS.json",
     "test_suites/av1/CHROMIUM-8bit-AV1-TEST-VECTORS.json"
 ]
