@@ -34,7 +34,11 @@ jobs:
     - name: Validate all commit messages
       run: |
         git fetch --prune --unshallow
-        git rev-list --no-merges origin/${{ github.base_ref }}..${{ github.sha }} > commits.txt
+        BASE_REF=${{ github.base_ref }}
+        if [ -z "$BASE_REF" ]; then
+          BASE_REF="master"
+        fi
+        git rev-list --no-merges origin/$BASE_REF..${{ github.sha }} > commits.txt
         while read commit; do
           echo "Validate commit: $commit"
           git show -s --format=%B $commit > commit-msg.txt
