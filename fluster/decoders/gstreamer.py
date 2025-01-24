@@ -526,6 +526,15 @@ class GStreamerV4l2VP9Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerAomAV1Gst10Decoder(GStreamer10Video):
+    """GStreamer AV1 AOM decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.AV1
+    decoder_bin = " av1dec "
+    api = "libaom"
+
+
+@register_decoder
 class GStreamerVaAV1Gst10Decoder(GStreamer10Video):
     """GStreamer AV1 VA decoder implementation for GStreamer 1.0"""
 
