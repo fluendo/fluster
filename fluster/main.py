@@ -192,7 +192,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default.0 means all logical cores",
+            help="number of parallel jobs to use. 1x logical cores by default.' '0 means all logical cores",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -288,7 +288,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default.0 means all logical cores",
+            help="number of parallel jobs to use. 1x logical cores by default.' '0 means all logical cores",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -324,7 +324,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 2x logical cores by default.0 means all logical cores",
+            help="number of parallel jobs to use. 2x logical cores by default.' '0 means all logical cores",
             type=int,
             default=2 * multiprocessing.cpu_count(),
         )
