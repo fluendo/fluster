@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fluster-conformance"
-version = "0.2.0.rc5" # TODO: Ensure that version 0.2.0 is marked as the final version in the CI release workflow only when we are certain about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading the same version.
+version = "0.2.0" # TODO: Ensure that version 0.2.0 is marked as the final version in the CI release workflow only when we are certain about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading the same version.
 authors = [
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
     # {name = "Pablo Marcos Oltra"}, wait to (https://github.com/pypi/warehouse/issues/12877)
