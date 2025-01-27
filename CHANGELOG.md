@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] - Unreleased
+## [0.2.0] - 2025-01-27
 ### Added
 - Generate a test suite for H265 3D-HEVC functionality set.
 - Generate a test suite for H265 SHVC functionality set.
@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add VVCSoftware_VTM H.266/VVC reference decoder.
 - Add md5 checksum read/write feature to H266 test suite generator script.
 - Create a test suite generator script for AAC.
-- Create CI workflow for automated releases.
+- Add GStreamer libaom based AV1 decoder
 
 ### Changed
 - Split test suites for H265 and H266.
