@@ -73,23 +73,23 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/av1/CHROMIUM-10bit-AV1-TEST-VECTORS.json",
     "test_suites/av1/CHROMIUM-8bit-AV1-TEST-VECTORS.json"
 ]
-"share/fluster/test_suites/h264" = [
-    "test_suites/h264/JVT-AVC_V1.json",
-    "test_suites/h264/JVT-FR-EXT.json",
-    "test_suites/h264/JVT-MVC.json",
-    "test_suites/h264/JVT-Professional_profiles.json",
-    "test_suites/h264/JVT-SVC.json"
+"share/fluster/test_suites/h.264" = [
+    "test_suites/h.264/JVT-AVC_V1.json",
+    "test_suites/h.264/JVT-FR-EXT.json",
+    "test_suites/h.264/JVT-MVC.json",
+    "test_suites/h.264/JVT-Professional_profiles.json",
+    "test_suites/h.264/JVT-SVC.json"
 ]
-"share/fluster/test_suites/h265" = [
-    "test_suites/h265/JCT-VC-3D-HEVC.json",
-    "test_suites/h265/JCT-VC-HEVC_V1.json",
-    "test_suites/h265/JCT-VC-MV-HEVC.json",
-    "test_suites/h265/JCT-VC-RExt.json",
-    "test_suites/h265/JCT-VC-SCC.json",
-    "test_suites/h265/JCT-VC-SHVC.json"
+"share/fluster/test_suites/h.265" = [
+    "test_suites/h.265/JCT-VC-3D-HEVC.json",
+    "test_suites/h.265/JCT-VC-HEVC_V1.json",
+    "test_suites/h.265/JCT-VC-MV-HEVC.json",
+    "test_suites/h.265/JCT-VC-RExt.json",
+    "test_suites/h.265/JCT-VC-SCC.json",
+    "test_suites/h.265/JCT-VC-SHVC.json"
 ]
-"share/fluster/test_suites/h266" = [
-    "test_suites/h266/JVET-VVC_draft6.json",
+"share/fluster/test_suites/h.266" = [
+    "test_suites/h.266/JVET-VVC_draft6.json",
 ]
 "share/fluster/test_suites/vp8" = [
     "test_suites/vp8/VP8-TEST-VECTORS.json",
