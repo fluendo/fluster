@@ -130,6 +130,31 @@ endif
 
 	sudo rm -f /usr/include/asm
 
+mpeg_2_video_reference_decoder: ## build ISO MPEG2 video reference decoder
+ifeq ($(KERNEL_NAME), Linux)
+	if ! dpkg -l | grep gcc-multilib -c >>/dev/null; then sudo apt-get install gcc-multilib; fi
+	if ! dpkg -l | grep g++-multilib -c >>/dev/null; then sudo apt-get install g++-multilib; fi
+endif
+	if [ ! $(wildcard /usr/include/asm) ] && [ $(wildcard /usr/include/asm-generic) ]; then sudo ln -s /usr/include/asm-generic /usr/include/asm; fi
+
+ifeq ($(wildcard $(CONTRIB_DIR)/C039486_Electronic_inserts),)
+	$(create_dirs)
+	cd $(CONTRIB_DIR) && rm -f iso_cookies.txt
+	cd $(CONTRIB_DIR) && wget -qO- --keep-session-cookies --save-cookies iso_cookies.txt \
+	'https://standards.iso.org/ittf/PubliclyAvailableStandards/c039486_ISO_IEC_13818-5_2005_Reference_Software.zip' > /dev/null
+	cd $(CONTRIB_DIR) && wget --keep-session-cookies --load-cookies iso_cookies.txt --post-data 'ok=I+accept' \
+	'https://standards.iso.org/ittf/PubliclyAvailableStandards/c039486_ISO_IEC_13818-5_2005_Reference_Software.zip'
+	cd $(CONTRIB_DIR) && unzip -oq c039486_ISO_IEC_13818-5_2005_Reference_Software.zip
+	cd $(CONTRIB_DIR) && rm -f iso_cookies.txt c039486_ISO_IEC_13818-5_2005_Reference_Software.zip ipmp.zip mpeg2audio.zip systems.zip mpeg2aac.zip
+
+	cd $(CONTRIB_DIR) && unzip -oq video.zip
+	cd $(CONTRIB_DIR) && rm -f video.zip
+endif
+	cd $(CONTRIB_DIR)/video/decoder && MAKELEVEL=0 $(MAKE) all
+	find $(CONTRIB_DIR)/video/decoder -name "mpeg2decode" -type f -exec cp {} $(DECODERS_DIR) \;
+
+	sudo rm -f /usr/include/asm
+
 mpeg_4_aac_reference_decoder: ## build ISO MPEG4 AAC reference decoder
 ifeq ($(KERNEL_NAME), Linux)
 	if ! dpkg -l | grep gcc-multilib -c >>/dev/null; then sudo apt-get install gcc-multilib; fi
@@ -182,4 +207,4 @@ dbg-%:
 	echo "Value of $* = $($*)"
 
 .PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder h266_reference_decoder\
-mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder check install_deps clean
+mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder mpeg_2_video_reference_decoder check install_deps clean
