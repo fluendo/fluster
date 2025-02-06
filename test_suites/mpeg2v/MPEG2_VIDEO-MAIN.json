@@ -1,0 +1,351 @@
+{
+    "name": "MPEG2_VIDEO-MAIN",
+    "codec": "MPEG2_VIDEO",
+    "description": "ISO IEC 13818-4 MPEG2 video main profile test suite",
+    "test_vectors": [
+        {
+            "name": "att",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/att/att_mismatch/att.bits.gz",
+            "source_checksum": "da66ad5372dc1528e952639dc12d2b2c",
+            "input_file": "att.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "mcp10ccett",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/ccett/mcp10ccett/mcp10ccett.bits.gz",
+            "source_checksum": "61391ab7c0af07a329532569be2c235a",
+            "input_file": "mcp10ccett.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "mei_2stream.60f",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/mei/mei.2conftest.60f.new/mei_2stream.60f.new.gz",
+            "source_checksum": "d0aae1e8110db02dc002fe19d1a7baac",
+            "input_file": "mei_2stream.60f.new",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "MEI",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/mei/MEI.stream16v2/MEI.stream16v2.gz",
+            "source_checksum": "b432dac41daa3a12900636984c8ffe0d",
+            "input_file": "MEI.stream16v2",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "MEI.stream16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/mei/MEI.stream16.long/MEI.stream16.long.gz",
+            "source_checksum": "76399fdc6c13b1e3d270b20219f3fd6b",
+            "input_file": "MEI.stream16.long",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "mei_2stream",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/mei/mei.2conftest.4f/mei_2stream.4f.gz",
+            "source_checksum": "505375e1f68fe527f52eb3604cc8edae",
+            "input_file": "mei_2stream.4f",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "sony-ct4",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/sony/sony-ct4/sony-ct4.bs.gz",
+            "source_checksum": "c3d2dfdb4de009d13b117818affd7762",
+            "input_file": "sony-ct4.bs",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "sony-ct1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/sony/sony-ct1/sony-ct1.bits.gz",
+            "source_checksum": "e53bbe9a165345eb03614e6fdd4f396f",
+            "input_file": "sony-ct1.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "sony-ct2",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/sony/sony-ct2/sony-ct2.bits.gz",
+            "source_checksum": "ebe4b2c6e54b84da378a9fb5db03a506",
+            "input_file": "sony-ct2.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "sony-ct3",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/sony/sony-ct3/sony-ct3.bs.gz",
+            "source_checksum": "31bb0abfaf802c754254b38b500d7685",
+            "input_file": "sony-ct3.bs",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "teracom_vlc4",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/teracom/teracom_vlc4/teracom_vlc4.bin.gz",
+            "source_checksum": "ad8941d15b178b2ba007f3ee26467895",
+            "input_file": "teracom_vlc4.bin",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "bits_conf_lep_11",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/lep/bits_conf_lep_11/bits_conf_lep_11.bits.gz",
+            "source_checksum": "65a875fb12f07d30780d2312a877e5db",
+            "input_file": "bits_conf_lep_11.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "toshiba_DPall-0",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/toshiba/toshiba_DPall-0/toshiba_DPall-0.mpg.gz",
+            "source_checksum": "d92090842a0c2e37cf1cda7212868cc3",
+            "input_file": "toshiba_DPall-0.mpg",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-10",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-10-killer/tcela-10.bits.gz",
+            "source_checksum": "da396185a6a6f50d962cdecc01592a46",
+            "input_file": "tcela-10.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-9",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-9-fp-dp/tcela-9.bits.gz",
+            "source_checksum": "ebe9dc84382d0ad4c20873c9d4970d2a",
+            "input_file": "tcela-9.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-16",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-16-matrices/tcela-16.bits.gz",
+            "source_checksum": "a912a213a55b42e1c1434f663aa0a9cf",
+            "input_file": "tcela-16.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-17",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-17-dots/tcela-17.bits.gz",
+            "source_checksum": "ca095c9a6b91a78f3af06fa3cb93bcda",
+            "input_file": "tcela-17.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-8",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-8-fp-dp/tcela-8.bits.gz",
+            "source_checksum": "f0ef12c0e4f4a6cdb9ba42d000054c8b",
+            "input_file": "tcela-8.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-18",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-18-d-pict/tcela-18.bits.gz",
+            "source_checksum": "6b6657f8d5e035fb9e16c42497012f94",
+            "input_file": "tcela-18.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-15",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-15-stuffing/tcela-15.bits.gz",
+            "source_checksum": "b031bb7f42bd05ba9dd7e7e1498e4f76",
+            "input_file": "tcela-15.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-14",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-14-bff-dp/tcela-14.bits.gz",
+            "source_checksum": "273747fdc788201e75f839198d363d22",
+            "input_file": "tcela-14.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-14.short",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-14-bff-dp/tcela-14.short.bits.gz",
+            "source_checksum": "631d3a6df2e0c25c2754068c3ac6bf73",
+            "input_file": "tcela-14.short.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-19",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-19-wide/tcela-19.bits.gz",
+            "source_checksum": "4019028fe04015ef32b2d116fcffdbe4",
+            "input_file": "tcela-19.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-7",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-7-slices/tcela-7.bits.gz",
+            "source_checksum": "8d2e69b6d9e14663764c3369138c9d06",
+            "input_file": "tcela-7.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "tcela-6",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tcela/tcela-6-slices/tcela-6.bits.gz",
+            "source_checksum": "1247cf986205e7dfe4413bd223be8ee6",
+            "input_file": "tcela-6.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "hhi_burst_long",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/hhi/hhi_burst_long/hhi_burst_long.bits.gz",
+            "source_checksum": "9e335d1bba67e242238c7949f9d190d6",
+            "input_file": "hhi_burst_long.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "hhi_burst_short",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/hhi/hhi_burst_short/hhi_burst_short.bits.gz",
+            "source_checksum": "a68d3436d89ffc896393b18e8556a33c",
+            "input_file": "hhi_burst_short.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "gi_stream",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/gi/gi_from_tape/gi_stream.gz",
+            "source_checksum": "46693a96d0c1652055a71248ca3c36df",
+            "input_file": "gi_stream",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "gi_9_bit_stream",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/gi/gi_9/bit_stream.gz",
+            "source_checksum": "1359995f5b51a3b274418b83836c9229",
+            "input_file": "bit_stream",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "video",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/gi/gi4/video.bits.gz",
+            "source_checksum": "bc2d7a72cbcc85d1bf6962b69e4fe7d4",
+            "input_file": "video.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "gi7_bit_stream",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/gi/gi7/bit_stream.gz",
+            "source_checksum": "81710a420b9f6e916e12571429c8a701",
+            "input_file": "bit_stream",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "gi6_bit_stream",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/gi/gi6/bit_stream.gz",
+            "source_checksum": "52144d2574a8f6543cb61f74e37453ff",
+            "input_file": "bit_stream",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "conf2",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tceh/tceh_conf2/conf2.bits.gz",
+            "source_checksum": "a1fa9d33ae3b797138bf2f5a43f7edae",
+            "input_file": "conf2.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "nokia6_dual_60",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/nokia/nokia6/nokia6_dual_60.bit.gz",
+            "source_checksum": "c3f02dec3d649f6bc0c52f7bba25c877",
+            "input_file": "nokia6_dual_60.bit",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "nokia6_dual",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/nokia/nokia6/nokia6_dual.bit.gz",
+            "source_checksum": "9890f21e949716f67469240d4e3105c0",
+            "input_file": "nokia6_dual.bit",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "nokia7_dual",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/nokia/nokia_7/nokia7_dual.bit.gz",
+            "source_checksum": "f3d04767b878df837bd9c5efaeca26ca",
+            "input_file": "nokia7_dual.bit",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "Tek-5.2_conf4",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tek/Tek-5.2/conf4.bit.gz",
+            "source_checksum": "385dafd35420e672046e1653020793fa",
+            "input_file": "conf4.bit",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "Tek-5-long_conf4",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/tek/Tek-5-long/conf4.bit.gz",
+            "source_checksum": "c22a3c2f94e5d246f61e9e44d4f334a5",
+            "input_file": "conf4.bit",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "test",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/chromatic/chroma_dct_type-1/test.mpg.gz",
+            "source_checksum": "4d186d082b194b3618456f4b9894eea7",
+            "input_file": "test.mpg",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "TI_c1_2",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/ti/TI_cl_2/TI_c1_2.bits.gz",
+            "source_checksum": "3b25d76d4b517ec3ab493f2f3fb767c0",
+            "input_file": "TI_c1_2.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ccm1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/compcore/ccm1/ccm1.mpg.gz",
+            "source_checksum": "d824005b53673bbe32a25a1cc0dd82ae",
+            "input_file": "ccm1.mpg",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm-bw",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/ibm/ibm-bw-v3/ibm-bw.BITS.gz",
+            "source_checksum": "183490cddc1246575e21795fced0a16c",
+            "input_file": "ibm-bw.BITS",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ntr_skipped_v3",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/main-profile/ntr/ntr_skipped_v3/ntr_skipped_v3.bits.gz",
+            "source_checksum": "24389699ee090b705f43f5047b8f7905",
+            "input_file": "ntr_skipped_v3.bits",
+            "output_format": "yuv420p",
+            "result": ""
+        }
+    ]
+}
