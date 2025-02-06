@@ -120,7 +120,7 @@ def run_command_with_output(
 
 def is_extractable(filepath: str) -> bool:
     """Checks is a file can be extracted, based on its extension"""
-    return filepath.endswith(TARBALL_EXTS) or filepath.endswith(".zip")
+    return filepath.endswith((*TARBALL_EXTS, ".zip", ".gz"))
 
 
 def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
@@ -136,6 +136,11 @@ def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
                 zip_file.extract(file, path=output_dir)
             else:
                 zip_file.extractall(path=output_dir)
+    elif filepath.endswith(".gz"):
+        output_file = os.path.join(output_dir, os.path.basename(filepath[:-3]))
+        command = ["gunzip", "-c", filepath]
+        with open(output_file, "wb") as f:
+            subprocess.run(command, check=True, stdout=f)
     else:
         raise Exception(f"Unknown tarball format {filepath}")
 

@@ -708,6 +708,16 @@ class FluendoH264Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class FluendoMPEG2VideoGst10Decoder(GStreamer10Video):
+    """Fluendo MPEG2 video software decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.MPEG2_VIDEO
+    decoder_bin = " flumpeg2vdec "
+    provider = "Fluendo"
+    api = "SW"
+
+
+@register_decoder
 class FluendoH264VAGst10Decoder(GStreamer10Video):
     """Fluendo H.264 hardware decoder implementation for GStreamer 1.0"""
 
