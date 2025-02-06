@@ -8,7 +8,7 @@ application that runs a number of test suites with the supported decoders. Its
 purpose is to check different decoder implementations against known test suites
 with known and proven results. It was originally designed to check the
 conformance of H.265/HEVC decoders, but it also supports H.264/AVC, H.266/VVC,
-VP8, VP9, AV1 and AAC. It can easily be extended to add more decoders and test
+VP8, VP9, AV1, MPEG2 video and AAC. It can easily be extended to add more decoders and test
 suites.
 
 ## Table of Contents
@@ -191,6 +191,16 @@ JVET-VVC_draft6
     Codec: H.266
     Description: JVET VVC draft6
     Test vectors: 282
+    
+MPEG2_VIDEO-422
+    Codec: MPEG2_VIDEO
+    Description: ISO IEC 13818-4 MPEG2 video 422 profile test suite
+    Test vectors: 9
+
+MPEG2_VIDEO-MAIN
+    Codec: MPEG2_VIDEO
+    Description: ISO IEC 13818-4 MPEG2 video main profile test suite
+    Test vectors: 43
 
 CHROMIUM-10bit-AV1-TEST-VECTORS
     Codec: AV1
@@ -305,6 +315,10 @@ H.266
     GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0
     VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder
     VVdeC-H266: VVdeC H.266/VVC decoder
+    
+MPEG2_VIDEO
+    FFmpeg-MPEG2_VIDEO: FFmpeg MPEG2 VIDEO SW decoder
+    Fluendo-MPEG2_VIDEO-SW-Gst1.0: Fluendo MPEG2 VIDEO SW decoder for GStreamer 1.0
 
 VP8
     FFmpeg-VP8: FFmpeg VP8 SW decoder
@@ -378,6 +392,7 @@ AAC
 - [H.266/VVC](https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/).
 - [VP8](https://github.com/webmproject/vp8-test-vectors).
 - [VP9](https://storage.googleapis.com/downloads.webmproject.org/test_data/libvpx).
+- [MPEG2 VIDEO](https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/).
 
 ## Decoders
 
@@ -388,7 +403,7 @@ AAC
   decoder for H.265/HEVC.
 - [JCT-VT H.266/VVC](https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM) as reference
   decoder for H.266/VVC.
-- Fluendo's proprietary decoders for H.264/AVC and H.265/HEVC that are included
+- Fluendo's proprietary decoders for MPEG2 video, H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/).
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.266/VVC.
@@ -396,6 +411,7 @@ AAC
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.264/AVC.
 - [FFmpeg's](https://FFmpeg.org) for H.265/HEVC.
 - [FFmpeg's](https://FFmpeg.org) for H.264/AVC.
+- [FFmpeg's](https://FFmpeg.org) for MPEG2 video.
 - [libvpx's](https://github.com/webmproject/libvpx/) for VP8.
 - [libvpx's](https://github.com/webmproject/libvpx/) for VP9.
 - [aom's](https://aomedia.googlesource.com/aom/) for AV1.
@@ -553,7 +569,7 @@ Check out the JSON format they follow in the [test_suites](https://github.com/fl
 directory. Add a new json file within, Fluster will automatically pick it
 up.
 
-There is also a [generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), [generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a [generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the [conformance
+There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py), [generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), [generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a [generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the [conformance
 test suites](#test-suites) that you can use as a base to generate automatically
 new ones.
 
