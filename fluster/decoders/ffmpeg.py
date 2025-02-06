@@ -153,6 +153,7 @@ class FFmpegDecoder(Decoder):
             Codec.VP8: "vp8",
             Codec.VP9: "vp9",
             Codec.AV1: "av1",
+            Codec.MPEG2_VIDEO: "mpeg2video",
         }
         if self.codec not in codec_mapping:
             return False
@@ -217,6 +218,13 @@ class FFmpegVP9Decoder(FFmpegDecoder):
     """FFmpeg SW decoder for VP9"""
 
     codec = Codec.VP9
+
+
+@register_decoder
+class FFmpegMPEG2VideoDecoder(FFmpegDecoder):
+    """FFmpeg SW decoder for MPEG2 video"""
+
+    codec = Codec.MPEG2_VIDEO
 
 
 class FFmpegVaapiDecoder(FFmpegDecoder):
