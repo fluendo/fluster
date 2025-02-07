@@ -4,7 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fluster-conformance"
-version = "0.2.0" # TODO: Ensure that version 0.2.0 is marked as the final version in the CI release workflow only when we are certain about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading the same version.
+# TODO: Ensure that version 0.x.0 is marked as the final version in the CI release workflow only when we are certain
+# about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading
+# the same version.
+version = "0.2.0"
 authors = [
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
     # {name = "Pablo Marcos Oltra"}, wait to (https://github.com/pypi/warehouse/issues/12877)
@@ -95,11 +98,9 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/vp9/VP9-TEST-VECTORS.json"
 ]
 
-[project.optional-dependencies]
-dev = [
-    "ruff",
-    "mypy"
-]
+# Once https://github.com/pypa/pip/issues/12963 is implemented we can think about adding
+# [dependency-groups]
+# dev = ["pre-commit==2.21.0"]
 
 # https://docs.astral.sh/ruff/configuration/#configuring-ruff
 [tool.ruff]
