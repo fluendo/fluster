@@ -38,7 +38,7 @@ suites.
 ## Description
 
 Fluster requires **Python 3.6+** to work. It has zero dependencies apart from
-that. The [requirements.txt](https://github.com/fluendo/fluster/blob/master/requirements.txt) file includes Python's modules
+that. The [requirements-dev.txt](https://github.com/fluendo/fluster/blob/master/requirements-dev.txt) file includes Python's modules
 used only for development.
 
 The framework works with test suites. Each test suite is associated with one
@@ -595,7 +595,7 @@ results are obtained, we can do the following procedure:
 
 1. Fork the repo.
 2. Install the required Python modules for development using `pip3 install -r
-   requirements.txt`.
+   requirements-dev.txt`.
 3. Install the [git hook](https://github.com/fluendo/fluster/blob/master/scripts/install_git_hook.sh) that will run for every
    commit to ensure it works before pushing. [About git
    hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
