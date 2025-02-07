@@ -1,4 +1,3 @@
-PY_FILES=fluster scripts
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 PYTHONPATH=.
@@ -16,7 +15,7 @@ help:
 install_deps: ## install Python dependencies
 	python3 -m pip install -r requirements.txt
 
-check: lint-check ## check that very basic tests run
+check: ## check that very basic tests run
 	@echo "Running dummy test..."
 	$(FLUSTER) list
 	$(FLUSTER) list -c
@@ -49,18 +48,6 @@ ifneq ($(OS),Windows_NT)
 	$(FLUSTER) run -ts VP9-min -d libvpx-VP9 -s
 endif
 	@echo "\nAll test finished succesfully!"
-
-format: ## format python code
-	@echo "Formatting coding style with ruff..."
-	ruff format $(PY_FILES)
-
-lint: ## run static python code analysis - fix issues (manual fix, complements pre-commit)
-	@echo "Linting and fixing issues with ruff... "
-	ruff check --fix $(PY_FILES)
-
-lint-check: ## run static python code analysis - does not apply fixes
-	@echo "Checking static types with mypy..."
-	mypy --strict $(PY_FILES)
 
 create_dirs=mkdir -p $(CONTRIB_DIR) $(DECODERS_DIR)
 
@@ -195,4 +182,4 @@ dbg-%:
 	echo "Value of $* = $($*)"
 
 .PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder h266_reference_decoder\
-mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder check format lint lint-check install_deps clean
+mpeg_4_aac_reference_decoder mpeg_2_aac_reference_decoder check install_deps clean
