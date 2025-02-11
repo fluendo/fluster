@@ -21,10 +21,10 @@ import argparse
 import multiprocessing
 import os
 import sys
-from typing import Dict, List, cast
-
-import requests
-from bs4 import BeautifulSoup, Tag
+import urllib
+from html.parser import HTMLParser
+from typing import Dict, List, Tuple
+from urllib.parse import urljoin
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
@@ -53,6 +53,23 @@ BITSTREAM_EXTS = [
     ".BITS",
 ]
 RAW_EXTS = [".yuv"]
+
+
+class HREFParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.links: List[str] = []
+
+    def error(self, message: str) -> None:
+        print(message)
+
+    def handle_starttag(self, tag: str, attrs: List[Tuple[str, str | None]]) -> None:
+        if tag == "a":
+            for name, value in attrs:
+                if name == "href" and value:
+                    if not value.startswith("javascript") and not value.startswith("mailto"):
+                        full_url = urljoin(BASE_URL, value)
+                        self.links.append(full_url)
 
 
 class MPEG2VIDEOGenerator:
@@ -156,48 +173,49 @@ class MPEG2VIDEOGenerator:
     @staticmethod
     def get_files_in_directory(directory_url: str) -> List[str]:
         """Find main directories"""
-        response = requests.get(directory_url)
-        soup = BeautifulSoup(response.content, "html.parser")
+        hparser = HREFParser()
+        with urllib.request.urlopen(directory_url) as resp:
+            data = str(resp.read())
+
+        hparser.feed(data)
 
         links: List[str] = []
-        for link in soup.find_all("a", href=True):
-            if isinstance(link, Tag):
-                href = cast(str, link["href"])
-                if isinstance(href, str) and not href.endswith("/"):
-                    links.append(BASE_URL + href)
+        for link in hparser.links:
+            if not link.endswith("/") and directory_url in link:
+                links.append(link)
 
         return links
 
     @staticmethod
     def get_gz_files_in_directory(directory_url: str) -> List[str]:
-        """Recursively fetches files from subdirectories"""
+        """Recursively fetches .gz files from subdirectories"""
         gz_links: List[str] = []
         links: List[str] = []
-        response = requests.get(directory_url)
-        soup = BeautifulSoup(response.content, "html.parser")
 
-        for link in soup.find_all("a", href=True):
-            if isinstance(link, Tag):
-                href = cast(str, link["href"])
-                if isinstance(href, str) and not href.endswith("/"):
-                    links.append(BASE_URL + href)
+        hparser = HREFParser()
+        with urllib.request.urlopen(directory_url) as resp:
+            data = str(resp.read())
+        hparser.feed(data)
+
+        for link in hparser.links:
+            if not link.endswith("/") and directory_url in link:
+                links.append(link)
 
         for sub_link in links:
-            if isinstance(sub_link, str):
-                response = requests.get(sub_link)
-                sub_soup = BeautifulSoup(response.content, "html.parser")
+            full_url = urljoin(BASE_URL, sub_link)
 
-                for td in sub_soup.find_all("td", {"data-sort": True}):
-                    if isinstance(td, Tag):
-                        anchor = td.find("a", href=True)
-                        if anchor and isinstance(anchor, Tag):
-                            href = cast(str, anchor["href"])
-                            if (
-                                isinstance(href, str)
-                                and href.endswith(GZ_EXT)
-                                and not any(href.endswith(ext) for ext in GZ_EXCLUDES)
-                            ):
-                                gz_links.append(f"{BASE_URL}{href.lstrip('/')}")
+            try:
+                with urllib.request.urlopen(full_url) as resp:
+                    sub_data = str(resp.read())
+
+                sub_hparser = HREFParser()
+                sub_hparser.feed(sub_data)
+
+                for link in sub_hparser.links:
+                    if link.endswith(GZ_EXT) and not any(link.endswith(ext) for ext in GZ_EXCLUDES):
+                        gz_links.append(link)
+            except Exception as e:
+                print(f"Error accessing {full_url}: {e}")
 
         return gz_links
 
