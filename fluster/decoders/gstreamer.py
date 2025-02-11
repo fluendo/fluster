@@ -17,6 +17,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 
+import os
 import shlex
 import subprocess
 from functools import lru_cache
@@ -187,7 +188,12 @@ class GStreamer10Video(GStreamer):
         output_filepath: Optional[str],
         output_format: OutputFormat,
     ) -> str:
-        caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
+        raw_caps = "video/x-raw"
+        try:
+            raw_caps += f",format={output_format_to_gst(output_format)}"
+        except Exception as ex:
+            print(f"WARNING: {os.path.basename(os.path.dirname(input_filepath))}, {ex}")
+        caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
             self.cmd,
