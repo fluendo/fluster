@@ -56,7 +56,8 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/aac/MPEG2_AAC-ADIF.json",
     "test_suites/aac/MPEG4_AAC-ADIF.json",
     "test_suites/aac/MPEG4_AAC-ADTS.json",
-    "test_suites/aac/MPEG4_AAC-MP4.json"
+    "test_suites/aac/MPEG4_AAC-MP4.json",
+    "test_suites/aac/MPEG4_AAC-MP4-ER.json"
 ]
 "share/fluster/test_suites/av1" = [
     "test_suites/av1/AV1-TEST-VECTORS.json",
