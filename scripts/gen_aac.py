@@ -112,7 +112,16 @@ class AACGenerator:
             input_filename = os.path.basename(source_url)
             test_vector_name = os.path.splitext(input_filename)[0]
             test_vector = TestVector(test_vector_name, source_url, "__skip__", input_filename, OutputFormat.UNKNOWN, "")
-            test_suite.test_vectors[test_vector_name] = test_vector
+            # MPEG4_AAC-MP4 test suite
+            if test_suite.name == "MPEG4_AAC-MP4":
+                prefix_no_error = ("er_", "tts", "al07sf_08", "al14sf_08", "al16sf_08")
+                if not test_vector.name.startswith(prefix_no_error):
+                    test_suite.test_vectors[test_vector_name] = test_vector
+            # MPEG4_AAC-MP4-ER test suite
+            if test_suite.name == "MPEG4_AAC-MP4-ER":
+                prefix_error = ("er_", "al07sf_08", "al14sf_08", "al16sf_08")
+                if test_vector.name.startswith(prefix_error):
+                    test_suite.test_vectors[test_vector_name] = test_vector
 
         print(f"Download list of compressed bitstreams from {self.url_test_vectors}")
         if download:
@@ -124,58 +133,55 @@ class AACGenerator:
                 keep_file=True,
             )
 
-        # MPEG4_AAC-MP4 test suite
-        if test_suite.name == "MPEG4_AAC-MP4":
-            print(f"Identifying MP4 files that contain audio in test suite: {self.suite_name}")
+        print(f"Identifying MP4 files that contain audio in test suite: {self.suite_name}")
+        # Validating audio files using ffprobe
+        ffprobe = utils.normalize_binary_cmd("ffprobe")
+        non_audio_test_vectors = []
+        for test_vector in test_suite.test_vectors.values():
+            dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
+            absolute_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
+            command = [
+                ffprobe,
+                "-loglevel",
+                "error",
+                "-show_entries",
+                "stream=codec_name",
+                "-of",
+                "csv=p=0",
+                absolute_path,
+            ]
+            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
 
-            # Validating audio files using ffprobe
-            ffprobe = utils.normalize_binary_cmd("ffprobe")
-            non_audio_test_vectors = []
-            for test_vector in test_suite.test_vectors.values():
-                dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
-                absolute_path = os.path.join(os.getcwd(), dest_dir, test_vector.input_file)
-                command = [
-                    ffprobe,
-                    "-loglevel",
-                    "error",
-                    "-show_entries",
-                    "stream=codec_name",
-                    "-of",
-                    "csv=p=0",
-                    absolute_path,
-                ]
-                result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
+            # In case of error, create a new test vector list to be removed from the test suite
+            if result.returncode != 0:
+                non_audio_test_vectors.append(test_vector.name)
+            else:
+                for line in result.stdout.split():
+                    if line and "aac" not in line:
+                        non_audio_test_vectors.append(test_vector.name)
+                        break
 
-                # In case of error, create a new test vector list to be removed from the test suite
-                if result.returncode != 0:
-                    non_audio_test_vectors.append(test_vector.name)
-                else:
-                    for line in result.stdout.split():
-                        if line and "aac" not in line:
-                            non_audio_test_vectors.append(test_vector.name)
-                            break
+        # Removing non audio files test vectors
+        if non_audio_test_vectors:
+            print("Removing non-audio files and folders from hard drive")
+            for name in non_audio_test_vectors:
+                # Removing files and folders from hard drive
+                dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, name)
+                absolute_path = os.path.join(os.getcwd(), dest_dir, name + ".mp4")
+                absolute_path_folder = os.path.join(os.getcwd(), dest_dir)
 
-            # Removing non audio files test vectors
-            if non_audio_test_vectors:
-                print("Removing non-audio files and folders from hard drive")
-                for name in non_audio_test_vectors:
-                    # Removing files and folders from hard drive
-                    dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, name)
-                    absolute_path = os.path.join(os.getcwd(), dest_dir, name + ".mp4")
-                    absolute_path_folder = os.path.join(os.getcwd(), dest_dir)
+                if os.path.exists(absolute_path):
+                    try:
+                        os.remove(absolute_path)
+                    except OSError as error:
+                        raise Exception(f"The file {absolute_path} couldn't be deleted.\n{error}")
+                    try:
+                        os.rmdir(absolute_path_folder)
+                    except OSError as error:
+                        raise Exception(f"The folder {absolute_path_folder} couldn't be deleted.\n{error}")
 
-                    if os.path.exists(absolute_path):
-                        try:
-                            os.remove(absolute_path)
-                        except OSError as error:
-                            raise Exception(f"The file {absolute_path} couldn't be deleted.\n{error}")
-                        try:
-                            os.rmdir(absolute_path_folder)
-                        except OSError as error:
-                            raise Exception(f"The folder {absolute_path_folder} couldn't be deleted.\n{error}")
-
-                    # Remove test vectors from test suite and the corresponding links
-                    del test_suite.test_vectors[str(name)]
+                # Remove test vectors from test suite and the corresponding links
+                del test_suite.test_vectors[str(name)]
 
         for test_vector in test_suite.test_vectors.values():
             dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
@@ -279,6 +285,16 @@ if __name__ == "__main__":
         Codec.AAC,
         "ISO IEC 14496-26 MPEG4 AAC ADTS test suite",
         URL_MPEG4_ADTS,
+        True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = AACGenerator(
+        "MPEG4_AAC-MP4-ER",
+        "MPEG4_AAC-MP4-ER",
+        Codec.AAC,
+        "ISO IEC 14496-26 MPEG4 AAC MP4 error resilient test suite",
+        URL_MPEG4_MP4,
         True,
     )
     generator.generate(not args.skip_download, args.jobs)
