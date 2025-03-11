@@ -175,7 +175,12 @@ MPEG4_AAC-ADIF
 MPEG4_AAC-MP4
     Codec: AAC
     Description: ISO IEC 14496-26 MPEG4 AAC MP4 test suite
-    Test vectors: 868
+    Test vectors: 743
+
+MPEG4_AAC-MP4-ER
+    Codec: AAC
+    Description: ISO IEC 14496-26 MPEG4 AAC MP4 error resilient and a few other profiles test suite
+    Test vectors: 117
 
 MPEG2_AAC-ADTS
     Codec: AAC
@@ -360,6 +365,7 @@ AAC
     Fluendo-AAC-SW-Gst1.0: Fluendo AAC SW decoder for GStreamer 1.0
     ISO-MPEG2-AAC: ISO MPEG2 AAC reference decoder
     ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder
+    ISO-MPEG4-AAC-ER: ISO MPEG4 AAC error resilient reference decoder
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
