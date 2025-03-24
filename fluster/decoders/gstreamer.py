@@ -274,6 +274,15 @@ class GStreamerVaH265Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerVaH266Gst10Decoder(GStreamer10Video):
+    """GStreamer H.266 VA decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.H266
+    decoder_bin = " vah266dec "
+    api = "VA"
+
+
+@register_decoder
 class GStreamerMsdkH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 Intel MSDK decoder implementation for GStreamer 1.0"""
 
