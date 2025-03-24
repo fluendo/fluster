@@ -33,7 +33,7 @@
             "source_checksum": "5c70070e209964f0ad617ff3159bb5f3",
             "input_file": "al06sf_11.mp4",
             "output_format": "fltp",
-            "result": "b1d3abe29c049fae6f83b218f7bc0677"
+            "result": "7a87c14fd11bbc3b60aa9e4f33c197f1"
         },
         {
             "name": "as16_64",
@@ -41,7 +41,7 @@
             "source_checksum": "18655d2b66c3d82e437cf4ba53c8b846",
             "input_file": "as16_64.mp4",
             "output_format": "fltp",
-            "result": "f2c8633c48bbec94ce6d900aaf4d1bd2"
+            "result": "3f8a8fa65189d3951472c196c8577eff"
         },
         {
             "name": "al16_88",
@@ -49,7 +49,7 @@
             "source_checksum": "2c17bccc6fcc14b8e69d5ef9c6f6499d",
             "input_file": "al16_88.mp4",
             "output_format": "fltp",
-            "result": "55c563d8df797e4c8d308796fb511311"
+            "result": "97cd06e5939f630e7f5a510dd5e7a813"
         },
         {
             "name": "as01_22",
@@ -89,7 +89,7 @@
             "source_checksum": "2637f4a3be1eabb6096d06c7efdeb952",
             "input_file": "al_sbr_cm_48_4.mp4",
             "output_format": "fltp",
-            "result": "ab4f9267ac17c42fc4708a5e24ccc4e0"
+            "result": "0f61c0d9f86bc94dc76324a171fadd27"
         },
         {
             "name": "am06_22",
@@ -97,7 +97,7 @@
             "source_checksum": "7c9e3959cf77ef945a1f21bce9f969b4",
             "input_file": "am06_22.mp4",
             "output_format": "fltp",
-            "result": "660e495bf6ef3dbd6e4d1c0b7b62a73a"
+            "result": "cbeb3dc961c8192dc2e2a1e7ec06e942"
         },
         {
             "name": "al_sbr_sr_64_2_fsaac32",
@@ -161,7 +161,7 @@
             "source_checksum": "473c8c3d8318eb0eb943328f50ce11f1",
             "input_file": "al08_64.mp4",
             "output_format": "fltp",
-            "result": "ef16dca24dd66e277185606679118055"
+            "result": "8c24a873adb96c3acd41c19e02ebd65b"
         },
         {
             "name": "al_sbr_i_48_2",
@@ -172,20 +172,12 @@
             "result": "050fc9d7bb1da63426a356dd660f53f7"
         },
         {
-            "name": "er_al10_08_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_08_ep0.mp4",
-            "source_checksum": "26bce18b93e6457bafd02f610cc5a4f4",
-            "input_file": "er_al10_08_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as14_08",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as14_08.mp4",
             "source_checksum": "d5d8cd2a47398bfadf1d92a8743b0972",
             "input_file": "as14_08.mp4",
             "output_format": "fltp",
-            "result": "0e25ef87bf68f77a6aef86b1b91354cd"
+            "result": "cc506af3177126db2829741d4bd80bdf"
         },
         {
             "name": "am04_22",
@@ -228,14 +220,6 @@
             "result": "ada25d771c467cdc3112323b11cb9251"
         },
         {
-            "name": "er_eld1002np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1002np_44_ep0.mp4",
-            "source_checksum": "56c25a9ba7dbf2edaa1bd1f62fb7a4e5",
-            "input_file": "er_eld1002np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al17_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al17_48.mp4",
             "source_checksum": "9c4a1121e14fb1284ebf6c1285d6248a",
@@ -257,7 +241,7 @@
             "source_checksum": "83c7b8d778982275eea5c565288f746b",
             "input_file": "al08_22.mp4",
             "output_format": "fltp",
-            "result": "05c041101be07734c5b7eb4619dea481"
+            "result": "623635ab5bcd20a712167f3b60147dd2"
         },
         {
             "name": "al00sf_16",
@@ -313,7 +297,7 @@
             "source_checksum": "daa1f905cd87d897edc102cc3aa0d8c2",
             "input_file": "am07_11.mp4",
             "output_format": "fltp",
-            "result": "ea443195941ce65c0cf6be5e64433271"
+            "result": "1d160b71f437112971e6e85f18de04e2"
         },
         {
             "name": "as07_11",
@@ -322,14 +306,6 @@
             "input_file": "as07_11.mp4",
             "output_format": "fltp",
             "result": "e88a0c08a34fdcce2f9f917b871240e0"
-        },
-        {
-            "name": "er_ad1103_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103_24_ep0.mp4",
-            "source_checksum": "8b470529e23025663c48feae4b65b66e",
-            "input_file": "er_ad1103_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al00sf_32",
@@ -361,23 +337,7 @@
             "source_checksum": "0e7ca1f469207e13046a1eaba1eb11ca",
             "input_file": "as15_12.mp4",
             "output_format": "fltp",
-            "result": "971a2bff11d06bc3c578efda34aefa4b"
-        },
-        {
-            "name": "er_ad1000np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000np_44_ep0.mp4",
-            "source_checksum": "3a1e676b38d716ac0a040b37c0714dec",
-            "input_file": "er_ad1000np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_ad1103np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103np_24_ep0.mp4",
-            "source_checksum": "670a533c40dda4b3ec489e704f032424",
-            "input_file": "er_ad1103np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "389429e1dc5ab853af5ce744368b44fd"
         },
         {
             "name": "as01_44",
@@ -409,7 +369,7 @@
             "source_checksum": "ebf2b8c870e7f2cca74d962fde8d3b81",
             "input_file": "al07sf_16.mp4",
             "output_format": "fltp",
-            "result": "d4de30fb19a0873a2357523a21a7c11f"
+            "result": "dfc3d5157b78f9f90a20fe896190673f"
         },
         {
             "name": "as00_22",
@@ -418,14 +378,6 @@
             "input_file": "as00_22.mp4",
             "output_format": "fltp",
             "result": "a4a12aa95046d129e976ce367ca751a7"
-        },
-        {
-            "name": "er_al21_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_24_ep0.mp4",
-            "source_checksum": "83e08abad9e1c275b7a5f94d25a7f2ef",
-            "input_file": "er_al21_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al_sbr_ps_02",
@@ -452,14 +404,6 @@
             "result": "f72dde76b64e9172d9a989de5cc19a0c"
         },
         {
-            "name": "er_al10_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_48_ep0.mp4",
-            "source_checksum": "ea64f49436f9bc1e2c085fb2259476b8",
-            "input_file": "er_al10_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am00_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am00_24.mp4",
             "source_checksum": "bc9b5c8ae549d28294d1575d359278fe",
@@ -473,7 +417,7 @@
             "source_checksum": "299e88abf6cefd830d70fa750d777b11",
             "input_file": "al08sf_16.mp4",
             "output_format": "fltp",
-            "result": "cbb19d0daf6f45e3cfafbf2d9780d758"
+            "result": "1c235b521f3a104abd9f3ac992b96764"
         },
         {
             "name": "al_sbr_gh_48_1",
@@ -482,14 +426,6 @@
             "input_file": "al_sbr_gh_48_1.mp4",
             "output_format": "fltp",
             "result": "f351b343a6a033ecfa3ab319818d53ee"
-        },
-        {
-            "name": "er_ad1009np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1009np_44_ep0.mp4",
-            "source_checksum": "0db9fd4e9c5b17c53257ae101eb2c290",
-            "input_file": "er_ad1009np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al01sf_12",
@@ -537,7 +473,7 @@
             "source_checksum": "ccb765da1d3a895d1c08b865b6a9ea61",
             "input_file": "al07_08.mp4",
             "output_format": "fltp",
-            "result": "eaac5252e1c57e7572110d69f4256a22"
+            "result": "d82de24cee5ad939690379ffef0cf98c"
         },
         {
             "name": "al_sbr_ps_06",
@@ -553,7 +489,7 @@
             "source_checksum": "6e378ef43c14c3953903e0f9f3880bc8",
             "input_file": "am06_32.mp4",
             "output_format": "fltp",
-            "result": "4ef096224da763ac43090955d64cfba1"
+            "result": "30421207207921fc241e27f2a83dae6d"
         },
         {
             "name": "al18_64",
@@ -562,14 +498,6 @@
             "input_file": "al18_64.mp4",
             "output_format": "fltp",
             "result": "756d27e1b1bead05839758072cea9690"
-        },
-        {
-            "name": "er_al21_11_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_11_ep0.mp4",
-            "source_checksum": "93cddf58785bcde8b4f21397b4089e07",
-            "input_file": "er_al21_11_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al04sf_12",
@@ -585,7 +513,7 @@
             "source_checksum": "12d05acb689987524a0bdcaad40b90af",
             "input_file": "am05_48.mp4",
             "output_format": "fltp",
-            "result": "566d54b65ae740b80676ab9adb7feb9f"
+            "result": "f5f2aca7409b54d4f9d9be23a3677a8e"
         },
         {
             "name": "al06_12",
@@ -593,7 +521,7 @@
             "source_checksum": "466d81b8c01c4e6d0242298e946e0cbd",
             "input_file": "al06_12.mp4",
             "output_format": "fltp",
-            "result": "0478cbd3efa8e014ca82954e31084f20"
+            "result": "5fe712f1dde528f6fcb243abd257774e"
         },
         {
             "name": "al01sf_48",
@@ -604,28 +532,12 @@
             "result": "300f8cc27d8b5abfe5720b69f398bad2"
         },
         {
-            "name": "er_al10_64_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_64_ep0.mp4",
-            "source_checksum": "b26d8ade01bd7a7e97b00de3bf4d0437",
-            "input_file": "er_al10_64_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as00_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as00_88.mp4",
             "source_checksum": "db39187bafa701fc511de788910db76c",
             "input_file": "as00_88.mp4",
             "output_format": "fltp",
             "result": "9fad6dc2afb3e4dfe2c48736dc612302"
-        },
-        {
-            "name": "er_ad1109np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109np_22_ep0.mp4",
-            "source_checksum": "eb4359696b3bb4cc7829c01b009a923d",
-            "input_file": "er_ad1109np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al02sf_44",
@@ -673,7 +585,7 @@
             "source_checksum": "35f0954709379de980c7b627ced23f1b",
             "input_file": "as14_24.mp4",
             "output_format": "fltp",
-            "result": "9576e0ff192755ea369507485c58279e"
+            "result": "90b5e6134d2b3a920486b05dacadd32b"
         },
         {
             "name": "as16_32",
@@ -681,7 +593,7 @@
             "source_checksum": "4a98d802ec8bf5e8bb8ace0ddc0c4108",
             "input_file": "as16_32.mp4",
             "output_format": "fltp",
-            "result": "b4b3c045e136191c6d42df8fc352d3cf"
+            "result": "9d54cb33cf22267c9e69bd1253d17b42"
         },
         {
             "name": "al17sf_08",
@@ -716,28 +628,12 @@
             "result": "8dfea67806acf9b1fdb52efe7134dd04"
         },
         {
-            "name": "er_ad1000np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000np_32_ep0.mp4",
-            "source_checksum": "bb2a11db5a4122ec0e367af485232784",
-            "input_file": "er_ad1000np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al19_08",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al19_08.mp4",
             "source_checksum": "2cf0e90c3c554ca7b0071ebf989de289",
             "input_file": "al19_08.mp4",
             "output_format": "fltp",
             "result": "64d301b16399d5ad296ec3dbd216ecde"
-        },
-        {
-            "name": "er_ad1109np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109np_44_ep0.mp4",
-            "source_checksum": "33542e20d1323cf57a75a43d2a4ca765",
-            "input_file": "er_ad1109np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "as12_16",
@@ -753,7 +649,7 @@
             "source_checksum": "2d4379bf236597884cc38721f663f95e",
             "input_file": "al08sf_08.mp4",
             "output_format": "fltp",
-            "result": "6d7174d75cfe8faf8de3b66f5258f595"
+            "result": "7359126e9f6b47031b8c561b63fa1175"
         },
         {
             "name": "al08sf_64",
@@ -761,15 +657,7 @@
             "source_checksum": "558e8076307ddfe9ffe3f8928067affe",
             "input_file": "al08sf_64.mp4",
             "output_format": "fltp",
-            "result": "ef16dca24dd66e277185606679118055"
-        },
-        {
-            "name": "er_eld2100np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2100np_48_ep0.mp4",
-            "source_checksum": "b0a5a5c01392ba233d2f7c1e3879b236",
-            "input_file": "er_eld2100np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "8c24a873adb96c3acd41c19e02ebd65b"
         },
         {
             "name": "al08sf_48",
@@ -777,7 +665,7 @@
             "source_checksum": "fa9fe405f0ec0000f6ab6102dccda480",
             "input_file": "al08sf_48.mp4",
             "output_format": "fltp",
-            "result": "97e049c5ca237411214a5ba9f0733dbc"
+            "result": "b9191c680204a23ef51ec451d709822b"
         },
         {
             "name": "am04_64",
@@ -817,15 +705,7 @@
             "source_checksum": "3d7664d878d25053898ed023a1e1cd44",
             "input_file": "am05_08.mp4",
             "output_format": "fltp",
-            "result": "e76a4fad9680315bdebd7df663554222"
-        },
-        {
-            "name": "er_ad1102np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102np_44_ep0.mp4",
-            "source_checksum": "6688979b54230137d648a929d7291a17",
-            "input_file": "er_ad1102np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "43ff532b04fb156cfe1168b1c0b40c0c"
         },
         {
             "name": "al08sf_11",
@@ -833,23 +713,7 @@
             "source_checksum": "98ab98f9fb6c52b2b26eb0a06df15703",
             "input_file": "al08sf_11.mp4",
             "output_format": "fltp",
-            "result": "8f15c703a727432ceb9102ba19accc12"
-        },
-        {
-            "name": "er_eld2100np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2100np_44_ep0.mp4",
-            "source_checksum": "3a4400b0518bb27dab517da22890d797",
-            "input_file": "er_eld2100np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "al16sf_08",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al16sf_08.mp4",
-            "source_checksum": "26c365f74e2bdb5aef239e06a763417d",
-            "input_file": "al16sf_08.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "b2793703638cbd1d6323951f144aebd3"
         },
         {
             "name": "al00_44",
@@ -889,7 +753,7 @@
             "source_checksum": "80a185e97370b9341742cd39d6e4a5a3",
             "input_file": "al06sf_08.mp4",
             "output_format": "fltp",
-            "result": "0e0cc8a25f7eb161f66ee3bc65199d04"
+            "result": "45e04543ce989cb061362b84855d6107"
         },
         {
             "name": "al17sf_64",
@@ -906,14 +770,6 @@
             "input_file": "al_sbr_sr_44_2_fsaac44.mp4",
             "output_format": "fltp",
             "result": "d24799df18f44ecb65d70ecd04519369"
-        },
-        {
-            "name": "er_eld1101np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1101np_22_ep0.mp4",
-            "source_checksum": "9ff710fb9fc6bc3f3ab33224524a75f4",
-            "input_file": "er_eld1101np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "am02_32",
@@ -964,14 +820,6 @@
             "result": "db921bd902654720933f799741bb35b2"
         },
         {
-            "name": "er_ad1000_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000_48_ep0.mp4",
-            "source_checksum": "6916186f575fcb043dff05add344cf00",
-            "input_file": "er_ad1000_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al17sf_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al17sf_24.mp4",
             "source_checksum": "54f1fb1859aaa869502ab3da41009529",
@@ -994,14 +842,6 @@
             "input_file": "as17_88.mp4",
             "output_format": "fltp",
             "result": "3bf98e171d2dec7242e96170d718c2f7"
-        },
-        {
-            "name": "er_eld2000np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2000np_44_ep0.mp4",
-            "source_checksum": "362541312ff9076fee3883121259659f",
-            "input_file": "er_eld2000np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "am02_96",
@@ -1028,20 +868,12 @@
             "result": "8fa7c4d7b94faff9117bd4d12c349e1b"
         },
         {
-            "name": "er_al21_08_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_08_ep0.mp4",
-            "source_checksum": "ac942aa845d97da613b3b06a3a16585f",
-            "input_file": "er_al21_08_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al06_22",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al06_22.mp4",
             "source_checksum": "e1738c83d846cf6acbc5438675e08841",
             "input_file": "al06_22.mp4",
             "output_format": "fltp",
-            "result": "fd272f2518856dfd459c84cf9e7edc93"
+            "result": "f50bd18a7adc9a417550c3499a277d16"
         },
         {
             "name": "as05_11",
@@ -1161,7 +993,7 @@
             "source_checksum": "c8973d5357acff7fab3e641e41344f2e",
             "input_file": "as14_88.mp4",
             "output_format": "fltp",
-            "result": "28e85247ea8004cd8253429f6c1e7248"
+            "result": "6705f7eb3a31e5540c6af08d61136c26"
         },
         {
             "name": "al04sf_32",
@@ -1177,7 +1009,7 @@
             "source_checksum": "7de5db579169851d20a9fdb5e3c68eee",
             "input_file": "am06_44.mp4",
             "output_format": "fltp",
-            "result": "c0bbfd973867fec9ed598abd1656761e"
+            "result": "5a0665bb918d8d8781e27f32ef647d70"
         },
         {
             "name": "am07_48",
@@ -1185,15 +1017,7 @@
             "source_checksum": "4c7bc5928b32516bf1bb97e0289b3ac4",
             "input_file": "am07_48.mp4",
             "output_format": "fltp",
-            "result": "ee5d33f95ec836e851bf19c6ae7a211d"
-        },
-        {
-            "name": "er_ad1109_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109_24_ep0.mp4",
-            "source_checksum": "d1f9fed36b551ed31fbeca28a531d039",
-            "input_file": "er_ad1109_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "65e08ad540bb1f70108cd0477b6ac906"
         },
         {
             "name": "as04_44",
@@ -1209,7 +1033,7 @@
             "source_checksum": "b46a4651cb2bd6aadaa9450e5f0634fa",
             "input_file": "al08_12.mp4",
             "output_format": "fltp",
-            "result": "85695b2defca606c821ed77f12a3d491"
+            "result": "fdc86705f4f3add8248780679917039a"
         },
         {
             "name": "al960_sbr_i_48_1",
@@ -1233,7 +1057,7 @@
             "source_checksum": "0b114ddc101e17e17c1dc548f0313830",
             "input_file": "am05_44.mp4",
             "output_format": "fltp",
-            "result": "561255dc09da4e3cc62a6a568c023186"
+            "result": "3a4dd93b37d73742da53310580af2300"
         },
         {
             "name": "al_sbr_e_32_2",
@@ -1260,22 +1084,6 @@
             "result": "976f11accce8764adff7f6fe13c1d204"
         },
         {
-            "name": "er_ad1102_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102_44_ep0.mp4",
-            "source_checksum": "987ebb50884a34b8499a1cc361fa68cd",
-            "input_file": "er_ad1102_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_ad1109np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109np_24_ep0.mp4",
-            "source_checksum": "df15f20067ed6da6b9030055724e15ba",
-            "input_file": "er_ad1109np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al05_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al05_48.mp4",
             "source_checksum": "58978ab191e3bfe9ea610c5a31680b79",
@@ -1284,20 +1092,12 @@
             "result": "d72ef57b7bad160905b7d1650360c474"
         },
         {
-            "name": "er_eld1101np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1101np_44_ep0.mp4",
-            "source_checksum": "f81a9ef31b3fb4ba7cb1e4a49fd21194",
-            "input_file": "er_eld1101np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al07sf_11",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al07sf_11.mp4",
             "source_checksum": "6e02eae5a629e9fe451a39bc6365a620",
             "input_file": "al07sf_11.mp4",
             "output_format": "fltp",
-            "result": "d4de30fb19a0873a2357523a21a7c11f"
+            "result": "2df0f5a6bc558fee12c530d6eebfb470"
         },
         {
             "name": "al_sbr_sr_32_2_fsaac32",
@@ -1306,14 +1106,6 @@
             "input_file": "al_sbr_sr_32_2_fsaac32.mp4",
             "output_format": "fltp",
             "result": "43dbe8c371a7946673ece994ea8f6293"
-        },
-        {
-            "name": "er_ad1103np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103np_32_ep0.mp4",
-            "source_checksum": "70f96824580ade7379347c76110aa932",
-            "input_file": "er_ad1103np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al03_64",
@@ -1340,14 +1132,6 @@
             "result": "621bfe9dc4c755520ae97b2f400c563a"
         },
         {
-            "name": "er_eld2000np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2000np_48_ep0.mp4",
-            "source_checksum": "d29d3e2c9d05cfb6d1d7c9ed08a83838",
-            "input_file": "er_eld2000np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al00sf_64",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al00sf_64.mp4",
             "source_checksum": "a5589e87e1942e37c4f160725c43ae8f",
@@ -1361,7 +1145,7 @@
             "source_checksum": "8b66be8e9b14913e6c82106648cd8ef4",
             "input_file": "am07_96.mp4",
             "output_format": "fltp",
-            "result": "06e1bc42c0173b3f1541983b8ab8d5d9"
+            "result": "d0ac499bbab5987bfe3af8f6000b856a"
         },
         {
             "name": "as05_48",
@@ -1388,14 +1172,6 @@
             "result": "0067d37aa712b90303a9b60e9648ca9c"
         },
         {
-            "name": "tts4",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts4.mp4",
-            "source_checksum": "d75a01ac45cbdcd6b9eee02bc014245a",
-            "input_file": "tts4.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al01sf_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al01sf_24.mp4",
             "source_checksum": "faf2f5d95d0a7a078eb2392ed6eb8461",
@@ -1410,22 +1186,6 @@
             "input_file": "al03sf_12.mp4",
             "output_format": "fltp",
             "result": "97c9a4a96818ef0c03dc1c8797aa7279"
-        },
-        {
-            "name": "er_ad1000_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000_32_ep0.mp4",
-            "source_checksum": "557961d4ba6c5fbdf11564d1d97e85c9",
-            "input_file": "er_ad1000_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_eld2100np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2100np_32_ep0.mp4",
-            "source_checksum": "0ba1be9b550e52ea133bb5d543266a79",
-            "input_file": "er_eld2100np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "as01_88",
@@ -1465,7 +1225,7 @@
             "source_checksum": "a0b3f0990a1a226627c77e17a7ee6f13",
             "input_file": "al16_44.mp4",
             "output_format": "fltp",
-            "result": "4943294add67e3168b0686e549f1f707"
+            "result": "b364313bc224edfe5f40d49cbd14dc3a"
         },
         {
             "name": "am04_88",
@@ -1505,15 +1265,7 @@
             "source_checksum": "47f105f37cd76d3daabd62f541b15448",
             "input_file": "al07_16.mp4",
             "output_format": "fltp",
-            "result": "d4de30fb19a0873a2357523a21a7c11f"
-        },
-        {
-            "name": "er_al10_12_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_12_ep0.mp4",
-            "source_checksum": "78419c443d1cb73f22c2be3a628528c4",
-            "input_file": "er_al10_12_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "dfc3d5157b78f9f90a20fe896190673f"
         },
         {
             "name": "al18sf_44",
@@ -1585,15 +1337,7 @@
             "source_checksum": "9aad8d04dcb95667d9bb925837e6f539",
             "input_file": "as14_22.mp4",
             "output_format": "fltp",
-            "result": "02856cceb12e9637bb98fc210daf193b"
-        },
-        {
-            "name": "er_ad1109_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109_32_ep0.mp4",
-            "source_checksum": "99680e8265ccb2081ede038d30bc4081",
-            "input_file": "er_ad1109_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "a299823b6a8aeda1c9e9656e5028c07c"
         },
         {
             "name": "as17_96",
@@ -1609,7 +1353,7 @@
             "source_checksum": "51a7227c4db22f51f65d746403d53e81",
             "input_file": "as15_22.mp4",
             "output_format": "fltp",
-            "result": "3845021412db78720068ec2dcd901fc3"
+            "result": "1220b3e2d34b50bd603a17f6c5908d64"
         },
         {
             "name": "as13_48",
@@ -1617,7 +1361,7 @@
             "source_checksum": "1e204c40c21993c04f2f1155c3631f52",
             "input_file": "as13_48.mp4",
             "output_format": "fltp",
-            "result": "c9a81a0fa18615801cdc39e5b163f671"
+            "result": "eebcff30b09d6b1adbe95f3c91ac9b49"
         },
         {
             "name": "al08sf_88",
@@ -1625,7 +1369,7 @@
             "source_checksum": "4025ea18b25f3637cb6fce32ce2029d7",
             "input_file": "al08sf_88.mp4",
             "output_format": "fltp",
-            "result": "c7f958f10a167fb8fdc45b83b0777386"
+            "result": "f883726164d881ae71e9bc7ff9ff53f9"
         },
         {
             "name": "al02_64",
@@ -1642,14 +1386,6 @@
             "input_file": "al960_sbr_i_32_2.mp4",
             "output_format": "fltp",
             "result": "a44949df5ae980e79b68026c0e32d81b"
-        },
-        {
-            "name": "er_ad1009np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1009np_24_ep0.mp4",
-            "source_checksum": "cd5e9efab90b1e3986c0a0c3bc3f0fe8",
-            "input_file": "er_ad1009np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al960_sbr_i_44_1",
@@ -1673,7 +1409,7 @@
             "source_checksum": "1a731057a5ca36f3505c3c38eb2a4e91",
             "input_file": "am07_24.mp4",
             "output_format": "fltp",
-            "result": "4478b0d80332c389dfd048641dd225c8"
+            "result": "aa222f572ad73aa0fd6a400dff2694cd"
         },
         {
             "name": "am02_22",
@@ -1684,14 +1420,6 @@
             "result": "e1e025741b3432606b8ff69965b7f3d0"
         },
         {
-            "name": "er_ad1103_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103_32_ep0.mp4",
-            "source_checksum": "2abcbadbc3143d23e54e3fb6e3bf95d9",
-            "input_file": "er_ad1103_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as17_44",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as17_44.mp4",
             "source_checksum": "60a2c3f590ac837460139e21a0fb7d11",
@@ -1700,28 +1428,12 @@
             "result": "6cb48e019e3819c3b29af695278d478f"
         },
         {
-            "name": "er_eld1001np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1001np_22_ep0.mp4",
-            "source_checksum": "bd1c0f36300e1153adc36e363f8fd368",
-            "input_file": "er_eld1001np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al06sf_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al06sf_48.mp4",
             "source_checksum": "a5fbb400a14de59fd5662c2523020da3",
             "input_file": "al06sf_48.mp4",
             "output_format": "fltp",
-            "result": "4979e6a7e1e61e051c85d1b7d738845f"
-        },
-        {
-            "name": "er_eld1000np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1000np_48_ep0.mp4",
-            "source_checksum": "b1ddc9429beb1807daa5e93b9629d29c",
-            "input_file": "er_eld1000np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "553e7c1cbaa5998e084475fa4b92fc6b"
         },
         {
             "name": "as16_96",
@@ -1729,7 +1441,7 @@
             "source_checksum": "f84425e0f778c9f7fe620df8c2eea3f5",
             "input_file": "as16_96.mp4",
             "output_format": "fltp",
-            "result": "cb972cdb4e5c63d467f7776fa3828699"
+            "result": "d1236dc90d56b843ba2783219ac504f8"
         },
         {
             "name": "al07sf_32",
@@ -1737,7 +1449,7 @@
             "source_checksum": "3af0b50bf84d67dd4bb2a471700024be",
             "input_file": "al07sf_32.mp4",
             "output_format": "fltp",
-            "result": "70d924177e92b84d441cc00df378b2c0"
+            "result": "d35a30de37f5f8c2798fc110bc4d373e"
         },
         {
             "name": "al07sf_88",
@@ -1745,7 +1457,7 @@
             "source_checksum": "ad5e2b8dc87815d82513ddd8d4e78c1f",
             "input_file": "al07sf_88.mp4",
             "output_format": "fltp",
-            "result": "dfe19829b88062d92c52c209e41153c3"
+            "result": "635afcd3d3ee8ac7be4487f4dcb39d95"
         },
         {
             "name": "al_sbr_gh_44_1",
@@ -1804,14 +1516,6 @@
             "result": "72487940e6b21e1a5acfe6d5ddd57978"
         },
         {
-            "name": "er_eld2000np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2000np_22_ep0.mp4",
-            "source_checksum": "270bb6c5a43ead1a36af14aca28cf02f",
-            "input_file": "er_eld2000np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as11_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as11_24.mp4",
             "source_checksum": "ceb2a5c94e7d5afd78829582e1787a2e",
@@ -1825,7 +1529,7 @@
             "source_checksum": "c347605f97839f80ae074c58d733d8ab",
             "input_file": "as16_12.mp4",
             "output_format": "fltp",
-            "result": "cb0d5dbdfddc30ad05585e911fc73d59"
+            "result": "57e3a126e5e08b01c7fa662e5bed5362"
         },
         {
             "name": "al960_sbr_ps_06",
@@ -1841,7 +1545,7 @@
             "source_checksum": "e459a84a907d4a61b8ff2c1d9a3f199b",
             "input_file": "al06sf_44.mp4",
             "output_format": "fltp",
-            "result": "c908646e2162876f19d0cdf958ddc156"
+            "result": "1a44da7dc44a968dd889bd4a8ce861f2"
         },
         {
             "name": "al960_sbr_ps_02",
@@ -1857,7 +1561,7 @@
             "source_checksum": "8ad283b87e3703aa28815e24719a7ddd",
             "input_file": "as15_48.mp4",
             "output_format": "fltp",
-            "result": "c9a81a0fa18615801cdc39e5b163f671"
+            "result": "99fecc0b463f60be02ffab98d62b37a2"
         },
         {
             "name": "al_sbr_i_32_2",
@@ -1866,14 +1570,6 @@
             "input_file": "al_sbr_i_32_2.mp4",
             "output_format": "fltp",
             "result": "7fe2361d70f0ff64a26e0825be5c6754"
-        },
-        {
-            "name": "er_al21_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_48_ep0.mp4",
-            "source_checksum": "9b88cbc17d8c6b75f3cb2c08e4e50446",
-            "input_file": "er_al21_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al14sf_11",
@@ -1892,14 +1588,6 @@
             "result": "cefb07bc527c214dd69bbf7c537c453a"
         },
         {
-            "name": "er_eld1100np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1100np_32_ep0.mp4",
-            "source_checksum": "1852d9d9c8838e01881c09e7d6877e13",
-            "input_file": "er_eld1100np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al02sf_32",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al02sf_32.mp4",
             "source_checksum": "84f981fffbbbb1076ea162d85677f512",
@@ -1914,14 +1602,6 @@
             "input_file": "al05sf_48.mp4",
             "output_format": "fltp",
             "result": "d72ef57b7bad160905b7d1650360c474"
-        },
-        {
-            "name": "tts3",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts3.mp4",
-            "source_checksum": "0ea7698688dea0e16b064ca99037cfb1",
-            "input_file": "tts3.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al14sf_96",
@@ -1964,14 +1644,6 @@
             "result": "2def4518f557639d7940b9056891daf8"
         },
         {
-            "name": "tts8",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts8.mp4",
-            "source_checksum": "0ee163c8c919fd3fba7ba92462f20d70",
-            "input_file": "tts8.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al19_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al19_88.mp4",
             "source_checksum": "48f777931ebc1f4e2381e46c6938823d",
@@ -1985,7 +1657,7 @@
             "source_checksum": "5d2a80b9c30c62e4be10270e54a7d4ba",
             "input_file": "as13_32.mp4",
             "output_format": "fltp",
-            "result": "b68d6ea8dd4223af7d1e57497aaea2e8"
+            "result": "955780aa9afdcf9123654b289e2761ef"
         },
         {
             "name": "al14_48",
@@ -2001,7 +1673,7 @@
             "source_checksum": "901841ef112ddf61f8152977a8d078ec",
             "input_file": "as13_44.mp4",
             "output_format": "fltp",
-            "result": "14888c909d35b55e76edfb2696f5c0d9"
+            "result": "bc2075c80a6a333704e8fab5748fe326"
         },
         {
             "name": "as04_88",
@@ -2052,20 +1724,12 @@
             "result": "967475be69d08b82e6b150b78a86f44d"
         },
         {
-            "name": "er_ad1103_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103_48_ep0.mp4",
-            "source_checksum": "1a3d68c67a268bbcd6094c3c21267aa1",
-            "input_file": "er_ad1103_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as16_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as16_24.mp4",
             "source_checksum": "fc555018c4c4b3a4fbfc08a07a9cfb0b",
             "input_file": "as16_24.mp4",
             "output_format": "fltp",
-            "result": "9576e0ff192755ea369507485c58279e"
+            "result": "6d76b46f9fecfa7915b8a463de7502f8"
         },
         {
             "name": "as15_08",
@@ -2073,7 +1737,7 @@
             "source_checksum": "700efb283282fee2ddaf30afe308e1ac",
             "input_file": "as15_08.mp4",
             "output_format": "fltp",
-            "result": "f48ab7fc21542d1d0caf92eacb51eee3"
+            "result": "75d6077b8be5685eead506587933c8cf"
         },
         {
             "name": "am07_16",
@@ -2081,7 +1745,7 @@
             "source_checksum": "bec7d8dec5395a4fbf99e31972eff33a",
             "input_file": "am07_16.mp4",
             "output_format": "fltp",
-            "result": "7ff6c169606329283d442bdf69017cb7"
+            "result": "d123b6f4fc550c12839d2e1c2c1b61f3"
         },
         {
             "name": "al17_12",
@@ -2116,14 +1780,6 @@
             "result": "b0376ccd5985561b7aedae959f37e7a4"
         },
         {
-            "name": "er_al21_12_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_12_ep0.mp4",
-            "source_checksum": "a75277e3bb21b8e71f64ed1c0b87d9a6",
-            "input_file": "er_al21_12_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al19_44",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al19_44.mp4",
             "source_checksum": "fd9794262e20c0ef1a17cdc185186b8b",
@@ -2137,15 +1793,7 @@
             "source_checksum": "056fc1f4343adfecc4c5e2ba23b16704",
             "input_file": "al16sf_16.mp4",
             "output_format": "fltp",
-            "result": "0f98f372b70cdb58f24d868c6c792610"
-        },
-        {
-            "name": "er_al10_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_44_ep0.mp4",
-            "source_checksum": "3c1ca2c0ca552073a7c8c43497128aed",
-            "input_file": "er_al10_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "0bc72c62df843828b386be714b0fb5fe"
         },
         {
             "name": "as09_32",
@@ -2193,7 +1841,7 @@
             "source_checksum": "8478cc37fb28b4c91c2d0a0d0b07d30a",
             "input_file": "am06_96.mp4",
             "output_format": "fltp",
-            "result": "0663053dde8e099d32d4f2acde451e2c"
+            "result": "69fe0c79bc9f8ac63f94d54ceae9aa4e"
         },
         {
             "name": "al14_16",
@@ -2233,7 +1881,7 @@
             "source_checksum": "9703ffb3589a1997f9f55e0a9afab8c8",
             "input_file": "as13_64.mp4",
             "output_format": "fltp",
-            "result": "9f960c8f0636c7a90bba45ca0cb95de0"
+            "result": "b625aec52c08afae93c26f4009518c35"
         },
         {
             "name": "as12_32",
@@ -2244,28 +1892,12 @@
             "result": "473779bf860222b0f5ba126f140ae89f"
         },
         {
-            "name": "er_ad1103_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103_44_ep0.mp4",
-            "source_checksum": "7f4604395275473d21888f02d90d85b0",
-            "input_file": "er_ad1103_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as01_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as01_96.mp4",
             "source_checksum": "9b427347dca14e73f3aeb6160989c6ba",
             "input_file": "as01_96.mp4",
             "output_format": "fltp",
             "result": "27786e9b7d83abafd8c0bff805d429b9"
-        },
-        {
-            "name": "er_ad1009np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1009np_32_ep0.mp4",
-            "source_checksum": "00b95f4c693f8ba63b6724e69dcfa846",
-            "input_file": "er_ad1009np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "as02_32",
@@ -2313,7 +1945,7 @@
             "source_checksum": "f5841793fec2f26332fd5396ad3dd38c",
             "input_file": "al06sf_16.mp4",
             "output_format": "fltp",
-            "result": "ae346b6e8f7053883dc823c3f4288ff5"
+            "result": "729917620326455911d3e057ee5b1951"
         },
         {
             "name": "as01_64",
@@ -2322,14 +1954,6 @@
             "input_file": "as01_64.mp4",
             "output_format": "fltp",
             "result": "a94e930b4474e51dffb012d46af338d5"
-        },
-        {
-            "name": "er_eld1102np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1102np_44_ep0.mp4",
-            "source_checksum": "f40d31bdcdc7ab034f24ce09c9f58e07",
-            "input_file": "er_eld1102np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al18_44",
@@ -2353,7 +1977,7 @@
             "source_checksum": "538495025b07b5b2092f2edbb6c1fc02",
             "input_file": "al06sf_12.mp4",
             "output_format": "fltp",
-            "result": "0478cbd3efa8e014ca82954e31084f20"
+            "result": "5fe712f1dde528f6fcb243abd257774e"
         },
         {
             "name": "al04sf_08",
@@ -2417,7 +2041,7 @@
             "source_checksum": "11d19d5ffbbc3c9f9c6f03a33416d8e9",
             "input_file": "al07sf_44.mp4",
             "output_format": "fltp",
-            "result": "70d924177e92b84d441cc00df378b2c0"
+            "result": "04e5b38ad931c8d6e3f9a4879cacd495"
         },
         {
             "name": "as10_24",
@@ -2460,28 +2084,12 @@
             "result": "300f8cc27d8b5abfe5720b69f398bad2"
         },
         {
-            "name": "er_ad1000_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000_24_ep0.mp4",
-            "source_checksum": "e7c1275f048213fda3056c613a6602e3",
-            "input_file": "er_ad1000_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as14_12",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as14_12.mp4",
             "source_checksum": "150d9f39dd6998cb860e104e4d801c26",
             "input_file": "as14_12.mp4",
             "output_format": "fltp",
-            "result": "cb0d5dbdfddc30ad05585e911fc73d59"
-        },
-        {
-            "name": "er_eld1100np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1100np_48_ep0.mp4",
-            "source_checksum": "f8108cbb185cf3b31db640d1748fad79",
-            "input_file": "er_eld1100np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "41916aab813d74351ab0725b33f6845b"
         },
         {
             "name": "al17sf_32",
@@ -2553,7 +2161,7 @@
             "source_checksum": "c35bc565415d32d2cae6a7cd65e69ba0",
             "input_file": "al06_32.mp4",
             "output_format": "fltp",
-            "result": "b4992535a9e4ce3ce07c8b32cee3de7f"
+            "result": "359f98bc3c4b898afa31500216a68f8f"
         },
         {
             "name": "as05_08",
@@ -2577,7 +2185,7 @@
             "source_checksum": "e9b052c5fd453c52e0ddbf0fdef50cc8",
             "input_file": "al06sf_88.mp4",
             "output_format": "fltp",
-            "result": "4f1c2fd36e30363132d8ed96360e3b29"
+            "result": "c172042cbf8e1b2a73b2ac21b5c12ec2"
         },
         {
             "name": "al16sf_32",
@@ -2585,23 +2193,7 @@
             "source_checksum": "5dc20e14fea6907055a4c8692d79027b",
             "input_file": "al16sf_32.mp4",
             "output_format": "fltp",
-            "result": "d5a7bb819c3da7edb65c802b1f06dd8d"
-        },
-        {
-            "name": "er_ad1100np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1100np_44_ep0.mp4",
-            "source_checksum": "d8948badebdba62c3fa5d3699ed58bc0",
-            "input_file": "er_ad1100np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_ad1103np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103np_48_ep0.mp4",
-            "source_checksum": "f24412755c3b9a8b09c07f529886c2df",
-            "input_file": "er_ad1103np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "dc2e69c4a698b9b0f5cae72a92cf2af7"
         },
         {
             "name": "al06_96",
@@ -2609,7 +2201,7 @@
             "source_checksum": "51b0485cb5b2b5aa7227f57d34a7f468",
             "input_file": "al06_96.mp4",
             "output_format": "fltp",
-            "result": "907f07b128d154b6eedd113c495a0473"
+            "result": "84e167d143354c50928dfbc54a4b88a2"
         },
         {
             "name": "al03sf_88",
@@ -2625,7 +2217,7 @@
             "source_checksum": "e18b1d19bd2286d8fb02c1aeba83f783",
             "input_file": "am07_08.mp4",
             "output_format": "fltp",
-            "result": "1eaa7584eda43146cd197cf43ee31336"
+            "result": "d8c4b0a1a2a59812176c529567715dbf"
         },
         {
             "name": "al16_96",
@@ -2633,7 +2225,7 @@
             "source_checksum": "28ff8d52a899b714573a1cb1928159d0",
             "input_file": "al16_96.mp4",
             "output_format": "fltp",
-            "result": "0f621d7167bfe6b3bacd7d74b2369875"
+            "result": "adea56a3d03d3a1eaf8ba8d58ecdd983"
         },
         {
             "name": "as00_32",
@@ -2657,7 +2249,7 @@
             "source_checksum": "04379d41b9796162bf4618eda52c0f75",
             "input_file": "al07_64.mp4",
             "output_format": "fltp",
-            "result": "45fc46d86e78b09f6277591a34fc2793"
+            "result": "ca903ff2e3798d285f9622a1f2d65f85"
         },
         {
             "name": "al02_24",
@@ -2708,14 +2300,6 @@
             "result": "a6f2f72dbb23e693d815cdcb77d4e0e7"
         },
         {
-            "name": "er_eld1101np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1101np_24_ep0.mp4",
-            "source_checksum": "d7bb3f920a70bbedf32a1e3c8efac664",
-            "input_file": "er_eld1101np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al19sf_11",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al19sf_11.mp4",
             "source_checksum": "6b8e51d41474e7780a7b41770802ceea",
@@ -2737,7 +2321,7 @@
             "source_checksum": "48f22d6308e9d0f6626c18b9a39c4ef0",
             "input_file": "as15_44.mp4",
             "output_format": "fltp",
-            "result": "14888c909d35b55e76edfb2696f5c0d9"
+            "result": "ea7fee13533fdf8370ff16b3cb5021bd"
         },
         {
             "name": "al07sf_24",
@@ -2745,7 +2329,7 @@
             "source_checksum": "c6494437b21079e6c480c786233684d4",
             "input_file": "al07sf_24.mp4",
             "output_format": "fltp",
-            "result": "3b76ec8fd5fa3d75b1ed903b712a8cad"
+            "result": "afc8d28fc116c9083c7f2d7a3ef437fe"
         },
         {
             "name": "al01sf_64",
@@ -2756,20 +2340,12 @@
             "result": "567affc7a30b2b05804877c986b93849"
         },
         {
-            "name": "er_ad1103np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103np_44_ep0.mp4",
-            "source_checksum": "29f720614143f00a5e267db75cedab67",
-            "input_file": "er_ad1103np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al16sf_64",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al16sf_64.mp4",
             "source_checksum": "dd49860c753874a4ca312db247868eb2",
             "input_file": "al16sf_64.mp4",
             "output_format": "fltp",
-            "result": "0428ad19c2ec717d2e7d4a8bddaa10c3"
+            "result": "637ff0208bfe1f2e69e5ecf70232b2c2"
         },
         {
             "name": "as00_12",
@@ -2785,7 +2361,7 @@
             "source_checksum": "c7a9ab41b0ae1969d0bb556f91d3d19e",
             "input_file": "as13_16.mp4",
             "output_format": "fltp",
-            "result": "a4c66f7b5287477f02e2e46482b93fd2"
+            "result": "14888268fc8ee153a6e1e544ef372aaf"
         },
         {
             "name": "al960_sbr_s_44_1",
@@ -2818,14 +2394,6 @@
             "input_file": "al00_12.mp4",
             "output_format": "fltp",
             "result": "1003860d480d488f2093171008643ca2"
-        },
-        {
-            "name": "er_ad1102np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102np_24_ep0.mp4",
-            "source_checksum": "04eee28e92ea2c6528d79a76c2f9c187",
-            "input_file": "er_ad1102np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al14_11",
@@ -2865,7 +2433,7 @@
             "source_checksum": "8ae58cfa272b2659b332eb6e72c8f55c",
             "input_file": "al08_16.mp4",
             "output_format": "fltp",
-            "result": "cbb19d0daf6f45e3cfafbf2d9780d758"
+            "result": "1c235b521f3a104abd9f3ac992b96764"
         },
         {
             "name": "as05_88",
@@ -2874,14 +2442,6 @@
             "input_file": "as05_88.mp4",
             "output_format": "fltp",
             "result": "20b38c0d21a134e573d4d1ca748aad40"
-        },
-        {
-            "name": "er_al10_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_32_ep0.mp4",
-            "source_checksum": "134eced76316c312dd731e92e2997abc",
-            "input_file": "er_al10_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al00_08",
@@ -2956,20 +2516,12 @@
             "result": "0acee3957588ecf625efa56540f02f6a"
         },
         {
-            "name": "er_ad1102np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102np_22_ep0.mp4",
-            "source_checksum": "85fd8e8724b5e426ff4a189fcd4775cb",
-            "input_file": "er_ad1102np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al07_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al07_88.mp4",
             "source_checksum": "868ff25b1e1ef696d6df1878defe6776",
             "input_file": "al07_88.mp4",
             "output_format": "fltp",
-            "result": "dfe19829b88062d92c52c209e41153c3"
+            "result": "635afcd3d3ee8ac7be4487f4dcb39d95"
         },
         {
             "name": "as16_08",
@@ -2977,15 +2529,7 @@
             "source_checksum": "fe34e0cc047002ae4d6fb1b8567eebb5",
             "input_file": "as16_08.mp4",
             "output_format": "fltp",
-            "result": "0e25ef87bf68f77a6aef86b1b91354cd"
-        },
-        {
-            "name": "er_eld1100np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1100np_24_ep0.mp4",
-            "source_checksum": "49c707647d21102ca48028de76becec2",
-            "input_file": "er_eld1100np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "e34e0f9c72a05803ac017070f279a928"
         },
         {
             "name": "as14_48",
@@ -2993,7 +2537,7 @@
             "source_checksum": "f759ecf4c6648f643567b365ca43ff4d",
             "input_file": "as14_48.mp4",
             "output_format": "fltp",
-            "result": "58f3a2a2c3bb76ddcdecb80e54e32cda"
+            "result": "f6b0cea7668d268f9616c656a5e8a7dd"
         },
         {
             "name": "al14_88",
@@ -3002,22 +2546,6 @@
             "input_file": "al14_88.mp4",
             "output_format": "fltp",
             "result": "93099bfdaf22a5847e010eef08f10537"
-        },
-        {
-            "name": "er_al10_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_22_ep0.mp4",
-            "source_checksum": "a059de2f08acf98406b9ecb10af74fdd",
-            "input_file": "er_al10_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_ad1102_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102_22_ep0.mp4",
-            "source_checksum": "9f2c1f6dbc1720ff9f2ff90a6c76962a",
-            "input_file": "er_ad1102_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al03sf_11",
@@ -3044,20 +2572,12 @@
             "result": "c91d263e846628e4060cdef6c9b5c81d"
         },
         {
-            "name": "er_ad1103_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103_22_ep0.mp4",
-            "source_checksum": "f5573b545d9bc589e03381f31a15a76d",
-            "input_file": "er_ad1103_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al06sf_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al06sf_24.mp4",
             "source_checksum": "fc775c3c0d7de17e48ee0655cde5bcab",
             "input_file": "al06sf_24.mp4",
             "output_format": "fltp",
-            "result": "7608666b6e0dfeca71883389302f2fe0"
+            "result": "93405699186566faf24ece95412310fe"
         },
         {
             "name": "as00_48",
@@ -3081,15 +2601,7 @@
             "source_checksum": "45443f90986dbc99f70f5ac31e2afda9",
             "input_file": "al08_08.mp4",
             "output_format": "fltp",
-            "result": "6d7174d75cfe8faf8de3b66f5258f595"
-        },
-        {
-            "name": "er_al10_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_24_ep0.mp4",
-            "source_checksum": "aa8aa251ffd77d101a8b864c28dd5c99",
-            "input_file": "er_al10_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "7359126e9f6b47031b8c561b63fa1175"
         },
         {
             "name": "al01_16",
@@ -3098,14 +2610,6 @@
             "input_file": "al01_16.mp4",
             "output_format": "fltp",
             "result": "e2f030fc972340b05f2519b282cdbac3"
-        },
-        {
-            "name": "er_ad1109np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109np_48_ep0.mp4",
-            "source_checksum": "9231517c1d5554841d291710be33ef5f",
-            "input_file": "er_ad1109np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "am01_22",
@@ -3129,7 +2633,7 @@
             "source_checksum": "b231ae2664c1bc0efafe58794e32dccd",
             "input_file": "al16sf_24.mp4",
             "output_format": "fltp",
-            "result": "504ea25bf408453edb069c8874792863"
+            "result": "60b43672daf2a885a164801c21c23b6f"
         },
         {
             "name": "am00_44",
@@ -3145,7 +2649,7 @@
             "source_checksum": "43c5ffba27fba57156518956d4a868e9",
             "input_file": "al06_48.mp4",
             "output_format": "fltp",
-            "result": "4979e6a7e1e61e051c85d1b7d738845f"
+            "result": "553e7c1cbaa5998e084475fa4b92fc6b"
         },
         {
             "name": "as08_48",
@@ -3161,7 +2665,7 @@
             "source_checksum": "c701278f3b3bd5caf30555448548250f",
             "input_file": "al07_12.mp4",
             "output_format": "fltp",
-            "result": "d4de30fb19a0873a2357523a21a7c11f"
+            "result": "1cc7744697548c4929e7ca2314f7c365"
         },
         {
             "name": "as03_88",
@@ -3186,14 +2690,6 @@
             "input_file": "al_sbr_i_44_1_new.mp4",
             "output_format": "fltp",
             "result": "7e025ed2b60e113303e83db37889c167"
-        },
-        {
-            "name": "er_al10_96_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_96_ep0.mp4",
-            "source_checksum": "277c987e9f4ef1de38b973b28e387674",
-            "input_file": "er_al10_96_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al960_sbr_ps_05",
@@ -3273,7 +2769,7 @@
             "source_checksum": "30b5704a3979abe96b8060b89fd2cea0",
             "input_file": "am06_16.mp4",
             "output_format": "fltp",
-            "result": "f8c39576e0e2d17d1d5f14726bb1cafb"
+            "result": "c09f07ac65277cda722c9ea062fd1235"
         },
         {
             "name": "al07_11",
@@ -3281,7 +2777,7 @@
             "source_checksum": "f7c21af5b33c66a915ffd08ca46603ff",
             "input_file": "al07_11.mp4",
             "output_format": "fltp",
-            "result": "d4de30fb19a0873a2357523a21a7c11f"
+            "result": "2df0f5a6bc558fee12c530d6eebfb470"
         },
         {
             "name": "al04sf_96",
@@ -3290,14 +2786,6 @@
             "input_file": "al04sf_96.mp4",
             "output_format": "fltp",
             "result": "edb05b74da0fb44f78dc51c5c8e7369f"
-        },
-        {
-            "name": "er_ad1109_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109_48_ep0.mp4",
-            "source_checksum": "3810716c26aa101b8cbfffa271398dae",
-            "input_file": "er_ad1109_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al_sbr_qmf_32_1",
@@ -3321,15 +2809,7 @@
             "source_checksum": "ae253dd4329465eeccb0affb70d62b9c",
             "input_file": "al08sf_12.mp4",
             "output_format": "fltp",
-            "result": "85695b2defca606c821ed77f12a3d491"
-        },
-        {
-            "name": "er_ad1000_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000_44_ep0.mp4",
-            "source_checksum": "0b9f7fb6bcfa23fe47533793d1920155",
-            "input_file": "er_ad1000_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "fdc86705f4f3add8248780679917039a"
         },
         {
             "name": "al16_11",
@@ -3337,7 +2817,7 @@
             "source_checksum": "1059cdc022b1bb308eb842a4fd4e52d4",
             "input_file": "al16_11.mp4",
             "output_format": "fltp",
-            "result": "db12a7bd65b38be3c2483a85f38e2247"
+            "result": "8d4dcbc5964d35450f5f44accb0fa076"
         },
         {
             "name": "al17sf_44",
@@ -3380,20 +2860,12 @@
             "result": "1c0e61a364a51f8e59d34d3f11caba1d"
         },
         {
-            "name": "er_ad1103np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1103np_22_ep0.mp4",
-            "source_checksum": "58f29e7132b7aadb7a95b6df93ad294d",
-            "input_file": "er_ad1103np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al08_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al08_88.mp4",
             "source_checksum": "a90054b220701a7e16de00f735051742",
             "input_file": "al08_88.mp4",
             "output_format": "fltp",
-            "result": "c7f958f10a167fb8fdc45b83b0777386"
+            "result": "f883726164d881ae71e9bc7ff9ff53f9"
         },
         {
             "name": "al05_22",
@@ -3409,7 +2881,7 @@
             "source_checksum": "b1bcb17c66f458be90013c04494d481f",
             "input_file": "as16_88.mp4",
             "output_format": "fltp",
-            "result": "28e85247ea8004cd8253429f6c1e7248"
+            "result": "19f360268dc077a7e5a321863dddea70"
         },
         {
             "name": "am01_48",
@@ -3428,14 +2900,6 @@
             "result": "dff0a5b583b837e9b7586b54299dddba"
         },
         {
-            "name": "er_eld2100np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2100np_24_ep0.mp4",
-            "source_checksum": "393dc6c5bb2080b1cb1dacd8a6947969",
-            "input_file": "er_eld2100np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al960_sbr_s_48_1",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al960_sbr_s_48_1.mp4",
             "source_checksum": "b8d9951f3fe1681f1d1a4f0808385a54",
@@ -3449,7 +2913,7 @@
             "source_checksum": "adad2d11f9210feb7ee91ed862870251",
             "input_file": "al08sf_44.mp4",
             "output_format": "fltp",
-            "result": "ac48dbb44e76757732c7060fce50b773"
+            "result": "3c5d9079f844de93d9ac574435205000"
         },
         {
             "name": "al03sf_44",
@@ -3460,20 +2924,12 @@
             "result": "bc6428f68eeac99961b07928d5efb76f"
         },
         {
-            "name": "er_ad1009np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1009np_48_ep0.mp4",
-            "source_checksum": "9ab09cd291073d8930061488bfee7e64",
-            "input_file": "er_ad1009np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al08sf_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al08sf_24.mp4",
             "source_checksum": "da351f5cdc7375de4a0ab3ef268bd745",
             "input_file": "al08sf_24.mp4",
             "output_format": "fltp",
-            "result": "25e9f186f207c855879a5f4a18686110"
+            "result": "8a46df827c8bb68f0cd008d5c6f700cf"
         },
         {
             "name": "as13_96",
@@ -3481,7 +2937,7 @@
             "source_checksum": "c64887f5dcff8c1abd69991662b6205d",
             "input_file": "as13_96.mp4",
             "output_format": "fltp",
-            "result": "4b65363c85dedf3aaf68e78c97abb2a4"
+            "result": "a2d814ef69a5f61cd6e59f14425c0245"
         },
         {
             "name": "al02_08",
@@ -3505,7 +2961,7 @@
             "source_checksum": "5e0485aa85d5c4bdc67749e0adaa202d",
             "input_file": "am06_64.mp4",
             "output_format": "fltp",
-            "result": "22cddc2b971b072b7f2157fd5d07f67a"
+            "result": "9c64164b0c509ec00f2848a0be04e823"
         },
         {
             "name": "al02_12",
@@ -3548,14 +3004,6 @@
             "result": "915e57e4e3865a3ea6a0d4e89f81ba45"
         },
         {
-            "name": "er_ad1109np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109np_32_ep0.mp4",
-            "source_checksum": "4836a604033b313898fea3fcbbf843f5",
-            "input_file": "er_ad1109np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as10_32",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as10_32.mp4",
             "source_checksum": "8058e568041f1214c43e6ef32e85d4ba",
@@ -3588,20 +3036,12 @@
             "result": "8ca31d4b51f0b8366908b6b420ad91f7"
         },
         {
-            "name": "er_eld1102np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1102np_22_ep0.mp4",
-            "source_checksum": "08a77755bd5479a6b02a10f8b1b8fb6b",
-            "input_file": "er_eld1102np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am06_12",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am06_12.mp4",
             "source_checksum": "670b46195b97da9da8b0372710b494f4",
             "input_file": "am06_12.mp4",
             "output_format": "fltp",
-            "result": "4f57d72e18b9c3417387a09e27beb851"
+            "result": "c648e55a851558fc8f1370a6e46f2e0e"
         },
         {
             "name": "al00_48",
@@ -3625,7 +3065,7 @@
             "source_checksum": "3557998811c6ab68724b97e70552ea29",
             "input_file": "as13_24.mp4",
             "output_format": "fltp",
-            "result": "02bfc42a74201206630237e4c7ad381e"
+            "result": "b1a199c9e6f968b88895305738d3e627"
         },
         {
             "name": "as10_88",
@@ -3649,15 +3089,7 @@
             "source_checksum": "56e495d1280159e92d018a79d6bdb98d",
             "input_file": "al16_24.mp4",
             "output_format": "fltp",
-            "result": "504ea25bf408453edb069c8874792863"
-        },
-        {
-            "name": "er_ad1102_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102_48_ep0.mp4",
-            "source_checksum": "a9f4c557eeadbd7e9d051b854141d04c",
-            "input_file": "er_ad1102_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "60b43672daf2a885a164801c21c23b6f"
         },
         {
             "name": "as17_22",
@@ -3673,15 +3105,7 @@
             "source_checksum": "62459de49a6e9be86f8d5bc879e5952e",
             "input_file": "al08_32.mp4",
             "output_format": "fltp",
-            "result": "f02dcaed96aa7113f6f34ab33a786383"
-        },
-        {
-            "name": "er_eld1102np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1102np_32_ep0.mp4",
-            "source_checksum": "eeb11678bf04c63a25f937be84fca235",
-            "input_file": "er_eld1102np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "aecc5925d6c86d33fe65dcf796f9a123"
         },
         {
             "name": "al960_sbr_s_32_1",
@@ -3737,7 +3161,7 @@
             "source_checksum": "9061405c961b6ea6746820d0148797fe",
             "input_file": "al_sbr_cm_48_5.mp4",
             "output_format": "fltp",
-            "result": "8f37fa2958fc4c2887474bfb95d1b5a3"
+            "result": "460718adb03e42e3a7fee067969bab5e"
         },
         {
             "name": "am00_88",
@@ -3761,7 +3185,7 @@
             "source_checksum": "8229f887c1d564e136394a654ba406bd",
             "input_file": "al16sf_44.mp4",
             "output_format": "fltp",
-            "result": "4943294add67e3168b0686e549f1f707"
+            "result": "b364313bc224edfe5f40d49cbd14dc3a"
         },
         {
             "name": "am04_08",
@@ -3785,7 +3209,7 @@
             "source_checksum": "686815d71fd3cbdb672dec42013dd71b",
             "input_file": "as14_16.mp4",
             "output_format": "fltp",
-            "result": "481c7a271bd4621dac6475e038a66998"
+            "result": "9fd26a73a01263c549136f01442fea5f"
         },
         {
             "name": "al_sbr_i_32_1_new",
@@ -3801,7 +3225,7 @@
             "source_checksum": "4a5f502eebfd5a5a1cc598367e5c7cb2",
             "input_file": "al06sf_22.mp4",
             "output_format": "fltp",
-            "result": "fd272f2518856dfd459c84cf9e7edc93"
+            "result": "f50bd18a7adc9a417550c3499a277d16"
         },
         {
             "name": "al04_48",
@@ -3826,14 +3250,6 @@
             "input_file": "al19sf_08.mp4",
             "output_format": "fltp",
             "result": "64d301b16399d5ad296ec3dbd216ecde"
-        },
-        {
-            "name": "er_ad1000np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000np_48_ep0.mp4",
-            "source_checksum": "37f99e3230375016f305ff559be53862",
-            "input_file": "er_ad1000np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al00sf_08",
@@ -3897,23 +3313,7 @@
             "source_checksum": "f599b1a5580bf0362cf8830e7db678e7",
             "input_file": "al16_32.mp4",
             "output_format": "fltp",
-            "result": "d5a7bb819c3da7edb65c802b1f06dd8d"
-        },
-        {
-            "name": "al07sf_08",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al07sf_08.mp4",
-            "source_checksum": "affa134e126228b86538668d9a469ece",
-            "input_file": "al07sf_08.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_eld1102np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1102np_24_ep0.mp4",
-            "source_checksum": "2c3809437807ac57dc7cf5f1fbb3b768",
-            "input_file": "er_eld1102np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "dc2e69c4a698b9b0f5cae72a92cf2af7"
         },
         {
             "name": "al_sbr_sr_88_2_fsaac44",
@@ -3922,14 +3322,6 @@
             "input_file": "al_sbr_sr_88_2_fsaac44.mp4",
             "output_format": "fltp",
             "result": "d273c2d2e4fbbf838526909b52eb4bdf"
-        },
-        {
-            "name": "er_eld1002np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1002np_22_ep0.mp4",
-            "source_checksum": "d558cfe29bfcd0fc67ecc51d3f7d2b1e",
-            "input_file": "er_eld1002np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al04sf_22",
@@ -3945,7 +3337,7 @@
             "source_checksum": "7e561b5baa80f810ea925e0c94962be7",
             "input_file": "al07_96.mp4",
             "output_format": "fltp",
-            "result": "dfe19829b88062d92c52c209e41153c3"
+            "result": "e20f8a47c4f230301d32367269a208b8"
         },
         {
             "name": "am00_16",
@@ -3993,7 +3385,7 @@
             "source_checksum": "47075e542067cf5cb0929307152b69d0",
             "input_file": "as15_32.mp4",
             "output_format": "fltp",
-            "result": "b68d6ea8dd4223af7d1e57497aaea2e8"
+            "result": "d34c8e492fff18a4b9c7275585dee63e"
         },
         {
             "name": "am05_64",
@@ -4001,7 +3393,7 @@
             "source_checksum": "e3fea348af3f8f4d251e156c3580739c",
             "input_file": "am05_64.mp4",
             "output_format": "fltp",
-            "result": "5b096940b5f4f548e8be21081dd8e188"
+            "result": "31ce2cf5b09d63bbc2d043ffff4ead6d"
         },
         {
             "name": "as01_12",
@@ -4034,14 +3426,6 @@
             "input_file": "as09_22.mp4",
             "output_format": "fltp",
             "result": "6b70f0fe4befa112330a1b4ca9ddd465"
-        },
-        {
-            "name": "er_al21_64_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_64_ep0.mp4",
-            "source_checksum": "5e8aec3c8343b2f3292d1321ed9b6171",
-            "input_file": "er_al21_64_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "as09_48",
@@ -4097,7 +3481,7 @@
             "source_checksum": "702e52f621d0d8132c1f9a71b258973d",
             "input_file": "am06_48.mp4",
             "output_format": "fltp",
-            "result": "a2c5debfac5d778137cff876f8787bb2"
+            "result": "16d6f33a5e10cab33fc2e886dcec76b2"
         },
         {
             "name": "as08_44",
@@ -4113,7 +3497,7 @@
             "source_checksum": "05efe944476e4f1f22f3369dd3a0eb4d",
             "input_file": "al06_08.mp4",
             "output_format": "fltp",
-            "result": "0e0cc8a25f7eb161f66ee3bc65199d04"
+            "result": "45e04543ce989cb061362b84855d6107"
         },
         {
             "name": "al08sf_32",
@@ -4121,7 +3505,7 @@
             "source_checksum": "338b1e7b27644c6951324baa3e075eea",
             "input_file": "al08sf_32.mp4",
             "output_format": "fltp",
-            "result": "e95f1e6d5163cbfb193954a07dea2faf"
+            "result": "2ea433c57e805ef4864d74b5df38ba8a"
         },
         {
             "name": "al19_64",
@@ -4137,7 +3521,7 @@
             "source_checksum": "a95635aba8b3c7a1dc3c53da736461d0",
             "input_file": "am05_88.mp4",
             "output_format": "fltp",
-            "result": "ae07362973a109e13ad7aa7a01fe2eef"
+            "result": "b161ce76d8f936ed5ead0208f75aade3"
         },
         {
             "name": "al_sbr_ps_00",
@@ -4153,7 +3537,7 @@
             "source_checksum": "f34efbd30a07ed4240a77e9cadf66b51",
             "input_file": "al16_16.mp4",
             "output_format": "fltp",
-            "result": "0f98f372b70cdb58f24d868c6c792610"
+            "result": "0bc72c62df843828b386be714b0fb5fe"
         },
         {
             "name": "as07_64",
@@ -4164,28 +3548,12 @@
             "result": "c8dccbd7a2c94b812341b369757f2cf6"
         },
         {
-            "name": "er_eld1100np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1100np_44_ep0.mp4",
-            "source_checksum": "6a00489d914334bb340faeb21ce0ca00",
-            "input_file": "er_eld1100np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al_sbr_cm_48_2",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al_sbr_cm_48_2.mp4",
             "source_checksum": "878de38bdc2098de27bbf0c197b53f13",
             "input_file": "al_sbr_cm_48_2.mp4",
             "output_format": "fltp",
             "result": "e995e2813134404aebbbad49270a2cae"
-        },
-        {
-            "name": "er_ad1109_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109_44_ep0.mp4",
-            "source_checksum": "3f9de602e7072083a42da719ee29a1e9",
-            "input_file": "er_ad1109_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al19sf_48",
@@ -4228,20 +3596,12 @@
             "result": "fee87c426ffe310d83008121fa592bd9"
         },
         {
-            "name": "er_eld1102np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1102np_48_ep0.mp4",
-            "source_checksum": "b3ed0ac9e400c0daa04a7a9e689b405c",
-            "input_file": "er_eld1102np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al08sf_22",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al08sf_22.mp4",
             "source_checksum": "e325d7345813c03e3d9fbdb13927268e",
             "input_file": "al08sf_22.mp4",
             "output_format": "fltp",
-            "result": "05c041101be07734c5b7eb4619dea481"
+            "result": "623635ab5bcd20a712167f3b60147dd2"
         },
         {
             "name": "al03_08",
@@ -4250,22 +3610,6 @@
             "input_file": "al03_08.mp4",
             "output_format": "fltp",
             "result": "9e0c9f7586ea7460b87d47f03a2e64d9"
-        },
-        {
-            "name": "er_eld1001np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1001np_48_ep0.mp4",
-            "source_checksum": "3c3fb465914729c1ac698cac8a5e0b14",
-            "input_file": "er_eld1001np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_ad1000_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000_22_ep0.mp4",
-            "source_checksum": "be35f725aea4661a26e90e371c99cf86",
-            "input_file": "er_ad1000_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "am02_11",
@@ -4297,7 +3641,7 @@
             "source_checksum": "59504e213fb5d141fe02b2a2537f7e01",
             "input_file": "al07sf_22.mp4",
             "output_format": "fltp",
-            "result": "3b76ec8fd5fa3d75b1ed903b712a8cad"
+            "result": "b66fce39a3579b8033f7fe36cf7e13ab"
         },
         {
             "name": "as04_32",
@@ -4314,14 +3658,6 @@
             "input_file": "al_sbr_sig_48_2_sig1.mp4",
             "output_format": "fltp",
             "result": "0067d37aa712b90303a9b60e9648ca9c"
-        },
-        {
-            "name": "er_eld1000np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1000np_24_ep0.mp4",
-            "source_checksum": "017173db6979bb2d9894a5ee7b29af6e",
-            "input_file": "er_eld1000np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al17_11",
@@ -4348,20 +3684,12 @@
             "result": "4ea217578f3e0cfc88d8754b24d4c8f0"
         },
         {
-            "name": "er_eld1101np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1101np_48_ep0.mp4",
-            "source_checksum": "bb0db8c18babc2127dcf23325c138c52",
-            "input_file": "er_eld1101np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al07sf_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al07sf_96.mp4",
             "source_checksum": "f6a1ceaaf805494e859fa98817f02cf1",
             "input_file": "al07sf_96.mp4",
             "output_format": "fltp",
-            "result": "dfe19829b88062d92c52c209e41153c3"
+            "result": "e20f8a47c4f230301d32367269a208b8"
         },
         {
             "name": "al_sbr_sr_16_2_fsaac16",
@@ -4385,7 +3713,7 @@
             "source_checksum": "7b2e8fe46f2f80c5ececa21f37fbcd2e",
             "input_file": "as16_16.mp4",
             "output_format": "fltp",
-            "result": "481c7a271bd4621dac6475e038a66998"
+            "result": "f5e5e28ed994b2e07952182fd4e64597"
         },
         {
             "name": "as05_96",
@@ -4401,7 +3729,7 @@
             "source_checksum": "32a04ca4afa3169cd6ebf415733ad7cb",
             "input_file": "al08_11.mp4",
             "output_format": "fltp",
-            "result": "8f15c703a727432ceb9102ba19accc12"
+            "result": "b2793703638cbd1d6323951f144aebd3"
         },
         {
             "name": "as09_16",
@@ -4420,14 +3748,6 @@
             "result": "bac71f1c4723760f6c595287d8e8f7a1"
         },
         {
-            "name": "er_eld2000np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2000np_32_ep0.mp4",
-            "source_checksum": "0003233dce8db074c0241d731fc302a5",
-            "input_file": "er_eld2000np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al02sf_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al02sf_96.mp4",
             "source_checksum": "23d41b62d5c798a70702422f7b373abe",
@@ -4441,7 +3761,7 @@
             "source_checksum": "f8e817085063beab9c2e27885f82bb64",
             "input_file": "am07_22.mp4",
             "output_format": "fltp",
-            "result": "bfd80104fd69bdea14cc746d185d6b44"
+            "result": "0e8862657af6efdeeba2140b8a23e765"
         },
         {
             "name": "al_sbr_s_48_1",
@@ -4457,7 +3777,7 @@
             "source_checksum": "1a67d3584403b85e3a0f3c2fa36f7d50",
             "input_file": "al16_08.mp4",
             "output_format": "fltp",
-            "result": "830d1866388b7301c96146e0e0614397"
+            "result": "7f65c99d709dae8d35f31a55b78837a4"
         },
         {
             "name": "as11_32",
@@ -4466,14 +3786,6 @@
             "input_file": "as11_32.mp4",
             "output_format": "fltp",
             "result": "52b9b783e682ce807b26425bfd01bbe7"
-        },
-        {
-            "name": "er_al21_16_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_16_ep0.mp4",
-            "source_checksum": "3d5c816c9a34cf057dd575112ef6a2f4",
-            "input_file": "er_al21_16_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al_sbr_i_48_1_new",
@@ -4497,7 +3809,7 @@
             "source_checksum": "bc8794a266ab4892163bdeca474bc6dc",
             "input_file": "al06_11.mp4",
             "output_format": "fltp",
-            "result": "b1d3abe29c049fae6f83b218f7bc0677"
+            "result": "7a87c14fd11bbc3b60aa9e4f33c197f1"
         },
         {
             "name": "as06_32",
@@ -4513,7 +3825,7 @@
             "source_checksum": "cbf0c36119afc25dd1d31232ffd43e74",
             "input_file": "as14_32.mp4",
             "output_format": "fltp",
-            "result": "b4b3c045e136191c6d42df8fc352d3cf"
+            "result": "ea1ae9978a38c987b486bb22b4ed4d72"
         },
         {
             "name": "as04_24",
@@ -4569,7 +3881,7 @@
             "source_checksum": "15405956bcffeac73437683938222e0b",
             "input_file": "al16_64.mp4",
             "output_format": "fltp",
-            "result": "0428ad19c2ec717d2e7d4a8bddaa10c3"
+            "result": "637ff0208bfe1f2e69e5ecf70232b2c2"
         },
         {
             "name": "am02_16",
@@ -4596,28 +3908,12 @@
             "result": "f098fc1ece5df2f3e5ae72b49f7801ec"
         },
         {
-            "name": "er_ad1100np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1100np_24_ep0.mp4",
-            "source_checksum": "5490d765586367e654fc1d9184c093c0",
-            "input_file": "er_ad1100np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al_sbr_qmf_44_1",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al_sbr_qmf_44_1.mp4",
             "source_checksum": "49e24a234a72f0b50d0fbed854bacf89",
             "input_file": "al_sbr_qmf_44_1.mp4",
             "output_format": "fltp",
             "result": "745d413ac4b8be2fceffcf3f94e069d2"
-        },
-        {
-            "name": "tts5",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts5.mp4",
-            "source_checksum": "6e22a16904f06188aeb25f902dba4303",
-            "input_file": "tts5.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "as12_22",
@@ -4641,7 +3937,7 @@
             "source_checksum": "e842304ce84f248dc9f42cf782d2d294",
             "input_file": "as14_11.mp4",
             "output_format": "fltp",
-            "result": "66be4d61aa2181af657c5da70f141a96"
+            "result": "3d5a448958f6def00372e0d1b1a30c71"
         },
         {
             "name": "al960_sbr_i_48_2",
@@ -4657,23 +3953,7 @@
             "source_checksum": "5c7d524b1cdb9374ac790b20a59cc74c",
             "input_file": "al06sf_96.mp4",
             "output_format": "fltp",
-            "result": "907f07b128d154b6eedd113c495a0473"
-        },
-        {
-            "name": "er_ad1102_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102_32_ep0.mp4",
-            "source_checksum": "0ef1d4b154ba64f497d351b111ab51ca",
-            "input_file": "er_ad1102_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_ad1102_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102_24_ep0.mp4",
-            "source_checksum": "3fe5ffea36b9fd880094a8a6f1d1a041",
-            "input_file": "er_ad1102_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "84e167d143354c50928dfbc54a4b88a2"
         },
         {
             "name": "am06_08",
@@ -4681,7 +3961,7 @@
             "source_checksum": "ff36a115598cab35eb8ff42237451ab4",
             "input_file": "am06_08.mp4",
             "output_format": "fltp",
-            "result": "d164df2cf24ddf609c46a31a74e69f99"
+            "result": "45c69a627acad058b41cced226857ba6"
         },
         {
             "name": "al14sf_32",
@@ -4708,14 +3988,6 @@
             "result": "bca856a6877d9a5324d8a1cf5cf8864c"
         },
         {
-            "name": "tts2",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts2.mp4",
-            "source_checksum": "b3acd62b59ebc27f15d0e44ac7fcbffd",
-            "input_file": "tts2.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as11_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as11_88.mp4",
             "source_checksum": "82ebdb128449b938b62af3a798a83dda",
@@ -4737,7 +4009,7 @@
             "source_checksum": "a003f362198661240d567b6584de59b5",
             "input_file": "as14_64.mp4",
             "output_format": "fltp",
-            "result": "f2c8633c48bbec94ce6d900aaf4d1bd2"
+            "result": "aec8557d2e993527293e7d2567b5d6fb"
         },
         {
             "name": "as06_88",
@@ -4764,14 +4036,6 @@
             "result": "adcf17383ea63c860aca7c047bb4acd5"
         },
         {
-            "name": "er_eld1001np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1001np_32_ep0.mp4",
-            "source_checksum": "06d214ebddbf836a898ded9e050cbc49",
-            "input_file": "er_eld1001np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am04_48",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am04_48.mp4",
             "source_checksum": "6e1a45c0ad27e730bfed9aac3bf136bd",
@@ -4793,7 +4057,7 @@
             "source_checksum": "5b89e95ae190edda4f0c6d4c04984823",
             "input_file": "al07_44.mp4",
             "output_format": "fltp",
-            "result": "70d924177e92b84d441cc00df378b2c0"
+            "result": "04e5b38ad931c8d6e3f9a4879cacd495"
         },
         {
             "name": "as17_64",
@@ -4809,7 +4073,7 @@
             "source_checksum": "09cd56caaf9a706ba648bde7ff2091e9",
             "input_file": "as13_22.mp4",
             "output_format": "fltp",
-            "result": "3845021412db78720068ec2dcd901fc3"
+            "result": "bca19d41612de368015f89cec640dbf1"
         },
         {
             "name": "al02_48",
@@ -4833,7 +4097,7 @@
             "source_checksum": "543475df8b2672c11c527558f7e655ef",
             "input_file": "am07_12.mp4",
             "output_format": "fltp",
-            "result": "3e31c667670cbef6cdf7ee86a3ae285d"
+            "result": "4d336547532509bf62743b9a3ff4ee02"
         },
         {
             "name": "as17_12",
@@ -4873,7 +4137,7 @@
             "source_checksum": "b75591d27f6348ecbccab61e62ad8da7",
             "input_file": "am05_24.mp4",
             "output_format": "fltp",
-            "result": "938c26465f99f8c49948a749e3549f96"
+            "result": "24e8e47751223ad09fc21ff739886236"
         },
         {
             "name": "al17_96",
@@ -4892,14 +4156,6 @@
             "result": "0b43057f093305a27b52f168adaaf255"
         },
         {
-            "name": "er_eld1002np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1002np_32_ep0.mp4",
-            "source_checksum": "8652d266e57dd7c62aad4c9c2d8a0d5a",
-            "input_file": "er_eld1002np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al17sf_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al17sf_96.mp4",
             "source_checksum": "4846bf6828d3434f0dbcd6f59cf4d903",
@@ -4913,7 +4169,7 @@
             "source_checksum": "817119f677a9964908ac131eb2bd2f83",
             "input_file": "al07sf_12.mp4",
             "output_format": "fltp",
-            "result": "d4de30fb19a0873a2357523a21a7c11f"
+            "result": "1cc7744697548c4929e7ca2314f7c365"
         },
         {
             "name": "al17sf_48",
@@ -4924,20 +4180,12 @@
             "result": "639ae11166bd1ce3bd23b4d5337008c8"
         },
         {
-            "name": "er_eld1100np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1100np_22_ep0.mp4",
-            "source_checksum": "305917a2a2ed2da901a327a724f404f1",
-            "input_file": "er_eld1100np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am05_32",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am05_32.mp4",
             "source_checksum": "66deb0b5089e88dbccfd35a5ac811572",
             "input_file": "am05_32.mp4",
             "output_format": "fltp",
-            "result": "a19172db2537dcd34cfe08298bce7028"
+            "result": "6aef6f95149cfaead2357475d44a4b2d"
         },
         {
             "name": "al01sf_96",
@@ -4969,7 +4217,7 @@
             "source_checksum": "2986285e99b5e8adbac167752b94c5ff",
             "input_file": "as15_16.mp4",
             "output_format": "fltp",
-            "result": "a4c66f7b5287477f02e2e46482b93fd2"
+            "result": "733cede72f91bb8a78a54bd8c7bf5140"
         },
         {
             "name": "as17_48",
@@ -4993,7 +4241,7 @@
             "source_checksum": "e1e595c68796a80466521928625d1c05",
             "input_file": "al_sbr_cm_96_5.mp4",
             "output_format": "fltp",
-            "result": ""
+            "result": "3f6be385f326affa48186b69c44dcbcc"
         },
         {
             "name": "al17_44",
@@ -5009,15 +4257,7 @@
             "source_checksum": "c434c63afdba6e92801e8fa7cf197ab1",
             "input_file": "as16_48.mp4",
             "output_format": "fltp",
-            "result": "58f3a2a2c3bb76ddcdecb80e54e32cda"
-        },
-        {
-            "name": "er_ad1102np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102np_48_ep0.mp4",
-            "source_checksum": "c4920c19829bcf5431d76174f2d55989",
-            "input_file": "er_ad1102np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "4555eef6c8a3f8517413fa2cb9c96461"
         },
         {
             "name": "al18_22",
@@ -5073,23 +4313,7 @@
             "source_checksum": "88b0a2ceed062144c2e4ecd302c47ed4",
             "input_file": "al07sf_48.mp4",
             "output_format": "fltp",
-            "result": "70d924177e92b84d441cc00df378b2c0"
-        },
-        {
-            "name": "er_ad1100np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1100np_48_ep0.mp4",
-            "source_checksum": "4f5ffc824bae3bd3974d29eedd76653c",
-            "input_file": "er_ad1100np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "al14sf_08",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al14sf_08.mp4",
-            "source_checksum": "86744bb97ec398469fb9dc0c5c537cd7",
-            "input_file": "al14sf_08.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "03d9a4cf93c3eb604863b0cd4e49d212"
         },
         {
             "name": "as13_08",
@@ -5097,7 +4321,7 @@
             "source_checksum": "6884d6277734b63f93bdfaadf50bd020",
             "input_file": "as13_08.mp4",
             "output_format": "fltp",
-            "result": "f48ab7fc21542d1d0caf92eacb51eee3"
+            "result": "f28eaf836a8ba4f1d1038f96b4b0d788"
         },
         {
             "name": "al14_96",
@@ -5106,14 +4330,6 @@
             "input_file": "al14_96.mp4",
             "output_format": "fltp",
             "result": "ab6c0c02ab8224bc5f126264ee403a42"
-        },
-        {
-            "name": "er_ad1109_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1109_22_ep0.mp4",
-            "source_checksum": "c49c0652ff473928cdfc84e98fd226c5",
-            "input_file": "er_ad1109_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al02sf_22",
@@ -5132,22 +4348,6 @@
             "result": "6b124b1f9b0d8b5942b803db436ba439"
         },
         {
-            "name": "er_al10_16_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_16_ep0.mp4",
-            "source_checksum": "8329f3520bb380d3d615088ac17e0346",
-            "input_file": "er_al10_16_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "tts7",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts7.mp4",
-            "source_checksum": "8fa701839fede4f3e747ad0cad86e4c6",
-            "input_file": "tts7.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al05sf_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al05sf_24.mp4",
             "source_checksum": "d87a9ffa217f856ea17436d1d899b8e6",
@@ -5161,7 +4361,7 @@
             "source_checksum": "7af5407fecc0961eebe5ebdde0ea12d9",
             "input_file": "al07sf_64.mp4",
             "output_format": "fltp",
-            "result": "45fc46d86e78b09f6277591a34fc2793"
+            "result": "ca903ff2e3798d285f9622a1f2d65f85"
         },
         {
             "name": "as06_24",
@@ -5188,20 +4388,12 @@
             "result": "9e0c9f7586ea7460b87d47f03a2e64d9"
         },
         {
-            "name": "er_eld1001np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1001np_44_ep0.mp4",
-            "source_checksum": "a2ee90ccb4c66a2b8d0353992eb3e291",
-            "input_file": "er_eld1001np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am07_88",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am07_88.mp4",
             "source_checksum": "706396a0d021a37a22183523d0a3bdee",
             "input_file": "am07_88.mp4",
             "output_format": "fltp",
-            "result": "06ef16e7803a494af0c19ad949273c62"
+            "result": "6afb8815318f6b782ae7e703c4ce8d41"
         },
         {
             "name": "as15_24",
@@ -5209,7 +4401,7 @@
             "source_checksum": "eb6f7b5a5118bcf840b663861f1eea89",
             "input_file": "as15_24.mp4",
             "output_format": "fltp",
-            "result": "02bfc42a74201206630237e4c7ad381e"
+            "result": "fa2973354f64ae365e346b3bfd6a5493"
         },
         {
             "name": "al16_22",
@@ -5217,7 +4409,7 @@
             "source_checksum": "85cebc1765ab0cc4b5d41ccfe8e15e07",
             "input_file": "al16_22.mp4",
             "output_format": "fltp",
-            "result": "d764858d2fa96357a3214bbb34d75224"
+            "result": "04ad280f43867978faec2b55cab05817"
         },
         {
             "name": "as14_44",
@@ -5225,7 +4417,7 @@
             "source_checksum": "a97bedcbd7f50098b46444ad351d2fe4",
             "input_file": "as14_44.mp4",
             "output_format": "fltp",
-            "result": "e9ede9a5a4dad2a4c35d239aec4889fc"
+            "result": "cc51720cb28b74746ac6584b7cc0ec5d"
         },
         {
             "name": "al07_32",
@@ -5233,7 +4425,7 @@
             "source_checksum": "52e439abc7de90e16cb7803f37f7d8bb",
             "input_file": "al07_32.mp4",
             "output_format": "fltp",
-            "result": "70d924177e92b84d441cc00df378b2c0"
+            "result": "d35a30de37f5f8c2798fc110bc4d373e"
         },
         {
             "name": "as02_12",
@@ -5281,7 +4473,7 @@
             "source_checksum": "fdae6e15afaa07aaaf051b3333627338",
             "input_file": "as16_11.mp4",
             "output_format": "fltp",
-            "result": "66be4d61aa2181af657c5da70f141a96"
+            "result": "0ec0944e0dee2c48253e3b6af4a8ba6e"
         },
         {
             "name": "al03sf_48",
@@ -5316,14 +4508,6 @@
             "result": "10b7dc043cae2a402c705c428392837b"
         },
         {
-            "name": "er_ad1102np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1102np_32_ep0.mp4",
-            "source_checksum": "ba7d4eaa25f4bc5b05a10bcab5c501a2",
-            "input_file": "er_ad1102np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as02_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as02_96.mp4",
             "source_checksum": "2027d3901596844f125749870b58fb8c",
@@ -5337,7 +4521,7 @@
             "source_checksum": "42af7dca439ba98891e9e7fb85add054",
             "input_file": "al16sf_48.mp4",
             "output_format": "fltp",
-            "result": "70f8ed0d2b593456e6e47df002fba53e"
+            "result": "fed73f6c3a14de13d8509399f3eeaa6c"
         },
         {
             "name": "al18sf_32",
@@ -5353,7 +4537,7 @@
             "source_checksum": "e3143a446d03a6d3a0bb3452e231a70b",
             "input_file": "as13_88.mp4",
             "output_format": "fltp",
-            "result": "6b658a186b7b45033d2ec0fce12379cd"
+            "result": "d2173ff3cf249aac0e43cda3d788e39e"
         },
         {
             "name": "am04_96",
@@ -5369,7 +4553,7 @@
             "source_checksum": "164aad1fbbff5b515167ab2c8a50c1bd",
             "input_file": "al16sf_96.mp4",
             "output_format": "fltp",
-            "result": "0f621d7167bfe6b3bacd7d74b2369875"
+            "result": "adea56a3d03d3a1eaf8ba8d58ecdd983"
         },
         {
             "name": "am02_24",
@@ -5378,14 +4562,6 @@
             "input_file": "am02_24.mp4",
             "output_format": "fltp",
             "result": "5af42c51a7b2968efb484f0ad933a157"
-        },
-        {
-            "name": "er_eld1000np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1000np_32_ep0.mp4",
-            "source_checksum": "9a1dfe23cab5f47c5d29500ea0c2495c",
-            "input_file": "er_eld1000np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al960_sbr_ps_00",
@@ -5449,7 +4625,7 @@
             "source_checksum": "475dcf583ec67d98a6b41feebdd411b1",
             "input_file": "as15_96.mp4",
             "output_format": "fltp",
-            "result": "4b65363c85dedf3aaf68e78c97abb2a4"
+            "result": "599972dde16703646fbb54149ba40ec9"
         },
         {
             "name": "al04sf_24",
@@ -5473,15 +4649,7 @@
             "source_checksum": "13ec258a49634fc66123ac7dc47087aa",
             "input_file": "al_sbr_cm_48_5.1.mp4",
             "output_format": "fltp",
-            "result": "018d765196c7d4ac8094093814501331"
-        },
-        {
-            "name": "er_al10_11_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_11_ep0.mp4",
-            "source_checksum": "8c969714e872af07fc374f5dca07bef9",
-            "input_file": "er_al10_11_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "777f222b0fc14de0a2b25a98647c21ca"
         },
         {
             "name": "am01_24",
@@ -5500,14 +4668,6 @@
             "result": "3c5ac88b6143205c814736a3030c8dd9"
         },
         {
-            "name": "tts6",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts6.mp4",
-            "source_checksum": "9f84c61cdf07242754f15962145f1947",
-            "input_file": "tts6.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al_sbr_sr_44_2_fsaac22",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al_sbr_sr_44_2_fsaac22.mp4",
             "source_checksum": "a5216885fcdf279326c066b38507254d",
@@ -5521,7 +4681,7 @@
             "source_checksum": "6f40f9520536d064b4e4bf8cec6388ac",
             "input_file": "al06_16.mp4",
             "output_format": "fltp",
-            "result": "ae346b6e8f7053883dc823c3f4288ff5"
+            "result": "729917620326455911d3e057ee5b1951"
         },
         {
             "name": "am01_12",
@@ -5537,7 +4697,7 @@
             "source_checksum": "52ee5e9eb258fd02228a9c2157db77e3",
             "input_file": "al16sf_12.mp4",
             "output_format": "fltp",
-            "result": "740c6812e891a78b7780e52da56ac901"
+            "result": "8be4074a4050e87afc9f9229cd6bd4ff"
         },
         {
             "name": "al19_12",
@@ -5572,14 +4732,6 @@
             "result": "31f0d7315b2d03acb22d7920f5814855"
         },
         {
-            "name": "er_ad1009np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1009np_22_ep0.mp4",
-            "source_checksum": "a9495a8b4b85a7d15b0567123089cbdf",
-            "input_file": "er_ad1009np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al05sf_16",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al05sf_16.mp4",
             "source_checksum": "d9f41df74158657e35f6ae1f15ded10a",
@@ -5588,28 +4740,12 @@
             "result": "3e17aa815d1dfbb8228c0723179d9840"
         },
         {
-            "name": "er_eld1000np_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1000np_44_ep0.mp4",
-            "source_checksum": "2127f4f7467d675409fe679ec9f491a7",
-            "input_file": "er_eld1000np_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_al10_88_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al10_88_ep0.mp4",
-            "source_checksum": "62da442ed736926d88f7af378a9c922c",
-            "input_file": "er_al10_88_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al06sf_32",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al06sf_32.mp4",
             "source_checksum": "ab3c740849c8cec23218e417a4b9bd56",
             "input_file": "al06sf_32.mp4",
             "output_format": "fltp",
-            "result": "cf08b3b58787797ff394d5b8d3718ba8"
+            "result": "61397a51fed37bfbb0323fa019fec43d"
         },
         {
             "name": "as14_96",
@@ -5617,7 +4753,7 @@
             "source_checksum": "2b764f0e8828add1f6736c5c1a249172",
             "input_file": "as14_96.mp4",
             "output_format": "fltp",
-            "result": "cb972cdb4e5c63d467f7776fa3828699"
+            "result": "ccf52218adedcbefb39293f638dec014"
         },
         {
             "name": "al01_44",
@@ -5641,7 +4777,7 @@
             "source_checksum": "8828cf3fff7152de0cb58c353956e8f8",
             "input_file": "al07_24.mp4",
             "output_format": "fltp",
-            "result": "3b76ec8fd5fa3d75b1ed903b712a8cad"
+            "result": "afc8d28fc116c9083c7f2d7a3ef437fe"
         },
         {
             "name": "al01_64",
@@ -5665,7 +4801,7 @@
             "source_checksum": "bfa9fc76491cb88407be3f7116ed9854",
             "input_file": "as15_88.mp4",
             "output_format": "fltp",
-            "result": "6b658a186b7b45033d2ec0fce12379cd"
+            "result": "6b1c37a7334b3626c4cb0b6e269b4215"
         },
         {
             "name": "as00_44",
@@ -5689,7 +4825,7 @@
             "source_checksum": "5f10302a00fe14bd48c6628101791be0",
             "input_file": "as13_11.mp4",
             "output_format": "fltp",
-            "result": "6c6115066d647d5409a2c2fa9d6f6329"
+            "result": "a5529b1abeb7ff9fa6735b37c5af7482"
         },
         {
             "name": "as06_48",
@@ -5713,7 +4849,7 @@
             "source_checksum": "9981baec8b18dda2da3d8bccb36c8bb2",
             "input_file": "al06sf_64.mp4",
             "output_format": "fltp",
-            "result": "2680ff601df3c7a330656ef0d6d76f6b"
+            "result": "7ff08384d907e611cbb4b7333f41d9fe"
         },
         {
             "name": "al04_24",
@@ -5836,36 +4972,12 @@
             "result": "c07660b161c8bf333f7703d39cd7829c"
         },
         {
-            "name": "er_ad1000np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000np_22_ep0.mp4",
-            "source_checksum": "525f1126aadb37b89204150171242d8c",
-            "input_file": "er_ad1000np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_al21_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_32_ep0.mp4",
-            "source_checksum": "e984cddfafd7abf9a80fbcbee5489915",
-            "input_file": "er_al21_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al17_24",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al17_24.mp4",
             "source_checksum": "0c78e0ab65aff7287ead3eadde0525a7",
             "input_file": "al17_24.mp4",
             "output_format": "fltp",
             "result": "81e7f63e34e349fd6138172552c55936"
-        },
-        {
-            "name": "er_ad1000np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1000np_24_ep0.mp4",
-            "source_checksum": "adcb13b40d0a4686a235380ff09cdccf",
-            "input_file": "er_ad1000np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al02sf_48",
@@ -5913,7 +5025,7 @@
             "source_checksum": "b5d0a8f8df76df8103c60243c6d3f032",
             "input_file": "am06_24.mp4",
             "output_format": "fltp",
-            "result": "19eea88a19f933b2c6a98b555d427fa7"
+            "result": "87804f335ccf18e86203e3f28ccdd550"
         },
         {
             "name": "al19_32",
@@ -5953,7 +5065,7 @@
             "source_checksum": "95bb437a67e41b2bf143c519692e9034",
             "input_file": "am07_44.mp4",
             "output_format": "fltp",
-            "result": "6ecc879ff4cf68e13ac061e8408c98cd"
+            "result": "b4ddeb314612b187729e950ae30d1e20"
         },
         {
             "name": "as06_64",
@@ -5977,7 +5089,7 @@
             "source_checksum": "3d03997cdbff1141edef3562b308c472",
             "input_file": "as16_44.mp4",
             "output_format": "fltp",
-            "result": "e9ede9a5a4dad2a4c35d239aec4889fc"
+            "result": "68728eec36b954d17f85df5dc443be2b"
         },
         {
             "name": "as04_12",
@@ -6009,7 +5121,7 @@
             "source_checksum": "f6ac207e454eac1355fb4082d7b55a75",
             "input_file": "al06_88.mp4",
             "output_format": "fltp",
-            "result": "4f1c2fd36e30363132d8ed96360e3b29"
+            "result": "c172042cbf8e1b2a73b2ac21b5c12ec2"
         },
         {
             "name": "al02sf_11",
@@ -6025,23 +5137,7 @@
             "source_checksum": "e89dc90593dc336542f94828fea8155e",
             "input_file": "am07_32.mp4",
             "output_format": "fltp",
-            "result": "642fcea1aa872cb9deb8051eb67b723f"
-        },
-        {
-            "name": "er_ad1100np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1100np_32_ep0.mp4",
-            "source_checksum": "afa31e4a93936aa60be7b06fd2e29356",
-            "input_file": "er_ad1100np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_eld1002np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1002np_24_ep0.mp4",
-            "source_checksum": "c693ad02acaca5c457b6ea90f430bf3c",
-            "input_file": "er_eld1002np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "3e353db2ccba8c405e36e8ab0b7efe94"
         },
         {
             "name": "al16sf_11",
@@ -6049,7 +5145,7 @@
             "source_checksum": "2f4a475e056d5045cf7f2be78cbd443d",
             "input_file": "al16sf_11.mp4",
             "output_format": "fltp",
-            "result": "db12a7bd65b38be3c2483a85f38e2247"
+            "result": "8d4dcbc5964d35450f5f44accb0fa076"
         },
         {
             "name": "al03_44",
@@ -6089,7 +5185,7 @@
             "source_checksum": "3c7639c849340d5054b9a5a8ddbde0cd",
             "input_file": "al16_48.mp4",
             "output_format": "fltp",
-            "result": "70f8ed0d2b593456e6e47df002fba53e"
+            "result": "fed73f6c3a14de13d8509399f3eeaa6c"
         },
         {
             "name": "as17_32",
@@ -6105,7 +5201,7 @@
             "source_checksum": "f481a380e70ac8c5f5f1727f9adbfbc6",
             "input_file": "al07_48.mp4",
             "output_format": "fltp",
-            "result": "70d924177e92b84d441cc00df378b2c0"
+            "result": "03d9a4cf93c3eb604863b0cd4e49d212"
         },
         {
             "name": "as07_44",
@@ -6114,14 +5210,6 @@
             "input_file": "as07_44.mp4",
             "output_format": "fltp",
             "result": "085350565881a963a3ad4cae99a91f02"
-        },
-        {
-            "name": "er_al21_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_22_ep0.mp4",
-            "source_checksum": "f32d5d02377bec66dfc4de4c95781f19",
-            "input_file": "er_al21_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "al00sf_11",
@@ -6185,7 +5273,7 @@
             "source_checksum": "7d2d9fbbeb05d943c1342730300fb0d7",
             "input_file": "am07_64.mp4",
             "output_format": "fltp",
-            "result": "c46be40e124ce8c2aea9610d61e25e26"
+            "result": "c4c015308907ff9664b21af7f981d392"
         },
         {
             "name": "al04_11",
@@ -6209,7 +5297,7 @@
             "source_checksum": "6e4ed3bd7e215e39f36d8ef4e35dcd8b",
             "input_file": "al07_22.mp4",
             "output_format": "fltp",
-            "result": "3b76ec8fd5fa3d75b1ed903b712a8cad"
+            "result": "b66fce39a3579b8033f7fe36cf7e13ab"
         },
         {
             "name": "am02_64",
@@ -6220,14 +5308,6 @@
             "result": "f2a0570e3ee6227c76d2b151cf959347"
         },
         {
-            "name": "er_al21_44_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_44_ep0.mp4",
-            "source_checksum": "6623ca641a3fd61f8dc34a6513908c20",
-            "input_file": "er_al21_44_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al_sbr_ps_02_new",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al_sbr_ps_02_new.mp4",
             "source_checksum": "07842048def7e7e28530d5a4b5b6288b",
@@ -6236,20 +5316,12 @@
             "result": "ea9769c002c80ca8fce59e93d37ab79f"
         },
         {
-            "name": "er_eld1002np_48_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1002np_48_ep0.mp4",
-            "source_checksum": "f60324013b319f697a61d156d513f0f4",
-            "input_file": "er_eld1002np_48_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "as15_11",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/as15_11.mp4",
             "source_checksum": "132d6833103d95527f19960012d32606",
             "input_file": "as15_11.mp4",
             "output_format": "fltp",
-            "result": "6c6115066d647d5409a2c2fa9d6f6329"
+            "result": "decd79e62cf234215b66328331be44a9"
         },
         {
             "name": "al06_24",
@@ -6257,7 +5329,7 @@
             "source_checksum": "7cb02b9a95492c05a00ec031458e8324",
             "input_file": "al06_24.mp4",
             "output_format": "fltp",
-            "result": "7608666b6e0dfeca71883389302f2fe0"
+            "result": "93405699186566faf24ece95412310fe"
         },
         {
             "name": "as02_64",
@@ -6268,20 +5340,12 @@
             "result": "251ea0e1b3821235909aba69892ad7d8"
         },
         {
-            "name": "tts1",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/tts1.mp4",
-            "source_checksum": "ec49cffff239a25bd18e27a90e5c3f9e",
-            "input_file": "tts1.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al08sf_96",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al08sf_96.mp4",
             "source_checksum": "12c6ae01d190190b08f3c179e4a3b646",
             "input_file": "al08sf_96.mp4",
             "output_format": "fltp",
-            "result": "4677b93aa04c55103ebd1dce77c6f4c8"
+            "result": "3d2b1fd7ae8c72a079c7f21abebced13"
         },
         {
             "name": "al05_32",
@@ -6306,14 +5370,6 @@
             "input_file": "al04_08.mp4",
             "output_format": "fltp",
             "result": "19d650af57f6baa32202f3100aeb1eda"
-        },
-        {
-            "name": "er_ad1100np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_ad1100np_22_ep0.mp4",
-            "source_checksum": "ed8e08dcc785bf654cb369d838e71d2a",
-            "input_file": "er_ad1100np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
         },
         {
             "name": "as02_48",
@@ -6372,14 +5428,6 @@
             "result": "1baf3b0a6d2ce613d4aa57f3499f13f7"
         },
         {
-            "name": "er_al21_88_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_88_ep0.mp4",
-            "source_checksum": "ac96fbdf43f9935ee0e0500b9aac32de",
-            "input_file": "er_al21_88_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "al_sbr_ps_06_new",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/al_sbr_ps_06_new.mp4",
             "source_checksum": "0295396fe1a25bdea14371c764b7dd96",
@@ -6388,28 +5436,12 @@
             "result": "f181b26d3fa66a999216967f4d86861c"
         },
         {
-            "name": "er_eld1001np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1001np_24_ep0.mp4",
-            "source_checksum": "9997147edfadfc1fbe119d77eb57d292",
-            "input_file": "er_eld1001np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
-            "name": "er_eld2100np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2100np_22_ep0.mp4",
-            "source_checksum": "04b92fbc3efe9db520ff1dd7cc862a5e",
-            "input_file": "er_eld2100np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am05_22",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am05_22.mp4",
             "source_checksum": "8fe188aef595f0c3eb7d144b43ddc600",
             "input_file": "am05_22.mp4",
             "output_format": "fltp",
-            "result": "86fb8e82f33af5d740b856f81a80eb71"
+            "result": "3dd0f5309cbab916051e9243f626d207"
         },
         {
             "name": "al18sf_24",
@@ -6425,7 +5457,7 @@
             "source_checksum": "28d137e459204dcab7f0c146ac1bcee6",
             "input_file": "al08_48.mp4",
             "output_format": "fltp",
-            "result": "97e049c5ca237411214a5ba9f0733dbc"
+            "result": "b9191c680204a23ef51ec451d709822b"
         },
         {
             "name": "am00_08",
@@ -6497,7 +5529,7 @@
             "source_checksum": "4e3a6fd07dae11080baca60bf1166fa8",
             "input_file": "al08_44.mp4",
             "output_format": "fltp",
-            "result": "ac48dbb44e76757732c7060fce50b773"
+            "result": "3c5d9079f844de93d9ac574435205000"
         },
         {
             "name": "al03sf_64",
@@ -6516,20 +5548,12 @@
             "result": "104361bdcc1b9d4d24e5863e2c35e050"
         },
         {
-            "name": "er_eld2000np_24_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld2000np_24_ep0.mp4",
-            "source_checksum": "8719cec076eb9d08d455c1d68e2135f4",
-            "input_file": "er_eld2000np_24_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
-        },
-        {
             "name": "am05_16",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/am05_16.mp4",
             "source_checksum": "b436103b97fc6bfe1261c7247b60ed4d",
             "input_file": "am05_16.mp4",
             "output_format": "fltp",
-            "result": "5064cca0c1dee59a214d9e20165af1e1"
+            "result": "6b43b04fd7efb6b384e7804a66689192"
         },
         {
             "name": "al19_48",
@@ -6545,7 +5569,7 @@
             "source_checksum": "567b25a72bf32316d3885abd6c133e7d",
             "input_file": "al08_24.mp4",
             "output_format": "fltp",
-            "result": "25e9f186f207c855879a5f4a18686110"
+            "result": "8a46df827c8bb68f0cd008d5c6f700cf"
         },
         {
             "name": "al19sf_12",
@@ -6561,7 +5585,7 @@
             "source_checksum": "e61544bfef837da898e51751fc0c5305",
             "input_file": "am05_11.mp4",
             "output_format": "fltp",
-            "result": "30b703181556f60e1befb1ced67338be"
+            "result": "65a07123f34da7a517c61784d3dfdb88"
         },
         {
             "name": "am06_88",
@@ -6569,7 +5593,7 @@
             "source_checksum": "dded0d940875e799e61cfb499c5836bd",
             "input_file": "am06_88.mp4",
             "output_format": "fltp",
-            "result": "e6494513d14046b56ab2ca98def4d2ca"
+            "result": "8a55c91e304071a60301b54b380f1af2"
         },
         {
             "name": "al01_88",
@@ -6585,15 +5609,7 @@
             "source_checksum": "369b34adb97f8c85ef4e67af4bccff15",
             "input_file": "al06_64.mp4",
             "output_format": "fltp",
-            "result": "2680ff601df3c7a330656ef0d6d76f6b"
-        },
-        {
-            "name": "er_eld1101np_32_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1101np_32_ep0.mp4",
-            "source_checksum": "ddbff36d1c9534c76d28ef5f4f5c9e7e",
-            "input_file": "er_eld1101np_32_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "7ff08384d907e611cbb4b7333f41d9fe"
         },
         {
             "name": "as03_32",
@@ -6609,15 +5625,7 @@
             "source_checksum": "620f949437596e0f0f2b020f53e03c3c",
             "input_file": "al16sf_88.mp4",
             "output_format": "fltp",
-            "result": "55c563d8df797e4c8d308796fb511311"
-        },
-        {
-            "name": "er_al21_96_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_al21_96_ep0.mp4",
-            "source_checksum": "b029d8cd0902a45ba704a2b7c65ec84c",
-            "input_file": "er_al21_96_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "97cd06e5939f630e7f5a510dd5e7a813"
         },
         {
             "name": "al18_48",
@@ -6697,7 +5705,7 @@
             "source_checksum": "14cdc53ff9c55582eb2b2a00dabd4cf8",
             "input_file": "am05_96.mp4",
             "output_format": "fltp",
-            "result": "c07028fc7e64703ba94ba863fcb14802"
+            "result": "6268ef67b934f6e100eee46a604f447e"
         },
         {
             "name": "al19_11",
@@ -6713,7 +5721,7 @@
             "source_checksum": "89675c09826b6dedae2650ba2f6647dc",
             "input_file": "al08_96.mp4",
             "output_format": "fltp",
-            "result": "4677b93aa04c55103ebd1dce77c6f4c8"
+            "result": "3d2b1fd7ae8c72a079c7f21abebced13"
         },
         {
             "name": "as06_44",
@@ -6729,15 +5737,7 @@
             "source_checksum": "a6ae9ba18931b259a0be53189af9966b",
             "input_file": "as15_64.mp4",
             "output_format": "fltp",
-            "result": "9f960c8f0636c7a90bba45ca0cb95de0"
-        },
-        {
-            "name": "er_eld1000np_22_ep0",
-            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/compressedMp4/er_eld1000np_22_ep0.mp4",
-            "source_checksum": "2686571b1052156f59b97620c3982001",
-            "input_file": "er_eld1000np_22_ep0.mp4",
-            "output_format": "fltp",
-            "result": ""
+            "result": "c624442ff73a318119b861e76dbe3ecb"
         },
         {
             "name": "am01_32",
@@ -6761,7 +5761,7 @@
             "source_checksum": "830a4c37e4371ff155e8a7ce18c526b8",
             "input_file": "am06_11.mp4",
             "output_format": "fltp",
-            "result": "35d539f4bf37499cf1b0f5e960ffcdc8"
+            "result": "38193ebd7047a355fa93f3c9c48564bf"
         },
         {
             "name": "al05sf_64",
@@ -6785,7 +5785,7 @@
             "source_checksum": "882e1e515ccc08659e6342732b017ca8",
             "input_file": "al16_12.mp4",
             "output_format": "fltp",
-            "result": "740c6812e891a78b7780e52da56ac901"
+            "result": "8be4074a4050e87afc9f9229cd6bd4ff"
         },
         {
             "name": "as16_22",
@@ -6793,7 +5793,7 @@
             "source_checksum": "d1a21fed4a49b321ac17b8962bc9b73f",
             "input_file": "as16_22.mp4",
             "output_format": "fltp",
-            "result": "02856cceb12e9637bb98fc210daf193b"
+            "result": "d9687fc7d94c85749b1ec2cbfdb7a3ed"
         },
         {
             "name": "al_sbr_sig_48_2_sig2",
@@ -6833,7 +5833,7 @@
             "source_checksum": "e7547dc84ea2b36f0426538151dbbcf6",
             "input_file": "as13_12.mp4",
             "output_format": "fltp",
-            "result": "971a2bff11d06bc3c578efda34aefa4b"
+            "result": "08595fcd37574795b0f938480dd3e058"
         },
         {
             "name": "al_sbr_e_48_1",
@@ -6849,7 +5849,7 @@
             "source_checksum": "094231e579001698ab8cbcf7a7b0d929",
             "input_file": "al16sf_22.mp4",
             "output_format": "fltp",
-            "result": "d764858d2fa96357a3214bbb34d75224"
+            "result": "04ad280f43867978faec2b55cab05817"
         },
         {
             "name": "am05_12",
@@ -6857,7 +5857,7 @@
             "source_checksum": "84c419e39f351dc6d6e77dc276948049",
             "input_file": "am05_12.mp4",
             "output_format": "fltp",
-            "result": "31cc64498f9c11ed507a24ca3bd169ec"
+            "result": "5a33794cd2ec0fa293c82bdfcbf7c7bc"
         },
         {
             "name": "al01_12",
@@ -6937,7 +5937,7 @@
             "source_checksum": "19903817fa98764385f393c3734c1d7c",
             "input_file": "al06_44.mp4",
             "output_format": "fltp",
-            "result": "c908646e2162876f19d0cdf958ddc156"
+            "result": "1a44da7dc44a968dd889bd4a8ce861f2"
         },
         {
             "name": "as12_24",
