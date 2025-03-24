@@ -15,11 +15,11 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
-
 import hashlib
 import os
 import platform
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -199,6 +199,53 @@ def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = 
 
     # If none of the above cases is fulfilled, return the first candidate
     return candidates[0] if candidates else None
+
+
+def interleave_pcm_files(pcm_files: List[str], output_filepath: str) -> None:
+    """
+    Interleaves PCM files with multichannel patterns (_*) in the correct channel ordering:
+    1. Front channels (f00-f0X) in numerical order
+    2. Side channels (s00-s0X) in numerical order, if present
+    3. Back channels (b00-b0X) in numerical order
+    4. LFE channel (l00) if present
+    """
+
+    front_channels = [f for f in pcm_files if "_f" in os.path.basename(f).lower()]
+    side_channels = [f for f in pcm_files if "_s" in os.path.basename(f).lower()]
+    back_channels = [f for f in pcm_files if "_b" in os.path.basename(f).lower()]
+    lfe_channels = [f for f in pcm_files if "_l" in os.path.basename(f).lower()]
+
+    front_channels.sort(key=_get_channel_number)
+    side_channels.sort(key=_get_channel_number)
+    back_channels.sort(key=_get_channel_number)
+    lfe_channels.sort(key=_get_channel_number)
+
+    sorted_files = front_channels + side_channels + back_channels + lfe_channels
+
+    pcm_files_handles = [open(pcm_file, "rb") for pcm_file in sorted_files]
+
+    with open(output_filepath, "wb") as outfile:
+        while True:
+            # Read one block (2 bytes for 16-bit PCM) from each file
+            data = [f.read(2) for f in pcm_files_handles]
+
+            if all(block == b"" for block in data):
+                break
+
+            for block in data:
+                if block:
+                    outfile.write(block)
+
+    for file_handle in pcm_files_handles:
+        file_handle.close()
+
+
+def _get_channel_number(filename: str) -> int:
+    """Return channel number from filename"""
+    match = re.search(r"_[fbsl](\d+)\.pcm$", filename.lower())
+    if match:
+        return int(match.group(1))
+    return 0
 
 
 def _linux_user_data_dir(appname: str) -> str:
