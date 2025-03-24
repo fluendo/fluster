@@ -16,11 +16,10 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import glob
-import os
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command
+from fluster.utils import file_checksum, interleave_pcm_files, run_command
 
 
 @register_decoder
@@ -45,20 +44,21 @@ class ISOAACDecoder(Decoder):
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a
         # ".wav", which is undesirable.
         output_filepath += ".pcm"
+
         run_command(
             [self.binary, input_filepath, output_filepath],
             timeout=timeout,
             verbose=verbose,
         )
+
         base_output = output_filepath[:-4]
-        pcm_out_f00_file = f"{base_output}_f00.pcm"
 
-        if os.path.exists(pcm_out_f00_file):
-            return file_checksum(pcm_out_f00_file)
+        output_files = glob.glob(f"{base_output}_[a-z][0-9][0-9].pcm")
 
-        output_files = glob.glob(f"{base_output}_f[0-9][0-9].pcm")
-
-        for pcm_file in output_files:
-            return file_checksum(pcm_file)
-
-        return file_checksum(output_filepath)
+        if output_files:
+            concatenated_filepath = f"{base_output}_concatenated.pcm"
+            # Call the interleave function to concatenate the files
+            interleave_pcm_files(output_files, concatenated_filepath)
+            return file_checksum(concatenated_filepath)
+        else:
+            return file_checksum(output_filepath)
