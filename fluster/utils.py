@@ -15,11 +15,11 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
-
 import hashlib
 import os
 import platform
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -199,6 +199,42 @@ def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = 
 
     # If none of the above cases is fulfilled, return the first candidate
     return candidates[0] if candidates else None
+
+
+def interleave_pcm_files(pcm_files: List[str], output_filepath: str) -> None:
+    """
+    Interleaves PCM files with multilayer patterns (_*) if present.
+    Otherwise, concatenates the files directly.
+    """
+    multilayer_files = [f for f in pcm_files if re.search(r"_[a-zA-Z0-9]", os.path.basename(f))]
+
+    if multilayer_files:
+        sorted_files = sorted(multilayer_files)
+        pcm_files_handles = [open(pcm_file, "rb") for pcm_file in sorted_files]
+
+        with open(output_filepath, "wb") as outfile:
+            while True:
+                # Read one block (2 bytes for 16-bit PCM) from each file
+                data = [f.read(2) for f in pcm_files_handles]
+
+                if all(block == b"" for block in data):
+                    break
+
+                for block in data:
+                    if block:
+                        outfile.write(block)
+
+        for file_handle in pcm_files_handles:
+            file_handle.close()
+
+        for file in sorted_files:
+            print(f"  - {os.path.basename(file)}")
+
+    else:
+        with open(output_filepath, "wb") as outfile:
+            for pcm_file in pcm_files:
+                with open(pcm_file, "rb") as infile:
+                    outfile.write(infile.read())
 
 
 def _linux_user_data_dir(appname: str) -> str:
