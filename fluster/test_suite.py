@@ -178,6 +178,7 @@ class TestSuite:
             data["codec"] = str(self.codec.value)
             data["test_vectors"] = [test_vector.data_to_serialize() for test_vector in self.test_vectors.values()]
             json.dump(data, json_file, indent=4)
+            json_file.write("\n")
 
     @staticmethod
     def _download_worker(ctx: DownloadWork) -> None:
