@@ -21,6 +21,7 @@ import os.path
 import sys
 import urllib.error
 import zipfile
+from enum import Enum
 from functools import lru_cache
 from multiprocessing import Pool
 from shutil import rmtree
@@ -30,8 +31,8 @@ from unittest.result import TestResult
 
 from fluster import utils
 from fluster.codec import Codec
-from fluster.decoder import Decoder
-from fluster.test import Test
+from fluster.decoder import Decoder, get_reference_decoder_for_codec
+from fluster.test import MD5ComparisonTest, PixelComparisonTest, Test
 from fluster.test_vector import TestVector
 
 
@@ -95,6 +96,7 @@ class Context:
         failing_test_vectors: Optional[List[str]] = None,
         keep_files: bool = False,
         verbose: bool = False,
+        reference_decoder: Optional[Decoder] = None,
     ):
         self.jobs = jobs
         self.decoder = decoder
@@ -108,6 +110,14 @@ class Context:
         self.failing_test_vectors = failing_test_vectors
         self.keep_files = keep_files
         self.verbose = verbose
+        self.reference_decoder = reference_decoder
+
+
+class TestMethod(Enum):
+    """Test method types enum"""
+
+    MD5 = "md5"
+    PIXEL = "pixel"
 
 
 class TestSuite:
@@ -128,6 +138,7 @@ class TestSuite:
         test_vectors: Dict[str, TestVector],
         is_single_archive: Optional[bool] = False,
         failing_test_vectors: Optional[Dict[str, TestVector]] = None,
+        test_method: TestMethod = TestMethod.MD5,
     ):
         # JSON members
         self.name = name
@@ -142,6 +153,7 @@ class TestSuite:
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
         self.time_taken = 0.0
+        self.test_method = test_method
 
     def clone(self) -> "TestSuite":
         """Create a deep copy of the object"""
@@ -156,6 +168,8 @@ class TestSuite:
                 data["failing_test_vectors"] = dict(map(TestVector.from_json, data["failing_test_vectors"]))
             data["test_vectors"] = dict(map(TestVector.from_json, data["test_vectors"]))
             data["codec"] = Codec(data["codec"])
+            if "test_method" in data:
+                data["test_method"] = TestMethod(data["test_method"])
             return cls(filename, resources_dir, **data)
 
     def to_json_file(self, filename: str) -> None:
@@ -177,6 +191,7 @@ class TestSuite:
                 ]
             data["codec"] = str(self.codec.value)
             data["test_vectors"] = [test_vector.data_to_serialize() for test_vector in self.test_vectors.values()]
+            data["test_method"] = self.test_method.value if self.test_method else None
             json.dump(data, json_file, indent=4)
             json_file.write("\n")
 
@@ -503,6 +518,12 @@ class TestSuite:
             print(f"Skipping decoder {ctx.decoder.name} because it cannot be run")
             return None
 
+        if self.test_method == TestMethod.PIXEL:
+            ctx.reference_decoder = get_reference_decoder_for_codec(ctx.decoder.codec)
+            if ctx.reference_decoder is None or not ctx.reference_decoder.check(ctx.verbose):
+                print(f"Skipping test suite {self.name}: no reference decoder for codec {ctx.decoder.codec.name}")
+                return None
+
         ctx.output_dir = os.path.join(ctx.output_dir, self.name)
         if os.path.exists(ctx.output_dir):
             rmtree(ctx.output_dir)
@@ -539,8 +560,9 @@ class TestSuite:
 
     def generate_tests(self, ctx: Context) -> List[Test]:
         """Generate the tests for a decoder"""
-        tests = []
+        tests: List[Test] = []
         test_vectors_run = {}
+
         for name, test_vector in self.test_vectors.items():
             skip = False
             if ctx.test_vectors:
@@ -549,19 +571,37 @@ class TestSuite:
             if ctx.skip_vectors:
                 if test_vector.name.lower() in ctx.skip_vectors:
                     skip = True
-            tests.append(
-                Test(
-                    ctx.decoder,
-                    self,
-                    test_vector,
-                    skip,
-                    ctx.output_dir,
-                    ctx.reference,
-                    ctx.timeout,
-                    ctx.keep_files,
-                    ctx.verbose,
+
+            if self.test_method == TestMethod.PIXEL:
+                assert ctx.reference_decoder is not None
+                tests.append(
+                    PixelComparisonTest(
+                        ctx.decoder,
+                        self,
+                        test_vector,
+                        skip,
+                        ctx.output_dir,
+                        ctx.reference,
+                        ctx.timeout,
+                        ctx.keep_files,
+                        ctx.verbose,
+                        ctx.reference_decoder,
+                    )
                 )
-            )
+            else:
+                tests.append(
+                    MD5ComparisonTest(
+                        ctx.decoder,
+                        self,
+                        test_vector,
+                        skip,
+                        ctx.output_dir,
+                        ctx.reference,
+                        ctx.timeout,
+                        ctx.keep_files,
+                        ctx.verbose,
+                    )
+                )
             test_vectors_run[name] = test_vector
         self.test_vectors = test_vectors_run
         return tests

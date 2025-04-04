@@ -2,6 +2,7 @@
     "name": "MPEG2_VIDEO-MAIN",
     "codec": "MPEG2_VIDEO",
     "description": "ISO IEC 13818-4 MPEG2 video main profile test suite",
+    "test_method": "pixel",
     "test_vectors": [
         {
             "name": "att",

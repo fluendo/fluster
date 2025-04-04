@@ -2,6 +2,7 @@
     "name": "MPEG2_VIDEO-422",
     "codec": "MPEG2_VIDEO",
     "description": "ISO IEC 13818-4 MPEG2 video 422 profile test suite",
+    "test_method": "pixel",
     "test_vectors": [
         {
             "name": "sony_422_id13-1",
