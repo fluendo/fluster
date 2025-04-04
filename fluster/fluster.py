@@ -31,7 +31,7 @@ from fluster.decoder import DECODERS, Decoder
 from fluster.decoders import *  # noqa: F403
 from fluster.decoders.av1_aom import AV1AOMDecoder
 from fluster.test_suite import Context as TestSuiteContext
-from fluster.test_suite import TestSuite
+from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
 
 
@@ -277,6 +277,8 @@ class Fluster:
                         decoder.annexb = True
                         decoder.multiple_layers = True
                 if decoder.codec != test_suite.codec:
+                    continue
+                if test_suite.test_method == TestMethod.PIXEL and decoder.is_reference:
                     continue
                 test_suite_res = test_suite.run(
                     ctx.to_test_suite_context(

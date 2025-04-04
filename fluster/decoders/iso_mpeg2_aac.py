@@ -30,6 +30,7 @@ class ISOAACDecoder(Decoder):
     description = "ISO MPEG2 AAC reference decoder"
     codec = Codec.AAC
     binary = "aacdec_mc"
+    is_reference = True
 
     def decode(
         self,

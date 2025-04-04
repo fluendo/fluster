@@ -11,5 +11,6 @@
             "output_format": "yuv420p",
             "result": "19b8d716307ae8b28c81b21f14f870dc"
         }
-    ]
+    ],
+    "test_method": "md5"
 }

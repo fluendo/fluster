@@ -18,7 +18,7 @@
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
-from typing import List, Type
+from typing import List, Optional, Type
 
 from fluster.codec import Codec, OutputFormat
 from fluster.utils import normalize_binary_cmd
@@ -32,6 +32,7 @@ class Decoder(ABC):
     hw_acceleration = False
     description = ""
     binary = ""
+    is_reference = False
 
     def __init__(self) -> None:
         if self.binary:
@@ -76,3 +77,16 @@ def register_decoder(cls: Type[Decoder]) -> Type[Decoder]:
     DECODERS.append(cls())
     DECODERS.sort(key=lambda dec: dec.name)
     return cls
+
+
+def get_reference_decoder_for_codec(codec: Codec) -> Optional["Decoder"]:
+    """Find the reference decoder for a specific codec"""
+
+    reference_decoders = [d for d in DECODERS if d.codec == codec and d.is_reference]
+
+    if not reference_decoders:
+        return None
+    if len(reference_decoders) > 1:
+        print(f"Multiple reference decoders found for codec {codec.name}")
+
+    return reference_decoders[0]

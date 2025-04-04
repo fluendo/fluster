@@ -26,6 +26,7 @@ import sys
 import time
 import urllib.request
 import zipfile
+from functools import partial
 from threading import Lock
 from typing import List, Optional
 
@@ -161,6 +162,41 @@ def normalize_path(path: str) -> str:
     return path
 
 
+def compare_byte_wise_files(
+    reference_file: str, test_file: str, tolerance: int = 2, keep_files: bool = False, blocksize: int = 1024
+) -> int:
+    """
+    Compares two binary files byte by byte with a given tolerance, reading in blocks.
+    """
+    total_violations = 0
+
+    with open(reference_file, "rb") as ref_file, open(test_file, "rb") as test_file_obj:
+        ref_iter = iter(partial(ref_file.read, blocksize), b"")
+        test_iter = iter(partial(test_file_obj.read, blocksize), b"")
+
+        for ref_block in ref_iter:
+            test_block = next(test_iter, None)
+
+            if test_block is None:
+                raise ValueError("Test file is shorter than reference file")
+
+            if len(ref_block) != len(test_block):
+                raise ValueError("File blocks do not match in size")
+
+            for i in range(len(ref_block)):
+                diff = abs(ref_block[i] - test_block[i])
+                if diff > tolerance:
+                    total_violations += 1
+
+        if next(test_iter, None) is not None:
+            raise ValueError("Test file is longer than reference file")
+
+    if not keep_files and os.path.isfile(test_file):
+        os.remove(test_file)
+
+    return total_violations
+
+
 def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None) -> Optional[str]:
     """Return name by file extension"""
     excludes = excludes or []
@@ -209,7 +245,6 @@ def interleave_pcm_files(pcm_files: List[str], output_filepath: str) -> None:
     3. Back channels (b00-b0X) in numerical order
     4. LFE channel (l00) if present
     """
-
     front_channels = [f for f in pcm_files if "_f" in os.path.basename(f).lower()]
     side_channels = [f for f in pcm_files if "_s" in os.path.basename(f).lower()]
     back_channels = [f for f in pcm_files if "_b" in os.path.basename(f).lower()]

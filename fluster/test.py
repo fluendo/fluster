@@ -6,24 +6,17 @@
 # modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3
 # of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import unittest
+from abc import abstractmethod
 from subprocess import TimeoutExpired
 from time import perf_counter
 from typing import Any
 
 from fluster.decoder import Decoder
 from fluster.test_vector import TestVector, TestVectorResult
-from fluster.utils import normalize_path
+from fluster.utils import compare_byte_wise_files, normalize_path
 
 
 class Test(unittest.TestCase):
@@ -51,57 +44,160 @@ class Test(unittest.TestCase):
         self.timeout = timeout
         self.keep_files = keep_files
         self.verbose = verbose
-        setattr(self, test_vector.name, self._test)
+        self._keep_files_during_test = False
+        self.test_vector_result = self.test_suite.test_vectors[self.test_vector.name]
+
+        # Set up the test method
+        setattr(self, test_vector.name, self._test_wrapper)
         super().__init__(test_vector.name)
 
+        # Initialize file paths
+        self._initialize_file_paths()
+
+    def _initialize_file_paths(self) -> None:
+        """Initialize input and output file paths."""
+        self.output_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + ".out"))
+
+        input_dir = os.path.join(self.resources_dir, self.test_suite.name)
+
+        if not self.test_suite.is_single_archive:
+            input_dir = os.path.join(input_dir, self.test_vector.name)
+
+        self.input_filepath = normalize_path(os.path.join(input_dir, self.test_vector.input_file))
+
+    def _execute_decode(self) -> str:
+        """Execute the decoder and return the result."""
+        keep_files_for_decode = self._keep_files_during_test or self.keep_files
+
+        return self.decoder.decode(
+            self.input_filepath,
+            self.output_filepath,
+            self.test_vector.output_format,
+            self.timeout,
+            self.verbose,
+            keep_files_for_decode,
+        )
+
+    def _cleanup_if_needed(self) -> None:
+        """Clean up output files if keep_files is False."""
+        if not self.keep_files and os.path.exists(self.output_filepath):
+            os.remove(self.output_filepath)
+
+    def _test_wrapper(self) -> None:
+        try:
+            self._test()
+        finally:
+            self._cleanup_if_needed()
+
     def _test(self) -> None:
+        """Execute the test and process results."""
         if self.skip:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.NOT_RUN
+            self.test_vector_result.test_result = TestVectorResult.NOT_RUN
             return
 
-        output_filepath = os.path.join(self.output_dir, self.test_vector.name + ".out")
-
-        input_filepath = os.path.join(
-            self.resources_dir,
-            self.test_suite.name,
-            (self.test_vector.name if not self.test_suite.is_single_archive else ""),
-            self.test_vector.input_file,
-        )
-        output_filepath = normalize_path(output_filepath)
-        input_filepath = normalize_path(input_filepath)
+        start = perf_counter()
 
         try:
-            start = perf_counter()
-            result = self.decoder.decode(
-                input_filepath,
-                output_filepath,
-                self.test_vector.output_format,
-                self.timeout,
-                self.verbose,
-                self.keep_files,
-            )
-            self.test_suite.test_vectors[self.test_vector.name].test_time = perf_counter() - start
+            result = self._execute_decode()
+            self.test_vector_result.test_time = perf_counter() - start
         except TimeoutExpired:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.TIMEOUT
-            self.test_suite.test_vectors[self.test_vector.name].test_time = perf_counter() - start
+            self.test_vector_result.test_result = TestVectorResult.TIMEOUT
+            self.test_vector_result.test_time = perf_counter() - start
             raise
         except Exception:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.ERROR
-            self.test_suite.test_vectors[self.test_vector.name].test_time = perf_counter() - start
+            self.test_vector_result.test_result = TestVectorResult.ERROR
+            self.test_vector_result.test_time = perf_counter() - start
             raise
 
-        if not self.keep_files and os.path.exists(output_filepath) and os.path.isfile(output_filepath):
-            os.remove(output_filepath)
-
-        if not self.reference:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.FAIL
-            if self.test_vector.result.lower() == result.lower():
-                self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.SUCCESS
-            self.assertEqual(
-                self.test_vector.result.lower(),
-                result.lower(),
-                self.test_vector.name,
-            )
+        if self.reference:
+            self.test_vector_result.test_result = TestVectorResult.REFERENCE
+            self.test_vector_result.result = result
         else:
-            self.test_suite.test_vectors[self.test_vector.name].test_result = TestVectorResult.REFERENCE
-            self.test_suite.test_vectors[self.test_vector.name].result = result
+            try:
+                self.compare_result(result)
+                self.test_vector_result.test_result = TestVectorResult.SUCCESS
+            except Exception:
+                self.test_vector_result.test_result = TestVectorResult.FAIL
+                raise
+
+    @abstractmethod
+    def compare_result(self, result: str) -> None:
+        """Compare the test result with the expected value.
+
+        Args:
+            result: The result string from the decoder
+        """
+
+
+class MD5ComparisonTest(Test):
+    """Test class for MD5 comparison"""
+
+    def compare_result(self, result: str) -> None:
+        """Compare MD5 hash results."""
+        expected = self.test_vector.result.lower()
+        actual = result.lower()
+
+        self.assertEqual(expected, actual, self.test_vector.name)
+
+
+class PixelComparisonTest(Test):
+    """Test class for pixel comparison"""
+
+    def __init__(
+        self,
+        decoder: Decoder,
+        test_suite: Any,  # can't use TestSuite type because of circular dependency
+        test_vector: TestVector,
+        skip: bool,
+        output_dir: str,
+        reference: bool,
+        timeout: int,
+        keep_files: bool,
+        verbose: bool,
+        reference_decoder: Decoder,
+    ):
+        super().__init__(
+            decoder,
+            test_suite,
+            test_vector,
+            skip,
+            output_dir,
+            reference,
+            timeout,
+            keep_files,
+            verbose,
+        )
+        self._keep_files_during_test = True
+        self.reference_decoder = reference_decoder
+        self.reference_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + "_ref.yuv"))
+
+    def _decode_reference(self) -> str:
+        """Decode the reference file."""
+        keep_files_for_decode = self._keep_files_during_test or self.keep_files
+
+        return self.reference_decoder.decode(
+            self.input_filepath,
+            self.reference_filepath,
+            self.test_vector.output_format,
+            self.timeout,
+            self.verbose,
+            keep_files_for_decode,
+        )
+
+    def _cleanup_if_needed(self) -> None:
+        super()._cleanup_if_needed()
+        if not self.keep_files and os.path.exists(self.reference_filepath):
+            os.remove(self.reference_filepath)
+
+    def compare_result(self, result: str) -> None:
+        """Compare decoded output with reference decoder output pixel-wise."""
+        reference_result = self._decode_reference()
+
+        if not os.path.exists(self.reference_filepath) and os.path.exists(reference_result):
+            self.reference_filepath = reference_result
+
+        comparison_result = compare_byte_wise_files(
+            self.reference_filepath, self.output_filepath, keep_files=self.keep_files
+        )
+
+        self.assertEqual(0, comparison_result, self.test_vector.name)
