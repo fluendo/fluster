@@ -11,7 +11,7 @@ on:
 jobs:
   min_linux:
     name: linux with min supported deps
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v4
@@ -107,7 +107,7 @@ jobs:
 
   create_release:
     name: Create Release and Publish
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     concurrency: create_release
     needs:
       - min_linux
