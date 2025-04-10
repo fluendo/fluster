@@ -44,6 +44,7 @@ class VKVSDecoder(Decoder):
             Codec.H264: "avc",
             Codec.H265: "hevc",
             Codec.AV1: "av1",
+            Codec.VP9: "vp9",
         }
         run_command(
             [
@@ -81,3 +82,10 @@ class VKVSAV1Decoder(VKVSDecoder):
     """Vulkan Video Samples decoder for AV1"""
 
     codec = Codec.AV1
+
+
+@register_decoder
+class VKVSVP9Decoder(VKVSDecoder):
+    """Vulkan Video Samples decoder for VP9"""
+
+    codec = Codec.VP9
