@@ -256,6 +256,15 @@ class GStreamerLibavVP9(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerLibavMPEG2VideoDecoder(GStreamer10Video):
+    """GStreamer MPEG2 Libav video decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.MPEG2_VIDEO
+    decoder_bin = " avdec_mpeg2video "
+    api = "Libav"
+
+
+@register_decoder
 class GStreamerVaapiH265Gst10Decoder(GStreamer10Video):
     """GStreamer H.265 VAAPI decoder implementation for GStreamer 1.0"""
 
@@ -667,6 +676,15 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
     codec = Codec.H266
     decoder_bin = " vvdec "
     api = "VVdeC"
+
+
+@register_decoder
+class GStreamerMPEG2VideoDecoder(GStreamer10Video):
+    """GStreamer MPEG2 video decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.MPEG2_VIDEO
+    decoder_bin = " mpeg2dec "
+    api = "SW"
 
 
 @register_decoder
