@@ -324,6 +324,8 @@ H.266
 MPEG2_VIDEO
     FFmpeg-MPEG2_VIDEO: FFmpeg MPEG2 VIDEO SW decoder
     Fluendo-MPEG2_VIDEO-SW-Gst1.0: Fluendo MPEG2 VIDEO SW decoder for GStreamer 1.0
+    GStreamer-MPEG2_VIDEO-Libav-Gst1.0: GStreamer MPEG2_VIDEO Libav decoder for GStreamer 1.0
+    GStreamer-MPEG2_VIDEO-SW-Gst1.0: GStreamer MPEG2_VIDEO SW decoder for GStreamer 1.0
     ISO-MPEG2-VIDEO: ISO MPEG2 Video reference decoder
 
 VP8
