@@ -16,6 +16,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import copy
+import fnmatch
 import json
 import os.path
 import sys
@@ -26,7 +27,7 @@ from functools import lru_cache
 from multiprocessing import Pool
 from shutil import rmtree
 from time import perf_counter
-from typing import Any, Dict, List, Optional, Type, cast
+from typing import Any, Dict, List, Optional, Set, Type, cast
 from unittest.result import TestResult
 
 from fluster import utils
@@ -97,6 +98,7 @@ class Context:
         keep_files: bool = False,
         verbose: bool = False,
         reference_decoder: Optional[Decoder] = None,
+        test_vector_names: Optional[Set[str]] = None,
     ):
         self.jobs = jobs
         self.decoder = decoder
@@ -111,6 +113,7 @@ class Context:
         self.keep_files = keep_files
         self.verbose = verbose
         self.reference_decoder = reference_decoder
+        self.test_vector_names = test_vector_names
 
 
 class TestMethod(Enum):
@@ -529,6 +532,12 @@ class TestSuite:
             rmtree(ctx.output_dir)
         os.makedirs(ctx.output_dir)
 
+        if ctx.test_vectors:
+            test_list = [name.lower() for name in self.test_vectors]
+            ctx.test_vector_names = set()
+            for pattern in ctx.test_vectors:
+                ctx.test_vector_names.update(fnmatch.filter(test_list, pattern.lower()))
+
         test_suite = self.clone()
         tests = test_suite.generate_tests(ctx)
         if not tests:
@@ -565,12 +574,11 @@ class TestSuite:
 
         for name, test_vector in self.test_vectors.items():
             skip = False
-            if ctx.test_vectors:
-                if test_vector.name.lower() not in ctx.test_vectors:
-                    continue
-            if ctx.skip_vectors:
-                if test_vector.name.lower() in ctx.skip_vectors:
-                    skip = True
+            name_lower = test_vector.name.lower()
+            if ctx.test_vector_names is not None and name_lower not in ctx.test_vector_names:
+                continue
+            if ctx.skip_vectors and name_lower in ctx.skip_vectors:
+                skip = True
 
             if self.test_method == TestMethod.PIXEL:
                 assert ctx.reference_decoder is not None
