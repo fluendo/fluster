@@ -16,6 +16,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 import copy
+import fnmatch
 import json
 import os.path
 import sys
@@ -562,11 +563,16 @@ class TestSuite:
         """Generate the tests for a decoder"""
         tests: List[Test] = []
         test_vectors_run = {}
-
+        test_list = list(self.test_vectors.keys())
+        test_vector_names = None
+        if ctx.test_vectors:
+            test_vector_names = []
+            for i in range(len(ctx.test_vectors)):
+                test_vector_names += fnmatch.filter(test_list, ctx.test_vectors[i])
         for name, test_vector in self.test_vectors.items():
             skip = False
-            if ctx.test_vectors:
-                if test_vector.name.lower() not in ctx.test_vectors:
+            if test_vector_names is not None:
+                if test_vector.name.lower() not in test_vector_names:
                     continue
             if ctx.skip_vectors:
                 if test_vector.name.lower() in ctx.skip_vectors:
