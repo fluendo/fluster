@@ -56,6 +56,8 @@ class VKVSDecoder(Decoder):
                 "--codec",
                 codec_mapping[self.codec],
                 "--noPresent",
+                "--enablePostProcessFilter",
+                "0",
             ],
             timeout=timeout,
             verbose=verbose,
