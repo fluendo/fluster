@@ -16,9 +16,9 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from enum import Enum
-from typing import Any, Dict, List, Type
+from typing import Any, Dict, List, Optional, Type
 
-from fluster.codec import OutputFormat
+from fluster.codec import OutputFormat, Profile
 
 
 class TestVectorResult(Enum):
@@ -43,12 +43,14 @@ class TestVector:
         input_file: str,
         output_format: OutputFormat,
         result: str,
+        profile: Optional[Profile] = None,
     ):
         # JSON members
         self.name = name
         self.source = source
         self.source_checksum = source_checksum
         self.input_file = input_file
+        self.profile = profile
         self.output_format = output_format
         self.result = result
 
@@ -64,6 +66,11 @@ class TestVector:
             data["output_format"] = OutputFormat(data["output_format"])
         else:
             data["output_format"] = OutputFormat.NONE
+
+        # We only define profile if the paramter is found in .json of test suite
+        if "profile" in data:
+            data["profile"] = Profile(data["profile"])
+
         return (data["name"], cls(**data))
 
     def data_to_serialize(self) -> Dict[str, object]:
@@ -73,6 +80,10 @@ class TestVector:
         data.pop("errors")
         data.pop("test_time")
         data["output_format"] = str(self.output_format.value)
+        if self.profile is not None:
+            data["profile"] = str(self.profile.value)
+        else:
+            data.pop("profile")
         return data
 
     def __str__(self) -> str:
@@ -80,6 +91,7 @@ class TestVector:
             f"        {self.name}\n"
             f"            Source: {self.source}\n"
             f"            Input: {self.input_file}\n"
+            f"            Profile: {self.profile}\n"
             f"            Result: {self.result}"
         )
         return ret
