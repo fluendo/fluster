@@ -8,6 +8,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I1_2008.bits",
             "source_checksum": "1f308514452a976ecad1364374119eb3",
             "input_file": "PPCV444I1_2008.bits",
+            "profile": "CAVLC 4:4:4",
             "output_format": "gbrp14le",
             "result": "75ce5bc9c548aca02e437613cf3011ec"
         },
@@ -16,6 +17,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I2_2008.bits",
             "source_checksum": "2242c0b0eeb7887711383e11708ec74d",
             "input_file": "PPCV444I2_2008.bits",
+            "profile": "CAVLC 4:4:4",
             "output_format": "gbrp14le",
             "result": "ccb21ffb3cb9c84221643f7a539439f2"
         },
@@ -24,6 +26,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I3_2008.bits",
             "source_checksum": "5e6c2fac2512b23f92f9cbffe6e2a1a1",
             "input_file": "PPCV444I3_2008.bits",
+            "profile": "CAVLC 4:4:4",
             "output_format": "gbrp14le",
             "result": "3e635a045b0e74d799e0986470a83627"
         },
@@ -32,6 +35,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I4_Mitsubishi_A.zip",
             "source_checksum": "078604ffd6509d9bfb9c6cae121188d8",
             "input_file": "PPCV444I4_Mitsubishi_A.264",
+            "profile": "CAVLC 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "6ddc08441ca450ae94c661e4978b777d"
         },
@@ -40,6 +44,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I5_Mitsubishi_A.zip",
             "source_checksum": "c7a722cc6173be92c4ec170faa4d7ab7",
             "input_file": "PPCV444I5_Mitsubishi_A.264",
+            "profile": "CAVLC 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "679ca1edd2902c500fc137d7fdca3954"
         },
@@ -48,6 +53,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I6_Mitsubishi_A.zip",
             "source_checksum": "08c7439b4fccb77f5e5e9cd8b4ad59a3",
             "input_file": "PPCV444I6_Mitsubishi_A.264",
+            "profile": "CAVLC 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "6ddc08441ca450ae94c661e4978b777d"
         },
@@ -56,6 +62,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPCV444I7_SejongUniv_A.zip",
             "source_checksum": "410d50227f11871c334721e95f450fc0",
             "input_file": "PPCV444I-7.264",
+            "profile": "CAVLC 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "70d81a76c8722f28917e2ea2307f1988"
         },
@@ -64,6 +71,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I1_Panasonic_A.zip",
             "source_checksum": "3467b1af3b182bdad6b67e2309b8ca0c",
             "input_file": "PPH10I1_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "074c5b47578cb72bef0db3930f00303f"
         },
@@ -72,6 +80,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I2_Panasonic_A.zip",
             "source_checksum": "76bdea5696cf5e5008501e6b4873b924",
             "input_file": "PPH10I2_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "8e82308fe0f3b9a8fdacf8af038ca135"
         },
@@ -80,6 +89,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I3_Panasonic_A.zip",
             "source_checksum": "84758201dc37c6f860e75a8aa52a7542",
             "input_file": "PPH10I3_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "9fc6af89080ffbf9a5cd181696dbbdd2"
         },
@@ -88,6 +98,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I4_Panasonic_A.zip",
             "source_checksum": "871866b07e77cc4210301d6f9738606d",
             "input_file": "PPH10I4_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "764b5f9cea0ab2e59a609aa03c216151"
         },
@@ -96,6 +107,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I5_Panasonic_A.zip",
             "source_checksum": "08be37ced68fc264bfee9032652b4137",
             "input_file": "PPH10I5_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "77a1bddad3a0c09b610e561911526343"
         },
@@ -104,6 +116,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I6_Panasonic_A.zip",
             "source_checksum": "92ee056f27b4a65f512842ef84587f00",
             "input_file": "PPH10I6_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "babf354387538aa0faa16990f9dffad9"
         },
@@ -112,6 +125,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH10I7_Panasonic_A.zip",
             "source_checksum": "326587404b5ec5bcc7cf973b03af7501",
             "input_file": "PPH10I7_Panasonic_A.264",
+            "profile": "High 10 Intra",
             "output_format": "yuv420p10le",
             "result": "08cf73bd866963965f5a1dd79ef6d058"
         },
@@ -120,6 +134,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I1_Panasonic_A.zip",
             "source_checksum": "8a5f7673bedfcdef633e75c6313acefc",
             "input_file": "PPH422I1_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "1ac8535dd650c138d590951f7914b27d"
         },
@@ -128,6 +143,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I2_Panasonic_A.zip",
             "source_checksum": "0e766c550f6f774192a231ec83f9faea",
             "input_file": "PPH422I2_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "fd1d90779487e37e117e6b1470de0883"
         },
@@ -136,6 +152,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I3_Panasonic_A.zip",
             "source_checksum": "d58f33b24b53398857b9e81423664baa",
             "input_file": "PPH422I3_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "19006fed447cd2017e028beb91ebf0e2"
         },
@@ -144,6 +161,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I4_Panasonic_A.zip",
             "source_checksum": "818ac8374a414010215752ae489587e1",
             "input_file": "PPH422I4_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "0f92db24eb5b64495712532257da55c1"
         },
@@ -152,6 +170,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I5_Panasonic_A.zip",
             "source_checksum": "a2a3acf1f8803072fbb61f7fd26a1ef3",
             "input_file": "PPH422I5_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "70d580af451d845300a5c476ca8c871d"
         },
@@ -160,6 +179,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I6_Panasonic_A.zip",
             "source_checksum": "0c1751fb73c7ca422f78563b352a666b",
             "input_file": "PPH422I6_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "b0e2f06678bb37c7c0c048b9d2f62c1f"
         },
@@ -168,6 +188,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH422I7_Panasonic_A.zip",
             "source_checksum": "4c0d143fc3ceff65a84dc0b5f098c6c5",
             "input_file": "PPH422I7_Panasonic_A.264",
+            "profile": "High 4:2:2 Intra",
             "output_format": "yuv422p10le",
             "result": "9aafc5493e7e0d32bf118bc4a6174c2e"
         },
@@ -176,6 +197,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I1_2008.bits",
             "source_checksum": "bb5d8943dd9f46deecdfacbf8376ece0",
             "input_file": "PPH444I1_2008.bits",
+            "profile": "High 4:4:4 Intra",
             "output_format": "gbrp14le",
             "result": "3632478fd15cc2ca97b6aa90bd98d1c4"
         },
@@ -184,6 +206,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I2_2008.bits",
             "source_checksum": "8d82ccb75a9d07c838f3a7952c40bd93",
             "input_file": "PPH444I2_2008.bits",
+            "profile": "High 4:4:4 Intra",
             "output_format": "gbrp14le",
             "result": "eadd476a096ecaea646709e0e619c2d6"
         },
@@ -192,6 +215,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I3_2008.bits",
             "source_checksum": "2742066b9b638a93c80fc913e74e0037",
             "input_file": "PPH444I3_2008.bits",
+            "profile": "High 4:4:4 Intra",
             "output_format": "gbrp14le",
             "result": "12d847e686062363995e2f7eb808a626"
         },
@@ -200,6 +224,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I4_Mitsubishi_A.zip",
             "source_checksum": "e2b72b15c00cce5fe58684ab6b75f25c",
             "input_file": "PPH444I4_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "65f523ebe1fd966b1f86d2b3e415d7d5"
         },
@@ -208,6 +233,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I5_Mitsubishi_A.zip",
             "source_checksum": "f7901b3579c43f7681b44b37ccbe4a20",
             "input_file": "PPH444I5_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "7362fc0ab046c7f0434f1cc4f26dbeed"
         },
@@ -216,6 +242,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I6_Mitsubishi_A.zip",
             "source_checksum": "86950ac7efffcbc8dd9b56eaed37dedb",
             "input_file": "PPH444I6_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Intra",
             "output_format": "Unknown",
             "result": "65f523ebe1fd966b1f86d2b3e415d7d5"
         },
@@ -224,6 +251,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444I7_SejongUniv_A.zip",
             "source_checksum": "86d97c2fde74f7172f91a3e148db25c4",
             "input_file": "PPH444I-7.264",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "Unknown",
             "result": "70d81a76c8722f28917e2ea2307f1988"
         },
@@ -232,6 +260,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P10_SejongUniv_A.zip",
             "source_checksum": "72273f7382842423059666d67fe57fb7",
             "input_file": "PPH444P-10.264",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "Unknown",
             "result": "70d81a76c8722f28917e2ea2307f1988"
         },
@@ -240,6 +269,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P1_2008.bits",
             "source_checksum": "36012688616c8cfb11714dfd1921dffa",
             "input_file": "PPH444P1_2008.bits",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "gbrp14le",
             "result": "6b55dbc0026ffcaccbe7d39f70784298"
         },
@@ -248,6 +278,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P2_2008.bits",
             "source_checksum": "fb9cbfdcbfcafbb96b995749637c9898",
             "input_file": "PPH444P2_2008.bits",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "gbrp14le",
             "result": "f52d86c7687e2ed4ad8a849be29ea4e1"
         },
@@ -256,6 +287,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P3_2008.bits",
             "source_checksum": "eec00e884b379446878f4ccfeed66962",
             "input_file": "PPH444P3_2008.bits",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "gbrp14le",
             "result": "4e33f4ad26df3ea11c40b1e42d9360ee"
         },
@@ -264,6 +296,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P4_2008.bits",
             "source_checksum": "73c9d87ff9e35eedbb1cb1e2d49fa46c",
             "input_file": "PPH444P4_2008.bits",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "gbrp14le",
             "result": "487784a515af1a01c019a8f9f2dace81"
         },
@@ -272,6 +305,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P5_2008.bits",
             "source_checksum": "264f8374116d343f2c318d9112a86d93",
             "input_file": "PPH444P5_2008.bits",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "gbrp14le",
             "result": "30a75f4d38ed33040883599f533f528a"
         },
@@ -280,6 +314,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P6_Mitsubishi_A.zip",
             "source_checksum": "28e7b3772d79d90b648f4382f0a782c4",
             "input_file": "PPH444P6_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "Unknown",
             "result": "80a3e16e08a662e5b784aa1380c048e1"
         },
@@ -288,6 +323,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P7_Mitsubishi_A.zip",
             "source_checksum": "27e193897b21a9b732c105edd9c15bad",
             "input_file": "PPH444P7_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "Unknown",
             "result": "2de6c4b551178c74aca5375f95bb15f8"
         },
@@ -296,6 +332,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P8_Mitsubishi_A.zip",
             "source_checksum": "c0054b570abb81f036657bcf1353344a",
             "input_file": "PPH444P8_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "Unknown",
             "result": "42c6e811b6386158811a8a10fbf72e46"
         },
@@ -304,6 +341,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/Professional_profiles/PPH444P9_Mitsubishi_A.zip",
             "source_checksum": "1d92115ba2820084e44f7c62cb50333f",
             "input_file": "PPH444P9_Mitsubishi_A.264",
+            "profile": "High 4:4:4 Predictive",
             "output_format": "Unknown",
             "result": "3a77d0018ccb8784e298269a0c2e9aa7"
         }
