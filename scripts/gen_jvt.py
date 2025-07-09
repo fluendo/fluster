@@ -29,7 +29,7 @@ from typing import Any, List, Optional, Tuple
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
@@ -145,18 +145,19 @@ class JVTGenerator:
                     "-select_streams",
                     "v:0",
                     "-show_entries",
-                    "stream=pix_fmt",
+                    "stream=profile,pix_fmt",
                     "-of",
                     "default=nokey=1:noprint_wrappers=1",
                     absolute_input_path,
                 ]
 
                 result = utils.run_command_with_output(command).splitlines()
-                pix_fmt = result[0]
+                profile = result[0]
+                pix_fmt = result[1]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
                 except KeyError as key_err:
-                    exceptions = {
+                    exceptions_output_format = {
                         # All below test vectors from JVT-Professional_profiles
                         # need to be analysed with respect to output format,
                         # for now it remains undetermined
@@ -174,10 +175,41 @@ class JVTGenerator:
                         "PPH444P8_Mitsubishi_A": OutputFormat.NONE,
                         "PPH444P9_Mitsubishi_A": OutputFormat.NONE,
                     }
-                    if test_vector.name in exceptions.keys():
-                        test_vector.output_format = exceptions[test_vector.name]
+                    if test_vector.name in exceptions_output_format.keys():
+                        test_vector.output_format = exceptions_output_format[test_vector.name]
                     else:
                         raise key_err
+                # Skip profile-related checks for MVC and SVC test suites
+                # FFmpeg reports base stream profiles instead of multiview and scalable ones
+                # Alternative tool to use for correct results is mediainfo
+                if self.name not in ("MVC", "SVC"):
+                    try:
+                        test_vector.profile = Profile[profile.translate(str.maketrans(" :", "__")).upper()]
+                    except KeyError as key_err:
+                        exceptions_profile = {
+                            # FFmpeg cannot detect profiles of below vectors
+                            # Values come from official spec validated with mediainfo online
+                            # Test suite: JVT-AVC_V1
+                            "FM2_SVA_C": Profile.BASELINE,
+                            # Test suite: JVT-Professional_profiles
+                            "PPCV444I4_Mitsubishi_A": Profile.CAVLC_4_4_4_INTRA,
+                            "PPCV444I5_Mitsubishi_A": Profile.CAVLC_4_4_4_INTRA,
+                            "PPCV444I6_Mitsubishi_A": Profile.CAVLC_4_4_4_INTRA,
+                            "PPCV444I7_SejongUniv_A": Profile.CAVLC_4_4_4_INTRA,
+                            "PPH444I4_Mitsubishi_A": Profile.HIGH_4_4_4_INTRA,
+                            "PPH444I5_Mitsubishi_A": Profile.HIGH_4_4_4_INTRA,
+                            "PPH444I6_Mitsubishi_A": Profile.HIGH_4_4_4_INTRA,
+                            "PPH444I7_SejongUniv_A": Profile.HIGH_4_4_4_PREDICTIVE,
+                            "PPH444P10_SejongUniv_A": Profile.HIGH_4_4_4_PREDICTIVE,
+                            "PPH444P6_Mitsubishi_A": Profile.HIGH_4_4_4_PREDICTIVE,
+                            "PPH444P7_Mitsubishi_A": Profile.HIGH_4_4_4_PREDICTIVE,
+                            "PPH444P8_Mitsubishi_A": Profile.HIGH_4_4_4_PREDICTIVE,
+                            "PPH444P9_Mitsubishi_A": Profile.HIGH_4_4_4_PREDICTIVE,
+                        }
+                        if test_vector.name in exceptions_profile.keys():
+                            test_vector.profile = exceptions_profile[test_vector.name]
+                        else:
+                            raise key_err
 
             exceptions_checksum = [
                 # Output checksum of all below test vectors from JVT-FRExt has to be calculated by means of
