@@ -30,7 +30,7 @@ from typing import Any, List, Optional, Tuple
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
@@ -132,9 +132,7 @@ class JCTVCGenerator:
             if not test_vector.input_file:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
-            if "main10" in test_vector.name.lower():
-                test_vector.output_format = OutputFormat.YUV420P10LE
-            elif self.use_ffprobe:
+            if self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd("ffprobe")
                 command = [
                     ffprobe,
@@ -143,22 +141,27 @@ class JCTVCGenerator:
                     "-select_streams",
                     "v:0",
                     "-show_entries",
-                    "stream=pix_fmt",
+                    "stream=profile,pix_fmt",
                     "-of",
                     "default=nokey=1:noprint_wrappers=1",
                     absolute_input_path,
                 ]
 
                 result = utils.run_command_with_output(command).splitlines()
-                pix_fmt = result[0]
+                profile = result[0]
+                pix_fmt = result[1]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                    if test_vector.output_format == OutputFormat.UNKNOWN:
+                        raise KeyError
                 except KeyError as key_err:
-                    exceptions = {
+                    exceptions_output_format = {
                         # Feature: Test unequal luma and chroma bitdepth
                         # setting. The luma bitdepth is higher than the chroma
-                        # bitdepth. Luma is 12bit, chroma is 8bit. Considering
-                        # 12bit.
+                        # bitdepth.
+                        # Luma is 10 bit, chroma is 9 bit
+                        "TSUNEQBD_A_MAIN10_Technicolor_2": OutputFormat.YUV420P10LE,
+                        # Luma is 12bit, chroma is 8bit. Considering 12bit.
                         "Bitdepth_A_RExt_Sony_1": OutputFormat.YUV444P12LE,
                         # Same as above, but the chroma is 12bit and luma is 8bit.
                         "Bitdepth_B_RExt_Sony_1": OutputFormat.YUV444P12LE,
@@ -173,10 +176,31 @@ class JCTVCGenerator:
                         "GENERAL_16b_444_RExt_Sony_2": OutputFormat.YUV444P16LE,
                         "WAVETILES_RExt_Sony_2": OutputFormat.YUV444P16LE,
                     }
-                    if test_vector.name in exceptions.keys():
-                        test_vector.output_format = exceptions[test_vector.name]
+                    if test_vector.name in exceptions_output_format.keys():
+                        test_vector.output_format = exceptions_output_format[test_vector.name]
                     else:
                         raise key_err
+                # Skip profile-related checks for several test suites
+                # FFmpeg fails to report profile information for many vectors
+                # Alternative tool to use for correct results is mediainfo
+                if self.name not in ("RExt", "3D-HEVC", "MV-HEVC", "SCC", "SHVC"):
+                    try:
+                        test_vector.profile = Profile[profile.translate(str.maketrans(" :", "__")).upper()]
+                    except KeyError as key_err:
+                        exceptions_profile = {
+                            # FFmpeg cannot detect profiles of below vectors
+                            # Values come from official spec validated with mediainfo online
+                            # Test suite: JCT-VC-HEVC_V1
+                            "TSUNEQBD_A_MAIN10_Technicolor_2": Profile.MAIN_10,
+                            # Test suite: RExt
+                            "ADJUST_IPRED_ANGLE_A_RExt_Mitsubishi_2": Profile.MAIN_4_2_2_10,
+                            "Bitdepth_A_RExt_Sony_1": Profile.MAIN_4_4_4_12,
+                            "Bitdepth_B_RExt_Sony_1": Profile.MAIN_4_4_4_12,
+                        }
+                        if test_vector.name in exceptions_profile.keys():
+                            test_vector.profile = exceptions_profile[test_vector.name]
+                        else:
+                            raise key_err
 
             self._fill_checksum_h265(test_vector, dest_dir)
 
@@ -247,13 +271,8 @@ if __name__ == "__main__":
         default=2 * multiprocessing.cpu_count(),
     )
     args = parser.parse_args()
-    generator = JCTVCGenerator(
-        "HEVC_v1",
-        "JCT-VC-HEVC_V1",
-        Codec.H265,
-        "JCT-VC HEVC version 1",
-        H265_URL,
-    )
+
+    generator = JCTVCGenerator("HEVC_v1", "JCT-VC-HEVC_V1", Codec.H265, "JCT-VC HEVC version 1", H265_URL, True)
     generator.generate(not args.skip_download, args.jobs)
 
     generator = JCTVCGenerator("RExt", "JCT-VC-RExt", Codec.H265, "JCT-VC HEVC Range Extension", H265_URL, True)
