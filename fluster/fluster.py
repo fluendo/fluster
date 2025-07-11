@@ -24,7 +24,7 @@ from functools import lru_cache
 from shutil import rmtree
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
-from fluster.codec import Codec
+from fluster.codec import Codec, Profile
 from fluster.decoder import DECODERS, Decoder
 
 # Import decoders that will auto-register
@@ -490,6 +490,42 @@ class Fluster:
             output += separator if first else ""
             return output
 
+        def _profile_stats(
+            results: List[Tuple[Decoder, TestSuite]],
+        ) -> str:
+            separator = f"|-|{'-|' * len(results)}"
+            output = separator
+            output += "\n|Profile|"
+
+            vectors_per_profile = {i.name: 0 for i in Profile}
+            for test_vector in results[0][1].test_vectors.values():
+                if test_vector.profile is not None:
+                    vectors_per_profile[test_vector.profile.name] += 1
+            for decoder, _ in results:
+                output += f"{decoder.name}|"
+
+            vectors_passed_per_profile_per_decoder: Dict[str, Dict[str, int]] = {i.name: {} for i in Profile}
+            for profile in Profile:
+                for decoder, _ in results:
+                    vectors_passed_per_profile_per_decoder[profile.name][decoder.name] = 0
+
+            for decoder, test_suite in results:
+                for test_vector in test_suite.test_vectors.values():
+                    if test_vector.test_result == TestVectorResult.SUCCESS and test_vector.profile is not None:
+                        vectors_passed_per_profile_per_decoder[test_vector.profile.name][decoder.name] += 1
+
+            for profile_temp, decoders in vectors_passed_per_profile_per_decoder.items():
+                output += "\n|" + str(profile_temp) + "|"
+                for decoder_temp in decoders:
+                    output += (
+                        str(vectors_passed_per_profile_per_decoder[profile_temp][decoder_temp])
+                        + "/"
+                        + str(vectors_per_profile[profile_temp])
+                        + "|"
+                    )
+
+            return output
+
         output = ""
 
         for test_suite_name, test_suite_results in results.items():
@@ -503,6 +539,9 @@ class Fluster:
                     tvector = test_suite.test_vectors[test_vector.name]
                     output += self.emoji[tvector.test_result] + "|"
             output += _global_stats(test_suite_results, test_suites, False)
+            output += "\n\n"
+
+            output += _profile_stats(test_suite_results)
             output += "\n\n"
         if ctx.summary_output:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
