@@ -37,13 +37,13 @@ suites.
 
 ## Description
 
-Fluster requires **Python 3.6+** to work. It has zero dependencies apart from
+Fluster requires **Python 3.7+** to work. It has zero dependencies apart from
 that. The [requirements-dev.txt](https://github.com/fluendo/fluster/blob/master/requirements-dev.txt) file includes Python's modules
 used only for development.
 
 The framework works with test suites. Each test suite is associated with one
 codec and contains a number of test vectors. Each test vector consists of an
-input file and and the expected result. The input file will be fed into each
+input file and the expected result. The input file will be fed into each
 decoder that supports the codec of the test suite. The file format is a JSON
 file. You can find the ones included in the [test_suites](https://github.com/fluendo/fluster/tree/master/test_suites)
 directory.
@@ -161,15 +161,20 @@ MPEG2_AAC-ADIF
     Codec: AAC
     Description: ISO IEC 13818-4 MPEG2 AAC ADIF test suite
     Test vectors: 492
-
-MPEG4_AAC-ADTS
+    
+MPEG2_AAC-ADTS
     Codec: AAC
-    Description: ISO IEC 14496-26 MPEG4 AAC ADTS test suite
-    Test vectors: 9
+    Description: ISO IEC 13818-4 MPEG2 AAC ADTS test suite
+    Test vectors: 62
 
 MPEG4_AAC-ADIF
     Codec: AAC
     Description: ISO IEC 14496-26 MPEG4 AAC ADIF test suite
+    Test vectors: 9
+
+MPEG4_AAC-ADTS
+    Codec: AAC
+    Description: ISO IEC 14496-26 MPEG4 AAC ADTS test suite
     Test vectors: 9
 
 MPEG4_AAC-MP4
@@ -181,11 +186,6 @@ MPEG4_AAC-MP4-ER
     Codec: AAC
     Description: ISO IEC 14496-26 MPEG4 AAC MP4 error resilient and a few other profiles test suite
     Test vectors: 117
-
-MPEG2_AAC-ADTS
-    Codec: AAC
-    Description: ISO IEC 13818-4 MPEG2 AAC ADTS test suite
-    Test vectors: 62
 
 VP8-TEST-VECTORS
     Codec: VP8
@@ -217,10 +217,50 @@ CHROMIUM-8bit-AV1-TEST-VECTORS
     Description: AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/
     Test vectors: 13
 
-AV1_ARGON_VECTORS
+AV1-ARGON-PROFILE0-CORE-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Streams
-    Test vectors: 3181
+    Description: AV1 Argon Profile0 Core Annex B test suite
+    Test vectors: 815
+    
+AV1-ARGON-PROFILE0-NON-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile 0 Non-Annex B test suite
+    Test vectors: 160
+    
+AV1-ARGON-PROFILE0-STRESS-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile0 Stress Annex B test suite
+    Test vectors: 88
+    
+AV1-ARGON-PROFILE1-CORE-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile1 Core Annex B test suite
+    Test vectors: 781
+    
+AV1-ARGON-PROFILE1-NON-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile 1 Non-Annex B test suite
+    Test vectors: 165
+    
+AV1-ARGON-PROFILE1-STRESS-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile1 Stress Annex B test suite
+    Test vectors: 77
+    
+AV1-ARGON-PROFILE2-CORE-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile2 Core Annex B test suite
+    Test vectors: 946
+    
+AV1-ARGON-PROFILE2-NON-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile 2 Non-Annex B test suite
+    Test vectors: 150
+    
+AV1-ARGON-PROFILE2-STRESS-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile2 Stress Annex B test suite
+    Test vectors: 87
 
 AV1-TEST-VECTORS
     Codec: AV1
@@ -276,7 +316,9 @@ AV1
     GStreamer-AV1-V4L2SL-Gst1.0: GStreamer AV1 V4L2SL decoder for GStreamer 1.0
     GStreamer-AV1-VA-Gst1.0: GStreamer AV1 VA decoder for GStreamer 1.0
     GStreamer-AV1-VAAPI-Gst1.0: GStreamer AV1 VAAPI decoder for GStreamer 1.0
+    GStreamer-AV1-Vulkan-Gst1.0: GStreamer AV1 Vulkan decoder for GStreamer 1.0
     GStreamer-AV1-dav1d-Gst1.0: GStreamer AV1 dav1d decoder for GStreamer 1.0
+    GStreamer-AV1-libaom-Gst1.0: GStreamer AV1 libaom decoder for GStreamer 1.0
     VKVS-AV1: Vulkan Video Samples AV1 decoder
     ccdec-AV1: AV1 cros-codecs decoder
     dav1d-AV1: dav1d AV1 decoder
@@ -317,6 +359,7 @@ H.266
     FFmpeg-H.266: FFmpeg H.266 SW decoder
     Fluendo-H.266-SW-Gst1.0: Fluendo H.266 SW decoder for GStreamer 1.0
     GStreamer-H.266-Libav-Gst1.0: GStreamer H.266 Libav decoder for GStreamer 1.0
+    GStreamer-H.266-VA-Gst1.0: GStreamer H.266 VA decoder for GStreamer 1.0
     GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0
     VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder
     VVdeC-H266: VVdeC H.266/VVC decoder
@@ -360,7 +403,9 @@ VP9
     GStreamer-VP9-V4L2SL-Gst1.0: GStreamer VP9 V4L2SL decoder for GStreamer 1.0
     GStreamer-VP9-VA-Gst1.0: GStreamer VP9 VA decoder for GStreamer 1.0
     GStreamer-VP9-VAAPI-Gst1.0: GStreamer VP9 VAAPI decoder for GStreamer 1.0
+    GStreamer-VP9-Vulkan-Gst1.0: GStreamer VP9 Vulkan decoder for GStreamer 1.0
     GStreamer-VP9-libvpx-Gst1.0: GStreamer VP9 libvpx decoder for GStreamer 1.0
+    VKVS-VP9: Vulkan Video Samples VP9 decoder
     ccdec-VP9: VP9 cros-codecs decoder
     libvpx-VP9: VP9 reference decoder
 
@@ -456,6 +501,7 @@ subcommands:
 ./fluster.py list --help
 
 usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c] [-v]
+[-d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO}]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -464,8 +510,9 @@ optional arguments:
   -tv, --testvectors    show test vectors of test suites
   -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
   -v, --verbose         show stdout and stderr of commands executed
-  -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1}
+  -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO}
                         show decoders and test suites of a codec
+
 ```
 
 ### Run
@@ -663,7 +710,7 @@ possible to help us diagnose it.
 
 ```none
 Fluster - testing framework for decoders conformance
-Copyright (C) 2020-2022, Fluendo, S.A.
+Copyright (C) 2020-2025, Fluendo, S.A.
   Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
   Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
 
