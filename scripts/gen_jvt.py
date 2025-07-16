@@ -156,24 +156,29 @@ class JVTGenerator:
                 pix_fmt = result[1]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                    if test_vector.output_format == OutputFormat.UNKNOWN:
+                        raise KeyError
                 except KeyError as key_err:
                     exceptions_output_format = {
+                        # JVT-AVC_VC1: below test vectors cannot be recognised correctly by FFmpeg
+                        # All information taken from mediainfo
+                        "FM2_SVA_C": OutputFormat.YUV420P,
                         # All below test vectors from JVT-Professional_profiles
                         # need to be analysed with respect to output format,
                         # for now it remains undetermined
-                        "PPCV444I4_Mitsubishi_A": OutputFormat.NONE,
-                        "PPCV444I5_Mitsubishi_A": OutputFormat.NONE,
-                        "PPCV444I6_Mitsubishi_A": OutputFormat.NONE,
-                        "PPCV444I7_SejongUniv_A": OutputFormat.NONE,
-                        "PPH444I4_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444I5_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444I6_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444I7_SejongUniv_A": OutputFormat.NONE,
-                        "PPH444P10_SejongUniv_A": OutputFormat.NONE,
-                        "PPH444P6_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444P7_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444P8_Mitsubishi_A": OutputFormat.NONE,
-                        "PPH444P9_Mitsubishi_A": OutputFormat.NONE,
+                        "PPCV444I4_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPCV444I5_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPCV444I6_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPCV444I7_SejongUniv_A": OutputFormat.YUV444P14LE,
+                        "PPH444I4_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPH444I5_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPH444I6_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPH444I7_SejongUniv_A": OutputFormat.YUV444P14LE,
+                        "PPH444P10_SejongUniv_A": OutputFormat.YUV444P14LE,
+                        "PPH444P6_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPH444P7_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPH444P8_Mitsubishi_A": OutputFormat.YUV444P14LE,
+                        "PPH444P9_Mitsubishi_A": OutputFormat.YUV444P14LE,
                     }
                     if test_vector.name in exceptions_output_format.keys():
                         test_vector.output_format = exceptions_output_format[test_vector.name]
