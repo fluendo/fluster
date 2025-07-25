@@ -521,6 +521,13 @@ class TestSuite:
             print(f"Skipping decoder {ctx.decoder.name} because it cannot be run")
             return None
 
+        if not os.path.exists(os.path.join(self.resources_dir, self.name)):
+            print(
+                f"Skipping test suite {self.name} because its resources are not available. "
+                f"Please download it first, run `fluster.py download --help` for more information"
+            )
+            return None
+
         if self.test_method == TestMethod.PIXEL:
             ctx.reference_decoder = get_reference_decoder_for_codec(ctx.decoder.codec)
             if ctx.reference_decoder is None or not ctx.reference_decoder.check(ctx.verbose):
