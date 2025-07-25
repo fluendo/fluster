@@ -87,3 +87,6 @@ class Profile(Enum):
     MAIN_STILL_PICTURE = "Main Still Picture"
     MAIN_4_2_2_10 = "Main 4:2:2 10"
     MAIN_4_4_4_12 = "Main 4:4:4 12"
+
+    # MPEG4 video
+    SIMPLE_PROFILE = "Simple Profile"

@@ -48,6 +48,7 @@ class DownloadWork:
         keep_file: bool,
         test_suite_name: str,
         retries: int,
+        handle_terms: bool = False,
     ):
         self.out_dir = out_dir
         self.verify = verify
@@ -55,6 +56,7 @@ class DownloadWork:
         self.keep_file = keep_file
         self.test_suite_name = test_suite_name
         self.retries = retries
+        self.handle_terms = handle_terms
 
     # This is added to avoid having to create an extra ancestor class
     def set_test_vector(self, test_vector: TestVector) -> None:
@@ -75,8 +77,9 @@ class DownloadWorkSingleArchive(DownloadWork):
         test_suite_name: str,
         test_vectors: Dict[str, TestVector],
         retries: int,
+        handle_terms: bool = False,
     ):
-        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries)
+        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries, handle_terms)
         self.test_vectors = test_vectors
 
 
@@ -142,6 +145,7 @@ class TestSuite:
         is_single_archive: Optional[bool] = False,
         failing_test_vectors: Optional[Dict[str, TestVector]] = None,
         test_method: TestMethod = TestMethod.MD5,
+        handle_terms: bool = False,
     ):
         # JSON members
         self.name = name
@@ -150,6 +154,7 @@ class TestSuite:
         self.is_single_archive = is_single_archive
         self.test_vectors = test_vectors
         self.failing_test_vectors = failing_test_vectors
+        self.handle_terms = handle_terms
 
         # Not included in JSON
         self.filename = filename
@@ -221,7 +226,7 @@ class TestSuite:
         for i in range(ctx.retries):
             try:
                 exception_str = ""
-                utils.download(test_vector.source, dest_dir)
+                utils.download(test_vector.source, dest_dir, ctx.retries, ctx.handle_terms)
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
                 print(f"\tUnable to download {test_vector.source} to {dest_dir}, {exception_str}, retry count={i + 1}")
@@ -279,7 +284,7 @@ class TestSuite:
         for i in range(ctx.retries):
             try:
                 exception_str = ""
-                utils.download(test_vector_0.source, dest_dir)
+                utils.download(test_vector_0.source, dest_dir, ctx.retries, ctx.handle_terms)
             except urllib.error.URLError as ex:
                 exception_str = str(ex)
                 print(
@@ -355,6 +360,7 @@ class TestSuite:
                         retries,
                     )
                     dwork.set_test_vector(test_vector)
+                    dwork.handle_terms = self.handle_terms
                     downloads.append(
                         pool.apply_async(
                             self._download_worker,
@@ -373,6 +379,7 @@ class TestSuite:
                     self.test_vectors,
                     retries,
                 )
+                dwork_single_archive.handle_terms = self.handle_terms
                 # We can only use 1 parallel job because all test vectors are inside the same .zip source file
                 downloads.append(
                     pool.apply_async(
