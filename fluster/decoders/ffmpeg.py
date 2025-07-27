@@ -154,6 +154,7 @@ class FFmpegDecoder(Decoder):
             Codec.VP9: "vp9",
             Codec.AV1: "av1",
             Codec.MPEG2_VIDEO: "mpeg2video",
+            Codec.MPEG4_VIDEO: "mpeg4",
         }
         if self.codec not in codec_mapping:
             return False
@@ -225,6 +226,13 @@ class FFmpegMPEG2VideoDecoder(FFmpegDecoder):
     """FFmpeg SW decoder for MPEG2 video"""
 
     codec = Codec.MPEG2_VIDEO
+
+
+@register_decoder
+class FFmpegMPEG4VideoDecoder(FFmpegDecoder):
+    """FFmpeg SW decoder for MPEG4 video"""
+
+    codec = Codec.MPEG4_VIDEO
 
 
 class FFmpegVaapiDecoder(FFmpegDecoder):
