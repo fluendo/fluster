@@ -31,6 +31,7 @@ class Codec(Enum):
     AAC = "AAC"
     AV1 = "AV1"
     MPEG2_VIDEO = "MPEG2_VIDEO"
+    MPEG4_VIDEO = "MPEG4_VIDEO"
 
     def __str__(self) -> str:
         return self.value
