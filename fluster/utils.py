@@ -165,10 +165,32 @@ def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
         subprocess.run(command, check=True)
     elif filepath.endswith(".zip"):
         with zipfile.ZipFile(filepath, "r") as zip_file:
+            prefix = os.path.basename(filepath) + "/"
             if file:
-                zip_file.extract(file, path=output_dir)
+                # Find file with or without prefix
+                target_file = next(
+                    (member for member in zip_file.namelist() if member == file or member == prefix + file), None
+                )
+                if not target_file:
+                    raise FileNotFoundError(f"There is no item named '{file}' in the archive")
+                # Remove prefix if present
+                final_name = target_file[len(prefix) :] if target_file.startswith(prefix) else target_file
+                target_path = os.path.join(output_dir, final_name)
+                os.makedirs(os.path.dirname(target_path), exist_ok=True)
+                with zip_file.open(target_file) as source, open(target_path, "wb") as dest:
+                    shutil.copyfileobj(source, dest)
             else:
-                zip_file.extractall(path=output_dir)
+                # Extract all files, removing prefix if present
+                for member in zip_file.namelist():
+                    if member.endswith("/"):
+                        continue
+                    target = member[len(prefix) :] if member.startswith(prefix) else member
+                    if not target:
+                        continue
+                    target_path = os.path.join(output_dir, target)
+                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+                    with zip_file.open(member) as source, open(target_path, "wb") as dest:
+                        shutil.copyfileobj(source, dest)
     elif filepath.endswith(".gz"):
         output_file = os.path.join(output_dir, os.path.basename(filepath[:-3]))
         command = ["gunzip", "-c", filepath]
