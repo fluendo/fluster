@@ -1,0 +1,36 @@
+{
+    "name": "MPEG4_VIDEO-SimpleProfile",
+    "codec": "MPEG4_VIDEO",
+    "description": "ISO IEC 14496-4 MPEG4 video simple profile test suite",
+    "test_vectors": [
+        {
+            "name": "ti_sdtv",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/c041491_ISO_IEC0_14496-4_2004_Amd_10_2005_Conformance_Testing/A6-GE20.tgz",
+            "source_checksum": "1b18bf85c167fade4197593351a26878",
+            "input_file": "A6-GE20/ti_sdtv.cmp",
+            "profile": "Simple Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ti_vga",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/c041491_ISO_IEC0_14496-4_2004_Amd_10_2005_Conformance_Testing/A6-GE19.tgz",
+            "source_checksum": "49bdbc26df25b0233900066559c0825e",
+            "input_file": "A6-GE19/ti_vga.cmp",
+            "profile": "Simple Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "nok_720p",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/c046298_ISOIEC_14496-4_2004_Amd_28_2008_bitstreams.zip",
+            "source_checksum": "55a360d78c9c9917abbf68f9c7955074",
+            "input_file": "C046298e_Electronic_inserts/nok_720p.cmp",
+            "profile": "Simple Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        }
+    ],
+    "handle_terms": true,
+    "test_method": "md5"
+}
