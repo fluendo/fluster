@@ -93,3 +93,4 @@ class Profile(Enum):
     SIMPLE_PROFILE = "Simple Profile"
     ADVANCED_SIMPLE_PROFILE = "Advanced Simple Profile"
     SIMPLE_STUDIO_PROFILE = "Simple Studio Profile"
+    ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE = "Error Resilient Simple Scalable Profile"
