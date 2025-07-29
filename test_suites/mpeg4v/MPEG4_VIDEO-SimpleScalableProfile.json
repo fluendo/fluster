@@ -1,0 +1,126 @@
+{
+    "name": "MPEG4_VIDEO-SimpleScalableProfile",
+    "codec": "MPEG4_VIDEO",
+    "description": "ISO IEC 14496-4 MPEG4 video simple scalable profile test suite",
+    "test_vectors": [
+        {
+            "name": "motorola_stefan",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/motorola_stefan.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "motorola_news",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/motorola_news.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm_mobile_1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/ibm_mobile_1.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm_mobile_2",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/ibm_mobile_2.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "motorola_akiyo",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/motorola_akiyo.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "motorola_akiyo_e",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/motorola_akiyo_e.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm_tempete",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/ibm_tempete.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "nokia_l0bge1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/nokia_l0bge1.bits",
+            "profile": "Simple Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "motorola_news_e",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/motorola_news_e.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm_mobile_2_e",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/ibm_mobile_2_e.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "motorola_stefan_e",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/motorola_stefan_e.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm_tempete_e",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/ibm_tempete_e.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "ibm_mobile_1_e",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+            "source_checksum": "66452bce7c3809175f4d3ebe188de27d",
+            "input_file": "C039391e_Electonic_inserts/ibm_mobile_1_e.cmp",
+            "profile": "Error Resilient Simple Scalable Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        }
+    ],
+    "handle_terms": true,
+    "test_method": "md5"
+}
