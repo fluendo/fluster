@@ -51,6 +51,10 @@ RESOURCES = {
         "type": "directory",
         "url": BASE_URL + "ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/",
     },
+    "simple_scalable_profile": {
+        "type": "direct",
+        "url": BASE_URL + "C039391_ISO_IEC_14496-4_2004_Amd_5_2005_Bitstreams.zip",
+    },
 }
 BITSTREAM_EXTS = [".bits", ".bit", ".m4v", ".cmp", ".tgz", ".zip"]
 
@@ -204,6 +208,7 @@ class MPEG4VIDEOGenerator:
                                     exceptions_output_format = {
                                         # All information taken from mediainfo
                                         "vcon-stp5L1": OutputFormat.YUV420P,
+                                        "ibm_tempete_e": OutputFormat.YUV420P,
                                         # Simple Studio Profile unknown formats
                                         "vcon-stp13L2": OutputFormat.UNKNOWN,
                                         "vcon-stp12L2": OutputFormat.UNKNOWN,
@@ -245,6 +250,19 @@ class MPEG4VIDEOGenerator:
                                         "vcon-stpsp1L1": Profile.SIMPLE_STUDIO_PROFILE,
                                         "vcon-stp12L2": Profile.SIMPLE_STUDIO_PROFILE,
                                         "vcon-stp13L2": Profile.SIMPLE_STUDIO_PROFILE,
+                                        # Test suite: MPEG4_VIDEO-SimpleScalableProfile
+                                        "motorola_stefan": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "motorola_news": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "ibm_mobile_1": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "ibm_mobile_2": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "motorola_akiyo": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "motorola_akiyo_e": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "ibm_tempete": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "motorola_news_e": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "ibm_mobile_2_e": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "motorola_stefan_e": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "ibm_tempete_e": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
+                                        "ibm_mobile_1_e": Profile.ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE,
                                     }
                                     if test_vector.name in exceptions_profile:
                                         test_vector.profile = exceptions_profile[test_vector.name]
@@ -347,6 +365,16 @@ if __name__ == "__main__":
         Codec.MPEG4_VIDEO,
         "ISO IEC 14496-4 MPEG4 video simple studio profile test suite",
         ["advanced+studio_simple_profile", "simple_studio_profile"],
+        True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = MPEG4VIDEOGenerator(
+        "simple_scalable_profile",
+        "MPEG4_VIDEO-SimpleScalableProfile",
+        Codec.MPEG4_VIDEO,
+        "ISO IEC 14496-4 MPEG4 video simple scalable profile test suite",
+        ["simple_scalable_profile"],
         True,
     )
     generator.generate(not args.skip_download, args.jobs)
