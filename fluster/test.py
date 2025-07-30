@@ -186,18 +186,24 @@ class PixelComparisonTest(Test):
 
     def _cleanup_if_needed(self) -> None:
         super()._cleanup_if_needed()
-        if not self.keep_files and os.path.exists(self.reference_filepath):
-            os.remove(self.reference_filepath)
+        for filepath in [self.reference_filepath, self.reference_filepath + ".yuv"]:
+            if not self.keep_files and os.path.exists(filepath):
+                os.remove(filepath)
 
     def compare_result(self, result: str) -> None:
         """Compare decoded output with reference decoder output pixel-wise."""
         reference_result = self._decode_reference()
 
-        if not os.path.exists(self.reference_filepath) and os.path.exists(reference_result):
-            self.reference_filepath = reference_result
+        actual_reference_file = reference_result
+        if not os.path.exists(reference_result):
+            actual_reference_file = (
+                self.reference_filepath + ".yuv"
+                if os.path.exists(self.reference_filepath + ".yuv")
+                else self.reference_filepath
+            )
 
         comparison_result = compare_byte_wise_files(
-            self.reference_filepath, self.output_filepath, keep_files=self.keep_files
+            actual_reference_file, self.output_filepath, keep_files=self.keep_files
         )
 
         self.assertEqual(0, comparison_result, self.test_vector.name)

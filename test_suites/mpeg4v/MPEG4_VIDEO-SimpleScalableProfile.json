@@ -122,5 +122,5 @@
         }
     ],
     "handle_terms": true,
-    "test_method": "md5"
+    "test_method": "pixel"
 }
