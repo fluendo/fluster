@@ -1,0 +1,225 @@
+{
+    "name": "MPEG4_VIDEO-SimpleStudioProfile",
+    "codec": "MPEG4_VIDEO",
+    "description": "ISO IEC 14496-4 MPEG4 video simple studio profile test suite",
+    "test_vectors": [
+        {
+            "name": "vcon-ssp1L5",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-ssp1L5.bits",
+            "source_checksum": "42c5dcabd24fd62268f817edcad7df00",
+            "input_file": "vcon-ssp1L5.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-ssp2L6",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-ssp2L6.bits",
+            "source_checksum": "84e4374072e2a7d607ec0d68f9ca4492",
+            "input_file": "vcon-ssp2L6.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp13L2",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-stp13L2.bits",
+            "source_checksum": "d41d85201257d45d87f86c4708fc9c37",
+            "input_file": "vcon-stp13L2.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "Unknown",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp16L4",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-stp16L4.bits",
+            "source_checksum": "cf11c48fb1c1130b78a658e89ee6c540",
+            "input_file": "vcon-stp16L4.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp17L4",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-stp17L4.bits",
+            "source_checksum": "90dfdf603b8f27b28715f278e888cf84",
+            "input_file": "vcon-stp17L4.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp1L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp1L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp7L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp7L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stpsh2L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stpsh2L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "Unknown",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp8L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp8L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stpsh1L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stpsh1L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "Unknown",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp4L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp4L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp3L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp3L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stpsp1L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stpsp1L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "Unknown",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp6L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp6L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp2L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp2L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp9L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp9L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp5L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp5L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv420p",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp11L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp11L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp10L1",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+            "source_checksum": "96a953fd5ca2ab8724c33441dbfe0b9c",
+            "input_file": "C051232e_Electronic inserts/studio/vcon-stp10L1.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv422p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-ssp2L5",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-ssp2L5.bits",
+            "source_checksum": "f9d803733ab624ce38aa1ef2eb9c1738",
+            "input_file": "vcon-ssp2L5.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp12L2",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-stp12L2.bits",
+            "source_checksum": "76871b4a631964344300bc70978b30a6",
+            "input_file": "vcon-stp12L2.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "Unknown",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp14L3",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-stp14L3.bits",
+            "source_checksum": "b37b6e9b338ee87c9b223e6ad1070a6a",
+            "input_file": "vcon-stp14L3.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-stp15L3",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-stp15L3.bits",
+            "source_checksum": "f2be13aab5ac690e67057101aae6470c",
+            "input_file": "vcon-stp15L3.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        },
+        {
+            "name": "vcon-ssp1L6",
+            "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/vcon-ssp1L6.bits",
+            "source_checksum": "6682156cea7f50af8a3517685054b33a",
+            "input_file": "vcon-ssp1L6.bits",
+            "profile": "Simple Studio Profile",
+            "output_format": "yuv444p10le",
+            "result": ""
+        }
+    ],
+    "handle_terms": true,
+    "test_method": "md5"
+}
