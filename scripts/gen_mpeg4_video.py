@@ -38,14 +38,18 @@ RESOURCES = {
         "type": "directory",
         "url": BASE_URL + "c041491_ISO_IEC0_14496-4_2004_Amd_10_2005_Conformance_Testing/",
     },
-    "profile_6": {"type": "direct", "url": BASE_URL + "c046298_ISOIEC_14496-4_2004_Amd_28_2008_bitstreams.zip"},
-    "advanced_simple_profile_cor_1": {
+    "simple_profile_6": {"type": "direct", "url": BASE_URL + "c046298_ISOIEC_14496-4_2004_Amd_28_2008_bitstreams.zip"},
+    "advanced_simple_profile": {
         "type": "direct",
         "url": BASE_URL + "c041935_ISO_IEC_14496-4_2004_Amd_1_2005_Cor_1_2005_Bitstreams.zip",
     },
-    "advanced_simple_profile_cor_2": {
+    "advanced+studio_simple_profile": {
         "type": "direct",
         "url": BASE_URL + "C051232_ISO_IEC_14496_4_2004_Amd_1_2005_Cor_2_2008_bitstreams.zip",
+    },
+    "simple_studio_profile": {
+        "type": "directory",
+        "url": BASE_URL + "ISO_IEC_14496-4_2004_Amd_35_2009_Bitstreams/",
     },
 }
 BITSTREAM_EXTS = [".bits", ".bit", ".m4v", ".cmp", ".tgz", ".zip"]
@@ -200,6 +204,12 @@ class MPEG4VIDEOGenerator:
                                     exceptions_output_format = {
                                         # All information taken from mediainfo
                                         "vcon-stp5L1": OutputFormat.YUV420P,
+                                        # Simple Studio Profile unknown formats
+                                        "vcon-stp13L2": OutputFormat.UNKNOWN,
+                                        "vcon-stp12L2": OutputFormat.UNKNOWN,
+                                        "vcon-stpsh2L1": OutputFormat.UNKNOWN,
+                                        "vcon-stpsh1L1": OutputFormat.UNKNOWN,
+                                        "vcon-stpsp1L1": OutputFormat.UNKNOWN,
                                     }
                                     if test_vector.name in exceptions_output_format:
                                         test_vector.output_format = exceptions_output_format[test_vector.name]
@@ -229,6 +239,12 @@ class MPEG4VIDEOGenerator:
                                         "a1ge12_asp_L1": Profile.ADVANCED_SIMPLE_PROFILE,
                                         "vcon_a1ge_13_asp_l2": Profile.ADVANCED_SIMPLE_PROFILE,
                                         "a1ge4_asp": Profile.SIMPLE_PROFILE,
+                                        # Test suite: MPEG4_VIDEO-SimpleStudioProfile
+                                        "vcon-stpsh2L1": Profile.SIMPLE_STUDIO_PROFILE,
+                                        "vcon-stpsh1L1": Profile.SIMPLE_STUDIO_PROFILE,
+                                        "vcon-stpsp1L1": Profile.SIMPLE_STUDIO_PROFILE,
+                                        "vcon-stp12L2": Profile.SIMPLE_STUDIO_PROFILE,
+                                        "vcon-stp13L2": Profile.SIMPLE_STUDIO_PROFILE,
                                     }
                                     if test_vector.name in exceptions_profile:
                                         test_vector.profile = exceptions_profile[test_vector.name]
@@ -310,7 +326,7 @@ if __name__ == "__main__":
         "MPEG4_VIDEO-SimpleProfile",
         Codec.MPEG4_VIDEO,
         "ISO IEC 14496-4 MPEG4 video simple profile test suite",
-        ["simple_profile_4_5", "profile_6"],
+        ["simple_profile_4_5", "simple_profile_6"],
         True,
     )
     generator.generate(not args.skip_download, args.jobs)
@@ -320,7 +336,17 @@ if __name__ == "__main__":
         "MPEG4_VIDEO-AdvancedSimpleProfile",
         Codec.MPEG4_VIDEO,
         "ISO IEC 14496-4 MPEG4 video advanced simple profile test suite",
-        ["advanced_simple_profile_cor_1", "advanced_simple_profile_cor_2"],
+        ["advanced_simple_profile", "advanced+studio_simple_profile"],
+        True,
+    )
+    generator.generate(not args.skip_download, args.jobs)
+
+    generator = MPEG4VIDEOGenerator(
+        "simple_studio_profile",
+        "MPEG4_VIDEO-SimpleStudioProfile",
+        Codec.MPEG4_VIDEO,
+        "ISO IEC 14496-4 MPEG4 video simple studio profile test suite",
+        ["advanced+studio_simple_profile", "simple_studio_profile"],
         True,
     )
     generator.generate(not args.skip_download, args.jobs)
