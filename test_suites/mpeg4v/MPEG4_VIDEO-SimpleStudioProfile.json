@@ -220,6 +220,5 @@
             "result": ""
         }
     ],
-    "handle_terms": true,
     "test_method": "pixel"
 }
