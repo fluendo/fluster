@@ -95,7 +95,6 @@ class MPEG4VIDEOGenerator:
         self.description = description
         self.resources = resources
         self.use_ffprobe = use_ffprobe
-        self.handle_terms = True
 
     def generate(self, download: bool, jobs: int) -> None:
         absolute_dest_dir = os.path.dirname(os.path.abspath(__file__))
@@ -108,7 +107,6 @@ class MPEG4VIDEOGenerator:
             self.codec,
             self.description,
             {},
-            handle_terms=self.handle_terms,
         )
 
         for resource_name in self.resources:
