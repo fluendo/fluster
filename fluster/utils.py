@@ -30,7 +30,7 @@ import urllib.request
 import zipfile
 from functools import partial
 from threading import Lock
-from typing import IO, List, Optional
+from typing import Any, List, Optional
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -47,20 +47,19 @@ def create_enhanced_opener() -> urllib.request.OpenerDirector:
     return opener
 
 
-def handle_iso_terms(opener: urllib.request.OpenerDirector, url: str) -> Optional[bytes]:
+def handle_iso_terms(opener: urllib.request.OpenerDirector, url: str) -> Any:
     """Handles ISO terms acceptance by submitting a form and returns the response content."""
     form_data = urllib.parse.urlencode({"ok": "I accept"}).encode("utf-8")
     req = urllib.request.Request(url, data=form_data)
     req.add_header("Content-Type", "application/x-www-form-urlencoded")
-    response: IO[bytes] = opener.open(req)
-    return response.read()
+    response = opener.open(req)
+    return response
 
 
 def download(
     url: str,
     dest_dir: str,
     max_retries: int = 5,
-    handle_terms: bool = False,
     timeout: int = 300,
     chunk_size: int = 2048 * 2048,  # 4MB
 ) -> None:
@@ -71,19 +70,14 @@ def download(
     for attempt in range(max_retries):
         try:
             with download_lock:
-                if handle_terms:
-                    opener = create_enhanced_opener()
-                    with opener.open(url) as response:
-                        content = response.read()
-                        content_type = response.headers.get("content-type", "").lower()
-                        if content_type.startswith("text/html") and len(content) < 50000:
-                            content = handle_iso_terms(opener, url)
+                opener = create_enhanced_opener()
+                with opener.open(url, timeout=timeout) as response:
+                    url_handler = response
+                    if "text/html" in response.headers.get("content-type", "").lower():
+                        url_handler = handle_iso_terms(opener, url)
                     with open(dest_path, "wb") as dest:
-                        dest.write(content)
-                else:
-                    with urllib.request.urlopen(url, timeout=timeout) as response, open(dest_path, "wb") as dest:
                         while True:
-                            chunk = response.read(chunk_size)
+                            chunk = url_handler.read(chunk_size)
                             if not chunk:
                                 break
                             dest.write(chunk)
