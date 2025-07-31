@@ -92,3 +92,4 @@ class Profile(Enum):
     # MPEG4 video
     SIMPLE_PROFILE = "Simple Profile"
     ADVANCED_SIMPLE_PROFILE = "Advanced Simple Profile"
+    SIMPLE_STUDIO_PROFILE = "Simple Studio Profile"

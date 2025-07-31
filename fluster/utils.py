@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
@@ -55,10 +56,16 @@ def handle_iso_terms(opener: urllib.request.OpenerDirector, url: str) -> Optiona
     return response.read()
 
 
-def download(url: str, dest_dir: str, max_retries: int = 5, handle_terms: bool = False) -> None:
+def download(
+    url: str,
+    dest_dir: str,
+    max_retries: int = 5,
+    handle_terms: bool = False,
+    timeout: int = 300,
+    chunk_size: int = 2048 * 2048,  # 4MB
+) -> None:
     """Downloads a file to a directory with a mutex lock to avoid conflicts and retries with exponential backoff."""
-    import urllib.error
-
+    os.makedirs(dest_dir, exist_ok=True)
     filename = os.path.basename(url)
     dest_path = os.path.join(dest_dir, filename)
     for attempt in range(max_retries):
@@ -74,8 +81,12 @@ def download(url: str, dest_dir: str, max_retries: int = 5, handle_terms: bool =
                     with open(dest_path, "wb") as dest:
                         dest.write(content)
                 else:
-                    with urllib.request.urlopen(url) as response, open(dest_path, "wb") as dest:
-                        shutil.copyfileobj(response, dest)
+                    with urllib.request.urlopen(url, timeout=timeout) as response, open(dest_path, "wb") as dest:
+                        while True:
+                            chunk = response.read(chunk_size)
+                            if not chunk:
+                                break
+                            dest.write(chunk)
             break
         except urllib.error.URLError as e:
             if attempt < max_retries - 1:
