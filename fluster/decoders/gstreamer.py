@@ -706,6 +706,15 @@ class GStreamerMPEG2VideoDecoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerLibavMPEG4VideoDecoder(GStreamer10Video):
+    """GStreamer MPEG4 Libav video decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.MPEG4_VIDEO
+    decoder_bin = " avdec_mpeg4 "
+    api = "Libav"
+
+
+@register_decoder
 class FluendoMPEG4VideoDecoder(GStreamer10Video):
     """Fluendo MPEG4 video software decoder implementation for GStreamer 1.0"""
 
