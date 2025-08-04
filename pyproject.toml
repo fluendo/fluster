@@ -102,6 +102,12 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/mpeg2v/MPEG2_VIDEO-422.json",
     "test_suites/mpeg2v/MPEG2_VIDEO-MAIN.json"
 ]
+"share/fluster/test_suites/mpeg4v" = [
+    "test_suites/mpeg4v/MPEG4_VIDEO-AdvancedSimpleProfile.json",
+    "test_suites/mpeg4v/MPEG4_VIDEO-SimpleProfile.json",
+    "test_suites/mpeg4v/MPEG4_VIDEO-SimpleScalableProfile.json",
+    "test_suites/mpeg4v/MPEG4_VIDEO-SimpleStudioProfile.json"
+]
 
 # Once https://github.com/pypa/pip/issues/12963 is implemented we can think about adding
 # [dependency-groups]
