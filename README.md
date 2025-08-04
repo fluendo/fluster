@@ -206,6 +206,26 @@ MPEG2_VIDEO-MAIN
     Codec: MPEG2_VIDEO
     Description: ISO IEC 13818-4 MPEG2 video main profile test suite
     Test vectors: 43
+    
+MPEG4_VIDEO-SimpleProfile
+    Codec: MPEG4_VIDEO
+    Description: ISO IEC 14496-4 MPEG4 video simple profile test suite
+    Test vectors: 3
+
+MPEG4_VIDEO-AdvancedSimpleProfile
+    Codec: MPEG4_VIDEO
+    Description: ISO IEC 14496-4 MPEG4 video advanced simple profile test suite
+    Test vectors: 30
+    
+MPEG4_VIDEO-SimpleStudioProfile
+    Codec: MPEG4_VIDEO
+    Description: ISO IEC 14496-4 MPEG4 video simple studio profile test suite
+    Test vectors: 24
+
+MPEG4_VIDEO-SimpleScalableProfile
+    Codec: MPEG4_VIDEO
+    Description: ISO IEC 14496-4 MPEG4 video simple scalable profile test suite
+    Test vectors: 13
 
 CHROMIUM-10bit-AV1-TEST-VECTORS
     Codec: AV1
@@ -370,6 +390,12 @@ MPEG2_VIDEO
     GStreamer-MPEG2_VIDEO-Libav-Gst1.0: GStreamer MPEG2_VIDEO Libav decoder for GStreamer 1.0
     GStreamer-MPEG2_VIDEO-SW-Gst1.0: GStreamer MPEG2_VIDEO SW decoder for GStreamer 1.0
     ISO-MPEG2-VIDEO: ISO MPEG2 Video reference decoder
+    
+MPEG4_VIDEO
+    FFmpeg-MPEG4_VIDEO: FFmpeg MPEG4_VIDEO SW decoder
+    Fluendo-MPEG4_VIDEO-SW-Gst1.0: Fluendo MPEG4_VIDEO SW decoder for GStreamer 1.0
+    GStreamer-MPEG4_VIDEO-Libav-Gst1.0: GStreamer MPEG4_VIDEO Libav decoder for GStreamer 1.0
+    ISO-MPEG4-VIDEO: ISO MPEG4 Video reference decoder
 
 VP8
     FFmpeg-VP8: FFmpeg VP8 SW decoder
