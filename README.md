@@ -58,6 +58,11 @@ but they could actually be decoders written in Python as far as Fluster is
 concerned. The [decoders](https://github.com/fluendo/fluster/tree/master/fluster/decoders) directory contains all supported
 decoders.
 
+**Fluster includes a pixel comparison method for testing decoders that don't generate identical outputs.** 
+This is essential for older video decoders with IDCT implementations where, 
+according to the standard specifications, MD5 verification cannot be used unlike newer decoder implementations, 
+ensuring accurate conformance testing across different decoder generations.
+
 In order to run the tests for the different test suites and decoders, a
 `resources` directory containing all the input files for each test suite needs
 to be collected first.
@@ -483,15 +488,18 @@ AAC
   decoder for H.265/HEVC.
 - [JCT-VT H.266/VVC](https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM) as reference
   decoder for H.266/VVC.
-- Fluendo's proprietary decoders for MPEG2 video, H.264/AVC and H.265/HEVC that are included
+- Fluendo's proprietary decoders for MPEG2 video, MPEG4 video, H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/).
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.266/VVC.
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.265/HEVC.
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.264/AVC.
+- [GStreamer's](https://gstreamer.freedesktop.org/) for MPEG2 video.
+- [GStreamer's](https://gstreamer.freedesktop.org/) for MPEG4 video.
 - [FFmpeg's](https://FFmpeg.org) for H.265/HEVC.
 - [FFmpeg's](https://FFmpeg.org) for H.264/AVC.
 - [FFmpeg's](https://FFmpeg.org) for MPEG2 video.
+- [FFmpeg's](https://FFmpeg.org) for MPEG4 video.
 - [libvpx's](https://github.com/webmproject/libvpx/) for VP8.
 - [libvpx's](https://github.com/webmproject/libvpx/) for VP9.
 - [aom's](https://aomedia.googlesource.com/aom/) for AV1.
@@ -651,7 +659,7 @@ Check out the JSON format they follow in the [test_suites](https://github.com/fl
 directory. Add a new json file within, Fluster will automatically pick it
 up.
 
-There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py), [generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), [generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a [generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the [conformance
+There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py), [generator script (MPEG4 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg4_video.py), [generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), [generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a [generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the [conformance
 test suites](#test-suites) that you can use as a base to generate automatically
 new ones.
 
