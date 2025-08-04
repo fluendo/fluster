@@ -720,6 +720,7 @@ class FluendoMPEG4VideoDecoder(GStreamer10Video):
 
     codec = Codec.MPEG4_VIDEO
     decoder_bin = " flumpeg4vdec "
+    provider = "Fluendo"
     api = "SW"
 
 
