@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] (2025-08-05)
+### Added
+- GStreamer Vulkan AV1 VA decoder
+- GStreamer Vulkan VP9 VA decoder
+- NVidia Vulkan Video Samples VP9 VA decoder
+- GStreamer Libav MPEG-4 SW video decoder
+- Fluendo GStreamer MPEG-4 SW video decoder
+- FFmpeg MPEG-4 SW video decoder
+- ISO MPEG-4 video reference decoder (Microsoft implementation - vmdec)
+- MPEG-4 video test suites for simple, advanced simple, simple scalable and simple studio profiles
+
+### Changed
+- Test execution summary report in markdown format now includes test results per profile, when available
+- Wildcard(*) is now supported when setting a list of vectors to test
+- H.264 test suites JVT-AVC_V1, JVT-FR-EXT and JVT-Professional_profiles now include profile for test vectors
+- H.265 test suite JCT-VC-HEVC_V1 now includes profile for test vectors
+
+### Fixed
+- Prevent test suite execution when its resources are not found locally
+- Nvidia Vulkan video samples decoder: use enablePostProcessFilter by default to support hardware with different queue for decoding and transferring, such as mesa drivers
+
+
+## [0.3.0] (2025-04-17)
+### Added
+- Pixel-by-pixel output/reference frame comparison method with error tolerance is now available for codecs that 
+do not require checksum match. MPEG-2 is an example of such codecs.
+- MPEG-2 video test suites for main and 4:2:2 profiles
+- GStreamer H.266 VA decoder
+- ISO MPEG-4 reference decoder for test vectors of error resilient profiles
+- GStreamer MPEG-2 SW video decoder
+- Gstreamer Libva MPEG-2 SW video decoder
+
+### Changed
+
+### Fixed
+- MPEG-4 AAC MP4 test suite was split in 2, error and not error-resilient ones
+- MPEG-4 AAC MP4 test suites, error and not error-resilient now have correct md5 checksums
+- ISO MPEG-4 AAC decoders, error and not error-resilient now generate output with interleaved channels, when required
+
+
 ## [0.2.0] - 2025-01-27
 ### Added
 - Generate a test suite for H265 3D-HEVC functionality set.
@@ -36,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix bug #218: Argon AV1 test resource path don't match the downloaded resources path.
 - Issue in JSON generation scripts (Some test suites are badly generated).
+
 
 ## [0.1.0] - 2022-12-20
 ### Added
