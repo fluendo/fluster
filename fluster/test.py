@@ -54,16 +54,26 @@ class Test(unittest.TestCase):
         # Initialize file paths
         self._initialize_file_paths()
 
+    def _find_input_path(self, input_file: str) -> str:
+        if os.path.sep in input_file:
+            path_option1 = normalize_path(os.path.join(self.resources_dir, self.test_suite.name, input_file))
+            path_option2 = normalize_path(
+                os.path.join(self.resources_dir, self.test_suite.name, self.test_vector.name, input_file)
+            )
+            if os.path.exists(path_option1):
+                return path_option1
+            if os.path.exists(path_option2):
+                return path_option2
+            return path_option2  # fallback for backward compatibility
+        else:
+            return normalize_path(
+                os.path.join(self.resources_dir, self.test_suite.name, self.test_vector.name, input_file)
+            )
+
     def _initialize_file_paths(self) -> None:
         """Initialize input and output file paths."""
         self.output_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + ".out"))
-
-        input_dir = os.path.join(self.resources_dir, self.test_suite.name)
-
-        if not self.test_suite.is_single_archive:
-            input_dir = os.path.join(input_dir, self.test_vector.name)
-
-        self.input_filepath = normalize_path(os.path.join(input_dir, self.test_vector.input_file))
+        self.input_filepath = self._find_input_path(self.test_vector.input_file)
 
     def _execute_decode(self) -> str:
         """Execute the decoder and return the result."""
