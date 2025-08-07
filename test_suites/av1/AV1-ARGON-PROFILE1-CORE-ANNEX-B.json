@@ -2,7 +2,6 @@
     "name": "AV1-ARGON-PROFILE1-CORE-ANNEX-B",
     "codec": "AV1",
     "description": "AV1 Argon Profile1 Core Annex B test suite",
-    "is_single_archive": true,
     "test_vectors": [
         {
             "name": "test27",

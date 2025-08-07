@@ -56,7 +56,6 @@ class AV1ArgonGenerator:
         self.site = site
         self.test_vector_groups = test_vector_groups
         self.use_ffprobe = use_ffprobe
-        self.is_single_archive = True
 
     def generate(self, download: bool) -> None:
         """Generates the test suite and saves it to a file"""
@@ -70,7 +69,6 @@ class AV1ArgonGenerator:
             self.codec,
             self.description,
             {},
-            self.is_single_archive,
         )
         os.makedirs(extract_folder, exist_ok=True)
         source_url = self.site + self.name

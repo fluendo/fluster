@@ -59,9 +59,7 @@ class Test(unittest.TestCase):
         self.output_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + ".out"))
 
         input_dir = os.path.join(self.resources_dir, self.test_suite.name)
-
-        if not self.test_suite.is_single_archive:
-            input_dir = os.path.join(input_dir, self.test_vector.name)
+        input_dir = os.path.join(input_dir, self.test_vector.name)
 
         self.input_filepath = normalize_path(os.path.join(input_dir, self.test_vector.input_file))
 
