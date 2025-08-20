@@ -28,7 +28,7 @@ from urllib.parse import urljoin
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat, Profile
-from fluster.test_suite import TestSuite
+from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector
 from fluster.utils import create_enhanced_opener
 
@@ -88,6 +88,7 @@ class MPEG4VIDEOGenerator:
         description: str,
         resources: List[str],
         use_ffprobe: bool = False,
+        test_method: TestMethod = TestMethod.PIXEL,
     ):
         self.name = name
         self.suite_name = suite_name
@@ -95,6 +96,7 @@ class MPEG4VIDEOGenerator:
         self.description = description
         self.resources = resources
         self.use_ffprobe = use_ffprobe
+        self.test_method = test_method
 
     def generate(self, download: bool, jobs: int) -> None:
         absolute_dest_dir = os.path.dirname(os.path.abspath(__file__))
