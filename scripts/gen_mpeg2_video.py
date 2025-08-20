@@ -29,7 +29,7 @@ from urllib.parse import urljoin
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
-from fluster.test_suite import TestSuite
+from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector
 
 BASE_URL = "https://standards.iso.org/"
@@ -83,6 +83,7 @@ class MPEG2VIDEOGenerator:
         self.description = description
         self.site = site
         self.use_ffprobe = use_ffprobe
+        self.test_method = TestMethod.PIXEL
 
     def generate(self, download: bool, jobs: int) -> None:
         """Generates the test suite and downloads bitstreams"""
@@ -96,6 +97,7 @@ class MPEG2VIDEOGenerator:
             self.codec,
             self.description,
             {},
+            test_method=self.test_method,
         )
 
         print(f"Download list of bitstreams from {self.site + self.name}")
