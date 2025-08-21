@@ -61,6 +61,7 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
     mapping = {
         OutputFormat.GRAY: "GRAY8",
         OutputFormat.GRAY10LE: "GRAY10_LE16",
+        OutputFormat.GRAY12LE: "GRAY12_LE",
         OutputFormat.GRAY16LE: "GRAY16_LE",
         OutputFormat.YUV420P: "I420",
         OutputFormat.YUV422P: "Y42B",
@@ -71,7 +72,12 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.YUV444P: "Y444",
         OutputFormat.YUV444P10LE: "Y444_10LE",
         OutputFormat.YUV444P12LE: "Y444_12LE",
+        OutputFormat.YUV444P14LE: "Y444_14LE",
+        OutputFormat.YUV444P16LE: "Y444_16LE",
+        OutputFormat.GBRP: "GBR",
         OutputFormat.GBRP10LE: "GBR_10LE",
+        OutputFormat.GBRP12LE: "GBR_12LE",
+        OutputFormat.GBRP14LE: "GBR_14LE",
     }
     return mapping[output_format]
 
