@@ -73,8 +73,6 @@ def output_format_to_gst(output_format: OutputFormat) -> str:
         OutputFormat.YUV444P12LE: "Y444_12LE",
         OutputFormat.GBRP10LE: "GBR_10LE",
     }
-    if output_format not in mapping:
-        raise Exception(f"No matching output format found in GStreamer for {output_format}")
     return mapping[output_format]
 
 
@@ -191,8 +189,11 @@ class GStreamer10Video(GStreamer):
         raw_caps = "video/x-raw"
         try:
             raw_caps += f",format={output_format_to_gst(output_format)}"
-        except Exception as ex:
-            print(f"WARNING: {os.path.basename(os.path.dirname(input_filepath))}, {ex}")
+        except KeyError as key_error:
+            print(
+                f"WARNING: Output format of test vector {os.path.basename(input_filepath)} could not be matched."
+                f"Missing output format: {key_error}"
+            )
         caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
