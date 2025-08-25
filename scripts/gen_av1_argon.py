@@ -56,7 +56,6 @@ class AV1ArgonGenerator:
         self.site = site
         self.test_vector_groups = test_vector_groups
         self.use_ffprobe = use_ffprobe
-        self.is_single_archive = True
 
     def generate(self, download: bool) -> None:
         """Generates the test suite and saves it to a file"""
@@ -70,7 +69,6 @@ class AV1ArgonGenerator:
             self.codec,
             self.description,
             {},
-            self.is_single_archive,
         )
         os.makedirs(extract_folder, exist_ok=True)
         source_url = self.site + self.name
@@ -88,13 +86,12 @@ class AV1ArgonGenerator:
         # Calculate checksum of source file on disk
         try:
             source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
-        except Exception as ex:
+        except Exception:
             source_checksum = ""
-            print(f"{ex}")
 
         # Download the zip file
         if download and source_checksum != source_checksum_ref:
-            print(f"Download test suite archive from {source_url}")
+            print(f"Downloading test suite archive from {source_url}")
             try:
                 utils.download(source_url, extract_folder)
                 source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
@@ -106,7 +103,7 @@ class AV1ArgonGenerator:
             print(
                 "WARNING: You have chosen not to download the source file. However the checksum of the source file "
                 "on disk does not coincide with its reference checksum, indicating some kind of issue. Please enable "
-                "download and execute the script again. Reporting error through exit code 1"
+                "download and execute the script again."
             )
             sleep(10)
 
