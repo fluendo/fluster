@@ -88,6 +88,7 @@ class GStreamer(Decoder):
     api = ""
     provider = ""
     sink = ""
+    parser = ""
 
     def __init__(self) -> None:
         super().__init__()
@@ -110,7 +111,7 @@ class GStreamer(Decoder):
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            "parsebin",
+            self.parser if self.parser else "parsebin",
             self.decoder_bin,
             self.caps,
             self.sink,
@@ -181,6 +182,7 @@ class GStreamer10Video(GStreamer):
     gst_api = "1.0"
     sink = "videocodectestsink"
     provider = "GStreamer"
+    parser = ""
 
     def gen_pipeline(
         self,
@@ -198,7 +200,7 @@ class GStreamer10Video(GStreamer):
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            "parsebin",
+            self.parser if self.parser else "parsebin",
             self.decoder_bin,
             caps,
             self.sink,
@@ -573,6 +575,7 @@ class GStreamerAomAV1Gst10Decoder(GStreamer10Video):
 
     codec = Codec.AV1
     decoder_bin = " av1dec "
+    parser = " parsebin ! av1parse "
     api = "libaom"
 
 
@@ -636,6 +639,7 @@ class GStreamerVaapiAV1Gst10Decoder(GStreamer10Video):
 
     codec = Codec.AV1
     decoder_bin = " vaapiav1dec "
+    parser = " parsebin ! av1parse "
     api = "VAAPI"
 
 
@@ -645,6 +649,7 @@ class GStreamerDav1dAV1Decoder(GStreamer10Video):
 
     codec = Codec.AV1
     decoder_bin = " dav1ddec "
+    parser = " parsebin ! av1parse "
     api = "dav1d"
 
 
