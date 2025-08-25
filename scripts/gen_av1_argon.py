@@ -86,13 +86,12 @@ class AV1ArgonGenerator:
         # Calculate checksum of source file on disk
         try:
             source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
-        except Exception as ex:
+        except Exception:
             source_checksum = ""
-            print(f"{ex}")
 
         # Download the zip file
         if download and source_checksum != source_checksum_ref:
-            print(f"Download test suite archive from {source_url}")
+            print(f"Downloading test suite archive from {source_url}")
             try:
                 utils.download(source_url, extract_folder)
                 source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
@@ -104,7 +103,7 @@ class AV1ArgonGenerator:
             print(
                 "WARNING: You have chosen not to download the source file. However the checksum of the source file "
                 "on disk does not coincide with its reference checksum, indicating some kind of issue. Please enable "
-                "download and execute the script again. Reporting error through exit code 1"
+                "download and execute the script again."
             )
             sleep(10)
 

@@ -57,11 +57,9 @@ class Test(unittest.TestCase):
     def _initialize_file_paths(self) -> None:
         """Initialize input and output file paths."""
         self.output_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + ".out"))
-
-        input_dir = os.path.join(self.resources_dir, self.test_suite.name)
-        input_dir = os.path.join(input_dir, self.test_vector.name)
-
-        self.input_filepath = normalize_path(os.path.join(input_dir, self.test_vector.input_file))
+        self.input_filepath = normalize_path(
+            os.path.join(self.resources_dir, self.test_suite.name, self.test_vector.name, self.test_vector.input_file)
+        )
 
     def _execute_decode(self) -> str:
         """Execute the decoder and return the result."""

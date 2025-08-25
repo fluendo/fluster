@@ -27,7 +27,7 @@ from functools import lru_cache
 from multiprocessing import Pool
 from shutil import rmtree
 from time import perf_counter
-from typing import Dict, List, Optional, Set, Type, cast
+from typing import Any, Dict, List, Optional, Set, Type, cast
 from unittest.result import TestResult
 
 from fluster import utils
@@ -195,8 +195,8 @@ class TestSuite:
             json_file.write("\n")
 
     @staticmethod
-    def _download_single(ctx: DownloadWork) -> None:
-        """Download a single test vector"""
+    def _download_single_test_vector(ctx: DownloadWork) -> None:
+        """Download and extract a single test vector"""
         dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, ctx.test_vector.name)
         dest_path = os.path.join(dest_dir, os.path.basename(ctx.test_vector.source))
         os.makedirs(dest_dir, exist_ok=True)
@@ -213,27 +213,27 @@ class TestSuite:
                 os.remove(dest_path)
             return
 
-        print(f"\tDownloading test vector {ctx.test_vector.name} from {dest_dir}")
+        print(f"\tDownloading test vector {ctx.test_vector.name} from {ctx.test_vector.source}")
         # Catch the exception that download may throw to make sure pickle can serialize it properly
         # This avoids:
         # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
         # Reason: 'TypeError("cannot pickle '_io.BufferedReader' object")'
-        exception_str = ""
-        for i in range(ctx.retries):
-            try:
-                utils.download(ctx.test_vector.source, dest_dir, ctx.retries)
-            except urllib.error.URLError as ex:
-                exception_str = str(ex)
-                print(f"\tUnable to download {ctx.test_vector.source}, {exception_str}, retry={i + 1}")
-                continue
-            break
-        if exception_str:
-            raise Exception(exception_str)
+        try:
+            utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries)
+        except urllib.error.URLError as url_error:
+            print(
+                f"\tUnable to download {ctx.test_vector.source}, {str(url_error)} after {ctx.retries**ctx.retries} "
+                f"retries"
+            )
+            raise Exception(str(url_error))
 
         if ctx.test_vector.source_checksum != "__skip__":
             checksum = utils.file_checksum(dest_path)
             if ctx.test_vector.source_checksum != checksum:
-                raise Exception(f"Checksum mismatch for {ctx.test_vector.name}: {checksum}")
+                raise Exception(
+                    f"Checksum mismatch for {ctx.test_vector.name}: {checksum} instead of "
+                    f"{ctx.test_vector.source_checksum}"
+                )
 
         if utils.is_extractable(dest_path):
             print(f"\tExtracting test vector {ctx.test_vector.name} to {dest_dir}")
@@ -243,12 +243,13 @@ class TestSuite:
 
     @staticmethod
     def _download_single_archive(ctx: DownloadWorkSingleArchive) -> None:
-        """Download a single archive containing all test vectors"""
+        """Download a single archive containing many test vectors and extract them"""
         first_tv = ctx.test_vectors[next(iter(ctx.test_vectors))]
         dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name)
         dest_path = os.path.join(dest_dir, os.path.basename(first_tv.source))
         os.makedirs(dest_dir, exist_ok=True)
 
+        # Clean up existing corrupt source file
         if (
             ctx.verify
             and os.path.exists(dest_path)
@@ -258,31 +259,35 @@ class TestSuite:
             os.remove(dest_path)
 
         print(f"\tDownloading source file from {first_tv.source}")
-        exception_str = ""
-        for i in range(ctx.retries):
-            try:
-                utils.download(first_tv.source, dest_dir, ctx.retries)
-            except urllib.error.URLError as ex:
-                exception_str = str(ex)
-                print(f"\tUnable to download {first_tv.source}, {exception_str}, retry={i + 1}")
-                continue
-            break
-        if exception_str:
-            raise Exception(exception_str)
+
+        try:
+            utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries)
+        except urllib.error.URLError as url_error:
+            print(f"\tUnable to download {first_tv.source}, {str(url_error)} after {ctx.retries**ctx.retries} retries")
+            raise Exception(str(url_error))
 
         # Check that source file was downloaded correctly
         if first_tv.source_checksum != "__skip__":
             checksum = utils.file_checksum(dest_path)
             if first_tv.source_checksum != checksum:
-                raise Exception(f"Checksum mismatch for source file {first_tv.name}: {checksum}")
+                raise Exception(
+                    f"Checksum mismatch for source file {os.path.basename(first_tv.source)}: {checksum} "
+                    f"instead of '{first_tv.source_checksum}'"
+                )
 
-        with zipfile.ZipFile(dest_path, "r") as zip_file:
-            print(f"\tExtracting test vectors from {os.path.basename(first_tv.source)}")
-            for tv in ctx.test_vectors.values():
-                if tv.input_file in zip_file.namelist():
-                    zip_file.extract(tv.input_file, dest_dir)
-                else:
-                    print(f"WARNING: {tv.input_file} not found inside {os.path.basename(first_tv.source)}")
+        try:
+            with zipfile.ZipFile(dest_path, "r") as zip_file:
+                print(f"\tExtracting test vectors from {os.path.basename(first_tv.source)}")
+                for tv in ctx.test_vectors.values():
+                    if tv.input_file in zip_file.namelist():
+                        zip_file.extract(tv.input_file, dest_dir)
+                    else:
+                        print(
+                            f"WARNING: test vector {tv.input_file} not found inside {os.path.basename(first_tv.source)}"
+                        )
+        except zipfile.BadZipFile as bad_zip_error:
+            os.remove(dest_path)
+            raise Exception(f"{dest_path} could not be opened as zip file. File was deleted") from bad_zip_error
 
         # Remove source file, if applicable
         if not ctx.keep_file:
@@ -306,39 +311,46 @@ class TestSuite:
             and len(self.test_vectors) > 1
             and utils.is_extractable(os.path.basename(next(iter(unique_sources))))
         ):
+            # Download test suite of multiple test vectors from a single archive
             print(f"Downloading test suite {self.name} using 1 job (single archive)")
             dwork_single = DownloadWorkSingleArchive(
                 out_dir, verify, extract_all, keep_file, self.name, self.test_vectors, retries
             )
             self._download_single_archive(dwork_single)
+        elif len(unique_sources) == 1 and len(self.test_vectors) == 1:
+            # Download test suite of single test vector
+            print(f"Downloading test suite {self.name} using 1 job (single file)")
+            single_tv = next(iter(self.test_vectors.values()))
+            dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
+            dwork.set_test_vector(single_tv)
+            self._download_single_test_vector(dwork)
         else:
-            # Individual downloads (parallel or single)
-            if len(unique_sources) == 1 and len(self.test_vectors) == 1:
-                print(f"Downloading test suite {self.name} using 1 job (single file)")
-                first_tv = next(iter(self.test_vectors.values()))
-                dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
-                dwork.set_test_vector(first_tv)
-                self._download_single(dwork)
-            else:
-                print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
-                with Pool(jobs) as pool:
-                    downloads = []
-                    for tv in self.test_vectors.values():
-                        dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
-                        dwork.set_test_vector(tv)
-                        downloads.append(
-                            pool.apply_async(
-                                self._download_single,
-                                args=(dwork,),
-                            )
+            # Download test suite of multiple test vectors
+            print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
+            with Pool(jobs) as pool:
+
+                def _callback_error(err: Any) -> None:
+                    print(f"\nError downloading -> {err}\n")
+                    pool.terminate()
+
+                downloads = []
+                for tv in self.test_vectors.values():
+                    dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
+                    dwork.set_test_vector(tv)
+                    downloads.append(
+                        pool.apply_async(
+                            self._download_single_test_vector,
+                            args=(dwork,),
+                            error_callback=_callback_error,
                         )
+                    )
 
-                    pool.close()
-                    pool.join()
+                pool.close()
+                pool.join()
 
-                    for job in downloads:
-                        if not job.successful():
-                            sys.exit("Some download failed")
+            for job in downloads:
+                if not job.successful():
+                    sys.exit("Some download failed")
 
         print("All downloads finished")
 
