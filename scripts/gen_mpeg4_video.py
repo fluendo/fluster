@@ -109,6 +109,7 @@ class MPEG4VIDEOGenerator:
             self.codec,
             self.description,
             {},
+            test_method=self.test_method,
         )
 
         for resource_name in self.resources:
