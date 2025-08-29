@@ -435,6 +435,13 @@ class FFmpegAV1VulkanDecoder(FFmpegVulkanDecoder):
     codec = Codec.AV1
 
 
+@register_decoder
+class FFmpegVP9VulkanDecoder(FFmpegVulkanDecoder):
+    """FFmpeg Vulkan decoder for VP9"""
+
+    codec = Codec.VP9
+
+
 class FFmpegCudaDecoder(FFmpegDecoder):
     """Generic class for FFmpeg CUDA decoder"""
 
