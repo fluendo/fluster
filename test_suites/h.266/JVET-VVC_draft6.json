@@ -1344,7 +1344,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/MNUT_A_Nokia_3.zip",
             "source_checksum": "e26d46c79970021742f0696016220a3a",
             "input_file": "MNUT_A_Nokia_3.bit",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "9efb8eeb6095c361bf6f092e4bb145f8"
         },
         {
@@ -1352,7 +1352,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/MNUT_B_Nokia_2.zip",
             "source_checksum": "2b6394fdefdf620245daf84a514d6867",
             "input_file": "MNUT_B_Nokia_2.bit",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "e90ab172fc157094ef4c78f80a3771da"
         },
         {
@@ -1960,7 +1960,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/SUBPIC_C_ERICSSON_1.zip",
             "source_checksum": "c7f52bfadc93cc418b6f426669541cbb",
             "input_file": "SUBPIC_C_ERICSSON_1.bit",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "cab9bc6ae7f0bb6045b4b4d533a97495"
         },
         {
@@ -1968,7 +1968,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/SUBPIC_D_ERICSSON_1.zip",
             "source_checksum": "2a42772ab65ac31fb84cd370eaa571cd",
             "input_file": "SUBPIC_D_ERICSSON_1.bit",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "4b7461f334c4711fa2f5e8b60a3c31c8"
         },
         {
@@ -2192,7 +2192,7 @@
             "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/VPS_C_ERICSSON_1.zip",
             "source_checksum": "4a7a2f3a42ed96e0f313ad17bcedc1b7",
             "input_file": "VPS_C_ERICSSON_1.bit",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "10f5abbddce19b9290ff73567757f0a0"
         },
         {

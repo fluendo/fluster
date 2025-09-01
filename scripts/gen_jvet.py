@@ -147,11 +147,7 @@ class JVETGenerator:
                     pix_fmt = result[0]
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
                 except KeyError as key_err:
-                    exceptions = {
-                        # All below test vectors need to be analysed with respect
-                        # to output format, for now remains undetermined
-                        "VPS_C_ERICSSON_1": OutputFormat.NONE
-                    }
+                    exceptions = {"VPS_C_ERICSSON_1": OutputFormat.YUV420P10LE}
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
                     else:
@@ -159,10 +155,11 @@ class JVETGenerator:
                 except CalledProcessError as proc_err:
                     exceptions = {
                         # All below test vectors cause ffprobe to crash
-                        "MNUT_A_Nokia_3": OutputFormat.NONE,
-                        "MNUT_B_Nokia_2": OutputFormat.NONE,
-                        "SUBPIC_C_ERICSSON_1": OutputFormat.NONE,
-                        "SUBPIC_D_ERICSSON_1": OutputFormat.NONE,
+                        # Values taken from doc, .txt from (.zip)
+                        "MNUT_A_Nokia_3": OutputFormat.YUV420P10LE,
+                        "MNUT_B_Nokia_2": OutputFormat.YUV420P10LE,
+                        "SUBPIC_C_ERICSSON_1": OutputFormat.YUV420P10LE,
+                        "SUBPIC_D_ERICSSON_1": OutputFormat.YUV420P10LE,
                     }
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]

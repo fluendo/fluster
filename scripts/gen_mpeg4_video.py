@@ -210,12 +210,12 @@ class MPEG4VIDEOGenerator:
                                         # All information taken from mediainfo
                                         "vcon-stp5L1": OutputFormat.YUV420P,
                                         "ibm_tempete_e": OutputFormat.YUV420P,
-                                        # Simple Studio Profile unknown formats
-                                        "vcon-stp13L2": OutputFormat.UNKNOWN,
-                                        "vcon-stp12L2": OutputFormat.UNKNOWN,
-                                        "vcon-stpsh2L1": OutputFormat.UNKNOWN,
-                                        "vcon-stpsh1L1": OutputFormat.UNKNOWN,
-                                        "vcon-stpsp1L1": OutputFormat.UNKNOWN,
+                                        # Simple Studio Profile taken from ffmpeg and doc
+                                        "vcon-stp13L2": OutputFormat.YUV444P,
+                                        "vcon-stp12L2": OutputFormat.YUV444P,
+                                        "vcon-stpsh2L1": OutputFormat.YUV422P,
+                                        "vcon-stpsh1L1": OutputFormat.YUV422P,
+                                        "vcon-stpsp1L1": OutputFormat.YUV422P,
                                     }
                                     if test_vector.name in exceptions_output_format:
                                         test_vector.output_format = exceptions_output_format[test_vector.name]
