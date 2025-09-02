@@ -72,7 +72,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core_special/streams/test54.obu",
-            "output_format": "None",
+            "output_format": "gbrp10le",
             "result": "04734a6824f629ffdad2237570ca8aa9"
         },
         {
@@ -2608,7 +2608,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7740.obu",
-            "output_format": "None",
+            "output_format": "gbrp10le",
             "result": "ff707cd3857234410d841abe5b809fb0"
         },
         {
@@ -3632,7 +3632,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7762.obu",
-            "output_format": "None",
+            "output_format": "gbrp",
             "result": "0076020b6524f25415fec02a3085e4d4"
         },
         {
@@ -3672,7 +3672,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7763.obu",
-            "output_format": "None",
+            "output_format": "gbrp",
             "result": "8734a0f3b4848acad28cfabc51cf12a6"
         },
         {
@@ -4000,7 +4000,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7736.obu",
-            "output_format": "None",
+            "output_format": "gbrp",
             "result": "1b9e6b2426eb6d8ffb967269399ad69f"
         },
         {
@@ -4520,7 +4520,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7750.obu",
-            "output_format": "None",
+            "output_format": "gbrp10le",
             "result": "31414191192efb252ebf0200e2ae34bb"
         },
         {
@@ -5384,7 +5384,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7508_7618.obu",
-            "output_format": "None",
+            "output_format": "gbrp",
             "result": "dc2dab3fe72edc11f2d2cc2ff853b260"
         },
         {
@@ -5688,7 +5688,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7497.obu",
-            "output_format": "Unknown",
+            "output_format": "gbrp",
             "result": "23a1d407a688302b5cfad1faa6d20b35"
         },
         {
