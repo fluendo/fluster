@@ -7,7 +7,7 @@ name = "fluster-conformance"
 # TODO: Ensure that version 0.x.0 is marked as the final version in the CI release workflow only when we are certain
 # about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading
 # the same version.
-version = "0.4.1"
+version = "0.5.0-rc.1"
 authors = [
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
     # {name = "Pablo Marcos Oltra"}, wait to (https://github.com/pypi/warehouse/issues/12877)
@@ -141,6 +141,13 @@ fluster = "fluster.main:fluster_main"
 version_source = "file"
 version_file = "pyproject.toml"
 version_pattern = 'version\\s*=\\s*"(.*)"'
+commit_parser = "conventional"
+allow_zero_version = true
+
+[tool.semantic_release.commit_parser_options]
+parse_squash_commits = true
+ignore_merge_commits = true
+#ignore_patterns = ["^fixup!", "--"] # Uncomment to ignore "fixup!, --xxx" commits until know only in 0.1.0 and 0.2.0
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
@@ -150,3 +157,14 @@ prerelease = false
 match = "^(?!main$|master$).*"
 prerelease = true
 prerelease_token = "rc"
+
+[tool.semantic_release.changelog]
+mode = "update"
+template_dir = "config/release-templates"
+exclude_commit_patterns = [
+    '''ci(?:\([^)]*?\))?: .+''',
+    '''build(?:\([^)]*?\))?: .+''',
+    '''docs(?:\([^)]*?\))?: .+''',
+    '''style(?:\([^)]*?\))?: .+''',
+    '''Initial [Cc]ommit.*''',
+]
