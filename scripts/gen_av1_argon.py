@@ -131,6 +131,7 @@ class AV1ArgonGenerator:
         for _, tv_rel_path in enumerate(test_vector_files):
             tv_filename = os.path.splitext(os.path.basename(tv_rel_path))[0]
             tv_abs_path = os.path.abspath(os.path.join(extract_folder, tv_rel_path))
+            output_format = OutputFormat.UNKNOWN
             # ffprobe execution
             if self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd("ffprobe")
@@ -146,20 +147,42 @@ class AV1ArgonGenerator:
                     "default=nokey=1:noprint_wrappers=1",
                     tv_abs_path,
                 ]
+
                 try:
                     result = utils.run_command_with_output(command).splitlines()
                     pix_fmt = result[0]
-                    if pix_fmt == "unknown":
-                        pix_fmt = "Unknown"
-                except subprocess.CalledProcessError:
-                    pix_fmt = "None"
+                    output_format = OutputFormat[pix_fmt.upper()]
+                    if output_format == OutputFormat.UNKNOWN:
+                        raise KeyError
+                except (subprocess.CalledProcessError, KeyError) as error:
+                    exceptions_profile1_output_format = {
+                        # Exceptions for profile 1 core (annex b) vectors
+                        "test54": OutputFormat.GBRP10LE,
+                        "test7497": OutputFormat.GBRP,
+                        "test7508_7618": OutputFormat.GBRP,
+                        "test7736": OutputFormat.GBRP,
+                        "test7740": OutputFormat.GBRP10LE,
+                        "test7750": OutputFormat.GBRP10LE,
+                        "test7762": OutputFormat.GBRP,
+                        "test7763": OutputFormat.GBRP,
+                        # Exceptions for profile 1 non-annex b vectors
+                        "test50": OutputFormat.GBRP10LE,
+                        # Exceptions for profile 1 stress vectors
+                        "test2678": OutputFormat.GBRP10LE,
+                        "test58915": OutputFormat.GBRP10LE,
+                        "test78511": OutputFormat.GBRP10LE,
+                        "test90958": OutputFormat.GBRP10LE,
+                        "test98100": OutputFormat.GBRP10LE,
+                    }
+                    if tv_filename in exceptions_profile1_output_format.keys():
+                        output_format = exceptions_profile1_output_format[tv_filename]
+                    else:
+                        raise error
 
             temp_output_ref = f"{os.path.splitext(tv_abs_path)[0]}.out"
             try:
                 # Run libaom av1 decoder to get md5 checksum of expected output
-                result_checksum = self.decoder.decode(
-                    tv_abs_path, temp_output_ref, OutputFormat[pix_fmt.upper()], 240, False, False
-                )
+                result_checksum = self.decoder.decode(tv_abs_path, temp_output_ref, output_format, 240, False, False)
                 os.remove(temp_output_ref)
             except FileNotFoundError:
                 print(f"File '{temp_output_ref}' not found.")
@@ -177,7 +200,7 @@ class AV1ArgonGenerator:
                 source_url,
                 source_checksum,
                 tv_rel_path,
-                OutputFormat[pix_fmt.upper()],
+                output_format,
                 result_checksum,
             )
             test_suite.test_vectors[tv_filename] = test_vector

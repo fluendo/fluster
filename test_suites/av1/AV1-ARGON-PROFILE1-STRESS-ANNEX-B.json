@@ -8,7 +8,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_stress/streams/test98100.obu",
-            "output_format": "Unknown",
+            "output_format": "gbrp10le",
             "result": "7895480bf17820095ab05fd7e74e09fe"
         },
         {
@@ -176,7 +176,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_stress/streams/test90958.obu",
-            "output_format": "Unknown",
+            "output_format": "gbrp10le",
             "result": "139c6f37a1025fe033a8626bbe1d21f5"
         },
         {
@@ -256,7 +256,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_stress/streams/test78511.obu",
-            "output_format": "None",
+            "output_format": "gbrp10le",
             "result": "593b5563471fa3d8d8ccf60c8dd278bf"
         },
         {
@@ -360,7 +360,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_stress/streams/test2678.obu",
-            "output_format": "Unknown",
+            "output_format": "gbrp10le",
             "result": "0286d1ba84b6bff9cde8a5a2fdee7932"
         },
         {
@@ -592,7 +592,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_stress/streams/test58915.obu",
-            "output_format": "Unknown",
+            "output_format": "gbrp10le",
             "result": "742c579b6dbc5d7ca4efa34b18f7f465"
         },
         {
