@@ -2,13 +2,13 @@
     "name": "MPEG2_VIDEO-422",
     "codec": "MPEG2_VIDEO",
     "description": "ISO IEC 13818-4 MPEG2 video 422 profile test suite",
-    "test_method": "pixel",
     "test_vectors": [
         {
             "name": "sony_422_id13-1",
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/sony/sony_422_id13-1/sony_422_id13-1.bs.gz",
             "source_checksum": "3b414fcbb3852e6f2d9448e7cb07562d",
             "input_file": "sony_422_id13-1.bs",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -17,6 +17,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/sony/sony_422_id01-1/sony_422_id01-1.bs.gz",
             "source_checksum": "990d85154d183313d84b7f519b000911",
             "input_file": "sony_422_id01-1.bs",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -25,6 +26,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/sony/sony_422_id03-1/sony_422_id03-1.bs.gz",
             "source_checksum": "ea556c2c9f835efa132bea12ffc13932",
             "input_file": "sony_422_id03-1.bs",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -33,6 +35,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/hhi/hhi_burst_422/hhi_burst_422_short.bits.gz",
             "source_checksum": "12825629678abc21619c68f2e193bf71",
             "input_file": "hhi_burst_422_short.bits",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -41,6 +44,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/hhi/hhi_burst_422/hhi_burst_422_long.bits.gz",
             "source_checksum": "bd1efead61da7563aa3b5c7ab919c0ce",
             "input_file": "hhi_burst_422_long.bits",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -49,6 +53,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/tek/Tek9-422-uniformVLC/Tek9.bit.gz",
             "source_checksum": "d9e4a14ce972571f77ba0ba55c8850fb",
             "input_file": "Tek9.bit",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -57,6 +62,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/tek/Tek6-422-bigBpic/Tek6.bit.gz",
             "source_checksum": "86792f7770eaf6debce5d19ef357602a",
             "input_file": "Tek6.bit",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -65,6 +71,7 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/tek/Tek7-422-smallSlices/Tek7.bit.gz",
             "source_checksum": "210837e0f55a342947ce2a58222f3fbf",
             "input_file": "Tek7.bit",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         },
@@ -73,8 +80,10 @@
             "source": "https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/Video/bitstreams/422-profile/ibm/ibm_dp_intra_422/ibm_dp_intra_422.m2v.gz",
             "source_checksum": "5df0d337e4a059df924e3a928db6b6aa",
             "input_file": "ibm_dp_intra_422.m2v",
+            "profile": "4:2:2",
             "output_format": "yuv422p",
             "result": ""
         }
-    ]
+    ],
+    "test_method": "pixel"
 }
