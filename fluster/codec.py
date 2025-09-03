@@ -89,6 +89,10 @@ class Profile(Enum):
     MAIN_4_2_2_10 = "Main 4:2:2 10"
     MAIN_4_4_4_12 = "Main 4:4:4 12"
 
+    # MPEG2 video
+    PROFILE_4_2_2 = "4:2:2"
+    SIMPLE = "Simple"
+
     # MPEG4 video
     SIMPLE_PROFILE = "Simple Profile"
     ADVANCED_SIMPLE_PROFILE = "Advanced Simple Profile"

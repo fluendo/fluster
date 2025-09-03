@@ -28,7 +28,7 @@ from urllib.parse import urljoin
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector
 
@@ -147,20 +147,41 @@ class MPEG2VIDEOGenerator:
                     "-select_streams",
                     "v:0",
                     "-show_entries",
-                    "stream=pix_fmt",
+                    "stream=profile,pix_fmt",
                     "-of",
                     "default=nokey=1:noprint_wrappers=1",
                     absolute_input_path,
                 ]
 
                 result = utils.run_command_with_output(command).splitlines()
-                pix_fmt = result[0]
+                profile = result[0]
+                pix_fmt = result[1]
                 try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
                 except KeyError as key_err:
                     exceptions: Dict[str, OutputFormat] = {}
                     if test_vector.name in exceptions.keys():
                         test_vector.output_format = exceptions[test_vector.name]
+                    else:
+                        raise key_err
+                try:
+                    transformed_profile = profile.translate(str.maketrans(" :", "__")).upper()
+                    if transformed_profile[0].isdigit():
+                        transformed_profile = "PROFILE_" + transformed_profile
+                    test_vector.profile = Profile[transformed_profile]
+                except KeyError as key_err:
+                    exceptions_profile = {
+                        # Values come from official spec validated with mediainfo online
+                        # Test suite: MPEG2_VIDEO-MAIN
+                        "MEI": Profile.SIMPLE,  # Mpeg version 1
+                        "MEI.stream16": Profile.SIMPLE,  # Mpeg version 1
+                        "tcela-16": Profile.MAIN,  # Mpeg version 1
+                        "tcela-18": Profile.SIMPLE,  # Mpeg version 1
+                        "tcela-19": Profile.SIMPLE,  # Mpeg version 1
+                        "ccm1": Profile.SIMPLE,  # Mpeg version 1
+                    }
+                    if test_vector.name in exceptions_profile:
+                        test_vector.profile = exceptions_profile[test_vector.name]
                     else:
                         raise key_err
 
