@@ -400,7 +400,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile2_stress/streams/test39250.obu",
-            "output_format": "None",
+            "output_format": "gbrp12le",
             "result": "06bc55480f1ca6a4b2967b4e27569425"
         },
         {
@@ -552,7 +552,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile2_stress/streams/test85818.obu",
-            "output_format": "Unknown",
+            "output_format": "yuv422p10le",
             "result": "cf734e7643d1033969f726b640e1bfd9"
         },
         {
@@ -632,7 +632,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile2_stress/streams/test70691.obu",
-            "output_format": "None",
+            "output_format": "yuv444p12le",
             "result": "df535a0ae49211bc6bd96083a5f1e631"
         },
         {
@@ -680,7 +680,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile2_stress/streams/test32592.obu",
-            "output_format": "None",
+            "output_format": "yuv422p10le",
             "result": "977a313f24adf4d2a42f014a1fce1823"
         },
         {

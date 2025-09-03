@@ -174,8 +174,30 @@ class AV1ArgonGenerator:
                         "test90958": OutputFormat.GBRP10LE,
                         "test98100": OutputFormat.GBRP10LE,
                     }
+
+                    exceptions_profile2_output_format = {
+                        # Exceptions for profile 2 core (annex b) vectors
+                        # All that appear as unknown in the list below contain frames of changing format
+                        "test15599_12921": OutputFormat.UNKNOWN,
+                        "test15641": OutputFormat.GBRP12LE,
+                        "test15825": OutputFormat.GRAY,
+                        "test16": OutputFormat.GRAY12LE,
+                        "test16042": OutputFormat.GBRP12LE,
+                        "test16049_16187_16181": OutputFormat.UNKNOWN,
+                        "test16086": OutputFormat.GBRP12LE,
+                        "test16101_16158_16169": OutputFormat.UNKNOWN,
+                        "test16154_16099_16103": OutputFormat.UNKNOWN,
+                        # Exceptions for profile 2 stress vectors
+                        "test32592": OutputFormat.YUV422P10LE,
+                        "test39250": OutputFormat.GBRP12LE,
+                        "test70691": OutputFormat.YUV444P12LE,
+                        "test85818": OutputFormat.YUV422P10LE,
+                    }
+
                     if tv_filename in exceptions_profile1_output_format.keys():
                         output_format = exceptions_profile1_output_format[tv_filename]
+                    elif tv_filename in exceptions_profile2_output_format.keys():
+                        output_format = exceptions_profile2_output_format[tv_filename]
                     else:
                         raise error
 
