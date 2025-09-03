@@ -146,12 +146,41 @@ class AV1ArgonGenerator:
                     full_path,
                 ]
                 try:
+                    exceptions_output_format_profile0_core_annex_b = {
+                        # Taken from stream documentation.xlsx
+                        "test54": "yuv420p10le",
+                        "test11142": "yuv420p10le",
+                        "test11079_11110": "yuv420p10le",
+                        "test11145": "gray10le",
+                        "test11023": "yuv420p10le",
+                    }
+                    exceptions_output_format_profile0_non_annex_b = {
+                        # Taken from stream documentation.xlsx
+                        "test12293_12304": "gray10le"
+                    }
+                    exceptions_output_format_profile0_stress_annex_b = {
+                        # Taken from stream documentation.xlsx
+                        "test50688": "yuv420p10le",
+                        "test23792": "yuv420p10le",
+                        "test79399": "yuv420p10le",
+                        "test29600": "yuv420p10le",
+                    }
                     result = utils.run_command_with_output(command).splitlines()
                     pix_fmt = result[0]
                     if pix_fmt == "unknown":
-                        pix_fmt = "Unknown"
+                        pix_fmt = (
+                            exceptions_output_format_profile0_core_annex_b.get(filename)
+                            or exceptions_output_format_profile0_non_annex_b.get(filename)
+                            or exceptions_output_format_profile0_stress_annex_b.get(filename)
+                            or "Unknown"
+                        )
                 except subprocess.CalledProcessError:
-                    pix_fmt = "None"
+                    pix_fmt = (
+                        exceptions_output_format_profile0_core_annex_b.get(filename)
+                        or exceptions_output_format_profile0_non_annex_b.get(filename)
+                        or exceptions_output_format_profile0_stress_annex_b.get(filename)
+                        or "None"
+                    )
 
             # Processing md5 files
             md5_file_to_find = os.path.splitext(filename)[0] + ".md5"
