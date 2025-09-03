@@ -129,12 +129,12 @@ jobs:
         git checkout -B ${{ github.ref_name }} ${{ github.sha }}
     - name: Create semantic version release
       id: release
-      uses: python-semantic-release/python-semantic-release@v9.16.1
+      uses: python-semantic-release/python-semantic-release@v10.3.1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         git_committer_name: "github-actions"
         git_committer_email: "actions@users.noreply.github.com"
-        changelog: false
+        changelog: true
     - name: Set up Python 3.7
       uses: actions/setup-python@v5
       with:
@@ -153,7 +153,7 @@ jobs:
       with:
         password: ${{ secrets.PYPI_TOKEN }}
     - name: Publish and upload to GitHub Release Assets
-      uses: python-semantic-release/publish-action@v9.16.1
+      uses: python-semantic-release/publish-action@v10.3.1
       if: steps.release.outputs.released == 'true'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
