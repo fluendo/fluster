@@ -22,7 +22,7 @@ from collections import defaultdict
 from enum import Enum
 from functools import lru_cache
 from shutil import rmtree
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
 
 from fluster.codec import Codec, Profile
 from fluster.decoder import DECODERS, Decoder
@@ -532,6 +532,73 @@ class Fluster:
 
             return output
 
+        def _generate_global_summary(results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> str:
+            if not results:
+                return ""
+
+            all_decoders = []
+            decoder_names = set()
+            for test_suite_results in results.values():
+                for decoder, _ in test_suite_results:
+                    if decoder.name not in decoder_names:
+                        all_decoders.append(decoder)
+                        decoder_names.add(decoder.name)
+
+            decoder_totals = {dec.name: {"success": 0, "total": 0} for dec in all_decoders}
+            decoder_times = {dec.name: 0.0 for dec in all_decoders}
+            global_profile_stats: Dict[str, Dict[str, Dict[str, int]]] = {dec.name: {} for dec in all_decoders}
+
+            for test_suite_results in results.values():
+                for decoder, test_suite in test_suite_results:
+                    totals = decoder_totals[decoder.name]
+                    totals["success"] += test_suite.test_vectors_success
+                    totals["total"] += len(test_suite.test_vectors)
+
+                    timeouts = (
+                        sum(
+                            ctx.timeout
+                            for tv in test_suite.test_vectors.values()
+                            if tv.test_result == TestVectorResult.TIMEOUT
+                        )
+                        if ctx.jobs == 1
+                        else 0
+                    )
+                    decoder_times[decoder.name] += test_suite.time_taken - timeouts
+
+                    for test_vector in test_suite.test_vectors.values():
+                        if test_vector.profile is not None:
+                            profile_name = test_vector.profile.name
+                            stats = global_profile_stats[decoder.name].setdefault(
+                                profile_name, {"success": 0, "total": 0}
+                            )
+                            stats["total"] += 1
+                            if test_vector.test_result == TestVectorResult.SUCCESS:
+                                stats["success"] += 1
+
+            separator = f"\n|-|{'-|' * len(all_decoders)}"
+            output = "\n# GLOBAL SUMMARY"
+            output += "\n|TOTALS|" + "".join(f"{dec.name}|" for dec in all_decoders) + separator
+            output += "\n|TOTAL|" + "".join(
+                f"{decoder_totals[dec.name]['success']}/{decoder_totals[dec.name]['total']}|" for dec in all_decoders
+            )
+            output += "\n|TOTAL TIME|" + "".join(f"{decoder_times[dec.name]:.3f}s|" for dec in all_decoders)
+
+            all_profiles: Set[str] = set()
+            for decoder_profiles in global_profile_stats.values():
+                all_profiles.update(decoder_profiles.keys())
+
+            if all_profiles:
+                output += separator
+                output += "\n|Profile|" + "".join(f"{dec.name}|" for dec in all_decoders)
+                for profile in sorted(all_profiles):
+                    output += f"\n|{profile}|"
+                    for dec in all_decoders:
+                        stats = global_profile_stats[dec.name].get(profile, {"success": 0, "total": 0})
+                        output += f"{stats['success']}/{stats['total']}|"
+
+            output += separator
+            return output
+
         output = ""
 
         for test_suite_name, test_suite_results in results.items():
@@ -550,6 +617,11 @@ class Fluster:
             profile_output = _profile_stats(test_suite_results)
             if profile_output:
                 output += profile_output + "\n\n"
+
+        global_summary = _generate_global_summary(results)
+        if global_summary:
+            output += global_summary + "\n\n"
+
         if ctx.summary_output:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
                 summary_file.write(output)
