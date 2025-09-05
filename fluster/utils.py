@@ -23,12 +23,15 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
+from contextlib import ExitStack
 from functools import partial
+from http.client import IncompleteRead
 from threading import Lock
 from typing import Any, List, Optional
 
@@ -61,12 +64,12 @@ def download(
     dest_dir: str,
     max_retries: int = 5,
     timeout: int = 300,
-    chunk_size: int = 2048 * 2048,  # 4MB
 ) -> None:
     """Downloads a file to a directory with a mutex lock to avoid conflicts and retries with exponential backoff."""
     os.makedirs(dest_dir, exist_ok=True)
     filename = os.path.basename(url)
     dest_path = os.path.join(dest_dir, filename)
+
     for attempt in range(max_retries):
         try:
             with download_lock:
@@ -75,14 +78,21 @@ def download(
                     url_handler = response
                     if "text/html" in response.headers.get("content-type", "").lower():
                         url_handler = handle_iso_terms(opener, url)
-                    with open(dest_path, "wb") as dest:
-                        while True:
-                            chunk = url_handler.read(chunk_size)
-                            if not chunk:
-                                break
-                            dest.write(chunk)
+
+                    with ExitStack() as stack:
+                        tmp_file = stack.enter_context(tempfile.NamedTemporaryFile(dir=dest_dir, delete=False))
+                        tmp_path = tmp_file.name
+                        shutil.copyfileobj(url_handler, tmp_file)
+
+                        os.replace(tmp_path, dest_path)
+                        stack.pop_all()
+
             break
-        except urllib.error.URLError as e:
+
+        except (urllib.error.URLError, IncompleteRead) as e:
+            if "tmp_path" in locals() and os.path.exists(tmp_path):
+                os.remove(tmp_path)
+
             if attempt < max_retries - 1:
                 wait_time = random.uniform(1, 2**attempt)
                 time.sleep(wait_time)
