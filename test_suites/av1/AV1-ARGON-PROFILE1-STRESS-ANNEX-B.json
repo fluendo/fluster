@@ -619,5 +619,6 @@
             "output_format": "yuv444p",
             "result": "333310ca5e5be9bb90a188b841db43ed"
         }
-    ]
+    ],
+    "test_method": "md5"
 }

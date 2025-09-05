@@ -271,11 +271,8 @@ class Fluster:
             test_suite_results: List[Tuple[Decoder, TestSuite]] = []
             for decoder in ctx.decoders:
                 if isinstance(decoder, AV1AOMDecoder) and decoder.name == "libaom-AV1":
-                    if "NON-ANNEX-B" in test_suite.name:
-                        decoder.multiple_layers = True
-                    elif "ANNEX-B" in test_suite.name:
+                    if any(keyword in test_suite.name for keyword in ["CORE", "STRESS"]):
                         decoder.annexb = True
-                        decoder.multiple_layers = True
                 if decoder.codec != test_suite.codec:
                     continue
                 if test_suite.test_method == TestMethod.PIXEL and decoder.is_reference:

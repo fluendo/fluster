@@ -30,6 +30,7 @@ from typing import Any, List
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
+from fluster.decoders import av1_aom
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
@@ -56,6 +57,9 @@ class AV1ArgonGenerator:
         self.site = site
         self.test_vector_groups = test_vector_groups
         self.use_ffprobe = use_ffprobe
+        self.decoder = av1_aom.AV1AOMDecoder()
+        if any(keyword in self.suite_name for keyword in ["CORE", "STRESS"]):
+            self.decoder.annexb = True
 
     def generate(self, download: bool) -> None:
         """Generates the test suite and saves it to a file"""
@@ -110,7 +114,7 @@ class AV1ArgonGenerator:
         # Unzip the source file
         test_vector_files = []
         with zipfile.ZipFile(extract_folder + "/" + self.name, "r") as zip_ref:
-            print(f"Unzip test streams and checksums from {self.name}")
+            print(f"Unzipping test streams and checksums from {self.name}")
             for file_info in zip_ref.namelist():
                 # Process test vector groups
                 file_info_split = file_info.split("/")
@@ -121,17 +125,13 @@ class AV1ArgonGenerator:
                         zip_ref.extract(file_info, extract_folder)
                         test_vector_files.append(file_info)
 
-                    # Extract md5 files
-                    if file_info.endswith(".md5") and "md5_ref/" in file_info and "layers/" not in file_info:
-                        zip_ref.extract(file_info, extract_folder)
-
         # Create test vectors and test suite
-        print("Creating test vectors and test suite")
+        print(f"Creating test suite {test_suite.name}")
         for idx, file in enumerate(test_vector_files):
             filename = os.path.splitext(os.path.basename(file))[0]
+            full_path = os.path.abspath(extract_folder + "/" + file)
             # ffprobe execution
             if self.use_ffprobe:
-                full_path = os.path.abspath(extract_folder + "/" + file)
                 ffprobe = utils.normalize_binary_cmd("ffprobe")
                 command = [
                     ffprobe,
@@ -153,25 +153,18 @@ class AV1ArgonGenerator:
                 except subprocess.CalledProcessError:
                     pix_fmt = "None"
 
-            # Processing md5 files
-            md5_file_to_find = os.path.splitext(filename)[0] + ".md5"
-            full_path_split = full_path.split("/")
-            md5_directory_path = "/".join(full_path_split[: len(full_path_split) - 2]) + "/" + "md5_ref"
-            md5_file_path = os.path.join(md5_directory_path, md5_file_to_find)
-
-            # Check the .md5 file and get checksum
-            if os.path.exists(md5_file_path):
-                try:
-                    result_checksum = self._fill_checksum_argon(md5_file_path)
-                except Exception as ex:
-                    print("MD5 does not match")
-                    raise ex
-            else:
-                try:
-                    result_checksum = utils.file_checksum(full_path)
-                except Exception as ex:
-                    print("MD5 cannot be calculated")
-                    raise ex
+            try:
+                temp_output_ref = f"{os.path.splitext(full_path)[0]}.out"
+                # Run libaom av1 decoder to get md5 checksum of expected output
+                result_checksum = self.decoder.decode(
+                    full_path, temp_output_ref, OutputFormat[pix_fmt.upper()], 240, False, False
+                )
+                os.remove(temp_output_ref)
+            except Exception as ex:
+                if "error" in full_path.split(os.path.sep)[-3]:
+                    result_checksum = ""
+                else:
+                    raise Exception(f"\tUnable to calculate md5 checksum of {filename}, {str(ex)}") from ex
 
             # Add data to the test vector and the test suite
             test_vector = TestVector(
