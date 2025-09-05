@@ -707,5 +707,6 @@
             "output_format": "yuv420p",
             "result": "03b70d6a4ce7e80c5ed5070791768e79"
         }
-    ]
+    ],
+    "test_method": "md5"
 }

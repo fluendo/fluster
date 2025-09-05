@@ -457,7 +457,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1183.obu",
             "output_format": "gbrp",
-            "result": "ed1d84c718afa82a2a3b0cd729f7d0b9"
+            "result": "91617f0ad2129a7b5616f018e4fe8940"
         },
         {
             "name": "test2416",
@@ -497,7 +497,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6703_4825_3365.obu",
             "output_format": "gbrp10le",
-            "result": "083e524e8aba0b50bccbc9b7d7c1201d"
+            "result": "a59743416e6845bc1c0bc3647c56705e"
         },
         {
             "name": "test1787_7212_404",
@@ -521,7 +521,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7521.obu",
             "output_format": "yuv444p",
-            "result": "0666563bed6a0b93f72ae6340cfc21a8"
+            "result": "7a3e6e9478755cd67365ac9b179e683f"
         },
         {
             "name": "test7165_2027",
@@ -529,7 +529,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7165_2027.obu",
             "output_format": "yuv444p",
-            "result": "6dca6fc01043a7a96dfb9f57ea283b6a"
+            "result": "706aeeab59cd483dba230231d04dd6ad"
         },
         {
             "name": "test6970_5130",
@@ -537,7 +537,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6970_5130.obu",
             "output_format": "gbrp",
-            "result": "1a9d3e39c878a3445ccbc76e4c79f73a"
+            "result": "fb451cd961c08122226e4e0896b61cc5"
         },
         {
             "name": "test3641_5177_599",
@@ -561,7 +561,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1173_5126_4611.obu",
             "output_format": "yuv444p10le",
-            "result": "0aad6d7bdd1698112980ec7002ab2444"
+            "result": "d31d4de603d5979b8cabe0cafa13bdbb"
         },
         {
             "name": "test2081",
@@ -569,7 +569,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2081.obu",
             "output_format": "gbrp",
-            "result": "3e943e020536da4fb064d3877e03182e"
+            "result": "f0c079ebc80269274359339e2a9238b9"
         },
         {
             "name": "test5959",
@@ -713,7 +713,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7133_1615.obu",
             "output_format": "gbrp",
-            "result": "112fca3b83936a5fa727fbf3b5b44351"
+            "result": "79b3b89a963a48f279bd088f87fca706"
         },
         {
             "name": "test5508_7274_5209",
@@ -721,7 +721,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5508_7274_5209.obu",
             "output_format": "yuv444p",
-            "result": "1604a0c48e870c2658138c871239a47b"
+            "result": "9e4c79d6c0efd539c4e9957b49d693c2"
         },
         {
             "name": "test2684",
@@ -737,7 +737,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6062.obu",
             "output_format": "gbrp10le",
-            "result": "bc93d27c4d9b850f0330fffd0fd52838"
+            "result": "685cd2ff80bf058c559a308b834ccea3"
         },
         {
             "name": "test4589",
@@ -753,7 +753,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test908_6370_1876.obu",
             "output_format": "yuv444p10le",
-            "result": "ccea5b997222e70a1abf7baa5dcc35dd"
+            "result": "04203510b5d3aae5e70189aa4c556ca0"
         },
         {
             "name": "test4570",
@@ -769,7 +769,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test4864_4295_5577.obu",
             "output_format": "gbrp",
-            "result": "9d73ea4e6c43d60cd60f79886289c072"
+            "result": "364eae2d25c545f28f1056d6f52ef3ef"
         },
         {
             "name": "test3392",
@@ -793,7 +793,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test805_6068_4563.obu",
             "output_format": "gbrp",
-            "result": "7eca47a891ba02c71bd2142e6fe0a1ca"
+            "result": "25d6113008c18cdd967f3670b5b9e8fb"
         },
         {
             "name": "test641",
@@ -857,7 +857,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test943_1896_5461.obu",
             "output_format": "yuv444p",
-            "result": "c00e0129134369f1830f5321f1e1ca34"
+            "result": "fc9c591791a48945de34408bba8db51e"
         },
         {
             "name": "test4665",
@@ -913,7 +913,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6574.obu",
             "output_format": "yuv444p10le",
-            "result": "24b7f5e9d027689c2949c38d2602c9fd"
+            "result": "03b1420fead3265ab0eb0c00adbf7d37"
         },
         {
             "name": "test2516",
@@ -985,7 +985,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1556_273_5657.obu",
             "output_format": "yuv444p",
-            "result": "7305b2319102959d8a90fe64eb9afb9b"
+            "result": "b7a8024513b13111ad7ab2a67f491965"
         },
         {
             "name": "test1294",
@@ -1049,7 +1049,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test382_5606.obu",
             "output_format": "yuv444p10le",
-            "result": "4a32c15d97b905125bde6de019b19f67"
+            "result": "74e303409c2eb2cedeea4c2488d8e1dc"
         },
         {
             "name": "test2726",
@@ -1081,7 +1081,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1275.obu",
             "output_format": "gbrp10le",
-            "result": "5a396a6b795cf5151ab18ff0185ccfae"
+            "result": "d4e0f4dee25822cbb81d51380ee71240"
         },
         {
             "name": "test6474",
@@ -1265,7 +1265,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test439_262_1642.obu",
             "output_format": "gbrp",
-            "result": "9a672f8839b92ea009845723c760db5a"
+            "result": "9fc35e2eb3fb6514dcacd0c656823234"
         },
         {
             "name": "test5360",
@@ -1337,7 +1337,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1251.obu",
             "output_format": "yuv444p",
-            "result": "9b16dfd38ceb77a2e30ac2c0617f47a5"
+            "result": "689e9ab398c40e61ab8919a0c4c37307"
         },
         {
             "name": "test7455",
@@ -1353,7 +1353,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6420_5253.obu",
             "output_format": "yuv444p10le",
-            "result": "c15d6d49dacf21f66e2e3043b8c00c3e"
+            "result": "ed690fd181401e5828ab021bbc600b1a"
         },
         {
             "name": "test1419_5692_32",
@@ -1361,7 +1361,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1419_5692_32.obu",
             "output_format": "yuv444p",
-            "result": "f533e6cf5ec7ca14d020724da066f998"
+            "result": "649a78af63ac44caf980288c33187314"
         },
         {
             "name": "test2096",
@@ -1433,7 +1433,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7345.obu",
             "output_format": "gbrp10le",
-            "result": "dccee7b03d542e21a86f3cabf497e949"
+            "result": "cc44d01ddd26cd00771d6117b5d4b33e"
         },
         {
             "name": "test184_589",
@@ -1521,7 +1521,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20026.obu",
             "output_format": "yuv444p",
-            "result": "41ee8069caaba21d524d56b381313f55"
+            "result": "70fd6deea6319aa67d1eb3cdcf027cd9"
         },
         {
             "name": "test6056",
@@ -1553,7 +1553,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7586.obu",
             "output_format": "gbrp",
-            "result": "4d9868da6a91dde51dd932ed771bad5a"
+            "result": "9028a2133cedcb1708c6c2741a6be112"
         },
         {
             "name": "test4685",
@@ -1633,7 +1633,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6664_6873.obu",
             "output_format": "yuv444p",
-            "result": "ea7503938ce51f33cb9faffbad2e4388"
+            "result": "670a92117a032d6a883fc09dcf323390"
         },
         {
             "name": "test2369_1557_2112",
@@ -1649,7 +1649,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1662.obu",
             "output_format": "gbrp",
-            "result": "d401d59fd69ad39f14eeda3c513ae7b1"
+            "result": "af6d881206a56ff0c1cc3f9b9ee1b609"
         },
         {
             "name": "test3069",
@@ -1697,7 +1697,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test4679_2869.obu",
             "output_format": "gbrp10le",
-            "result": "ade12547cd38e10f4332a985d24a647a"
+            "result": "6777413f99b743303b72298013ace980"
         },
         {
             "name": "test6035_5333",
@@ -1745,7 +1745,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5517_2579_6680.obu",
             "output_format": "yuv444p",
-            "result": "34b04fb7461c6d83c3d8a678ce93de7b"
+            "result": "3631de5eb08bba3a8bff42381fad487f"
         },
         {
             "name": "test6632_2374",
@@ -1753,7 +1753,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6632_2374.obu",
             "output_format": "yuv444p10le",
-            "result": "66ca163f36d400c20d98be007f750d1d"
+            "result": "9360ceb0273279d1087ef638d78686d7"
         },
         {
             "name": "test1563",
@@ -1785,7 +1785,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2082.obu",
             "output_format": "yuv444p",
-            "result": "c48fd145c9d77efa58ac5c2b6223ed16"
+            "result": "906ee4b9853a48046d74fe519cb5d347"
         },
         {
             "name": "test6658_2514",
@@ -1817,7 +1817,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2217_302.obu",
             "output_format": "gbrp10le",
-            "result": "7bcf51b46cbc8fac1b26bcbd0ebd7fff"
+            "result": "e3d4a9ead70d0f686502e7715c5c168f"
         },
         {
             "name": "test1495",
@@ -1857,7 +1857,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7061_4978_4052.obu",
             "output_format": "yuv444p10le",
-            "result": "290509ed77c98f50079776f555337209"
+            "result": "2b56d7e5bf7bf70b2a6088a512b5c1e2"
         },
         {
             "name": "test4037_1785_1877",
@@ -1977,7 +1977,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5677_3343.obu",
             "output_format": "gbrp10le",
-            "result": "02fe1bb183ddf8531b6279c1e820863f"
+            "result": "cb019a23d7e0fc0b13dc358a115302e0"
         },
         {
             "name": "test1586",
@@ -2073,7 +2073,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20029.obu",
             "output_format": "yuv444p",
-            "result": "e17516a012a8e4c51aedad1cd99bb0c8"
+            "result": "eca5033a2800cf3be5edd8ce3991bd49"
         },
         {
             "name": "test7734",
@@ -2153,7 +2153,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test105_1123.obu",
             "output_format": "yuv444p",
-            "result": "052ae219db24fcdeee8b521488cfd5e0"
+            "result": "16633a08bf0ddbe815796da410e25682"
         },
         {
             "name": "test2834",
@@ -2169,7 +2169,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test84_7242_2594.obu",
             "output_format": "gbrp",
-            "result": "f0f11f766ac9e136de3324818d5b8a3f"
+            "result": "d9b4bfd482f8754510bcbe9a5ef7b195"
         },
         {
             "name": "test1348",
@@ -2185,7 +2185,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5319.obu",
             "output_format": "gbrp",
-            "result": "dd243a288753b684dfa9bba6d1ae4241"
+            "result": "54be3f323d6a4368ddb72c2ea6d532c2"
         },
         {
             "name": "test5466_1830",
@@ -2249,7 +2249,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test673_4935_7356.obu",
             "output_format": "yuv444p",
-            "result": "ad55ce58e9297335324f9a7ee0172954"
+            "result": "36e62bdb02efcfcd8c977e76f578e877"
         },
         {
             "name": "test2509",
@@ -2345,7 +2345,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test4837_4698.obu",
             "output_format": "yuv444p",
-            "result": "d3f1633c38789509b21260a1cf0333b1"
+            "result": "4cccc2ee62b9b5383a09be3982037220"
         },
         {
             "name": "test1736",
@@ -2417,7 +2417,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7127.obu",
             "output_format": "yuv444p",
-            "result": "1c9ed70dd89d701fa03d557959770b68"
+            "result": "a9dce48419573a95ad445d9d19ea936e"
         },
         {
             "name": "test2968_2753",
@@ -2433,7 +2433,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test3551_5291_7343.obu",
             "output_format": "yuv444p",
-            "result": "93969ed992efb7189df4f80c0be2fe3d"
+            "result": "f9750c23961d9f2d763c6c22a984f0b7"
         },
         {
             "name": "test7515",
@@ -2457,7 +2457,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7409_6983.obu",
             "output_format": "yuv444p10le",
-            "result": "7b8b74a7b0a8e7e099a1066f8d96df4d"
+            "result": "945bf1727136ca9da90b7820876d8efa"
         },
         {
             "name": "test6034",
@@ -2513,7 +2513,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7120_849.obu",
             "output_format": "gbrp",
-            "result": "0ce8cd006d16dacc1fbe4d04ea79a4fc"
+            "result": "6467465b9787509052733e9ae12b9312"
         },
         {
             "name": "test6417",
@@ -2553,7 +2553,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2714.obu",
             "output_format": "yuv444p",
-            "result": "708b0d8484b7ed24c2e53201a4e73721"
+            "result": "6d617ab98bc417adda8517fa84d942e8"
         },
         {
             "name": "test6979_5029",
@@ -2561,7 +2561,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6979_5029.obu",
             "output_format": "yuv444p10le",
-            "result": "d2a181d96df68271934c25da4be89883"
+            "result": "345ef20e156835393834f02eb4b819b8"
         },
         {
             "name": "test1410_4794",
@@ -2569,7 +2569,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1410_4794.obu",
             "output_format": "gbrp",
-            "result": "d6a43abb511a7b461412dadd62f92359"
+            "result": "d667aa6c037c466f84b7dddbf1af8939"
         },
         {
             "name": "test1169",
@@ -2601,7 +2601,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1116_2562_4007.obu",
             "output_format": "yuv444p10le",
-            "result": "b2c7ccb9b5b8d4c93ce612c7d0f9ad11"
+            "result": "1279b38b32db3f79a1b5aa2892a4f0e2"
         },
         {
             "name": "test7740",
@@ -2705,7 +2705,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6713_6982_288.obu",
             "output_format": "yuv444p",
-            "result": "f1e22a465e9a5a19ad9426281e15b3e0"
+            "result": "8bc0c9297a7142284f337574b7ba719a"
         },
         {
             "name": "test7770_7783",
@@ -2721,7 +2721,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7431_2365.obu",
             "output_format": "gbrp10le",
-            "result": "34b8b3573aa90655a853c95bf02af85e"
+            "result": "eb20ff4114d4bb74ac7d95c88e07227b"
         },
         {
             "name": "test6444_696_1816",
@@ -2729,7 +2729,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6444_696_1816.obu",
             "output_format": "gbrp",
-            "result": "eaf12092979cc2e2e8c675f8363f3a31"
+            "result": "1d56c764c4e73bd5a1cc3e517d882e09"
         },
         {
             "name": "test7504",
@@ -2777,7 +2777,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test463_1013_5244.obu",
             "output_format": "gbrp",
-            "result": "3ac1522e490ed59e5af0e3b208f519c0"
+            "result": "a54849b9d3196db84d484b908f183dc7"
         },
         {
             "name": "test2274",
@@ -2809,7 +2809,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test3616_1699_5771.obu",
             "output_format": "yuv444p10le",
-            "result": "b59212030fc04ac13a0bdb37e0a1fe67"
+            "result": "719e626b84a44376b0dadeb8521b7fa8"
         },
         {
             "name": "test7191",
@@ -2905,7 +2905,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test909_5289.obu",
             "output_format": "yuv444p",
-            "result": "0fbc21f409eba8e6f8afd03c0c9a5a68"
+            "result": "aa1748a016dd6fcfaef3fddd1cdb4a99"
         },
         {
             "name": "test4597",
@@ -2953,7 +2953,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test462_4522_4964.obu",
             "output_format": "gbrp10le",
-            "result": "7b0624cc27494fb49f97374053a5dc93"
+            "result": "e3b037c97b5dd3e647486500b77addaf"
         },
         {
             "name": "test2368_1746",
@@ -2977,7 +2977,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1635.obu",
             "output_format": "yuv444p10le",
-            "result": "d7255f7ea9fed5804b9056bc3de666b0"
+            "result": "dbcc5a1844cded89a67725e411d5824a"
         },
         {
             "name": "test1859",
@@ -3049,7 +3049,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test399.obu",
             "output_format": "yuv444p",
-            "result": "691389de4032e65b8738462a75b5b2cf"
+            "result": "6e23fbdc51e5d2b70f9f8eb0b2d4c2d9"
         },
         {
             "name": "test5580",
@@ -3129,7 +3129,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2833_4650_760.obu",
             "output_format": "gbrp10le",
-            "result": "6c54ca1635cb793374345d63b05c9ede"
+            "result": "6e7072f8b42680a67e8dd938d67467e6"
         },
         {
             "name": "test4898",
@@ -3177,7 +3177,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5751_5997_2083.obu",
             "output_format": "yuv444p10le",
-            "result": "4cf62fd8bccef618cd67ba0844699ff4"
+            "result": "96b8f681bf1e144d919c6fe90d303589"
         },
         {
             "name": "test7123",
@@ -3201,7 +3201,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5445_7154.obu",
             "output_format": "yuv444p",
-            "result": "9fd946c253fbd63708065dc1cc36dc06"
+            "result": "2a24de8ca4b4cf6142d894cc4757e232"
         },
         {
             "name": "test1901_2832",
@@ -3337,7 +3337,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2818.obu",
             "output_format": "yuv444p10le",
-            "result": "818a3e089c3d00fc0e5b315688ec202f"
+            "result": "c9db4a17df57a03f295a34c527c83b34"
         },
         {
             "name": "test2870_5855",
@@ -3497,7 +3497,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5043_2441_494.obu",
             "output_format": "yuv444p",
-            "result": "e9f9f22d1d08e10a0b3ebf8bf1b9cd2c"
+            "result": "80446001d282e9bc11e21048f091f0a4"
         },
         {
             "name": "test2795",
@@ -3537,7 +3537,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5109_5487.obu",
             "output_format": "yuv444p10le",
-            "result": "cd66d0a5fbce3a63b472815ce392f043"
+            "result": "40e2b0b0a7be1b59ee58854e285faa7e"
         },
         {
             "name": "test7472",
@@ -3553,7 +3553,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5788_987_428.obu",
             "output_format": "gbrp",
-            "result": "f2a46e1d1f0307eca14e237225c1c135"
+            "result": "53ef3b927756970debd4ef2dfe60ae8c"
         },
         {
             "name": "test493_4426",
@@ -3561,7 +3561,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test493_4426.obu",
             "output_format": "yuv444p10le",
-            "result": "de193f8c120e54590e9f5fb87007cfb2"
+            "result": "6ebec0187ed0da33408cfa5668c6be9b"
         },
         {
             "name": "test7509",
@@ -3705,7 +3705,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7166_6684_1868.obu",
             "output_format": "gbrp10le",
-            "result": "ca6c49eb13bbeb0b0d8fbde720880812"
+            "result": "148f0040efae93f37debb8a0e91a094f"
         },
         {
             "name": "test7244",
@@ -3729,7 +3729,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1096_7336.obu",
             "output_format": "yuv444p",
-            "result": "2a709abe8f8933c388854469b968e06b"
+            "result": "251a1e6ea7625ba4b2ee955315f9714f"
         },
         {
             "name": "test6096_7092_3804",
@@ -3785,7 +3785,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1232_4003_4557.obu",
             "output_format": "gbrp10le",
-            "result": "c2d3c9a102ff0bceb15a327679d9f542"
+            "result": "b48c5608c7f96cec9ea74e8f25592fdd"
         },
         {
             "name": "test4545_443_2533",
@@ -3913,7 +3913,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test3870_2802_6204.obu",
             "output_format": "yuv444p",
-            "result": "bc606c09d0a29e606722695b011c2b6b"
+            "result": "e6f6d4e4c87e7acb7f39045883096599"
         },
         {
             "name": "test6037_7206_6811",
@@ -3921,7 +3921,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6037_7206_6811.obu",
             "output_format": "gbrp10le",
-            "result": "15b31afb8bb497b4a6015210324010cf"
+            "result": "e0280aa63214a91222f80152a3540732"
         },
         {
             "name": "test1861",
@@ -3977,7 +3977,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7354_1352.obu",
             "output_format": "yuv444p",
-            "result": "535e62089f15eb7556237acec8ae02b3"
+            "result": "26e9773129501879a05630fc65e7d594"
         },
         {
             "name": "test2189",
@@ -3993,7 +3993,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test4728_429.obu",
             "output_format": "yuv444p10le",
-            "result": "4ce2c2c1e3b0901c031b29418b5c91e4"
+            "result": "a7030c08e5d065b86da52763e7e93113"
         },
         {
             "name": "test7736",
@@ -4009,7 +4009,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20022.obu",
             "output_format": "yuv444p",
-            "result": "f5d56151b8b6d32c7484c02dfb292776"
+            "result": "bec4be234a54ff80d14f640817f57305"
         },
         {
             "name": "test4844",
@@ -4137,7 +4137,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1493.obu",
             "output_format": "gbrp10le",
-            "result": "bb31aa8f99acea1c55b2b04e6ac102fb"
+            "result": "3c5507e3708bad5af7486a7b8f8ba56a"
         },
         {
             "name": "test383",
@@ -4177,7 +4177,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2557_2639_444.obu",
             "output_format": "yuv444p10le",
-            "result": "fcfc98d9d16d605f7d9ec0c316f79315"
+            "result": "f57e0e881f01ef54c4f884f0b062561e"
         },
         {
             "name": "test2643",
@@ -4209,7 +4209,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6442.obu",
             "output_format": "yuv444p10le",
-            "result": "21346b14bd3d0c89f4b6314ba86c7e47"
+            "result": "ed39e99b8ef9da11dfa3b9b8bc79c617"
         },
         {
             "name": "test4933",
@@ -4289,7 +4289,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20027.obu",
             "output_format": "gbrp",
-            "result": "818b508c38f95e7eedeee692aabf3d81"
+            "result": "1ad3d0eb1c978f38a1eb4d0caefba101"
         },
         {
             "name": "test7744",
@@ -4369,7 +4369,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5492_4657.obu",
             "output_format": "yuv444p10le",
-            "result": "5d9aa060daefd81cec666b185a0a15d9"
+            "result": "d935d4167c96b008564b33802ace452f"
         },
         {
             "name": "test4546_1529",
@@ -4417,7 +4417,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test834_5877_6685.obu",
             "output_format": "gbrp10le",
-            "result": "e341f61c79567257e288ad721df8a14d"
+            "result": "bfffd6152316acddef6b51db7f5d594f"
         },
         {
             "name": "test6581",
@@ -4481,7 +4481,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5097_1260_4584.obu",
             "output_format": "gbrp10le",
-            "result": "12b7898e2de22b934116335718db59fb"
+            "result": "62e2214318cca60cb81ab7d24d4e854b"
         },
         {
             "name": "test6621",
@@ -4649,7 +4649,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test4402_6515.obu",
             "output_format": "yuv444p10le",
-            "result": "4861888085a6dc2dba3eea6e18e98b64"
+            "result": "0e919cd9f35558afe08e616c6d27e90a"
         },
         {
             "name": "test3941",
@@ -4697,7 +4697,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1007.obu",
             "output_format": "yuv444p10le",
-            "result": "5552cc21e30b517edbb95a193adb5aff"
+            "result": "5d5685dcf1a57ce47b84d27be8d9420c"
         },
         {
             "name": "test5078_2051_519",
@@ -4713,7 +4713,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5099_1293.obu",
             "output_format": "yuv444p10le",
-            "result": "d963f73265545aeca522dd09d05048db"
+            "result": "919fdbe2b50a4b13f912121d9033c62e"
         },
         {
             "name": "test7309",
@@ -4729,7 +4729,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5025_2981_7100.obu",
             "output_format": "yuv444p10le",
-            "result": "791544eff9b758ddc411e62b9b22d454"
+            "result": "719019651c932ae608014427f25a82fa"
         },
         {
             "name": "test2423",
@@ -4777,7 +4777,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5792.obu",
             "output_format": "gbrp10le",
-            "result": "75fd688beb488d81d7caa375de854b90"
+            "result": "071482d346f91925d354fd549903384d"
         },
         {
             "name": "test2336_1886_6010",
@@ -4841,7 +4841,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test4963_1040.obu",
             "output_format": "yuv444p",
-            "result": "709dd13b909f0706458c1f555167ae66"
+            "result": "62c6da414958dd2590949fc50f8cdb0c"
         },
         {
             "name": "test7019",
@@ -5009,7 +5009,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20013.obu",
             "output_format": "gbrp10le",
-            "result": "14d585f51dad8cfbbc0342d47e157721"
+            "result": "bcafba4ead3fa30d0c6e8d2f754dbfc6"
         },
         {
             "name": "test4701",
@@ -5057,7 +5057,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2449_1454.obu",
             "output_format": "yuv444p",
-            "result": "08719be7f47d3624a85c2aca1e7e645a"
+            "result": "630721f1e3968b97148375f73c314c7b"
         },
         {
             "name": "test1156_824",
@@ -5193,7 +5193,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20019.obu",
             "output_format": "yuv444p",
-            "result": "abade8411340ac6a1125c4780cbdb37f"
+            "result": "a095786727a0822d1a11151bf7941ed6"
         },
         {
             "name": "test1931_2001",
@@ -5217,7 +5217,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test826_2982.obu",
             "output_format": "gbrp10le",
-            "result": "0d10fd689374bef52d07ddf009dc1d02"
+            "result": "69a61567eb6a3c20c8ab62309dc7fb3b"
         },
         {
             "name": "test4925",
@@ -5353,7 +5353,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5573_1112_2685.obu",
             "output_format": "gbrp",
-            "result": "06491bf5fca15c8bd83b2c50a42e68bb"
+            "result": "ab27af17ec77ae2133f75fd24026bf9f"
         },
         {
             "name": "test1878",
@@ -5385,7 +5385,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7508_7618.obu",
             "output_format": "None",
-            "result": "245332e54c1b57321f549582cdf1f86a"
+            "result": "dc2dab3fe72edc11f2d2cc2ff853b260"
         },
         {
             "name": "test20021",
@@ -5393,7 +5393,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20021.obu",
             "output_format": "gbrp10le",
-            "result": "7b52aba037f542e02ca7c0e914e849f9"
+            "result": "ae35932ce258e7635ea45009c3cdff1a"
         },
         {
             "name": "test627",
@@ -5425,7 +5425,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7490_7584.obu",
             "output_format": "gbrp",
-            "result": "85a8827ccc4f86c602cddaa4a9fa94ed"
+            "result": "19a7b21eb4c0753fc140d4a2290581fe"
         },
         {
             "name": "test4224",
@@ -5441,7 +5441,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2507.obu",
             "output_format": "gbrp10le",
-            "result": "ca948acb453f48d4d343102f34be0251"
+            "result": "e69bbdebcb3491669638540a0cb41de0"
         },
         {
             "name": "test7741",
@@ -5529,7 +5529,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1274_7478.obu",
             "output_format": "yuv444p10le",
-            "result": "b6f7478dcfebec9ca06fff4652ef181a"
+            "result": "f5cfe1b78bf1b5ad790c837086c342b3"
         },
         {
             "name": "test1848",
@@ -5585,7 +5585,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7459_36_676.obu",
             "output_format": "gbrp10le",
-            "result": "f6ab456505544f23303b96b4d4be0fbd"
+            "result": "2a1d868ea3380206d89eecad1869c151"
         },
         {
             "name": "test580_996_2111",
@@ -5593,7 +5593,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test580_996_2111.obu",
             "output_format": "gbrp10le",
-            "result": "4011f74d8dc227f5537c4d16083f57d8"
+            "result": "fbfffc25ff8bccf8c3eb0b8e2d5be065"
         },
         {
             "name": "test6429_808_7473",
@@ -5769,7 +5769,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6615.obu",
             "output_format": "gbrp",
-            "result": "4e1de87b328b95b3a0665cede8556ad8"
+            "result": "8da501d00e0c5d4a572d1d806237a625"
         },
         {
             "name": "test7688_7698_7691",
@@ -5841,7 +5841,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test20017.obu",
             "output_format": "yuv444p10le",
-            "result": "440f034eae83bb944de0b1f847c4db73"
+            "result": "b40ae76497b91785f8688cf6b93d33fc"
         },
         {
             "name": "test1766",
@@ -5849,7 +5849,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1766.obu",
             "output_format": "gbrp10le",
-            "result": "0ac0f9069826ce2331a5d9ad0b01c2a1"
+            "result": "0a5c35a2557403dc8817dd9e28f22f90"
         },
         {
             "name": "test5635",
@@ -5905,7 +5905,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7029_2405.obu",
             "output_format": "gbrp10le",
-            "result": "db2882becb171991781712a6035143d4"
+            "result": "25483dfbd28bbd06b17829b3caed0a60"
         },
         {
             "name": "test501",
@@ -5969,7 +5969,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2715.obu",
             "output_format": "yuv444p",
-            "result": "7803ee69eba174e4849d4e86cb3f547a"
+            "result": "e3d7944dfb4cc1a568cecec42604d6fc"
         },
         {
             "name": "test2708_1329",
@@ -5977,7 +5977,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test2708_1329.obu",
             "output_format": "yuv444p10le",
-            "result": "b6df9a0c5e4f223a75e79beef3dd566f"
+            "result": "b645ef1f650f2277213df63d8d6e9536"
         },
         {
             "name": "test7401",
@@ -6009,7 +6009,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test7482_5111_5195.obu",
             "output_format": "yuv444p",
-            "result": "b7b0ac7b03c2284201a2d2f6437be3d8"
+            "result": "681a6413f92476924bfaf8e9abd93b65"
         },
         {
             "name": "test4788",
@@ -6025,7 +6025,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test716.obu",
             "output_format": "gbrp",
-            "result": "9971cb07d3f219b931a39134307f2a66"
+            "result": "ea38074ed70e0e83d4e0e3903a1e7275"
         },
         {
             "name": "test765",
@@ -6041,7 +6041,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test6761_7445_5525.obu",
             "output_format": "gbrp",
-            "result": "a9d564a4c2d7eb844da5a8305179c2ea"
+            "result": "a058bbcbf70cf7a16d400abb75aea3db"
         },
         {
             "name": "test7492",
@@ -6057,7 +6057,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test5772.obu",
             "output_format": "yuv444p10le",
-            "result": "1fd60677ab415ceac48d87df820f4704"
+            "result": "8528ed1f640deb268171003758fa707c"
         },
         {
             "name": "test6359",
@@ -6217,7 +6217,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test1672_5292_4796.obu",
             "output_format": "gbrp10le",
-            "result": "f712c840f0399a48f4e1be6a0dd6b8af"
+            "result": "c68ba7ab754b99d4f16ebd4d60bbf813"
         },
         {
             "name": "test712_951_6914",
@@ -6225,7 +6225,7 @@
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile1_core/streams/test712_951_6914.obu",
             "output_format": "gbrp",
-            "result": "1e85f28bae0ffe127731a0fc0aeb5e96"
+            "result": "295c8fe1e007fb6337c407fc3ed018c7"
         },
         {
             "name": "test1283_6876",
@@ -6251,5 +6251,6 @@
             "output_format": "gbrp",
             "result": "a74310365ba4ba6b8392bb968d2cc281"
         }
-    ]
+    ],
+    "test_method": "md5"
 }

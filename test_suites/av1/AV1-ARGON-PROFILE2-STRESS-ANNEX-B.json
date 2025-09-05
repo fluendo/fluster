@@ -699,5 +699,6 @@
             "output_format": "gbrp12le",
             "result": "fc23c2acfc269e725e8f229ecc3ff72d"
         }
-    ]
+    ],
+    "test_method": "md5"
 }
