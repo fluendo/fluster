@@ -82,7 +82,10 @@ def download(
                                 break
                             dest.write(chunk)
             break
-        except urllib.error.URLError as e:
+        except Exception as e:
+            if os.path.exists(dest_path):
+                os.remove(dest_path)
+
             if attempt < max_retries - 1:
                 wait_time = random.uniform(1, 2**attempt)
                 time.sleep(wait_time)
