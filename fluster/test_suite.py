@@ -300,7 +300,7 @@ class TestSuite:
         verify: bool,
         extract_all: bool = False,
         keep_file: bool = False,
-        retries: int = 1,
+        retries: int = 2,
     ) -> None:
         """Download the test suite"""
         os.makedirs(out_dir, exist_ok=True)

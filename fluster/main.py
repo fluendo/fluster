@@ -326,7 +326,7 @@ class Main:
             "--jobs",
             help="number of parallel jobs to use. 2x logical cores by default.' '0 means all logical cores",
             type=int,
-            default=2 * multiprocessing.cpu_count(),
+            default=2 * multiprocessing.cpu_count() if multiprocessing.cpu_count() <= 8 else 16,
         )
         subparser.add_argument(
             "-k",
@@ -340,7 +340,7 @@ class Main:
             "--retries",
             help="number of retries, before failing",
             type=int,
-            default=1,
+            default=2,
         )
         subparser.add_argument("testsuites", help="list of testsuites to download", nargs="*")
         subparser.set_defaults(func=self._download_cmd)
