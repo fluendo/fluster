@@ -63,7 +63,7 @@ class AV1ArgonGenerator:
 
     def generate(self, download: bool) -> None:
         """Generates the test suite and saves it to a file"""
-        output_filepath = os.path.join(self.suite_name + ".json")
+        output_filepath = self.suite_name + ".json"
         absolute_dest_dir = os.path.dirname(os.path.abspath(__file__))
         extract_folder = os.path.join(absolute_dest_dir, "resources")
         test_suite = TestSuite(
@@ -81,15 +81,17 @@ class AV1ArgonGenerator:
         # Download source checksum reference file
         try:
             utils.download(source_checksum_ref_url, extract_folder)
-            source_checksum_ref = self._fill_checksum_argon(extract_folder + "/" + self.name + ".md5sum")
-        except urllib.error.URLError as ex:
-            raise Exception(f"\tUnable to download {source_checksum_ref_url} to {extract_folder}, {str(ex)}") from ex
+            source_checksum_ref = self._fill_checksum_argon(os.path.join(extract_folder, self.name + ".md5sum"))
+        except urllib.error.URLError as url_error:
+            raise Exception(
+                f"\tUnable to download {source_checksum_ref_url} to {extract_folder}, {url_error}"
+            ) from url_error
         except Exception as ex:
-            raise Exception(str(ex)) from ex
+            raise Exception(f"{ex}") from ex
 
         # Calculate checksum of source file on disk
         try:
-            source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
+            source_checksum = utils.file_checksum(os.path.join(extract_folder, self.name))
         except Exception:
             source_checksum = ""
 
@@ -98,11 +100,11 @@ class AV1ArgonGenerator:
             print(f"Downloading test suite archive from {source_url}")
             try:
                 utils.download(source_url, extract_folder)
-                source_checksum = utils.file_checksum(extract_folder + "/" + self.name)
-            except urllib.error.URLError as ex:
-                raise Exception(f"\tUnable to download {source_url} to {extract_folder}, {str(ex)}") from ex
+                source_checksum = utils.file_checksum(os.path.join(extract_folder, self.name))
+            except urllib.error.URLError as url_error:
+                raise Exception(f"\tUnable to download {source_url} to {extract_folder}, {url_error}") from url_error
             except Exception as ex:
-                raise Exception(str(ex)) from ex
+                raise Exception(f"{ex}") from ex
         elif not download and source_checksum and source_checksum != source_checksum_ref:
             print(
                 "WARNING: You have chosen not to download the source file. However the checksum of the source file "
@@ -113,12 +115,11 @@ class AV1ArgonGenerator:
 
         # Unzip the source file
         test_vector_files = []
-        with zipfile.ZipFile(extract_folder + "/" + self.name, "r") as zip_ref:
+        with zipfile.ZipFile(os.path.join(extract_folder, self.name), "r") as zip_ref:
             print(f"Unzipping test streams and checksums from {self.name}")
             for file_info in zip_ref.namelist():
                 # Process test vector groups
-                file_info_split = file_info.split("/")
-                test_vector_group = file_info_split[1]
+                test_vector_group = file_info.split(os.path.sep)[1]
                 if test_vector_group in self.test_vector_groups:
                     # Extract test vector files
                     if file_info.endswith(".obu"):
@@ -127,9 +128,9 @@ class AV1ArgonGenerator:
 
         # Create test vectors and test suite
         print(f"Creating test suite {test_suite.name}")
-        for idx, file in enumerate(test_vector_files):
-            filename = os.path.splitext(os.path.basename(file))[0]
-            full_path = os.path.abspath(extract_folder + "/" + file)
+        for _, tv_rel_path in enumerate(test_vector_files):
+            tv_filename = os.path.splitext(os.path.basename(tv_rel_path))[0]
+            tv_abs_path = os.path.abspath(os.path.join(extract_folder, tv_rel_path))
             # ffprobe execution
             if self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd("ffprobe")
@@ -143,7 +144,7 @@ class AV1ArgonGenerator:
                     "stream=pix_fmt",
                     "-of",
                     "default=nokey=1:noprint_wrappers=1",
-                    full_path,
+                    tv_abs_path,
                 ]
                 try:
                     result = utils.run_command_with_output(command).splitlines()
@@ -153,29 +154,33 @@ class AV1ArgonGenerator:
                 except subprocess.CalledProcessError:
                     pix_fmt = "None"
 
+            temp_output_ref = f"{os.path.splitext(tv_abs_path)[0]}.out"
             try:
-                temp_output_ref = f"{os.path.splitext(full_path)[0]}.out"
                 # Run libaom av1 decoder to get md5 checksum of expected output
                 result_checksum = self.decoder.decode(
-                    full_path, temp_output_ref, OutputFormat[pix_fmt.upper()], 240, False, False
+                    tv_abs_path, temp_output_ref, OutputFormat[pix_fmt.upper()], 240, False, False
                 )
                 os.remove(temp_output_ref)
+            except FileNotFoundError:
+                print(f"File '{temp_output_ref}' not found.")
+            except PermissionError:
+                print(f"Permission denied to delete the file '{temp_output_ref}'.")
             except Exception as ex:
-                if "error" in full_path.split(os.path.sep)[-3]:
+                if "error" in tv_abs_path.split(os.path.sep)[-3]:
                     result_checksum = ""
                 else:
-                    raise Exception(f"\tUnable to calculate md5 checksum of {filename}, {str(ex)}") from ex
+                    raise Exception(f"\tUnable to calculate md5 checksum of {tv_filename}, {ex}") from ex
 
             # Add data to the test vector and the test suite
             test_vector = TestVector(
-                filename,
+                tv_filename,
                 source_url,
                 source_checksum,
-                file,
+                tv_rel_path,
                 OutputFormat[pix_fmt.upper()],
                 result_checksum,
             )
-            test_suite.test_vectors[filename] = test_vector
+            test_suite.test_vectors[tv_filename] = test_vector
 
         absolute_output_filepath = os.path.join(absolute_dest_dir, output_filepath)
         test_suite.to_json_file(absolute_output_filepath)
