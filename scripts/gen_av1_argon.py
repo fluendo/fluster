@@ -34,7 +34,7 @@ from fluster.decoders import av1_aom
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
-ARGON_URL = "https://storage.googleapis.com/downloads.aomedia.org/assets/zip/"
+ARGON_URL = "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/"
 
 
 class AV1ArgonGenerator:
