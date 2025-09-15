@@ -154,7 +154,24 @@ class AV1ArgonGenerator:
                     output_format = OutputFormat[pix_fmt.upper()]
                     if output_format == OutputFormat.UNKNOWN:
                         raise KeyError
-                except (subprocess.CalledProcessError, KeyError) as error:
+                except (subprocess.CalledProcessError, KeyError):
+                    exceptions_profile0_output_format = {
+                        # Exceptions for profile 0 core (annex b) vectors
+                        "test54": OutputFormat.YUV420P10LE,
+                        "test11142": OutputFormat.YUV420P10LE,
+                        "test11079_11110": OutputFormat.YUV444P12LE,
+                        "test11145": OutputFormat.GRAY10LE,
+                        "test11023": OutputFormat.YUV420P10LE,
+                        "test11174": OutputFormat.YUV420P10LE,
+                        # Exceptions for profile 0 non-annex b vectors
+                        "test12293_12304": OutputFormat.GRAY10LE,
+                        # Exceptions for profile 0 stress annex b vectors
+                        "test50688": OutputFormat.YUV420P10LE,
+                        "test23792": OutputFormat.YUV420P10LE,
+                        "test79399": OutputFormat.YUV420P10LE,
+                        "test29600": OutputFormat.YUV420P10LE,
+                    }
+
                     exceptions_profile1_output_format = {
                         # Exceptions for profile 1 core (annex b) vectors
                         "test54": OutputFormat.GBRP10LE,
@@ -194,12 +211,12 @@ class AV1ArgonGenerator:
                         "test85818": OutputFormat.YUV422P10LE,
                     }
 
-                    if tv_filename in exceptions_profile1_output_format.keys():
+                    if tv_filename in exceptions_profile0_output_format.keys():
+                        output_format = exceptions_profile0_output_format[tv_filename]
+                    elif tv_filename in exceptions_profile1_output_format.keys():
                         output_format = exceptions_profile1_output_format[tv_filename]
                     elif tv_filename in exceptions_profile2_output_format.keys():
                         output_format = exceptions_profile2_output_format[tv_filename]
-                    else:
-                        raise error
 
             temp_output_ref = f"{os.path.splitext(tv_abs_path)[0]}.out"
             try:
