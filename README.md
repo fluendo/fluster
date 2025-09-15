@@ -471,7 +471,7 @@ AAC
 - [AAC](https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/).
 - [AV1](https://storage.googleapis.com/aom-test-data/).
 - [AV1](https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/).
-- [AV1](https://storage.googleapis.com/downloads.aomedia.org/assets/zip/).
+- [AV1](https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/).
 - [H.264/AVC](https://www.itu.int/wftp3/av-arch/jvt-site/draft_conformance/).
 - [H.265/HEVC](https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/).
 - [H.266/VVC](https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/).

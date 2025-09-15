@@ -72,7 +72,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core_special/streams/test54.obu",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "139317f4dc2134bcef8d36a8fb117cf4"
         },
         {
@@ -824,7 +824,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test11142.obu",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "513f5dd6a0a96db2ca82be66d5bf13dd"
         },
         {
@@ -1592,7 +1592,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test11079_11110.obu",
-            "output_format": "None",
+            "output_format": "yuv444p12le",
             "result": "2c292c849264f017d40caf9970df7040"
         },
         {
@@ -1848,7 +1848,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test11145.obu",
-            "output_format": "None",
+            "output_format": "gray10le",
             "result": "c5401b78b8e5e473cad61ea61b3c9241"
         },
         {
@@ -2312,7 +2312,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test11023.obu",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "6661cb3843a0e4ebae39c024973e314f"
         },
         {
@@ -4128,7 +4128,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_core/streams/test11174.obu",
-            "output_format": "None",
+            "output_format": "yuv420p10le",
             "result": "6aa590195fd910008eeb70c6f0583fef"
         },
         {

@@ -48,7 +48,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_stress/streams/test50688.obu",
-            "output_format": "Unknown",
+            "output_format": "yuv420p10le",
             "result": "600e32ac4e4d93d25a81a92a0e0627ca"
         },
         {
@@ -168,7 +168,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_stress/streams/test23792.obu",
-            "output_format": "Unknown",
+            "output_format": "yuv420p10le",
             "result": "04499b24157642121d89398adca47144"
         },
         {
@@ -200,7 +200,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_stress/streams/test79399.obu",
-            "output_format": "Unknown",
+            "output_format": "yuv420p10le",
             "result": "a7c0ef2cfe9a2b2bdacc22861a6e29e9"
         },
         {
@@ -344,7 +344,7 @@
             "source": "https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
             "source_checksum": "5dd3554c3f73c80f06c7fceeaa1f5dd9",
             "input_file": "argon_coveragetool_av1_base_and_extended_profiles_v2.1/profile0_stress/streams/test29600.obu",
-            "output_format": "Unknown",
+            "output_format": "yuv420p10le",
             "result": "82591ecfd78b22df254031b6a76fc56f"
         },
         {
