@@ -24,7 +24,7 @@ from typing import Any, Optional, Tuple  # noqa: F401
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.decoders import av1_aom
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
@@ -79,20 +79,14 @@ TESTS_10BPP = (
 class ChromiumAV1Generator:
     """Generates a test suite from the conformance bitstreams used in tast tests for Chromium"""
 
-    def __init__(
-        self,
-        name: str,
-        suite_name: str,
-        codec: Codec,
-        description: str,
-        bpp: int,
-    ):
+    def __init__(self, name: str, suite_name: str, codec: Codec, description: str, bpp: int, use_ffprobe: bool = False):
         self.name = name
         self.suite_name = suite_name
         self.codec = codec
         self.description = description
         self.decoder = av1_aom.AV1AOMDecoder()
         self.bpp = bpp
+        self.use_ffprobe = use_ffprobe
 
     def generate(self, download: bool, jobs: int) -> Any:
         """Generates the test suite and saves it to a file"""
@@ -123,7 +117,6 @@ class ChromiumAV1Generator:
             name = re.sub(r"_[\d]*", "", test)
 
             test_vector = TestVector(name, file_url, "__skip__", test, OutputFormat.YUV420P, "")
-
             test_suite.test_vectors[name] = test_vector
 
         if download:
@@ -138,14 +131,44 @@ class ChromiumAV1Generator:
         for test_vector in test_suite.test_vectors.values():
             dest_dir = os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name)
             dest_path = os.path.join(dest_dir, os.path.basename(test_vector.source))
-            test_vector.input_file = dest_path.replace(
-                os.path.join(test_suite.resources_dir, test_suite.name, test_vector.name) + os.sep,
-                "",
-            )
+            test_vector.input_file = os.path.basename(test_vector.source)
 
-            if not test_vector.input_file:
-                raise Exception(f"Bitstream file not found in {dest_dir}")
+            if not os.path.exists(dest_path):
+                print(f"Warning: Bitstream file not found at {dest_path}")
+                continue
+
             test_vector.source_checksum = utils.file_checksum(dest_path)
+
+            if self.use_ffprobe:
+                ffprobe = utils.normalize_binary_cmd("ffprobe")
+                command = [
+                    ffprobe,
+                    "-v",
+                    "error",
+                    "-strict",
+                    "-2",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=profile,pix_fmt",
+                    "-of",
+                    "default=nokey=1:noprint_wrappers=1",
+                    dest_path,
+                ]
+
+                result = utils.run_command_with_output(command).splitlines()
+                if result:
+                    profile = result[0]
+                    pix_fmt = result[1]
+                    try:
+                        test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                    except KeyError as key_err:
+                        raise key_err
+                    try:
+                        test_vector.profile = Profile[profile.translate(str.maketrans(" :", "__")).upper()]
+                    except KeyError as key_err:
+                        raise key_err
+
             out420 = f"{dest_path}.i420"
             # Run the libaom av1 decoder to get the checksum as the .md5 in the JSONs are per-frame
             test_vector.result = self.decoder.decode(dest_path, out420, test_vector.output_format, 30, False, False)
@@ -178,6 +201,7 @@ if __name__ == "__main__":
         Codec.AV1,
         "AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/",
         8,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
 
@@ -187,5 +211,6 @@ if __name__ == "__main__":
         Codec.AV1,
         "AV1 Test Vector Catalogue from https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/",
         10,
+        True,
     )
     generator.generate(not args.skip_download, args.jobs)
