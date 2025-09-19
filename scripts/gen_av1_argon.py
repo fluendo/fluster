@@ -198,6 +198,8 @@ class AV1ArgonGenerator:
                         output_format = exceptions_profile1_output_format[tv_filename]
                     elif tv_filename in exceptions_profile2_output_format.keys():
                         output_format = exceptions_profile2_output_format[tv_filename]
+                    elif output_format == OutputFormat.UNKNOWN:
+                        output_format = OutputFormat.UNKNOWN
                     else:
                         raise error
 
@@ -279,7 +281,7 @@ if __name__ == "__main__":
         Codec.AV1,
         "AV1 Argon Profile 0 Non-Annex B test suite",
         ARGON_URL,
-        ["profile0_error", "profile0_not_annexb", "profile0_not_annexb_special"],
+        ["profile0_not_annexb", "profile0_not_annexb_special"],
         True,
     )
     generator.generate(not args.skip_download)
@@ -312,7 +314,7 @@ if __name__ == "__main__":
         Codec.AV1,
         "AV1 Argon Profile 1 Non-Annex B test suite",
         ARGON_URL,
-        ["profile1_error", "profile1_not_annexb", "profile1_not_annexb_special"],
+        ["profile1_not_annexb", "profile1_not_annexb_special"],
         True,
     )
     generator.generate(not args.skip_download)
@@ -345,7 +347,7 @@ if __name__ == "__main__":
         Codec.AV1,
         "AV1 Argon Profile 2 Non-Annex B test suite",
         ARGON_URL,
-        ["profile2_error", "profile2_not_annexb", "profile2_not_annexb_special"],
+        ["profile2_not_annexb", "profile2_not_annexb_special"],
         True,
     )
     generator.generate(not args.skip_download)
@@ -357,6 +359,39 @@ if __name__ == "__main__":
         "AV1 Argon Profile2 Stress Annex B test suite",
         ARGON_URL,
         ["profile2_stress"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE0-ERROR-NON-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile 0 Error Non-Annex B test suite",
+        ARGON_URL,
+        ["profile0_error"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE1-ERROR-NON-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile 1 Error Non-Annex B test suite",
+        ARGON_URL,
+        ["profile1_error"],
+        True,
+    )
+    generator.generate(not args.skip_download)
+
+    generator = AV1ArgonGenerator(
+        "argon_coveragetool_av1_base_and_extended_profiles_v2.1.1.zip",
+        "AV1-ARGON-PROFILE2-ERROR-NON-ANNEX-B",
+        Codec.AV1,
+        "AV1 Argon Profile 2 Error Non-Annex B test suite",
+        ARGON_URL,
+        ["profile2_error"],
         True,
     )
     generator.generate(not args.skip_download)
