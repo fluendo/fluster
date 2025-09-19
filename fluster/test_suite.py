@@ -141,6 +141,7 @@ class TestSuite:
         test_vectors: Dict[str, TestVector],
         failing_test_vectors: Optional[Dict[str, TestVector]] = None,
         test_method: TestMethod = TestMethod.MD5,
+        negative_test: Optional[bool] = False,
     ):
         # JSON members
         self.name = name
@@ -148,6 +149,7 @@ class TestSuite:
         self.description = description
         self.test_vectors = test_vectors
         self.failing_test_vectors = failing_test_vectors
+        self.negative_test = negative_test
 
         # Not included in JSON
         self.filename = filename

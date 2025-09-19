@@ -1,7 +1,7 @@
 {
     "name": "AV1-ARGON-PROFILE2-STRESS-ANNEX-B",
     "codec": "AV1",
-    "description": "AV1 Argon Profile2 Stress Annex B test suite",
+    "description": "AV1 Argon Profile 2 Stress Annex B test suite",
     "test_vectors": [
         {
             "name": "test94841",
