@@ -27,17 +27,11 @@ jobs:
           cmake \
           gcc-multilib \
           g++-multilib \
-          gstreamer1.0-tools \
-          gstreamer1.0-libav \
-          gstreamer1.0-plugins-bad \
-          ffmpeg \
-          vpx-tools \
-          aom-tools \
           wget \
           unzip
-    - name: Check
+    - name: Check (Skipping H.266 due to old Ubuntu version)
       run: |
-        make check
+        SKIP_H266=1 make check
     - name: Test Build the wheel
       run: |
         pip wheel .
@@ -57,20 +51,30 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: 3.13
+    - name: Install system build tools and libraries
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential cmake git pkg-config nasm ffmpeg
+    - name: Install VVdeC dependency for H.266
+      run: |
+        git clone --depth 1 https://github.com/fraunhoferhhi/vvdec.git
+        cd vvdec
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
+        cd ../..
+        rm -rf vvdec
     - name: Install dependencies
       run: |
         make install_deps
-        sudo apt update && sudo apt install \
+        sudo apt install -y \
           git \
           cmake \
           gcc-multilib \
           g++-multilib \
-          gstreamer1.0-tools \
-          gstreamer1.0-libav \
-          gstreamer1.0-plugins-bad \
-          ffmpeg \
-          vpx-tools \
-          aom-tools \
           wget \
           unzip
     - name: Check
