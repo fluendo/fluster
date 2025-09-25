@@ -12,8 +12,14 @@ CMAKE_GENERATOR=Unix Makefiles
 help:
 	@awk -F ':|##' '/^[^\t].+?:.*?##/ { printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF }' $(MAKEFILE_LIST)
 
-install_deps: ## install Python dependencies
+install_deps: ## install python and media dependencies
 	python3 -m pip install -r requirements-dev.txt
+ifneq ($(OS),Windows_NT)
+	sudo apt update
+	sudo apt install -y \
+	  gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad \
+	  vpx-tools aom-tools
+endif
 
 check: ## check that very basic tests run
 	@echo "Running dummy test..."
@@ -40,9 +46,14 @@ ifneq ($(OS),Windows_NT)
 	$(FLUSTER) run -ts dummy_fail -j1 -ff -s; test $$? -ne 0
 	$(FLUSTER) download dummy non_existing_test_suite -k; test $$? -ne 0
 	$(FLUSTER) download dummy dummy_download_fail -k; test $$? -ne 0
-	$(FLUSTER) download H264-min H265-min -k
+	$(FLUSTER) download H264-min H265-min H266-min -k
 	$(FLUSTER) run -ts H264-min -d GStreamer-H.264-Libav-Gst1.0 FFmpeg-H.264 -s
 	$(FLUSTER) run -ts H265-min -d GStreamer-H.265-Libav-Gst1.0 FFmpeg-H.265 -s
+ifndef SKIP_H266
+	$(FLUSTER) run -ts H266-min -d GStreamer-H.266-Libav-Gst1.0 FFmpeg-H.266 -s
+else
+	@echo "\nSkipping H.266 tests as requested by workflow files."
+endif
 ifeq ($(KERNEL_NAME), Linux)
 	$(FLUSTER) download AV1-min VP8-min VP9-min -k
 	$(FLUSTER) run -ts AV1-min -d libaom-AV1 -s
