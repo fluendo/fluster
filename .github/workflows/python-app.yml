@@ -91,16 +91,6 @@ jobs:
         libgstreamer1.0-dev \
         libgstreamer-plugins-base1.0-dev \
         libgstreamer-plugins-bad1.0-dev
-    - name: Compile GStreamer Core 1.26
-      run: |
-        git clone --depth 1 -b 1.26 https://gitlab.freedesktop.org/gstreamer/gstreamer.git
-        cd gstreamer
-        meson setup build --prefix=/usr -Dtools=enabled -Dtests=disabled -Dexamples=disabled
-        ninja -C build
-        sudo ninja -C build install
-        sudo ldconfig
-        cd ..
-        rm -rf gstreamer
     - name: Install VVdeC (H.266 decoder)
       run: |
         git clone --depth 1 https://github.com/fraunhoferhhi/vvdec.git
@@ -127,23 +117,18 @@ jobs:
         cd ..
         rm -rf ffmpeg-source
         echo "/usr/local/bin" >> $GITHUB_PATH
-    - name: Compile GStreamer Rust Plugins for VVC/H.266
+    - name: Compile GStreamer Core 1.26
       run: |
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-        source $HOME/.cargo/env
-        cargo install cargo-c
-        sudo apt install -y libclang-dev libssl-dev
-        
-        git clone --depth 1 https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs.git
-        cd gst-plugins-rs
-        export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
-        
-        meson setup build --prefix=/usr -Dwebrtc=disabled
+        export PATH="$HOME/.local/bin:$PATH"
+        pip install meson
+        git clone --depth 1 -b 1.26 https://gitlab.freedesktop.org/gstreamer/gstreamer.git
+        cd gstreamer
+        meson setup build --prefix=/usr -Dtools=enabled -Dtests=disabled -Dexamples=disabled
         ninja -C build
         sudo ninja -C build install
         sudo ldconfig
         cd ..
-        rm -rf gst-plugins-rs
+        rm -rf gstreamer
     - name: Install dependencies
       run: |
         make install_deps
