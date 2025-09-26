@@ -82,52 +82,68 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: 3.13
-    - name: Install FFmpeg with H.266 (precompiled)
-      run: |
-        wget -q https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
-        tar -xf ffmpeg-release-amd64-static.tar.xz
-        sudo mv ffmpeg-*-amd64-static/ffmpeg /usr/local/bin/
-        sudo mv ffmpeg-*-amd64-static/ffprobe /usr/local/bin/
-        rm -rf ffmpeg-* 
-        echo "/usr/local/bin" >> $GITHUB_PATH
-    - name: Build GStreamer with H.266 decoder
+    - name: Install system build tools
       run: |
         sudo apt update
-        sudo apt install -y build-essential cmake ninja-build \
-          libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-          libgstreamer-plugins-bad1.0-dev liborc-0.4-dev python3-pip
-        
-        pip3 install meson>=1.4
-        
-        git clone --depth 1 https://github.com/fraunhoferhhi/vvdec.git
-        cd vvdec && mkdir build && cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=/usr/local \
-          -DVVDEC_INSTALL_VVDECAPP=OFF
-        make -j$(nproc) && sudo make install && sudo ldconfig
-        cd ../..
-        
-        git clone --depth 1 https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
-        cd gst-plugins-bad
-        meson setup build --prefix=/usr/local \
-          --default-library=shared \
-          -Dtests=disabled \
-          -Dexamples=disabled \
-          -Ddoc=disabled \
-          -Dintrospection=disabled \
-          -Dvvdec=enabled \
-          -Dvvenc=disabled
+        sudo apt install -y \
+        build-essential cmake git pkg-config nasm meson ninja-build \
+        libglib2.0-dev \
+        libgstreamer1.0-dev \
+        libgstreamer-plugins-base1.0-dev \
+        libgstreamer-plugins-bad1.0-dev
+    - name: Compile GStreamer Core 1.26
+      run: |
+        git clone --depth 1 -b 1.26 https://gitlab.freedesktop.org/gstreamer/gstreamer.git
+        cd gstreamer
+        meson setup build --prefix=/usr -Dtools=enabled -Dtests=disabled -Dexamples=disabled
         ninja -C build
         sudo ninja -C build install
         sudo ldconfig
         cd ..
-        rm -rf gst-plugins-bad vvdec
-    - name: Verify H.266 support
+        rm -rf gstreamer
+    - name: Install VVdeC (H.266 decoder)
       run: |
-        ffmpeg -version | head -1
-        ffmpeg -decoders 2>/dev/null | grep -i vvc || echo "No VVC in FFmpeg"
-        export GST_PLUGIN_PATH=/usr/local/lib/gstreamer-1.0:$GST_PLUGIN_PATH
-        gst-inspect-1.0 vvdec || echo "No VVC decoder in GStreamer"
+        git clone --depth 1 https://github.com/fraunhoferhhi/vvdec.git
+        cd vvdec
+        mkdir build && cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
+        cd ../..
+        rm -rf vvdec
+    - name: Compile FFmpeg with H.266 support
+      run: |
+        git clone --depth 1 https://github.com/FFmpeg/FFmpeg.git ffmpeg-source
+        cd ffmpeg-source
+        export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+        ./configure \
+            --enable-gpl \
+            --enable-nonfree \
+            --enable-version3
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
+        cd ..
+        rm -rf ffmpeg-source
+        echo "/usr/local/bin" >> $GITHUB_PATH
+    - name: Compile GStreamer Rust Plugins for VVC/H.266
+      run: |
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        source $HOME/.cargo/env
+        cargo install cargo-c
+        sudo apt install -y libclang-dev libssl-dev
+        
+        git clone --depth 1 https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs.git
+        cd gst-plugins-rs
+        export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+        
+        meson setup build --prefix=/usr -Dwebrtc=disabled
+        ninja -C build
+        sudo ninja -C build install
+        sudo ldconfig
+        cd ..
+        rm -rf gst-plugins-rs
     - name: Install dependencies
       run: |
         make install_deps
