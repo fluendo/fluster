@@ -102,33 +102,39 @@ jobs:
         sudo ldconfig
         cd ../..
         rm -rf vvdec
-    - name: Compile FFmpeg with H.266 support
-      run: |
-        git clone --depth 1 https://github.com/FFmpeg/FFmpeg.git ffmpeg-source
-        cd ffmpeg-source
-        export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-        ./configure \
-            --enable-gpl \
-            --enable-nonfree \
-            --enable-version3
-        make -j$(nproc)
-        sudo make install
-        sudo ldconfig
-        cd ..
-        rm -rf ffmpeg-source
-        echo "/usr/local/bin" >> $GITHUB_PATH
+# - name: Compile FFmpeg with H.266 support
+# run: |
+#   git clone --depth 1 https://github.com/FFmpeg/FFmpeg.git ffmpeg-source
+#   cd ffmpeg-source
+#   export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+#   ./configure \
+#       --enable-gpl \
+#       --enable-nonfree \
+#       --enable-version3
+#   make -j$(nproc)
+#   sudo make install
+#   sudo ldconfig
+#   cd ..
+#   rm -rf ffmpeg-source
+#   echo "/usr/local/bin" >> $GITHUB_PATH
     - name: Compile GStreamer Core 1.26
       run: |
         export PATH="$HOME/.local/bin:$PATH"
-        pip install meson
+        pip install --upgrade meson
+        export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:$PKG_CONFIG_PATH
         git clone --depth 1 -b 1.26 https://gitlab.freedesktop.org/gstreamer/gstreamer.git
         cd gstreamer
-        meson setup build --prefix=/usr -Dtools=enabled -Dtests=disabled -Dexamples=disabled
+        meson setup build --prefix=/usr/local -Dtests=disabled -Dexamples=disabled -Dauto_features=enabled
         ninja -C build
         sudo ninja -C build install
         sudo ldconfig
         cd ..
         rm -rf gstreamer
+    - name: Verify H.266 support
+      run: |
+        gst-inspect-1.0 vvdec || echo "vvdec plugin not found"
+        ffmpeg -codecs | grep -i vvc || echo "FFmpeg VVC not found"
+        gst-inspect-1.0 | grep -E "(vvc|h266|vvdec)" || echo "No H.266 plugins found"
     - name: Install dependencies
       run: |
         make install_deps
