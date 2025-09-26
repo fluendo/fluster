@@ -86,7 +86,7 @@ jobs:
     - name: Install system build tools
       run: |
         sudo apt update
-        sudo apt install -y build-essential cmake git pkg-config nasm
+        sudo apt install -y build-essential cmake git pkg-config nasm ninja-build meson
     - name: Install VVdeC (H.266 decoder)
       run: |
         git clone --depth 1 https://github.com/fraunhoferhhi/vvdec.git
@@ -113,6 +113,16 @@ jobs:
         cd ..
         rm -rf ffmpeg-source
         echo "/usr/local/bin" >> $GITHUB_PATH
+    - name: Compile GStreamer libav with FFmpeg+VVdeC
+      run: |
+        git clone --depth 1 https://gitlab.freedesktop.org/gstreamer/gst-libav.git
+        cd gst-libav
+        meson setup build --prefix=/usr/local -Dwith-libav=system
+        ninja -C build
+        sudo ninja -C build install
+        sudo ldconfig
+        cd ..
+        rm -rf gst-libav
     - name: Install dependencies
       run: |
         make install_deps
