@@ -107,28 +107,21 @@ jobs:
         make -j$(nproc) && sudo make install && sudo ldconfig
         cd ../..
         
-        git clone --depth 1 --single-branch --filter=blob:none \
-          https://gitlab.freedesktop.org/gstreamer/gstreamer.git
-        cd gstreamer
+        git clone --depth 1 https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad.git
+        cd gst-plugins-bad
         meson setup build --prefix=/usr/local \
           --default-library=shared \
-          -Dbase=disabled \
-          -Dgood=disabled \
-          -Dugly=disabled \
-          -Dbad=enabled \
-          -Dgst-plugins-bad:vvdec=enabled \
-          -Dgst-plugins-bad:vvenc=disabled \
-          -Dtools=disabled \
           -Dtests=disabled \
           -Dexamples=disabled \
           -Ddoc=disabled \
           -Dintrospection=disabled \
-          -Dorc=enabled
-        ninja -C build subprojects/gst-plugins-bad
+          -Dvvdec=enabled \
+          -Dvvenc=disabled
+        ninja -C build
         sudo ninja -C build install
         sudo ldconfig
         cd ..
-        rm -rf gstreamer vvdec
+        rm -rf gst-plugins-bad vvdec
     - name: Verify H.266 support
       run: |
         ffmpeg -version | head -1
