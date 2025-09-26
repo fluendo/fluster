@@ -27,12 +27,6 @@ jobs:
           cmake \
           gcc-multilib \
           g++-multilib \
-          gstreamer1.0-tools \
-          gstreamer1.0-libav \
-          gstreamer1.0-plugins-bad \
-          ffmpeg \
-          vpx-tools \
-          aom-tools \
           wget \
           unzip
     - name: Check (Skipping H.266 due to old Ubuntu version)
