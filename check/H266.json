@@ -1,0 +1,23 @@
+{
+    "name": "H266-min",
+    "codec": "H.266",
+    "description": "JVET VVC draft6",
+    "test_vectors": [
+        {
+            "name": "10b400_A_Bytedance_2",
+            "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/10b400_A_Bytedance_2.zip",
+            "source_checksum": "36b6db0ef4992c4f1c00d5f43e7fb405",
+            "input_file": "10b400_A_Bytedance_2.bit",
+            "output_format": "gray10le",
+            "result": "9607a0890e78ad7b3ca728356e919670"
+        },
+        {
+            "name": "10b422_A_Sony_4",
+            "source": "https://www.itu.int/wftp3/av-arch/jvet-site/bitstream_exchange/VVC/draft_conformance/draft6/10b422_A_Sony_4.zip",
+            "source_checksum": "743f6e4fb9a7c58964122baa1dcc8193",
+            "input_file": "10b422_A_Sony_4.bit",
+            "output_format": "yuv422p10le",
+            "result": "179092dd2c8729e6fbc1284ae902fd1b"
+        }
+    ]
+}

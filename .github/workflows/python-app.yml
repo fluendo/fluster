@@ -64,10 +64,9 @@ jobs:
     - name: Install dependencies
       run: |
         make install_deps
-        sudo apt update && sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools aom-tools
-    - name: Check
+    - name: Check (Skipping H.266 due to old Ubuntu version)
       run: |
-        make check
+        SKIP_H266=1 make check
     - name: Test Build the wheel
       run: |
         pip wheel .
@@ -83,10 +82,62 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: 3.13
+    - name: Install system build tools
+      run: |
+        sudo apt update
+        sudo apt install -y \
+        build-essential cmake git pkg-config nasm meson ninja-build \
+        libglib2.0-dev \
+        libgstreamer1.0-dev \
+        libgstreamer-plugins-base1.0-dev \
+        libgstreamer-plugins-bad1.0-dev
+    - name: Install VVdeC (H.266 decoder)
+      run: |
+        git clone --depth 1 https://github.com/fraunhoferhhi/vvdec.git
+        cd vvdec
+        mkdir build && cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
+        cd ../..
+        rm -rf vvdec
+# - name: Compile FFmpeg with H.266 support
+# run: |
+#   git clone --depth 1 https://github.com/FFmpeg/FFmpeg.git ffmpeg-source
+#   cd ffmpeg-source
+#   export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+#   ./configure \
+#       --enable-gpl \
+#       --enable-nonfree \
+#       --enable-version3
+#   make -j$(nproc)
+#   sudo make install
+#   sudo ldconfig
+#   cd ..
+#   rm -rf ffmpeg-source
+#   echo "/usr/local/bin" >> $GITHUB_PATH
+    - name: Compile GStreamer Core 1.26
+      run: |
+        export PATH="$HOME/.local/bin:$PATH"
+        pip install --upgrade meson
+        export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:$PKG_CONFIG_PATH
+        git clone --depth 1 -b 1.26 https://gitlab.freedesktop.org/gstreamer/gstreamer.git
+        cd gstreamer
+        meson setup build --prefix=/usr/local -Dtests=disabled -Dexamples=disabled -Dauto_features=enabled
+        ninja -C build
+        sudo ninja -C build install
+        sudo ldconfig
+        cd ..
+        rm -rf gstreamer
+    - name: Verify H.266 support
+      run: |
+        gst-inspect-1.0 vvdec || echo "vvdec plugin not found"
+        ffmpeg -codecs | grep -i vvc || echo "FFmpeg VVC not found"
+        gst-inspect-1.0 | grep -E "(vvc|h266|vvdec)" || echo "No H.266 plugins found"
     - name: Install dependencies
       run: |
         make install_deps
-        sudo apt update && sudo apt install gstreamer1.0-tools gstreamer1.0-libav gstreamer1.0-plugins-bad ffmpeg vpx-tools aom-tools
     - name: Check
       run: |
         make check
