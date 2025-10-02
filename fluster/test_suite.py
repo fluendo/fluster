@@ -34,7 +34,7 @@ from fluster import utils
 from fluster.codec import Codec
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.test import MD5ComparisonTest, PixelComparisonTest, Test
-from fluster.test_vector import TestVector
+from fluster.test_vector import TestVector, TestVectorResult
 
 
 class DownloadWork:
@@ -144,11 +144,13 @@ class TestSuite:
         negative_test: Optional[bool] = False,
     ):
         # JSON members
+        # negative_test flag indicates that all test vectors of a test suite are expected to fail
         self.name = name
         self.codec = codec
         self.description = description
         self.test_vectors = test_vectors
         self.failing_test_vectors = failing_test_vectors
+        self.test_method = test_method
         self.negative_test = negative_test
 
         # Not included in JSON
@@ -156,7 +158,6 @@ class TestSuite:
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
         self.time_taken = 0.0
-        self.test_method = test_method
 
     def clone(self) -> "TestSuite":
         """Create a deep copy of the object"""
@@ -193,6 +194,10 @@ class TestSuite:
             data["codec"] = str(self.codec.value)
             data["test_vectors"] = [test_vector.data_to_serialize() for test_vector in self.test_vectors.values()]
             data["test_method"] = self.test_method.value if self.test_method else None
+            if self.negative_test:
+                data["negative_test"] = self.negative_test
+            else:
+                data.pop("negative_test")
             json.dump(data, json_file, indent=4)
             json_file.write("\n")
 
@@ -438,6 +443,11 @@ class TestSuite:
         with Pool(jobs) as pool:
 
             def _callback(test_result: TestVector) -> None:
+                if self.negative_test:
+                    if test_result.errors:
+                        test_result.test_result = TestVectorResult.SUCCESS
+                    else:
+                        test_result.test_result = TestVectorResult.FAIL
                 print(
                     self._get_result_line(
                         self.name,
@@ -448,7 +458,7 @@ class TestSuite:
                     flush=True,
                 )
                 test_vector_results.append(test_result)
-                if failfast and test_result.errors:
+                if failfast and test_result.errors and not self.negative_test:
                     pool.terminate()
 
             start = perf_counter()
@@ -461,13 +471,17 @@ class TestSuite:
         self.test_vectors_success = 0
         for test_vector_res in test_vector_results:
             if test_vector_res.errors:
-                for error in test_vector_res.errors:
-                    # Use same format to report errors as TextTestRunner
-                    print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
-                    for line in error[1:]:
-                        print(line)
+                if self.negative_test:
+                    self.test_vectors_success += 1
+                else:
+                    for error in test_vector_res.errors:
+                        # Use same format to report errors as TextTestRunner
+                        print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
+                        for line in error[1:]:
+                            print(line)
             else:
-                self.test_vectors_success += 1
+                if not self.negative_test:
+                    self.test_vectors_success += 1
 
             # Collect the test vector results and failures since they come
             # from a different process
