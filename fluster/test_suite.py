@@ -34,7 +34,7 @@ from fluster import utils
 from fluster.codec import Codec
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.test import MD5ComparisonTest, PixelComparisonTest, Test
-from fluster.test_vector import TestVector
+from fluster.test_vector import TestVector, TestVectorResult
 
 
 class DownloadWork:
@@ -436,6 +436,11 @@ class TestSuite:
         with Pool(jobs) as pool:
 
             def _callback(test_result: TestVector) -> None:
+                if "error".lower() in self.name.lower():
+                    if test_result.errors:
+                        test_result.test_result = TestVectorResult.SUCCESS
+                    else:
+                        test_vector_res.test_result = TestVectorResult.FAIL
                 print(
                     self._get_result_line(
                         self.name,
@@ -446,7 +451,7 @@ class TestSuite:
                     flush=True,
                 )
                 test_vector_results.append(test_result)
-                if failfast and test_result.errors:
+                if failfast and test_result.errors and "error".lower() not in self.name.lower():
                     pool.terminate()
 
             start = perf_counter()
@@ -459,13 +464,17 @@ class TestSuite:
         self.test_vectors_success = 0
         for test_vector_res in test_vector_results:
             if test_vector_res.errors:
-                for error in test_vector_res.errors:
-                    # Use same format to report errors as TextTestRunner
-                    print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
-                    for line in error[1:]:
-                        print(line)
+                if "error".lower() in self.name.lower():
+                    self.test_vectors_success += 1
+                else:
+                    for error in test_vector_res.errors:
+                        # Use same format to report errors as TextTestRunner
+                        print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
+                        for line in error[1:]:
+                            print(line)
             else:
-                self.test_vectors_success += 1
+                if "error".lower() not in self.name.lower():
+                    self.test_vectors_success += 1
 
             # Collect the test vector results and failures since they come
             # from a different process
