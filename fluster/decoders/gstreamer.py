@@ -199,7 +199,7 @@ class GStreamer10Video(GStreamer):
             raw_caps += f",format={output_format_to_gst(output_format)}"
         except KeyError as key_error:
             print(
-                f"WARNING: Output format of test vector {os.path.basename(input_filepath)} could not be matched."
+                f"WARNING: Output format of test vector {os.path.basename(input_filepath)} could not be matched. "
                 f"Missing output format: {key_error}"
             )
         caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
