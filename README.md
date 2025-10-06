@@ -359,6 +359,7 @@ AV1
     GStreamer-AV1-Vulkan-Gst1.0: GStreamer AV1 Vulkan decoder for GStreamer 1.0
     GStreamer-AV1-dav1d-Gst1.0: GStreamer AV1 dav1d decoder for GStreamer 1.0
     GStreamer-AV1-libaom-Gst1.0: GStreamer AV1 libaom decoder for GStreamer 1.0
+    GStreamer-AV1-V4L2-Gst1.0: GStreamer AV1 V4L2 decoder for GStreamer 1.0
     VKVS-AV1: Vulkan Video Samples AV1 decoder
     ccdec-AV1: AV1 cros-codecs decoder
     dav1d-AV1: dav1d AV1 decoder
