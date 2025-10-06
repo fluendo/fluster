@@ -370,6 +370,15 @@ class GStreamerV4l2H265Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerV4l2AV1Gst10Decoder(GStreamer10Video):
+    """GStreamer AV1 V4L2 stateful decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.AV1
+    decoder_bin = " v4l2av1dec "
+    api = "V4L2"
+
+
+@register_decoder
 class GStreamerVaapiH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 VAAPI decoder implementation for GStreamer 1.0"""
 
