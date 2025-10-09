@@ -192,7 +192,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default.' '0 means all logical cores",
+            help="number of parallel jobs to use (by default 1x logical cores, value 0 is interpreted as the same)",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -288,7 +288,7 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 1x logical cores by default.' '0 means all logical cores",
+            help="number of parallel jobs to use (by default 1x logical cores, value 0 is interpreted as the same)",
             type=int,
             default=multiprocessing.cpu_count(),
         )
@@ -324,7 +324,8 @@ class Main:
         subparser.add_argument(
             "-j",
             "--jobs",
-            help="number of parallel jobs to use. 2x logical cores by default.' '0 means all logical cores",
+            help="number of parallel jobs to use (upper limit of 16, by default 2x logical cores). value 0 is "
+            "interpreted as 1x logical cores",
             type=int,
             default=2 * multiprocessing.cpu_count() if multiprocessing.cpu_count() <= 8 else 16,
         )
@@ -377,6 +378,7 @@ class Main:
 
     @staticmethod
     def _reference_cmd(args: Any, fluster: Fluster) -> None:
+        args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
         context = Context(
             jobs=args.jobs,
             timeout=args.timeout,
