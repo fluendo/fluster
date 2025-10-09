@@ -56,6 +56,96 @@ def handle_iso_terms(opener: urllib.request.OpenerDirector, url: str) -> Any:
     return response
 
 
+def _format_eta(seconds: float) -> str:
+    """Format ETA seconds into human-readable string"""
+    if seconds < 60:
+        return f"{int(seconds)}s"
+    if seconds < 3600:
+        return f"{int(seconds / 60)}m {int(seconds % 60)}s"
+    hours = int(seconds / 3600)
+    minutes = int((seconds % 3600) / 60)
+    return f"{hours}h {minutes}m"
+
+
+def _format_bytes(bytes_size: int) -> str:
+    """Format bytes into human-readable string (KB, MB, GB)"""
+    if bytes_size < 1024:
+        return f"{bytes_size} B"
+    elif bytes_size < 1024 * 1024:
+        return f"{bytes_size / 1024:.1f} KB"
+    elif bytes_size < 1024 * 1024 * 1024:
+        return f"{bytes_size / (1024 * 1024):.1f} MB"
+    else:
+        return f"{bytes_size / (1024 * 1024 * 1024):.1f} GB"
+
+
+def _update_progress_bar(
+    filename: str,
+    downloaded: int,
+    total_size: Optional[int],
+    start_time: float,
+    last_update_time: float,
+    is_finished: bool = False,
+) -> float:
+    """Update and print progress bar, returns new last_update_time."""
+    current_time = time.time()
+    if current_time - last_update_time >= 5.0 or (total_size and downloaded >= total_size) or is_finished:
+        elapsed = current_time - start_time
+        if elapsed > 0:
+            rate = downloaded / elapsed
+            progress = 0.0
+            if total_size:
+                progress = downloaded / total_size
+            else:
+                if is_finished:
+                    progress = 1.0
+                    total_size = downloaded
+
+            if rate > 0 and total_size and downloaded < total_size:
+                eta_str = _format_eta((total_size - downloaded) / rate)
+            else:
+                eta_str = "--"
+            filled = int(40 * progress)
+            size_info = f"{_format_bytes(downloaded)}/{_format_bytes(total_size) if total_size else '???'}"
+            if total_size:
+                progress_bar = f"[{'=' * filled}{'-' * (40 - filled)}] {progress * 100:.1f}% "
+                progress_bar += f"{size_info} | {_format_bytes(int(rate))}/s | ETA: {eta_str}"
+            else:
+                progress_bar = f"{size_info} | {_format_bytes(int(rate))}/s"
+
+            print(f"\t{filename:<40} {progress_bar}")
+
+            return current_time
+    return last_update_time
+
+
+def _download_simple(url: str, dest_path: str, filename: str, timeout: int, chunk_size: int) -> None:
+    """Download file with progress tracking and retry logic"""
+    opener = create_enhanced_opener()
+    with opener.open(url, timeout=timeout) as response:
+        url_handler = response
+        if "text/html" in response.headers.get("content-type", "").lower():
+            url_handler = handle_iso_terms(opener, url)
+
+        content_length = url_handler.headers.get("content-length")
+        total_size = int(content_length) if content_length else None
+
+        with open(dest_path, "wb") as dest:
+            downloaded = 0
+            start_time = time.time()
+            last_update_time = start_time
+            while True:
+                chunk = url_handler.read(chunk_size)
+                if not chunk:
+                    break
+                dest.write(chunk)
+                downloaded += len(chunk)
+                last_update_time = _update_progress_bar(filename, downloaded, total_size, start_time, last_update_time)
+
+            if not total_size and downloaded > 0:
+                _update_progress_bar(filename, downloaded, total_size, start_time, last_update_time, is_finished=True)
+
+
 def download(
     url: str,
     dest_dir: str,
@@ -63,26 +153,17 @@ def download(
     timeout: int = 300,
     chunk_size: int = 2048 * 2048,  # 4MB
 ) -> None:
-    """Downloads a file to a directory with a mutex lock to avoid conflicts and retries with exponential backoff."""
+    """Downloads a file to a directory with a mutex lock
+    to avoid conflicts and retries with exponential backoff."""
     os.makedirs(dest_dir, exist_ok=True)
     filename = os.path.basename(url)
     dest_path = os.path.join(dest_dir, filename)
     for attempt in range(max_retries):
         try:
             with download_lock:
-                opener = create_enhanced_opener()
-                with opener.open(url, timeout=timeout) as response:
-                    url_handler = response
-                    if "text/html" in response.headers.get("content-type", "").lower():
-                        url_handler = handle_iso_terms(opener, url)
-                    with open(dest_path, "wb") as dest:
-                        while True:
-                            chunk = url_handler.read(chunk_size)
-                            if not chunk:
-                                break
-                            dest.write(chunk)
+                _download_simple(url, dest_path, filename, timeout, chunk_size)
             break
-        except Exception as e:
+        except (urllib.error.URLError, urllib.error.HTTPError, OSError, IOError, ConnectionError, TimeoutError) as e:
             if os.path.exists(dest_path):
                 os.remove(dest_path)
 
