@@ -86,13 +86,13 @@ Find more about how to use Fluster in the next section.
    defaults to 2x number of logical cores.
 
 2. (Optional) Build the reference decoders for AAC, H.264/AVC, H.265/HEVC,
-   H.266/VVC running `make all_reference_decoders`. It assumes you have CMake
-   and a native compiler such as gcc or clang installed so that they can be
-   built. The resulting binaries will be moved to a new `decoders` directory in
-   the root.
+   H.266/VVC running `make all_reference_decoders`. This is available and has been 
+   tested with x86_64 and Linux. It assumes you have CMake and a native compiler 
+   such as gcc or clang installed so that they can be built. The resulting binaries 
+   will be moved to a new `decoders` directory in the root.
 
-3. List the test suites, the decoders and which of them can run using
-   `./fluster.py list -c`.
+3. List the test suites and the decoders available `./fluster.py list`.
+   Tip: You can list the decoders that can run in the current system with `./fluster.py list -c`.
 
 ```bash
 List of available test suites:
@@ -201,7 +201,7 @@ JVET-VVC_draft6
     Codec: H.266
     Description: JVET VVC draft6
     Test vectors: 282
-    
+
 MPEG2_VIDEO-422
     Codec: MPEG2_VIDEO
     Description: ISO IEC 13818-4 MPEG2 video 422 profile test suite
@@ -211,7 +211,7 @@ MPEG2_VIDEO-MAIN
     Codec: MPEG2_VIDEO
     Description: ISO IEC 13818-4 MPEG2 video main profile test suite
     Test vectors: 43
-    
+
 MPEG4_VIDEO-SimpleProfile
     Codec: MPEG4_VIDEO
     Description: ISO IEC 14496-4 MPEG4 video simple profile test suite
@@ -221,7 +221,7 @@ MPEG4_VIDEO-AdvancedSimpleProfile
     Codec: MPEG4_VIDEO
     Description: ISO IEC 14496-4 MPEG4 video advanced simple profile test suite
     Test vectors: 30
-    
+
 MPEG4_VIDEO-SimpleStudioProfile
     Codec: MPEG4_VIDEO
     Description: ISO IEC 14496-4 MPEG4 video simple studio profile test suite
@@ -244,47 +244,62 @@ CHROMIUM-8bit-AV1-TEST-VECTORS
 
 AV1-ARGON-PROFILE0-CORE-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Profile0 Core Annex B test suite
+    Description: AV1 Argon Profile 0 Core Annex B test suite
     Test vectors: 815
-    
+
+AV1-ARGON-PROFILE0-ERROR-NON-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile 0 Error Non-Annex B test suite
+    Test vectors: 114
+
 AV1-ARGON-PROFILE0-NON-ANNEX-B
     Codec: AV1
     Description: AV1 Argon Profile 0 Non-Annex B test suite
-    Test vectors: 160
-    
+    Test vectors: 70
+
 AV1-ARGON-PROFILE0-STRESS-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Profile0 Stress Annex B test suite
+    Description: AV1 Argon Profile 0 Stress Annex B test suite
     Test vectors: 88
-    
+
 AV1-ARGON-PROFILE1-CORE-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Profile1 Core Annex B test suite
+    Description: AV1 Argon Profile 1 Core Annex B test suite
     Test vectors: 781
-    
+
+AV1-ARGON-PROFILE1-ERROR-NON-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile 1 Error Non-Annex B test suite
+    Test vectors: 113
+
 AV1-ARGON-PROFILE1-NON-ANNEX-B
     Codec: AV1
     Description: AV1 Argon Profile 1 Non-Annex B test suite
-    Test vectors: 165
-    
+    Test vectors: 69
+
 AV1-ARGON-PROFILE1-STRESS-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Profile1 Stress Annex B test suite
+    Description: AV1 Argon Profile 1 Stress Annex B test suite
     Test vectors: 77
-    
+
 AV1-ARGON-PROFILE2-CORE-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Profile2 Core Annex B test suite
+    Description: AV1 Argon Profile 2 Core Annex B test suite
     Test vectors: 946
-    
+
+AV1-ARGON-PROFILE2-ERROR-NON-ANNEX-B
+    Codec: AV1
+    Description: AV1 Argon Profile 2 Error Non-Annex B test suite
+    Test vectors: 108
+
 AV1-ARGON-PROFILE2-NON-ANNEX-B
     Codec: AV1
     Description: AV1 Argon Profile 2 Non-Annex B test suite
-    Test vectors: 150
-    
+    Test vectors: 63
+
 AV1-ARGON-PROFILE2-STRESS-ANNEX-B
     Codec: AV1
-    Description: AV1 Argon Profile2 Stress Annex B test suite
+    Description: AV1 Argon Profile 2 Stress Annex B test suite
     Test vectors: 87
 
 AV1-TEST-VECTORS
@@ -388,14 +403,14 @@ H.266
     GStreamer-H.266-VVdeC-Gst1.0: GStreamer H.266 VVdeC decoder for GStreamer 1.0
     VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder
     VVdeC-H266: VVdeC H.266/VVC decoder
-    
+
 MPEG2_VIDEO
     FFmpeg-MPEG2_VIDEO: FFmpeg MPEG2 VIDEO SW decoder
     Fluendo-MPEG2_VIDEO-SW-Gst1.0: Fluendo MPEG2 VIDEO SW decoder for GStreamer 1.0
     GStreamer-MPEG2_VIDEO-Libav-Gst1.0: GStreamer MPEG2_VIDEO Libav decoder for GStreamer 1.0
     GStreamer-MPEG2_VIDEO-SW-Gst1.0: GStreamer MPEG2_VIDEO SW decoder for GStreamer 1.0
     ISO-MPEG2-VIDEO: ISO MPEG2 Video reference decoder
-    
+
 MPEG4_VIDEO
     FFmpeg-MPEG4_VIDEO: FFmpeg MPEG4_VIDEO SW decoder
     Fluendo-MPEG4_VIDEO-SW-Gst1.0: Fluendo MPEG4_VIDEO SW decoder for GStreamer 1.0
@@ -424,6 +439,7 @@ VP9
     FFmpeg-VP9-CUDA: FFmpeg VP9 CUDA decoder
     FFmpeg-VP9-VAAPI: FFmpeg VP9 VAAPI decoder
     FFmpeg-VP9-VDPAU: FFmpeg VP9 VDPAU decoder
+    FFmpeg-VP9-Vulkan: FFmpeg VP9 Vulkan decoder
     FFmpeg-VP9-v4l2m2m: FFmpeg VP9 v4l2m2m decoder
     GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0
     GStreamer-VP9-D3D12-Gst1.0: GStreamer VP9 D3D12 decoder for GStreamer 1.0
@@ -448,8 +464,8 @@ AAC
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
-   them). By default, decoder tests are run in parallel. By default fluster uses the same
-   amount of parallel jobs as number of cores, but it can be configured using
+   them). By default, decoder tests are run in parallel using the same
+   amount of jobs as number of cores, but it can be configured using
    the `-j` option. You can pass `-d` to filter only the decoders that you want
    to run, `-ts` for the test suites and `-tv` for the test vectors. Examples:
 
@@ -490,7 +506,7 @@ AAC
   decoder for H.266/VVC.
 - Fluendo's proprietary decoders for MPEG2 video, MPEG4 video, H.264/AVC and H.265/HEVC that are included
   in [Fluendo Codec
-  Pack](https://fluendo.com/en/products/enterprise/fluendo-codec-pack/).
+  Pack](https://fluendo.com/products/fluendo-codec-pack/).
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.266/VVC.
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.265/HEVC.
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.264/AVC.
@@ -534,8 +550,8 @@ subcommands:
 ```bash
 ./fluster.py list --help
 
-usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c] [-v]
-[-d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO}]
+usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c] [-v] 
+[-d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO,MPEG4_VIDEO}]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -544,9 +560,8 @@ optional arguments:
   -tv, --testvectors    show test vectors of test suites
   -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
   -v, --verbose         show stdout and stderr of commands executed
-  -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO}
+  -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO,MPEG4_VIDEO}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO,MPEG4_VIDEO}
                         show decoders and test suites of a codec
-
 ```
 
 ### Run
@@ -562,8 +577,8 @@ usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by
-                        default.0 means all logical cores
+  -j JOBS, --jobs JOBS  number of parallel jobs to use (by default 1x logical cores, 
+                        value 0 is interpreted as the same)
   -t TIMEOUT, --timeout TIMEOUT
                         timeout in secs for each decoding. Defaults to 30 secs
   -ff, --failfast       stop after first fail
@@ -602,9 +617,10 @@ usage: fluster.py download [-h] [-j JOBS] [-k] [-r RETRIES] [testsuites ...]
 positional arguments:
   testsuites            list of testsuites to download
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use. 2x logical cores by default.0 means all logical cores
+  -j JOBS, --jobs JOBS  number of parallel jobs to use (upper limit of 16, by default 2x logical cores). 
+                        value 0 is interpreted as 1x logical cores
   -k, --keep            keep original downloaded file after extracting. Only applicable to compressed files such as .zip, .tar.gz, etc
   -r RETRIES, --retries RETRIES
                         number of retries, before failing
@@ -624,8 +640,8 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use. 1x logical cores by
-                        default.0 means all logical cores
+  -j JOBS, --jobs JOBS  number of parallel jobs to use (by default 1x logical cores, 
+                        value 0 is interpreted as the same)
   -t TIMEOUT, --timeout TIMEOUT
                         timeout in secs for each decoding. Defaults to 30 secs
   -q, --quiet           don't show every test run
@@ -659,9 +675,12 @@ Check out the JSON format they follow in the [test_suites](https://github.com/fl
 directory. Add a new json file within, Fluster will automatically pick it
 up.
 
-There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py), [generator script (MPEG4 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg4_video.py), [generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), [generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a [generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the [conformance
-test suites](#test-suites) that you can use as a base to generate automatically
-new ones.
+There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py), 
+[generator script (MPEG4 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg4_video.py), 
+[generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), 
+[generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a 
+[generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the 
+[conformance test suites](#test-suites) that you can use as a base to generate automatically new ones.
 
 ### How can I use it to test regressions?
 
@@ -694,7 +713,7 @@ results are obtained, we can do the following procedure:
    diff $diffParams expected.out current.out
    ```
 
-   We recommend using the `--no-emoji` argument when running on the CI to
+   We recommend using the `--no-emoji` argument when running on a CI system to
    ensure the log is properly displayed with no issues.
 
 ### How can I contribute?
@@ -733,10 +752,9 @@ results are obtained, we can do the following procedure:
 
 ### How can I report an issue?
 
-In case you find any problem or want to report something, don't hesitate to
-search for similar [issues](https://github.com/fluendo/fluster/issues). Only when the issue can't be found, a new
-one should be created. Please try to provide as many details and context as
-possible to help us diagnose it.
+In case you find any problem or want to report something, please search for similar 
+[issues](https://github.com/fluendo/fluster/issues) first. If you find none, go ahead to create one. 
+Please try to provide as many details and context as possible to help us diagnose it.
 
 ## License
 
