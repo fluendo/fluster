@@ -625,13 +625,45 @@ class Fluster:
         else:
             print(output)
 
-    def download_test_suites(self, test_suites: List[str], jobs: int, keep_file: bool, retries: int) -> None:
+    def download_test_suites(
+        self, test_suites: List[str], jobs: int, keep_file: bool, retries: int, codec_string: Optional[str] = None
+    ) -> None:
         """Download a group of test suites"""
         self._load_test_suites()
-        if not test_suites:
-            download_test_suites = self.test_suites
+
+        # Parse codecs from comma-separated string
+        codecs = None
+        if codec_string:
+            # Split by comma and convert to Codec enum
+            codec_strings = [c.strip() for c in codec_string.split(",")]
+            codecs = []
+            for codec_str in codec_strings:
+                if not codec_str:  # Skip empty strings
+                    continue
+                # Find matching codec (case-insensitive)
+                for codec in Codec:
+                    if codec.value.lower() == codec_str.lower():
+                        codecs.append(codec)
+                        break
+                else:
+                    sys.exit(f"Unknown codec: {codec_str}")
+
+        download_test_suites: List[TestSuite] = []
+
+        if codecs:
+            codec_names = {codec.value for codec in codecs}
+            download_test_suites = [ts for ts in self.test_suites if ts.codec.value in codec_names]
+            if test_suites:
+                download_test_suites += self._get_matches(test_suites, self.test_suites, "test suites")
+            print(
+                f"Test suites for codecs {', '.join(sorted(codec_names))}: {[ts.name for ts in download_test_suites]}"
+            )
         else:
-            download_test_suites = self._get_matches(test_suites, self.test_suites, "test suites")
+            if test_suites:
+                download_test_suites = self._get_matches(test_suites, self.test_suites, "test suites")
+            else:
+                download_test_suites = self.test_suites
+            print(f"Test suites: {[ts.name for ts in download_test_suites]}")
 
         for test_suite in download_test_suites:
             test_suite.download(

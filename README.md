@@ -85,6 +85,12 @@ Find more about how to use Fluster in the next section.
    files. You can change the number of parallel processes used with `-j`. It
    defaults to 2x number of logical cores.
 
+   Use the `-c/--codec` option to download test suites for specific codecs:
+   - `./fluster.py download -c H.264,H.265` downloads all H.264 and H.265 test suites
+   - `./fluster.py download AV1-TEST-VECTORS VP9-TEST-VECTORS` downloads the specific AV1-TEST-VECTORS and VP9-TEST-VECTORS test suite
+   - `./fluster.py download -c VP9 AV1-TEST-VECTORS` downloads all VP9 test suites plus the specific AV1-TEST-VECTORS
+   - `./fluster.py download` downloads all available test suites
+
 2. (Optional) Build the reference decoders for AAC, H.264/AVC, H.265/HEVC,
    H.266/VVC running `make all_reference_decoders`. This is available and has been 
    tested with x86_64 and Linux. It assumes you have CMake and a native compiler 
@@ -613,7 +619,7 @@ optional arguments:
 ```bash
 ./fluster.py download --help
 
-usage: fluster.py download [-h] [-j JOBS] [-k] [-r RETRIES] [testsuites ...]
+usage: fluster.py download [-h] [-j JOBS] [-k] [-r RETRIES] [-c CODEC] [testsuites ...]
 
 positional arguments:
   testsuites            list of testsuites to download
@@ -625,8 +631,15 @@ optional arguments:
   -k, --keep            keep original downloaded file after extracting. Only applicable to compressed files such as .zip, .tar.gz, etc
   -r RETRIES, --retries RETRIES
                         number of retries, before failing
+  -c CODEC, --codec CODEC
+                        download test suites for specific codecs only (comma-separated)
 ```
 
+
+**Important Note on Behavior:**
+- When using both `-c/--codec` and specific test suites, the behavior is **union-based**:
+  - All test suites matching the codec filter are downloaded
+  - Additionally, all specified test suites are downloaded, regardless of codec
 ### Reference
 
 ```bash

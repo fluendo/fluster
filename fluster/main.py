@@ -343,6 +343,12 @@ class Main:
             type=int,
             default=2,
         )
+        subparser.add_argument(
+            "-c",
+            "--codec",
+            help="download test suites for specific codecs only (comma-separated)",
+            type=str,
+        )
         subparser.add_argument("testsuites", help="list of testsuites to download", nargs="*")
         subparser.set_defaults(func=self._download_cmd)
 
@@ -403,4 +409,5 @@ class Main:
             jobs=args.jobs,
             keep_file=args.keep,
             retries=args.retries,
+            codec_string=args.codec,
         )
