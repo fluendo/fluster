@@ -5,48 +5,103 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.4.0] (2025-08-05)
+## [0.5.0] - 2025-10-14
+
 ### Added
-- GStreamer Vulkan AV1 VA decoder
-- GStreamer Vulkan VP9 VA decoder
-- NVidia Vulkan Video Samples VP9 VA decoder
-- GStreamer Libav MPEG-4 SW video decoder
-- Fluendo GStreamer MPEG-4 SW video decoder
-- FFmpeg MPEG-4 SW video decoder
-- ISO MPEG-4 video reference decoder (Microsoft implementation - vmdec)
-- MPEG-4 video test suites for simple, advanced simple, simple scalable and simple studio profiles
+- Add support for V4l2 AV1 stateful video decoder
+- Add global summary table per profile
+- Add vp9 decoder for vulkan ffmpeg
 
 ### Changed
-- Test execution summary report in markdown format now includes test results per profile, when available
-- Wildcard(*) is now supported when setting a list of vectors to test
-- H.264 test suites JVT-AVC_V1, JVT-FR-EXT and JVT-Professional_profiles now include profile for test vectors
-- H.265 test suite JCT-VC-HEVC_V1 now includes profile for test vectors
+- Normalise parallel jobs in run, reference and download modes
+- Rename h26x to h.26x in test_suites
+- Calculate AV1 Argon checksums based on output of reference decoder
+- Remove is_single_archive argument and related functions
 
 ### Fixed
-- Prevent test suite execution when its resources are not found locally
-- Nvidia Vulkan video samples decoder: use enablePostProcessFilter by default to support hardware with different queue for decoding and transferring, such as mesa drivers
+- Add logic to handle expected errors correctly for pass/fail metrics
+- Split AV1 argon non-annex B error test vectors
+- Add missing output format in AV1 Argon Profile 0 test suite vectors
+- Read format and profile from ffprobe for av1 chromium
+- Add missing output format to AV1 Argon profile 2 test vectors
+- Add missing output format in AV1 Argon Profile 1 test suite vectors
+- Replace broken link for AV1 argon test vectors
+- Improvements in download process
+- Calculate AV1 Argon checksums based on output of reference decoder
+- Add missing profiles to MPEG2v test suites
+- Resolve undefined output format in MPEG4 and H.266 vectors
+- Set method pixel in MPEG4 video test suites
+- Add av1parse element for low rank GStreamer av1 decoders
+- Add missing output formats to GStreamer mapping
+- Do not fail when output format is not mapped (GStreamer decoders)
+- Add pixel method to generators for mpeg2/4 video
+- Do not fail when output_format is None
 
 
-## [0.3.0] (2025-04-17)
+## [0.4.1] - 2025-08-06
+
+### Fixed
+- Correct upload of CHANGELOG.md to pypi
+
+
+## [0.4.0] - 2025-08-05
+
 ### Added
-- Pixel-by-pixel output/reference frame comparison method with error tolerance is now available for codecs that 
-do not require checksum match. MPEG-2 is an example of such codecs.
-- MPEG-2 video test suites for main and 4:2:2 profiles
-- GStreamer H.266 VA decoder
-- ISO MPEG-4 reference decoder for test vectors of error resilient profiles
-- GStreamer MPEG-2 SW video decoder
-- Gstreamer Libva MPEG-2 SW video decoder
+- Add mpeg4 video test suite for simple scalable profile
+- Add mpeg4 video test suite for simple studio profile
+- Add mpeg4 video test suite for advanced simple profile
+- Add mpeg4 video test suite for simple profile
+- Add per profile test results to markdown summary report
+- Add support for test vector profile as optional parameter
+- Add vp9 decoder for VKVS
+- Add vulkan vp9 decoder for GStreamer
+- Add gst vulkan AV1 decoder
+- Support wildcard in list of tests
 
 ### Changed
+- Add FFMpeg mpeg4 video decoder
+- Update H.265 test suites with profile information
+- Add profile information to H.265 test suite generator
+- Add profiles for H.265 test vectors
+- Add output format exceptions for some H.264 test vectors
+- Update H.264 test suites with profile information
+- Add profile information to H.264 test suite generator
 
 ### Fixed
-- MPEG-4 AAC MP4 test suite was split in 2, error and not error-resilient ones
-- MPEG-4 AAC MP4 test suites, error and not error-resilient now have correct md5 checksums
-- ISO MPEG-4 AAC decoders, error and not error-resilient now generate output with interleaved channels, when required
+- Add provider "Fluendo" to FluendoMPEG4VideoDecoder
+- Remove handle_terms from MPEG4 video test suites
+- Adapt code related to handle_terms parameter
+- Fix freeze bug when generating test suite with limited available RAM
+- Prevent test suite execution when missing resources
+- Vkvs use enablePostProcessFilter
+
+
+## [0.3.0] - 2025-04-17
+
+### Added
+- Add a pixel comparison method for codecs that don’t generate identical outputs
+- Add vah266dec gstreamer decoder
+- Add ISO IEC 13818-4 MPEG2 test suites
+
+### Changed
+- Add some gstreamer mpeg2video decoders
+- Omit VP8, VP9 and AV1 Makefile check tests when MacOS
+- Rename requirements.txt to requirements-dev.txt
+- Remove mypy and ruff from Makefile
+- Remove ruff and mypy packages from project requirements
+
+### Fixed
+- Update MPEG4_AAC-MP4-ER.json with new md5sum generated and update iso_mpeg4_aac-er.py for generate interleave multichannel
+- Update MPEG4_AAC-MP4.json with new md5sum generated and update iso_mpeg4_aac.py for generate interleave multichannel
+- Add new line to the json file
+- Split mpeg4 aac test suite into error and non error resilient test vectors
+- Create mpeg4 reference decoder for error resilient test vectors
 
 
 ## [0.2.0] - 2025-01-27
+
 ### Added
+
 - Generate a test suite for H265 3D-HEVC functionality set.
 - Generate a test suite for H265 SHVC functionality set.
 - Create a test suite for H264 SVC group.
@@ -66,6 +121,7 @@ do not require checksum match. MPEG-2 is an example of such codecs.
 - Add GStreamer libaom based AV1 decoder
 
 ### Changed
+
 - Split test suites for H265 and H266.
 - Adapt AAC test suite generator to omit md5 checksums of wav reference.
 - Rename some AAC and H264 test suites to be more precise.
@@ -74,12 +130,14 @@ do not require checksum match. MPEG-2 is an example of such codecs.
 - Update REPORT.md.
 
 ### Fixed
+
 - Fix bug #218: Argon AV1 test resource path don't match the downloaded resources path.
 - Issue in JSON generation scripts (Some test suites are badly generated).
 
-
 ## [0.1.0] - 2022-12-20
+
 ### Added
+
 - Add the H.264 reference decoder.
 - Add libvpx-VP8 reference decoder.
 - Add VP9 reference decoder.
@@ -103,4 +161,5 @@ do not require checksum match. MPEG-2 is an example of such codecs.
 - Create REPORT.md.
 
 ## Notes
+
 - For detailed usage and fluster modes, refer to the [README.md](README.md).
