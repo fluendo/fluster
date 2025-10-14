@@ -146,6 +146,7 @@ version_file = "pyproject.toml"
 version_pattern = 'version\\s*=\\s*"(.*)"'
 commit_parser = "conventional"
 allow_zero_version = true
+commit_message = "docs: Add release notes for version {version}"
 
 [tool.semantic_release.commit_parser_options]
 parse_squash_commits = true
