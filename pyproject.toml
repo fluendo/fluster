@@ -154,11 +154,11 @@ ignore_merge_commits = true
 #ignore_patterns = ["^fixup!", "--"] # Uncomment to ignore "fixup!, --xxx" commits until know only in 0.1.0 and 0.2.0
 
 [tool.semantic_release.branches.main]
-match = "(main|master)"
+match = "^release-[0-9]+\\.[0-9]+\\.[0-9]+$"
 prerelease = false
 
-[tool.semantic_release.branches.feature]
-match = "^(?!main$|master$).*"
+[tool.semantic_release.branches.development]
+match = "^(?!release-[0-9]+\\.[0-9]+\\.[0-9]+$|master$).*"
 prerelease = true
 prerelease_token = "rc"
 
