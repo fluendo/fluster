@@ -131,7 +131,7 @@ jobs:
       id: release
       uses: python-semantic-release/python-semantic-release@v10.3.1
       with:
-        github_token: ${{ secrets.GHCR_TOKEN_BUILDBOT }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         changelog: true
     - name: Set up Python 3.7
       uses: actions/setup-python@v5
@@ -154,5 +154,5 @@ jobs:
       uses: python-semantic-release/publish-action@v10.3.1
       if: steps.release.outputs.released == 'true'
       with:
-        github_token: ${{ secrets.GHCR_TOKEN_BUILDBOT }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ steps.release.outputs.tag }}
