@@ -132,8 +132,6 @@ jobs:
       uses: python-semantic-release/python-semantic-release@v10.3.1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        git_committer_name: "github-actions"
-        git_committer_email: "actions@users.noreply.github.com"
         changelog: true
     - name: Set up Python 3.7
       uses: actions/setup-python@v5
