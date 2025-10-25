@@ -239,7 +239,7 @@ class Fluster:
             in_list_names = {x.lower() for x in in_list}
             check_list_names = {x.name.lower() for x in check_list}
             matches = in_list_names & check_list_names
-            if len(matches) != len(in_list):
+            if len(matches) != len(in_list_names):
                 sys.exit(f"No {name} found for: {', '.join(in_list_names - check_list_names)}")
             matches_ret = [x for x in check_list if x.name.lower() in matches]
         else:
