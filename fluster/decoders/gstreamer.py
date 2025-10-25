@@ -721,6 +721,7 @@ class GStreamerVVdeCH266Decoder(GStreamer10Video):
     codec = Codec.H266
     decoder_bin = " vvdec "
     api = "VVdeC"
+    parser = " h266parse "
 
 
 @register_decoder
