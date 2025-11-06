@@ -424,6 +424,8 @@ MPEG2_VIDEO
 MPEG4_VIDEO
     FFmpeg-MPEG4_VIDEO: FFmpeg MPEG4_VIDEO SW decoder
     Fluendo-MPEG4_VIDEO-SW-Gst1.0: Fluendo MPEG4_VIDEO SW decoder for GStreamer 1.0
+    Fluendo-MPEG4_VIDEO-VAAPI-Gst1.0: Fluendo MPEG4_VIDEO VAAPI decoder for GStreamer 1.0
+    Fluendo-MPEG4_VIDEO-VDPAU-Gst1.0: Fluendo MPEG4_VIDEO VDPAU decoder for GStreamer 1.0
     GStreamer-MPEG4_VIDEO-Libav-Gst1.0: GStreamer MPEG4_VIDEO Libav decoder for GStreamer 1.0
     ISO-MPEG4-VIDEO: ISO MPEG4 Video reference decoder
 
