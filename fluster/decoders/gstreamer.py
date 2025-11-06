@@ -891,6 +891,19 @@ class FluendoFluHWVAH265DecBase(GStreamer10Video):
         super().__init__()
 
 
+class FluendoFluHWVAMPEG2DecBase(GStreamer10Video):
+    """Fluendo base class for fluhwva{backend}mpeg2dec elements"""
+
+    provider = "Fluendo"
+    api = "INVALID"
+    codec = Codec.MPEG2_VIDEO
+    decoder_bin_tmpl = " fluhwva{backend}mpeg2dec "
+
+    def __init__(self) -> None:
+        self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
+        super().__init__()
+
+
 # fluhwva{backend}h264dec
 
 
@@ -965,3 +978,27 @@ class FluendoFluHWVAVTH265dec(FluendoFluHWVAH265DecBase):
     """fluhwvavth265dec"""
 
     api = "VT"
+
+
+# fluhwva{backend}mpeg2dec
+
+
+@register_decoder
+class FluendoFluHWVAVAAPIMPEG2dec(FluendoFluHWVAMPEG2DecBase):
+    """fluhwvavaapimpeg2dec"""
+
+    api = "VAAPI"
+
+
+@register_decoder
+class FluendoFluHWVAVDPAUMPEG2dec(FluendoFluHWVAMPEG2DecBase):
+    """fluhwvavdpaumpeg2dec"""
+
+    api = "VDPAU"
+
+
+@register_decoder
+class FluendoFluHWVADXVA2MPEG2dec(FluendoFluHWVAMPEG2DecBase):
+    """fluhwvadxva2mpeg2dec"""
+
+    api = "DXVA2"
