@@ -326,8 +326,6 @@ H.264
     FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder
     FFmpeg-H.264-v4l2m2m: FFmpeg H.264 v4l2m2m decoder
     Fluendo-H.264-DXVA2-Gst1.0: Fluendo H.264 DXVA2 decoder for GStreamer 1.0
-    Fluendo-H.264-HW-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
-    Fluendo-H.264-HW-hwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
     Fluendo-H.264-HW-lcevchwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
     Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0
     Fluendo-H.264-VAAPI-Gst1.0: Fluendo H.264 VAAPI decoder for GStreamer 1.0
@@ -381,7 +379,6 @@ H.265
     FFmpeg-H.265-Vulkan: FFmpeg H.265 Vulkan decoder
     FFmpeg-H.265-v4l2m2m: FFmpeg H.265 v4l2m2m decoder
     Fluendo-H.265-DXVA2-Gst1.0: Fluendo H.265 DXVA2 decoder for GStreamer 1.0
-    Fluendo-H.265-HW-hwvah265dec-Gst1.0: Fluendo H.265 HW decoder for GStreamer 1.0
     Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0
     Fluendo-H.265-VAAPI-Gst1.0: Fluendo H.265 VAAPI decoder for GStreamer 1.0
     Fluendo-H.265-VDA-Gst1.0: Fluendo H.265 VDA decoder for GStreamer 1.0
