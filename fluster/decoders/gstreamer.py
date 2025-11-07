@@ -810,38 +810,6 @@ class FluendoMPEG2VideoGst10Decoder(GStreamer10Video):
 
 
 @register_decoder
-class FluendoH264VAGst10Decoder(GStreamer10Video):
-    """Fluendo H.264 hardware decoder implementation for GStreamer 1.0"""
-
-    codec = Codec.H264
-    decoder_bin = " fluhwvadec "
-    provider = "Fluendo"
-    api = "HW"
-
-
-@register_decoder
-class FluendoFluVAH265DecGst10Decoder(GStreamer10Video):
-    """Fluendo H.265 separated plugin hardware decoder for GStreamer 1.0"""
-
-    codec = Codec.H265
-    decoder_bin = " fluhwvah265dec "
-    provider = "Fluendo"
-    api = "HW"
-    name = f"{provider}-{codec.value}-{api}-hwvah265dec-Gst1.0"
-
-
-@register_decoder
-class FluendoFluVAH264DecGst10Decoder(GStreamer10Video):
-    """Fluendo H.264 separated plugin hardware decoder for GStreamer 1.0"""
-
-    codec = Codec.H264
-    decoder_bin = " fluhwvah264dec "
-    provider = "Fluendo"
-    api = "HW"
-    name = f"{provider}-{codec.value}-{api}-hwvah264dec-Gst1.0"
-
-
-@register_decoder
 class FluendoFluAACDecGst10Decoder(GStreamer10Audio):
     """Fluendo AAC plugin decoder for GStreamer 1.0"""
 
