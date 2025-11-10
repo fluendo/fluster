@@ -17,6 +17,7 @@ suites.
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [How to get started](#how-to-get-started)
+  - [Docker Support](#docker-support)
   - [How to use](#how-to-use)
   - [Test Suites](#test-suites)
   - [Decoders](#decoders)
@@ -76,6 +77,14 @@ or
 - [Release source code](https://github.com/fluendo/fluster/releases) assets are available in the following formats zip, tar.gz
 
 Find more about how to use Fluster in the next section.
+
+## Docker Support
+
+Fluster includes Docker support for testing decoders in isolated, reproducible environments with **hardware acceleration support** (VAAPI, VDPAU, NVDEC, QuickSync). Multiple Ubuntu versions are supported (20.04, 22.04, 24.04) with corresponding system FFmpeg and GStreamer packages.
+
+**All Docker commands must be run from the `docker/` directory.**
+
+For complete setup, usage examples, hardware acceleration configuration, and troubleshooting, see **[docker/README.md](docker/README.md)**.
 
 ## How to use
 
