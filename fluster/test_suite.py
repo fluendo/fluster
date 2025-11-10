@@ -20,7 +20,6 @@ import fnmatch
 import json
 import os.path
 import sys
-import urllib.error
 import zipfile
 from enum import Enum
 from functools import lru_cache
@@ -221,18 +220,7 @@ class TestSuite:
             return
 
         print(f"\tDownloading test vector {ctx.test_vector.name} from {ctx.test_vector.source}")
-        # Catch the exception that download may throw to make sure pickle can serialize it properly
-        # This avoids:
-        # Error sending result: '<multiprocessing.pool.ExceptionWithTraceback object at 0x7fd7811ecee0>'.
-        # Reason: 'TypeError("cannot pickle '_io.BufferedReader' object")'
-        try:
-            utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries)
-        except urllib.error.URLError as url_error:
-            print(
-                f"\tUnable to download {ctx.test_vector.source}, {str(url_error)} after {ctx.retries**ctx.retries} "
-                f"retries"
-            )
-            raise Exception(str(url_error))
+        utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries)
 
         if ctx.test_vector.source_checksum != "__skip__":
             checksum = utils.file_checksum(dest_path)
@@ -266,12 +254,7 @@ class TestSuite:
             os.remove(dest_path)
 
         print(f"\tDownloading source file from {first_tv.source}")
-
-        try:
-            utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries)
-        except urllib.error.URLError as url_error:
-            print(f"\tUnable to download {first_tv.source}, {str(url_error)} after {ctx.retries**ctx.retries} retries")
-            raise Exception(str(url_error))
+        utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries)
 
         # Check that source file was downloaded correctly
         if first_tv.source_checksum != "__skip__":
@@ -334,9 +317,12 @@ class TestSuite:
         else:
             # Download test suite of multiple test vectors
             print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
+            error_occurred = False
             with Pool(jobs) as pool:
 
                 def _callback_error(err: Any) -> None:
+                    nonlocal error_occurred
+                    error_occurred = True
                     print(f"\nError downloading -> {err}\n")
                     pool.terminate()
 
@@ -355,9 +341,12 @@ class TestSuite:
                 pool.close()
                 pool.join()
 
-            for job in downloads:
-                if not job.successful():
-                    sys.exit("Some download failed")
+            if error_occurred:
+                sys.exit("Some download failed")
+            else:
+                for job in downloads:
+                    if not job.successful():
+                        sys.exit("Some download failed")
 
         print("All downloads finished")
 
