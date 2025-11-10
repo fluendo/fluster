@@ -339,6 +339,7 @@ H.264
     GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0
     GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0
     GStreamer-H.264-NVDECSL-Gst1.0: GStreamer H.264 NVDECSL decoder for GStreamer 1.0
+    GStreamer-H.264-OpenH264-Gst1.0: GStreamer H.264 OpenH264 decoder for GStreamer 1.0
     GStreamer-H.264-QSV-Gst1.0: GStreamer H.264 QSV decoder for GStreamer 1.0
     GStreamer-H.264-V4L2-Gst1.0: GStreamer H.264 V4L2 decoder for GStreamer 1.0
     GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0
