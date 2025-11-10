@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Output and resources (mounted as volumes)
+fluster_output/
+resources/
+test_suites/
+
+# Docker
+.dockerignore
+docker-compose.yml
+docker/
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github/
+
+# Development
+requirements-dev.txt
+

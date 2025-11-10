@@ -1,0 +1,15 @@
+
+services:
+  fluster:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: fluster:latest
+    container_name: fluster
+    working_dir: /fluster
+    stdin_open: true
+    tty: true
+    environment:
+      - TERM=xterm-256color
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
