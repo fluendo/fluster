@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 import hashlib
+import http.client
 import os
 import platform
 import random
@@ -163,7 +164,15 @@ def download(
             with download_lock:
                 _download_simple(url, dest_path, filename, timeout, chunk_size)
             break
-        except (urllib.error.URLError, urllib.error.HTTPError, OSError, IOError, ConnectionError, TimeoutError) as e:
+        except (
+            urllib.error.URLError,
+            urllib.error.HTTPError,
+            OSError,
+            IOError,
+            ConnectionError,
+            TimeoutError,
+            http.client.IncompleteRead,
+        ) as e:
             if os.path.exists(dest_path):
                 os.remove(dest_path)
 
@@ -171,7 +180,7 @@ def download(
                 wait_time = random.uniform(1, 2**attempt)
                 time.sleep(wait_time)
             else:
-                print(f"Failed to download {url} after {max_retries} attempts. Error: {e}")
+                raise RuntimeError(f"Failed to download {url} after {max_retries} attempts: {e}") from e
 
 
 def file_checksum(path: str) -> str:
