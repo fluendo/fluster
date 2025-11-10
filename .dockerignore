@@ -1,0 +1,48 @@
+# Git
+.git
+.gitignore
+.github/
+
+# Python cache and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Output directories (mounted as volumes at runtime)
+fluster_output/
+resources/
+
+# Docker files (not needed inside image)
+.dockerignore
+Dockerfile
+docker/Dockerfile
+docker/run-docker.sh
+docker/*.md
+
+# Development files
+requirements-dev.txt
+.pre-commit-config.yaml
+.pylintrc
+Makefile
+scripts/
+
+# Documentation
+*.md
