@@ -397,6 +397,15 @@ class GStreamerVaH264Gst10Decoder(GStreamer10Video):
 
 
 @register_decoder
+class GStreamerQsvH264Gst10Decoder(GStreamer10Video):
+    """GStreamer H.264 Intel QSV decoder implementation for GStreamer 1.0"""
+
+    codec = Codec.H264
+    decoder_bin = " qsvh264dec "
+    api = "QSV"
+
+
+@register_decoder
 class GStreamerMsdkH264Gst10Decoder(GStreamer10Video):
     """GStreamer H.264 Intel MSDK decoder implementation for GStreamer 1.0"""
 

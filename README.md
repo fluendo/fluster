@@ -321,6 +321,7 @@ H.264
     FFmpeg-H.264-CUDA: FFmpeg H.264 CUDA decoder
     FFmpeg-H.264-D3D11VA: FFmpeg H.264 D3D11VA decoder
     FFmpeg-H.264-DXVA2: FFmpeg H.264 DXVA2 decoder
+    FFmpeg-H.264-QSV: FFmpeg H.264 QSV decoder
     FFmpeg-H.264-VAAPI: FFmpeg H.264 VAAPI decoder
     FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder
     FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder
@@ -338,6 +339,7 @@ H.264
     GStreamer-H.264-MSDK-Gst1.0: GStreamer H.264 MSDK decoder for GStreamer 1.0
     GStreamer-H.264-NVDEC-Gst1.0: GStreamer H.264 NVDEC decoder for GStreamer 1.0
     GStreamer-H.264-NVDECSL-Gst1.0: GStreamer H.264 NVDECSL decoder for GStreamer 1.0
+    GStreamer-H.264-QSV-Gst1.0: GStreamer H.264 QSV decoder for GStreamer 1.0
     GStreamer-H.264-V4L2-Gst1.0: GStreamer H.264 V4L2 decoder for GStreamer 1.0
     GStreamer-H.264-V4L2SL-Gst1.0: GStreamer H.264 V4L2SL decoder for GStreamer 1.0
     GStreamer-H.264-VA-Gst1.0: GStreamer H.264 VA decoder for GStreamer 1.0
