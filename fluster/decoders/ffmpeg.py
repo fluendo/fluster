@@ -86,6 +86,8 @@ class FFmpegDecoder(Decoder):
                 command.extend(["-hwaccel", self.api.lower()])
             if self.hw_output_format:
                 command.extend(["-hwaccel_output_format", self.hw_output_format])
+                if self.wrapper:
+                    command.extend(["-hwaccel", self.hw_output_format])
 
         # Number of threads
         if self.thread_count:
@@ -492,3 +494,34 @@ class FFmpegAV1VCudaDecoder(FFmpegCudaDecoder):
     """FFmpeg CUDA decoder for AV1"""
 
     codec = Codec.AV1
+
+
+class FFmpegQsvDecoder(FFmpegDecoder):
+    """Generic class for FFmpeg QSV (Intel Quick Sync Video) decoder"""
+
+    hw_acceleration = True
+    wrapper = True
+    init_hw_device = "qsv"
+    hw_output_format = "qsv"
+    hw_download = True
+    hw_download_mapping = {
+        OutputFormat.YUV420P: "nv12",
+        OutputFormat.YUV420P10LE: "p010le",
+        OutputFormat.YUV422P: "yuyv422",
+        OutputFormat.YUV422P10LE: "y210le",
+        OutputFormat.YUV444P: "vuyx",
+        OutputFormat.YUV444P10LE: "xv30le",
+    }
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.name = f"FFmpeg-{self.codec.value}-QSV"
+        self.description = f"FFmpeg {self.codec.value} QSV decoder"
+
+
+@register_decoder
+class FFmpegH264QsvDecoder(FFmpegQsvDecoder):
+    """FFmpeg QSV decoder for H.264"""
+
+    codec = Codec.H264
+    api = "h264_qsv"
