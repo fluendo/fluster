@@ -607,7 +607,7 @@ optional arguments:
                         suite
   -so SUMMARY_OUTPUT, --summary-output SUMMARY_OUTPUT
                         dump summary output to file
-  -f {md,csv,junitxml}, --format {md,csv,junitxml}
+  -f {md,csv,json,junitxml}, --format {md,csv,json,junitxml}
                         specify the format for the summary file
   -k, --keep            keep output files generated during the test
   -th THRESHOLD, --threshold THRESHOLD
@@ -670,6 +670,40 @@ optional arguments:
 ## Report
 
 [Go to report](https://github.com/fluendo/fluster/blob/master/REPORT.md)
+
+### System Information in Reports
+
+Fluster automatically includes hardware and software specifications in all test summary reports for better reproducibility and debugging. The collected information includes:
+
+- **CPU model**: Processor information
+- **GPU(s)**: Graphics devices detected
+- **RAM**: Total system memory
+- **OS**: Operating system and version
+- **Backends**: Hardware acceleration backends and drivers (VA-API, VDPAU, Vulkan on Linux; VideoToolbox on macOS; DirectX on Windows)
+
+This information is included in all supported report formats:
+
+**Markdown** (`-f md`):
+```bash
+./fluster.py run -ts H264-min -d FFmpeg-H.264 -s -so report.md
+```
+
+**JSON** (`-f json`):
+```bash
+./fluster.py run -ts H264-min -d FFmpeg-H.264 -s -so report.json -f json
+```
+
+**JUnit XML** (`-f junitxml`):
+```bash
+./fluster.py run -ts H264-min -d FFmpeg-H.264 -s -so report.xml -f junitxml
+```
+
+**CSV** (`-f csv`):
+```bash
+./fluster.py run -ts H264-min -d FFmpeg-H.264 -s -so report.csv -f csv
+```
+
+The system information appears at the beginning of Markdown reports, as a top-level `system_info` object in JSON reports, and as properties in JUnit XML test suites.
 
 ## FAQ
 

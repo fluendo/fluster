@@ -15,10 +15,12 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
+import csv
+import io
+import json
 import os
 import os.path
 import sys
-from collections import defaultdict
 from enum import Enum
 from functools import lru_cache
 from shutil import rmtree
@@ -30,6 +32,7 @@ from fluster.decoder import DECODERS, Decoder
 # Import decoders that will auto-register
 from fluster.decoders import *  # noqa: F403
 from fluster.decoders.av1_aom import AV1AOMDecoder
+from fluster.system_info import SystemInfo
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
@@ -116,12 +119,22 @@ TEXT_RESULT = {
     TestVectorResult.ERROR: "ER",
 }
 
+RESULT_MAP = {
+    TestVectorResult.SUCCESS: "Success",
+    TestVectorResult.REFERENCE: "Reference",
+    TestVectorResult.TIMEOUT: "Timeout",
+    TestVectorResult.ERROR: "Error",
+    TestVectorResult.FAIL: "Fail",
+    TestVectorResult.NOT_RUN: "Not run",
+}
+
 
 class SummaryFormat(Enum):
     """Summary formats"""
 
     MARKDOWN = "md"
     CSV = "csv"
+    JSON = "json"
     JUNITXML = "junitxml"
 
 
@@ -334,6 +347,8 @@ class Fluster:
                 self._generate_junit_summary(ctx, results)
             elif ctx.summary_format == SummaryFormat.CSV.value:
                 self._generate_csv_summary(ctx, results)
+            elif ctx.summary_format == SummaryFormat.JSON.value:
+                self._generate_json_summary(ctx, results)
             else:
                 self._generate_md_summary(ctx, results)
 
@@ -343,6 +358,8 @@ class Fluster:
             import junitparser as junitp  # type: ignore
         except ImportError:
             sys.exit("error: junitparser required to use JUnit format. Please install with pip install junitparser.")
+
+        system_info = SystemInfo()
 
         def _parse_vector_errors(vector: TestVector) -> List[junitp.Error]:
             junit_err_map = {
@@ -373,6 +390,12 @@ class Fluster:
 
                 jsuite = junitp.TestSuite(test_suite_name)
                 jsuite.add_property("decoder", suite_decoder_res[0].name)
+                jsuite.add_property("os", f"{system_info.os_name} {system_info.os_version}")
+                jsuite.add_property("cpu", system_info.cpu_model)
+                jsuite.add_property("gpu", ", ".join(system_info.gpu_info))
+                jsuite.add_property("ram", system_info.total_ram)
+                for backend, info in system_info.backend_info.items():
+                    jsuite.add_property(f"backend_{backend.lower().replace('-', '_')}", info)
 
                 for vector in suite_decoder_res[1].test_vectors.values():
                     jcase = junitp.TestCase(vector.name)
@@ -408,47 +431,230 @@ class Fluster:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
                 xml.write(summary_file.name, pretty=True)
 
-    @staticmethod
-    def _generate_csv_summary(ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
-        result_map = {
-            TestVectorResult.SUCCESS: "Success",
-            TestVectorResult.REFERENCE: "Reference",
-            TestVectorResult.TIMEOUT: "Timeout",
-            TestVectorResult.ERROR: "Error",
-            TestVectorResult.FAIL: "Fail",
-            TestVectorResult.NOT_RUN: "Not run",
-        }
-        content: Dict[Any, Any] = defaultdict(lambda: defaultdict(dict))
-        max_vectors = 0
-        for test_suite, suite_results in results.items():
-            for decoder, vectors in suite_results:
-                decoder_name = str(decoder.name[: decoder.name.find(":")])
-                max_vectors = max(max_vectors, len(vectors.test_vectors.values()))
-                for vector in vectors.test_vectors.values():
-                    vector_name = str(vector.name)
-                    content[str(test_suite)][decoder_name][vector_name] = result_map[vector.test_result]
+    def _generate_csv_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+        """Generate CSV summary with system info and comprehensive test results"""
+        system_info = SystemInfo()
 
-        suite_row = []
-        decoder_row = []
-        field_row = []
-        content_rows: List[List[Any]] = [[] for _ in range(max_vectors)]
-        for suite in content:
-            suite_row.append(str(suite))
-            num_decoders = len(content[suite])
-            suite_row += ["" for _ in range(num_decoders + (num_decoders - 1))]
-            for decoder in content[suite]:
-                decoder_row += [str(decoder), ""]
-                field_row += ["Vector", "Result"]
-                for index, vector in enumerate(content[suite][decoder]):
-                    content_rows[index] += [vector, content[suite][decoder][vector]]
-                for index in range(len(content[suite][decoder]), max_vectors):
-                    content_rows[index] += ["", ""]
-        rows = [suite_row, decoder_row, field_row] + content_rows
+        rows: List[List[str]] = [
+            ["SYSTEM INFORMATION", "", "", ""],
+            ["OS", f"{system_info.os_name} {system_info.os_version}", "", ""],
+            ["CPU", system_info.cpu_model, "", ""],
+            ["GPU", ", ".join(system_info.gpu_info), "", ""],
+            ["RAM", system_info.total_ram, "", ""],
+        ]
+
+        if system_info.backend_info:
+            for backend, info in system_info.backend_info.items():
+                rows.append([f"Backend-{backend}", info, "", ""])
+        rows.append(["", "", "", ""])
+
+        rows.append(["TEST RESULTS", "", "", ""])
+
+        for test_suite_name, test_suite_results in results.items():
+            rows.append(["", "", "", ""])
+            rows.append([f"Test Suite: {test_suite_name}", "", "", ""])
+
+            for decoder, test_suite in test_suite_results:
+                rows.append(["", "", "", ""])
+                rows.append([f"Decoder: {decoder.name}", "", "", ""])
+
+                timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
+                rows.append(["Total Vectors", str(len(test_suite.test_vectors)), "", ""])
+                rows.append(["Success Vectors", str(test_suite.test_vectors_success), "", ""])
+                rows.append(["Total Time (s)", f"{test_suite.time_taken - timeouts:.3f}", "", ""])
+
+                profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
+                if profile_stats:
+                    rows.append(["", "", "", ""])
+                    rows.append(["Profile", "Success", "Total", ""])
+                    for profile_name, stats in sorted(profile_stats.items()):
+                        rows.append([profile_name, str(stats["success"]), str(stats["total"]), ""])
+
+                rows.append(["", "", "", ""])
+                rows.append(["Vector Name", "Result", "Time (s)", "Profile"])
+                for vector_name, test_vector in sorted(test_suite.test_vectors.items()):
+                    profile_name = test_vector.profile.name if test_vector.profile else ""
+                    time_str = f"{test_vector.test_time:.3f}" if test_vector.test_time else "0"
+                    rows.append([vector_name, RESULT_MAP[test_vector.test_result], time_str, profile_name])
+
+        rows.append(["", "", "", ""])
+        rows.append(["GLOBAL SUMMARY", "", "", ""])
+
+        all_decoders = []
+        decoder_names = set()
+        for test_suite_results in results.values():
+            for decoder, _ in test_suite_results:
+                if decoder.name not in decoder_names:
+                    all_decoders.append(decoder)
+                    decoder_names.add(decoder.name)
+
+        for decoder in all_decoders:
+            total_success = 0
+            total_vectors = 0
+            total_time = 0.0
+            decoder_profile_stats: Dict[str, Dict[str, int]] = {}
+
+            for test_suite_results in results.values():
+                for dec, test_suite in test_suite_results:
+                    if dec.name == decoder.name:
+                        total_success += test_suite.test_vectors_success
+                        total_vectors += len(test_suite.test_vectors)
+                        timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
+                        total_time += test_suite.time_taken - timeouts
+
+                        test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
+                        for profile_name, profile_data in test_suite_profile_stats.items():
+                            if profile_name not in decoder_profile_stats:
+                                decoder_profile_stats[profile_name] = {"success": 0, "total": 0}
+                            decoder_profile_stats[profile_name]["total"] += profile_data["total"]
+                            decoder_profile_stats[profile_name]["success"] += profile_data["success"]
+
+            rows.append(["", "", "", ""])
+            rows.append([f"Decoder: {decoder.name}", "", "", ""])
+            rows.append(["Total Success", str(total_success), "", ""])
+            rows.append(["Total Vectors", str(total_vectors), "", ""])
+            rows.append(["Total Time (s)", f"{total_time:.3f}", "", ""])
+
+            if decoder_profile_stats:
+                rows.append(["", "", "", ""])
+                rows.append(["Profile", "Success", "Total", ""])
+                for profile_name, profile_data in sorted(decoder_profile_stats.items()):
+                    rows.append([profile_name, str(profile_data["success"]), str(profile_data["total"]), ""])
+
+        # Ensure all rows have exactly 4 columns and format as CSV
+        csv_lines = []
+        for row in rows:
+            while len(row) < 4:
+                row.append("")
+            csv_lines.append(row[:4])
+
         if ctx.summary_output:
-            with open(ctx.summary_output, mode="w", encoding="utf8") as file:
-                file.writelines([",".join(row) + "\n" for row in rows])
+            with open(ctx.summary_output, mode="w", encoding="utf8", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(csv_lines)
+        else:
+            output = io.StringIO()
+            writer = csv.writer(output)
+            writer.writerows(csv_lines)
+            print(output.getvalue(), end="")
+
+    @staticmethod
+    def _calculate_profile_stats(test_vectors: Dict[str, TestVector]) -> Dict[str, Dict[str, int]]:
+        """Calculate profile statistics from test vectors"""
+        profile_stats: Dict[str, Dict[str, int]] = {}
+        for test_vector in test_vectors.values():
+            if test_vector.profile is not None:
+                profile_name = test_vector.profile.name
+                if profile_name not in profile_stats:
+                    profile_stats[profile_name] = {"success": 0, "total": 0}
+                profile_stats[profile_name]["total"] += 1
+                if test_vector.test_result == TestVectorResult.SUCCESS:
+                    profile_stats[profile_name]["success"] += 1
+        return profile_stats
+
+    @staticmethod
+    def _calculate_timeout_adjustment(ctx: Context, test_suite: TestSuite) -> float:
+        """Calculate timeout adjustment for test suite timing"""
+        if ctx.jobs == 1:
+            return sum(
+                ctx.timeout for tv in test_suite.test_vectors.values() if tv.test_result == TestVectorResult.TIMEOUT
+            )
+        return 0.0
+
+    def _generate_json_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+        """Generate JSON summary report with system information"""
+        system_info = SystemInfo()
+
+        json_output: Dict[str, Any] = {"system_info": system_info.to_dict(), "test_suites": {}}
+
+        for test_suite_name, test_suite_results in results.items():
+            suite_data: Dict[str, Any] = {"decoders": {}}
+
+            for decoder, test_suite in test_suite_results:
+                timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
+
+                decoder_data: Dict[str, Any] = {
+                    "decoder_name": decoder.name,
+                    "total_vectors": len(test_suite.test_vectors),
+                    "success_vectors": test_suite.test_vectors_success,
+                    "total_time": round(test_suite.time_taken - timeouts, 3),
+                    "vectors": {},
+                }
+
+                profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
+                if profile_stats:
+                    decoder_data["profile_stats"] = profile_stats
+
+                for vector_name, test_vector in test_suite.test_vectors.items():
+                    vector_data: Dict[str, Any] = {
+                        "result": RESULT_MAP[test_vector.test_result],
+                        "time": round(test_vector.test_time, 3) if test_vector.test_time else 0,
+                    }
+
+                    if test_vector.profile:
+                        vector_data["profile"] = test_vector.profile.name
+
+                    if test_vector.errors:
+                        vector_data["errors"] = [err[0] for err in test_vector.errors]
+
+                    decoder_data["vectors"][vector_name] = vector_data
+
+                suite_data["decoders"][decoder.name] = decoder_data
+
+            json_output["test_suites"][test_suite_name] = suite_data
+
+        all_decoders = []
+        decoder_names = set()
+        for test_suite_results in results.values():
+            for decoder, _ in test_suite_results:
+                if decoder.name not in decoder_names:
+                    all_decoders.append(decoder)
+                    decoder_names.add(decoder.name)
+
+        global_summary: Dict[str, Any] = {}
+        for decoder in all_decoders:
+            total_success = 0
+            total_vectors = 0
+            total_time = 0.0
+            decoder_profile_stats: Dict[str, Dict[str, int]] = {}
+
+            for test_suite_results in results.values():
+                for dec, test_suite in test_suite_results:
+                    if dec.name == decoder.name:
+                        total_success += test_suite.test_vectors_success
+                        total_vectors += len(test_suite.test_vectors)
+
+                        timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
+                        total_time += test_suite.time_taken - timeouts
+
+                        test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
+                        for profile_name, profile_data in test_suite_profile_stats.items():
+                            if profile_name not in decoder_profile_stats:
+                                decoder_profile_stats[profile_name] = {"success": 0, "total": 0}
+                            decoder_profile_stats[profile_name]["total"] += profile_data["total"]
+                            decoder_profile_stats[profile_name]["success"] += profile_data["success"]
+
+            global_summary[decoder.name] = {
+                "total_success": total_success,
+                "total_vectors": total_vectors,
+                "total_time": round(total_time, 3),
+            }
+
+            if decoder_profile_stats:
+                global_summary[decoder.name]["profile_stats"] = decoder_profile_stats
+
+        json_output["global_summary"] = global_summary
+
+        if ctx.summary_output:
+            with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
+                json.dump(json_output, summary_file, indent=2)
+                summary_file.write("\n")
+        else:
+            print(json.dumps(json_output, indent=2))
 
     def _generate_md_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+        system_info = SystemInfo()
+
         def _global_stats(
             results: List[Tuple[Decoder, TestSuite]],
             test_suites: List[TestSuite],
@@ -471,17 +677,7 @@ class Fluster:
                 # total times when timeouts are such a huge part of the global time taken.
                 # Note: we only do this when the number of parallel jobs is 1, because
                 # whenever there are actual parallel jobs, this gets much more complicated.
-                timeouts = (
-                    sum(
-                        [
-                            ctx.timeout
-                            for tv in test_suite.test_vectors.values()
-                            if tv.test_result == TestVectorResult.TIMEOUT
-                        ]
-                    )
-                    if ctx.jobs == 1
-                    else 0
-                )
+                timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
                 total_time = test_suite.time_taken - timeouts
                 output += f"{total_time:.3f}s|"
             output += separator if first else ""
@@ -551,26 +747,14 @@ class Fluster:
                     totals["success"] += test_suite.test_vectors_success
                     totals["total"] += len(test_suite.test_vectors)
 
-                    timeouts = (
-                        sum(
-                            ctx.timeout
-                            for tv in test_suite.test_vectors.values()
-                            if tv.test_result == TestVectorResult.TIMEOUT
-                        )
-                        if ctx.jobs == 1
-                        else 0
-                    )
+                    timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
                     decoder_times[decoder.name] += test_suite.time_taken - timeouts
 
-                    for test_vector in test_suite.test_vectors.values():
-                        if test_vector.profile is not None:
-                            profile_name = test_vector.profile.name
-                            stats = global_profile_stats[decoder.name].setdefault(
-                                profile_name, {"success": 0, "total": 0}
-                            )
-                            stats["total"] += 1
-                            if test_vector.test_result == TestVectorResult.SUCCESS:
-                                stats["success"] += 1
+                    test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
+                    for profile_name, profile_data in test_suite_profile_stats.items():
+                        stats = global_profile_stats[decoder.name].setdefault(profile_name, {"success": 0, "total": 0})
+                        stats["total"] += profile_data["total"]
+                        stats["success"] += profile_data["success"]
 
             separator = f"\n|-|{'-|' * len(all_decoders)}"
             output = "\n# GLOBAL SUMMARY"
@@ -596,7 +780,7 @@ class Fluster:
             output += separator
             return output
 
-        output = ""
+        output = system_info.to_markdown()
 
         for test_suite_name, test_suite_results in results.items():
             decoders_names = [decoder.name for decoder, _ in test_suite_results]
