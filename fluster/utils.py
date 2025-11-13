@@ -34,6 +34,20 @@ from typing import Any, List, Optional
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
+
+class NotSupportedError(Exception):
+    """Exception raised when decoder cannot handle the media (exit code 69).
+
+    Exit code 69 (EX_UNAVAILABLE) is from BSD sysexits.h, meaning "service unavailable".
+    This is widely recognized across Unix-like systems (Linux, macOS, BSD) and indicates
+    that the decoder service is unavailable for the specific media format/profile.
+    """
+
+    def __init__(self, message: str = "Media not supported by decoder"):
+        self.message = message
+        super().__init__(self.message)
+
+
 download_lock = Lock()
 
 
@@ -199,7 +213,14 @@ def run_command(
         print(f'\nRunning command "{" ".join(command)}"')
     try:
         subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
+    except subprocess.CalledProcessError as ex:
+        # Developer experience improvement (facilitates copy/paste)
+        ex.cmd = " ".join(ex.cmd)
+        # Check for exit code 69 (EX_UNAVAILABLE from BSD sysexits.h)
+        if ex.returncode == 69:
+            raise NotSupportedError(f"Command returned exit code 69 (not supported): {ex.cmd}") from ex
+        raise ex
+    except subprocess.TimeoutExpired as ex:
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
         raise ex
@@ -224,16 +245,23 @@ def run_command_with_output(
         if verbose and output:
             print(output)
         return output or ""
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
+    except subprocess.CalledProcessError as ex:
+        if verbose and ex.output:
+            print(ex.output)
+
+        if not check:
+            return ex.output or ""
+
+        # Developer experience improvement (facilitates copy/paste)
+        ex.cmd = " ".join(ex.cmd)
+        # Check for exit code 69 (EX_UNAVAILABLE from BSD sysexits.h)
+        if ex.returncode == 69:
+            raise NotSupportedError(f"Command returned exit code 69 (not supported): {ex.cmd}") from ex
+        raise ex
+    except subprocess.TimeoutExpired as ex:
         if verbose and ex.output:
             # Workaround inconsistent Python implementation
-            if isinstance(ex, subprocess.TimeoutExpired):
-                print(ex.output.decode("utf-8"))
-            else:
-                print(ex.output)
-
-        if isinstance(ex, subprocess.CalledProcessError) and not check:
-            return ex.output or ""
+            print(ex.output.decode("utf-8"))
 
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
