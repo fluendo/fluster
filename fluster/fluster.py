@@ -106,6 +106,7 @@ EMOJI_RESULT = {
     TestVectorResult.FAIL: "❌",
     TestVectorResult.TIMEOUT: "⌛",
     TestVectorResult.ERROR: "☠",
+    TestVectorResult.NOT_SUPPORTED: "○",
 }
 
 TEXT_RESULT = {
@@ -114,6 +115,7 @@ TEXT_RESULT = {
     TestVectorResult.FAIL: "KO",
     TestVectorResult.TIMEOUT: "TO",
     TestVectorResult.ERROR: "ER",
+    TestVectorResult.NOT_SUPPORTED: "NS",
 }
 
 
@@ -376,8 +378,8 @@ class Fluster:
 
                 for vector in suite_decoder_res[1].test_vectors.values():
                     jcase = junitp.TestCase(vector.name)
-                    if vector.test_result == TestVectorResult.NOT_RUN:
-                        jcase.result = [junitp.Skipped()]
+                    if vector.test_result in [TestVectorResult.NOT_RUN, TestVectorResult.NOT_SUPPORTED]:
+                        jcase.result = [junitp.Skipped(message=vector.test_result.value)]
                     elif vector.test_result not in [
                         TestVectorResult.SUCCESS,
                         TestVectorResult.REFERENCE,
@@ -417,6 +419,7 @@ class Fluster:
             TestVectorResult.ERROR: "Error",
             TestVectorResult.FAIL: "Fail",
             TestVectorResult.NOT_RUN: "Not run",
+            TestVectorResult.NOT_SUPPORTED: "Not supported",
         }
         content: Dict[Any, Any] = defaultdict(lambda: defaultdict(dict))
         max_vectors = 0
@@ -463,6 +466,17 @@ class Fluster:
             output += "\n|TOTAL|"
             for test_suite in test_suites:
                 output += f"{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|"
+            output += "\n|NOT SUPPORTED|"
+            for test_suite in test_suites:
+                output += f"{test_suite.test_vectors_not_supported}/{len(test_suite.test_vectors)}|"
+            output += "\n|FAIL/ERROR|"
+            for test_suite in test_suites:
+                failed = (
+                    len(test_suite.test_vectors)
+                    - test_suite.test_vectors_success
+                    - test_suite.test_vectors_not_supported
+                )
+                output += f"{failed}/{len(test_suite.test_vectors)}|"
             output += "\n|TOTAL TIME|"
             for test_suite in test_suites:
                 # Substract from the total time that took running a test suite on a decoder
@@ -541,7 +555,7 @@ class Fluster:
                         all_decoders.append(decoder)
                         decoder_names.add(decoder.name)
 
-            decoder_totals = {dec.name: {"success": 0, "total": 0} for dec in all_decoders}
+            decoder_totals = {dec.name: {"success": 0, "total": 0, "not_supported": 0} for dec in all_decoders}
             decoder_times = {dec.name: 0.0 for dec in all_decoders}
             global_profile_stats: Dict[str, Dict[str, Dict[str, int]]] = {dec.name: {} for dec in all_decoders}
 
@@ -549,6 +563,7 @@ class Fluster:
                 for decoder, test_suite in test_suite_results:
                     totals = decoder_totals[decoder.name]
                     totals["success"] += test_suite.test_vectors_success
+                    totals["not_supported"] += test_suite.test_vectors_not_supported
                     totals["total"] += len(test_suite.test_vectors)
 
                     timeouts = (
@@ -578,6 +593,16 @@ class Fluster:
             output += "\n|TOTAL|" + "".join(
                 f"{decoder_totals[dec.name]['success']}/{decoder_totals[dec.name]['total']}|" for dec in all_decoders
             )
+            output += "\n|NOT SUPPORTED|" + "".join(
+                f"{decoder_totals[dec.name]['not_supported']}/{decoder_totals[dec.name]['total']}|"
+                for dec in all_decoders
+            )
+            fail_error_parts = []
+            for dec in all_decoders:
+                totals = decoder_totals[dec.name]
+                failed = totals["total"] - totals["success"] - totals["not_supported"]
+                fail_error_parts.append(f"{failed}/{totals['total']}|")
+            output += "\n|FAIL/ERROR|" + "".join(fail_error_parts)
             output += "\n|TOTAL TIME|" + "".join(f"{decoder_times[dec.name]:.3f}s|" for dec in all_decoders)
 
             all_profiles: Set[str] = set()

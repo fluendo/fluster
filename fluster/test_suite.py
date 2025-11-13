@@ -156,6 +156,7 @@ class TestSuite:
         self.filename = filename
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
+        self.test_vectors_not_supported = 0
         self.time_taken = 0.0
 
     def clone(self) -> "TestSuite":
@@ -173,6 +174,10 @@ class TestSuite:
             data["codec"] = Codec(data["codec"])
             if "test_method" in data:
                 data["test_method"] = TestMethod(data["test_method"])
+            # Remove runtime-only fields that might be present in old JSON files
+            data.pop("test_vectors_success", None)
+            data.pop("test_vectors_not_supported", None)
+            data.pop("time_taken", None)
             return cls(filename, resources_dir, **data)
 
     def to_json_file(self, filename: str) -> None:
@@ -182,6 +187,7 @@ class TestSuite:
             data.pop("resources_dir")
             data.pop("filename")
             data.pop("test_vectors_success")
+            data.pop("test_vectors_not_supported")
             data.pop("time_taken")
             if self.failing_test_vectors is None:
                 data.pop("failing_test_vectors")
@@ -458,8 +464,12 @@ class TestSuite:
         self.time_taken = perf_counter() - start
         print("\n")
         self.test_vectors_success = 0
+        self.test_vectors_not_supported = 0
         for test_vector_res in test_vector_results:
-            if test_vector_res.errors:
+            # Check for NOT_SUPPORTED first
+            if test_vector_res.test_result == TestVectorResult.NOT_SUPPORTED:
+                self.test_vectors_not_supported += 1
+            elif test_vector_res.errors:
                 if self.negative_test:
                     self.test_vectors_success += 1
                 else:
@@ -475,10 +485,13 @@ class TestSuite:
             # Collect the test vector results and failures since they come
             # from a different process
             self.test_vectors[test_vector_res.name] = test_vector_res
-        print(
-            f"Ran {self.test_vectors_success}/{len(tests)} tests successfully \
-              in {self.time_taken:.3f} secs"
-        )
+
+        # Build status message
+        status_parts = [f"{self.test_vectors_success}/{len(tests)} tests successfully"]
+        if self.test_vectors_not_supported > 0:
+            status_parts.append(f"{self.test_vectors_not_supported} not supported")
+        status_parts.append(f"in {self.time_taken:.3f} secs")
+        print(f"Ran {', '.join(status_parts)}")
 
     def run(self, ctx: Context) -> Optional["TestSuite"]:
         """
