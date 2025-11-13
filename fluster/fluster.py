@@ -117,6 +117,15 @@ TEXT_RESULT = {
     TestVectorResult.ERROR: "ER",
 }
 
+RESULT_MAP = {
+    TestVectorResult.SUCCESS: "Success",
+    TestVectorResult.REFERENCE: "Reference",
+    TestVectorResult.TIMEOUT: "Timeout",
+    TestVectorResult.ERROR: "Error",
+    TestVectorResult.FAIL: "Fail",
+    TestVectorResult.NOT_RUN: "Not run",
+}
+
 
 class SummaryFormat(Enum):
     """Summary formats"""
@@ -425,15 +434,6 @@ class Fluster:
         """Generate CSV summary with system info and comprehensive test results"""
         system_info = SystemInfo()
 
-        result_map = {
-            TestVectorResult.SUCCESS: "Success",
-            TestVectorResult.REFERENCE: "Reference",
-            TestVectorResult.TIMEOUT: "Timeout",
-            TestVectorResult.ERROR: "Error",
-            TestVectorResult.FAIL: "Fail",
-            TestVectorResult.NOT_RUN: "Not run",
-        }
-
         rows: List[List[str]] = [
             ["# SYSTEM INFORMATION"],
             ["OS", f"{system_info.os_name} {system_info.os_version}"],
@@ -474,7 +474,7 @@ class Fluster:
                 for vector_name, test_vector in sorted(test_suite.test_vectors.items()):
                     profile_name = test_vector.profile.name if test_vector.profile else ""
                     time_str = f"{test_vector.test_time:.3f}" if test_vector.test_time else "0"
-                    rows.append([vector_name, result_map[test_vector.test_result], time_str, profile_name])
+                    rows.append([vector_name, RESULT_MAP[test_vector.test_result], time_str, profile_name])
 
         rows.append([])
         rows.append(["# GLOBAL SUMMARY"])
@@ -502,11 +502,11 @@ class Fluster:
                         total_time += test_suite.time_taken - timeouts
 
                         test_suite_profile_stats = Fluster._calculate_profile_stats(test_suite.test_vectors)
-                        for profile_name, stats in test_suite_profile_stats.items():
+                        for profile_name, profile_data in test_suite_profile_stats.items():
                             if profile_name not in decoder_profile_stats:
                                 decoder_profile_stats[profile_name] = {"success": 0, "total": 0}
-                            decoder_profile_stats[profile_name]["total"] += stats["total"]
-                            decoder_profile_stats[profile_name]["success"] += stats["success"]
+                            decoder_profile_stats[profile_name]["total"] += profile_data["total"]
+                            decoder_profile_stats[profile_name]["success"] += profile_data["success"]
 
             rows.append([])
             rows.append([f"## Decoder: {decoder.name}"])
@@ -517,8 +517,8 @@ class Fluster:
             if decoder_profile_stats:
                 rows.append([])
                 rows.append(["Profile", "Success", "Total"])
-                for profile_name, stats in sorted(decoder_profile_stats.items()):
-                    rows.append([profile_name, str(stats["success"]), str(stats["total"])])
+                for profile_name, profile_data in sorted(decoder_profile_stats.items()):
+                    rows.append([profile_name, str(profile_data["success"]), str(profile_data["total"])])
 
         if ctx.summary_output:
             with open(ctx.summary_output, mode="w", encoding="utf8") as file:
@@ -556,15 +556,6 @@ class Fluster:
         """Generate JSON summary report with system information"""
         system_info = SystemInfo()
 
-        result_map = {
-            TestVectorResult.SUCCESS: "Success",
-            TestVectorResult.REFERENCE: "Reference",
-            TestVectorResult.TIMEOUT: "Timeout",
-            TestVectorResult.ERROR: "Error",
-            TestVectorResult.FAIL: "Fail",
-            TestVectorResult.NOT_RUN: "Not run",
-        }
-
         json_output: Dict[str, Any] = {"system_info": system_info.to_dict(), "test_suites": {}}
 
         for test_suite_name, test_suite_results in results.items():
@@ -587,7 +578,7 @@ class Fluster:
 
                 for vector_name, test_vector in test_suite.test_vectors.items():
                     vector_data: Dict[str, Any] = {
-                        "result": result_map[test_vector.test_result],
+                        "result": RESULT_MAP[test_vector.test_result],
                         "time": round(test_vector.test_time, 3) if test_vector.test_time else 0,
                     }
 
@@ -628,11 +619,11 @@ class Fluster:
                         total_time += test_suite.time_taken - timeouts
 
                         test_suite_profile_stats = Fluster._calculate_profile_stats(test_suite.test_vectors)
-                        for profile_name, stats in test_suite_profile_stats.items():
+                        for profile_name, profile_data in test_suite_profile_stats.items():
                             if profile_name not in decoder_profile_stats:
                                 decoder_profile_stats[profile_name] = {"success": 0, "total": 0}
-                            decoder_profile_stats[profile_name]["total"] += stats["total"]
-                            decoder_profile_stats[profile_name]["success"] += stats["success"]
+                            decoder_profile_stats[profile_name]["total"] += profile_data["total"]
+                            decoder_profile_stats[profile_name]["success"] += profile_data["success"]
 
             global_summary[decoder.name] = {
                 "total_success": total_success,

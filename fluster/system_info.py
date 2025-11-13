@@ -156,7 +156,7 @@ class SystemInfo:
                     drm_path = "/sys/class/drm"
                     if os.path.exists(drm_path):
                         for device in os.listdir(drm_path):
-                            if device.startswith("card") and not device.startswith("card0-"):
+                            if device.startswith("card") and "-" not in device:
                                 name_file = os.path.join(drm_path, device, "device", "vendor")
                                 if os.path.exists(name_file):
                                     with open(name_file, encoding="utf-8") as f:
@@ -166,7 +166,7 @@ class SystemInfo:
                                         with open(model_file, encoding="utf-8") as f:
                                             device_id = f.read().strip()
                                         gpu_info = f"GPU {vendor_id}:{device_id}"
-                                        if gpu_info not in gpus and not gpus:
+                                        if not gpus and gpu_info not in gpus:
                                             gpus.append(gpu_info)
                 except (OSError, ValueError):
                     pass
@@ -349,7 +349,6 @@ class SystemInfo:
                     backends["VideoToolbox"] = "Available"
 
             elif self.os_name == "Windows":
-                self._run_command(["dxdiag", "/t", "dxdiag_output.txt"])
                 backends["DirectX"] = f"Windows {self.os_version}"
 
         except (OSError, ValueError):

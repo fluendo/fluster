@@ -698,6 +698,11 @@ This information is included in all supported report formats:
 ./fluster.py run -ts H264-min -d FFmpeg-H.264 -s -so report.xml -f junitxml
 ```
 
+**CSV** (`-f csv`):
+```bash
+./fluster.py run -ts H264-min -d FFmpeg-H.264 -s -so report.csv -f csv
+```
+
 The system information appears at the beginning of Markdown reports, as a top-level `system_info` object in JSON reports, and as properties in JUnit XML test suites.
 
 ## FAQ
