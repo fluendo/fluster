@@ -14,7 +14,7 @@ from subprocess import TimeoutExpired
 from time import perf_counter
 from typing import Any
 
-from fluster.decoder import Decoder
+from fluster.decoder import Decoder, NotSupportedError
 from fluster.test_vector import TestVector, TestVectorResult
 from fluster.utils import compare_wav_files, compare_yuv_files, normalize_path
 
@@ -111,6 +111,12 @@ class Test(unittest.TestCase):
         try:
             result = self._execute_decode()
             self.test_vector_result.test_time = perf_counter() - start
+        except NotSupportedError as ex:
+            self.test_vector_result.test_result = TestVectorResult.NOT_SUPPORTED
+            self.test_vector_result.test_time = perf_counter() - start
+            if self.verbose:
+                print(f"  {self.test_vector.name}: {ex.message}")
+            return
         except TimeoutExpired:
             self.test_vector_result.test_result = TestVectorResult.TIMEOUT
             self.test_vector_result.test_time = perf_counter() - start

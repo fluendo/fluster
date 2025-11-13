@@ -30,6 +30,7 @@ class TestVectorResult(Enum):
     TIMEOUT = "Timeout"
     ERROR = "Error"
     REFERENCE = "Reference run"  # used in reference runs to indicate the decoder for this test vector was succesful
+    NOT_SUPPORTED = "Not Supported"  # used to indicate the decoder cannot handle this media
 
 
 class TestVector:
