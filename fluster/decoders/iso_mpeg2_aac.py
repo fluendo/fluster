@@ -16,6 +16,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 import glob
 import os
+from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -40,6 +41,7 @@ class ISOAACDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         # Addition of .pcm as extension is a must. If it is something else, e.g. ".out" the decoder will output a
