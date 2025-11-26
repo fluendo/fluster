@@ -86,6 +86,7 @@ class Test(unittest.TestCase):
             self.timeout,
             self.verbose,
             keep_files_for_decode,
+            self.test_vector.optional_params,
         )
 
     def _cleanup_if_needed(self) -> None:
