@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
+from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -38,6 +39,7 @@ class AV1AOMDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         fmt = "--rawvideo"
