@@ -17,6 +17,7 @@
 import glob
 import os
 import tempfile
+from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -41,6 +42,7 @@ class ISOMPEG2VDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         with tempfile.TemporaryDirectory() as temp_dir:

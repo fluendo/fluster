@@ -19,7 +19,7 @@
 import re
 import subprocess
 from functools import lru_cache
-from typing import Dict, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -70,6 +70,7 @@ class FFmpegDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         command = [self.binary, "-hide_banner", "-nostdin"]
@@ -98,6 +99,11 @@ class FFmpegDecoder(Decoder):
             command.extend(["-codec", self.api.lower()])
         elif self.ffmpeg_codec:
             command.extend(["-codec", self.ffmpeg_codec])
+
+        # Optional decoder parameters
+        if optional_params:
+            for key, value in optional_params.items():
+                command.extend([key, str(value)])
 
         # Input file
         command.extend(["-i", input_filepath])
