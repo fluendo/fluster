@@ -18,7 +18,7 @@
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
-from typing import List, Optional, Type
+from typing import Any, Dict, List, Optional, Type
 
 from fluster.codec import Codec, OutputFormat
 from fluster.utils import normalize_binary_cmd
@@ -47,6 +47,7 @@ class Decoder(ABC):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         raise Exception("Not implemented")
