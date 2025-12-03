@@ -54,9 +54,7 @@ packages = ["fluster", "fluster.decoders"]
 "*" = [
     "docker/*",
     ".dockerignore",
-    ".github/*",
-    "fluster_output/*",
-    "resources/*"
+    ".github/*"
 ]
 
 [tool.setuptools.data-files]

@@ -10,10 +10,10 @@ Docker configuration for Fluster with comprehensive codec support including **FF
   2. **Static binaries** (7.x, 8.x) - Newer FFmpeg, but limited backend support
   3. **Build from source** (recommended) - Latest FFmpeg with all backends enabled
 - **Hardware Acceleration Support**:
-  - **VAAPI** (Intel, AMD, NVIDIA on Ubuntu 24.04)
+  - **VAAPI** (Intel, AMD, NVIDIA (only on Ubuntu 24.04))
   - **VDPAU** (Intel via VA-GL bridge, AMD, NVIDIA)
-  - **NVDEC/NVENC** (NVIDIA)
-  - **Intel QuickSync** (libmfx, libmfx-gen)
+  - **NVDEC/NVENC** (NVIDIA) - Available with system packages on Ubuntu 24.04
+  - **Intel QuickSync** (Intel Media SDK, Intel OneVPL)
 
 ## FFmpeg Installation Options
 
@@ -28,8 +28,10 @@ This Docker setup provides three ways to install FFmpeg, each with different tra
 | Ubuntu | FFmpeg | Backend Support                           |
 |--------|--------|-------------------------------------------|
 | 20.04  | 4.2.x  | Limited (basic VAAPI, VDPAU)              |
-| 22.04  | 4.4.x  | Good (VAAPI, VDPAU, some NVDEC/QuickSync) |
+| 22.04  | 4.4.x  | Good (VAAPI, VDPAU, some QuickSync)       |
 | 24.04  | 6.1.x  | Best (VAAPI, VDPAU, NVDEC, QuickSync)     |
+
+**Note**: Ubuntu 24.04's FFmpeg includes CUDA/NVDEC support in system packages.
 
 ```bash
 # Build with system packages (default)
@@ -56,7 +58,7 @@ docker build --build-arg FFMPEG_STATIC_VERSION=8.0 -t fluster:ffmpeg8 -f docker/
 
 **Use case**: Full hardware acceleration testing, production use
 **Pros**: Latest FFmpeg 8.0 with ALL backends enabled (VAAPI, VDPAU, QuickSync)
-**Cons**: Longer build time (~20-30 minutes)
+**Cons**: Longer build time (~20-30 minutes), no CUDA/NVDEC support
 
 ```bash
 # Build FFmpeg 8.0 from source with all backends
@@ -71,13 +73,13 @@ docker build \
 ```
 
 **Included backends when building from source:**
-- ✅ VAAPI (Intel, AMD)
-- ✅ VDPAU (AMD, NVIDIA)
+- ✅ VAAPI (Intel, AMD, NVIDIA on Ubuntu 24.04)
+- ✅ VDPAU (Intel via VA-GL bridge, AMD, NVIDIA)
 - ✅ QuickSync (Intel libmfx) - **Now included!**
 - ✅ All software codecs (x264, x265, vpx, aom, dav1d, fdk-aac)
-- ⚠️ NVDEC/NVENC - Requires NVIDIA CUDA SDK (system packages recommended)
+- ❌ NVDEC/NVENC (CUDA) - **Not available** (requires CUDA SDK installation)
 
-**Note**: Building from source now includes libmfx for full QuickSync support. For NVDEC/NVENC, system FFmpeg packages from Ubuntu 22.04+ provide better out-of-the-box NVIDIA support.
+**Note**: NVIDIA CUDA/NVDEC support is available with **system packages** (Ubuntu 24.04 default), but NOT when building FFmpeg from source. For NVDEC, use the default system packages. When building from source, NVIDIA hardware decoding is available via VDPAU and VAAPI (Ubuntu 24.04 only).
 
 **Recommendation**: Use `--build-ffmpeg` for latest FFmpeg with comprehensive codec and hardware acceleration support.
 
@@ -145,10 +147,10 @@ Build FFmpeg from source with all backends (recommended for production):
 
 # Test with Intel QuickSync (requires building from source)
 ./run-docker.sh --build-ffmpeg --intel --rebuild run -d FFmpeg-H.264-QSV -ts JVT-AVC_V1 -k
-
-# Test with NVIDIA NVDEC
-./run-docker.sh --build-ffmpeg --nvidia --rebuild run -d FFmpeg-H.265-CUDA -ts JCT-VC-HEVC_V1 -k
 ```
+
+**Note**: For NVIDIA CUDA/NVDEC decoders (FFmpeg-H.265-CUDA, etc.), use system packages (default, without `--build-ffmpeg` flag), as Ubuntu 24.04 includes CUDA support in system FFmpeg packages.
+
 
 ### FFmpeg Version Override
 
@@ -178,7 +180,7 @@ docker run --rm fluster:ffmpeg7 ffmpeg -version | head -1
 ./run-docker.sh --amd hw-info
 ./run-docker.sh --amd list -c | grep VAAPI
 
-# NVIDIA GPU (no special setup needed!)
+# NVIDIA GPU (CUDA/NVDEC on Ubuntu 24.04)
 ./run-docker.sh --nvidia hw-info
 ./run-docker.sh --nvidia list -c | grep -E "CUDA|NVDEC"
 ```
@@ -223,23 +225,24 @@ GStreamer with libav plugin exposes FFmpeg decoders through GStreamer:
 - `GStreamer-H.264-MSDK-Gst1.0` (msdkh264dec)
 - `GStreamer-H.265-MSDK-Gst1.0` (msdkh265dec)
 
-#### NVIDIA NVDEC
+#### NVIDIA NVDEC (Ubuntu 24.04)
+- `FFmpeg-H.264-CUDA` (h264_cuvid)
+- `FFmpeg-H.265-CUDA` (hevc_cuvid)
+- `FFmpeg-VP8-CUDA` (vp8_cuvid)
+- `FFmpeg-VP9-CUDA` (vp9_cuvid)
 - `GStreamer-H.264-NVDEC-Gst1.0` (nvh264dec)
 - `GStreamer-H.265-NVDEC-Gst1.0` (nvh265dec)
-- `GStreamer-VP8-NVDEC-Gst1.0`
-- `GStreamer-VP9-NVDEC-Gst1.0`
-
-Use `./run-docker.sh list -c` to see all available decoders with their current status.
+- `GStreamer-VP8-NVDEC-Gst1.0` (nvvp8dec)
+- `GStreamer-VP9-NVDEC-Gst1.0` (nvvp9dec)
 
 ## Hardware Acceleration Setup
 
-### VAAPI (Intel/AMD/NVIDIA)
+### VAAPI
 
-**Installed components:**
-- `vainfo` - Display VAAPI information
-- **Intel**: `i965-va-driver` (old), `intel-media-va-driver` (new)
-- **AMD**: `mesa-va-drivers`
-- **NVIDIA**: `nvidia-vaapi-driver` (Ubuntu 24.04 only)
+**Requirements:**
+- GPU with VAAPI support (Intel, AMD, or NVIDIA on Ubuntu 24.04)
+- Appropriate drivers installed on host
+- User in `video` and `render` groups
 
 **Test VAAPI:**
 ```bash
@@ -247,16 +250,13 @@ Use `./run-docker.sh list -c` to see all available decoders with their current s
 ./run-docker.sh --intel run -d GStreamer-H.264-VAAPI-Gst1.0 -ts JVT-AVC_V1 -k
 ```
 
-### VDPAU (Intel/AMD/NVIDIA)
-
-**Installed components:**
-- `vdpauinfo` - Display VDPAU information
-- **Intel**: `libvdpau-va-gl1` (VDPAU via VAAPI bridge)
-- **AMD/NVIDIA**: `mesa-vdpau-drivers`
-
 ### Intel QuickSync
 
-**Installed components:**
+**Requirements:**
+- Intel GPU with Quick Sync support (6th gen+)
+- Intel Media SDK libraries (included in image)
+
+**Packages included:**
 - `libmfx1` - Intel Media SDK runtime
 - `libmfx-gen1.2` - For newer Intel GPUs
 - `libvpl2` - oneVPL runtime
@@ -271,13 +271,20 @@ Use `./run-docker.sh list -c` to see all available decoders with their current s
 **Requirements:**
 - NVIDIA GPU with NVDEC support (compute capability >= 3.0)
 - NVIDIA drivers installed on host (`nvidia-smi` working on host)
+- **Ubuntu 24.04** (system packages include CUDA/NVDEC support)
 - **No special Docker configuration needed** - uses `--privileged` mode
 
 **How it works:**
-The Docker container uses `--privileged` mode and mounts `/dev/dri` which gives automatic access to NVIDIA GPU for hardware decoding. No nvidia-docker2 or nvidia-container-toolkit required!
+The Docker container uses `--privileged` mode and mounts `/dev/dri` which gives automatic access to NVIDIA GPU for hardware decoding. Ubuntu 24.04's FFmpeg includes CUDA/NVDEC support in system packages. No nvidia-docker2 or nvidia-container-toolkit required!
+
+**Driver Version Matching:**
+The build script automatically detects your host NVIDIA driver version (e.g., 535, 550, 560) and installs matching VDPAU libraries inside the container. This ensures compatibility between the container and your host drivers.
 
 **Test NVDEC:**
 ```bash
+# Check NVIDIA GPU (also shows detected driver version)
+./run-docker.sh --nvidia hw-info
+
 # List NVDEC decoders
 ./run-docker.sh --nvidia list -c | grep -i "cuda\|nvdec"
 
@@ -291,7 +298,7 @@ The Docker container uses `--privileged` mode and mounts `/dev/dri` which gives 
 ./run-docker.sh --nvidia run -d GStreamer-H.265-NVDEC-Gst1.0 -ts JCT-VC-HEVC_V1 -k
 ```
 
-**Note:** Some test vectors may fail with hardware decoders due to specific features or edge cases. This is normal and expected.
+**Note:** CUDA/NVDEC support is only available with **system packages** (default). If you use `--build-ffmpeg`, NVDEC will NOT be available. Some test vectors may fail with hardware decoders due to specific features or edge cases. This is normal and expected.
 
 ## Mounted Volumes
 
@@ -335,12 +342,19 @@ exit  # files are lost (not persisted) unless -k was used via wrapper
 ```
 
 ## Environment Variables
+
+The following variables are set automatically in the container:
 - `TERM=xterm-256color` - For emoji display ✔️/❌
 - `LANG=C.UTF-8` - UTF-8 support
 - `LC_ALL=C.UTF-8` - UTF-8 locale
-- `LIBVA_DRIVER_NAME` - VAAPI driver (iHD, i965, radeonsi)
-- `LIBVA_DRIVERS_PATH` - Path to VAAPI drivers
-- `MFX_HOME` - Intel Media SDK home
+- `LIBVA_DRIVER_NAME` - VAAPI driver (iHD, i965, radeonsi, nouveau)
+- `VDPAU_DRIVER` - VDPAU driver (va_gl, radeonsi, nvidia)
+
+To override the default driver selection, set the variable on the host:
+```bash
+# Use i965 driver instead of iHD for older Intel GPUs
+LIBVA_DRIVER_NAME=i965 ./run-docker.sh --intel hw-info
+```
 
 ## Usage Examples
 
@@ -365,7 +379,7 @@ exit  # files are lost (not persisted) unless -k was used via wrapper
 # Intel VAAPI (keep outputs)
 ./run-docker.sh --intel run -d GStreamer-H.264-VAAPI-Gst1.0 -ts JVT-AVC_V1 -k
 
-# NVIDIA NVDEC (keep one output)
+# NVIDIA NVDEC (keep one output, Ubuntu 24.04)
 ./run-docker.sh --nvidia run -d FFmpeg-H.265-CUDA -ts JCT-VC-HEVC_V1 -tv AMP_A_Samsung_7 -k
 ```
 
@@ -445,18 +459,25 @@ ls -la /dev/dri  # Should show renderD* devices
 ls -la /dev/nvidia*  # Should show nvidia devices (if available)
 ```
 
-3. Run with --nvidia flag:
+3. Make sure you're using Ubuntu 24.04 (for CUDA/NVDEC support):
+```bash
+./run-docker.sh --ubuntu 24.04 --rebuild --nvidia hw-info
+```
+
+4. Run with --nvidia flag:
 ```bash
 ./run-docker.sh --nvidia hw-info
 ./run-docker.sh --nvidia list -c | grep -E "CUDA|NVDEC"
 ```
 
-4. Test inside container:
+5. Test inside container:
 ```bash
 ./run-docker.sh --nvidia shell
 # Inside container:
 ffmpeg -hwaccels  # Should show 'cuda' in the list
 ```
+
+**Note**: CUDA/NVDEC hardware acceleration is only available with **Ubuntu 24.04 system packages** (default). If you use `--build-ffmpeg`, NVDEC will not be available.
 
 ### Complete rebuild
 
