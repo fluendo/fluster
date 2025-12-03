@@ -50,6 +50,13 @@ classifiers = [
 [tool.setuptools]
 packages = ["fluster", "fluster.decoders"]
 
+[tool.setuptools.exclude-package-data]
+"*" = [
+    "docker/*",
+    ".dockerignore",
+    ".github/*"
+]
+
 [tool.setuptools.data-files]
 "share/fluster/test_suites/aac" = [
     "test_suites/aac/MPEG2_AAC-ADTS.json",
