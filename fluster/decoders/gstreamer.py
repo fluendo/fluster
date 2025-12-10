@@ -18,7 +18,6 @@
 
 
 import os
-import shlex
 import subprocess
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
@@ -26,28 +25,24 @@ from typing import Any, Dict, List, Optional
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.decoders.dolby_pad import EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG
+from fluster.gstreamer import run_pipeline
 from fluster.utils import (
     file_checksum,
     normalize_binary_cmd,
-    run_command,
-    run_command_with_output,
 )
 
-PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
+PIPELINE_TPL = "filesrc location={} ! {} ! {} ! {} ! {} {}"
 
 
 @lru_cache(maxsize=None)
 def _videocodectestsink_supports_format(gst_fmt: str) -> bool:
     """Check whether videocodectestsink supports a given raw format by probing a minimal pipeline."""
-    cmd = normalize_binary_cmd("gst-launch-1.0")
+    pipeline = (
+        "videotestsrc num-buffers=1 ! video/x-raw,width=1,height=1 "
+        f"! videoconvert ! video/x-raw,format={gst_fmt} ! videocodectestsink"
+    )
     try:
-        run_command(
-            shlex.split(
-                f"{cmd} --no-fault videotestsrc num-buffers=1 ! video/x-raw,width=1,height=1"
-                f" ! videoconvert ! video/x-raw,format={gst_fmt} ! videocodectestsink"
-            ),
-            verbose=False,
-        )
+        run_pipeline(pipeline, verbose=False)
         return True
     except Exception:
         return False
@@ -115,7 +110,6 @@ class GStreamer(Decoder):
         if not self.name:
             self.name = f"{self.provider}-{self.codec.value}-{self.api}"
         self.description = f"{self.provider} {self.codec.value} {self.api} decoder for GStreamer"
-        self.cmd = normalize_binary_cmd(self.cmd)
 
         if not gst_element_exists(self.sink):
             self.sink = "filesink"
@@ -153,7 +147,6 @@ class GStreamer(Decoder):
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd,
             input_filepath,
             self.parser,
             self.decoder_bin,
@@ -202,24 +195,23 @@ class GStreamer(Decoder):
         if self._get_sink_for_format(output_format) == "videocodectestsink":
             output_param = output_filepath if keep_files else None
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format, optional_params)
-            command = shlex.split(pipeline)
-            command.append("-m")
-            data = run_command_with_output(command, timeout=timeout, verbose=verbose, env=env).splitlines()
+            result = run_pipeline(pipeline, timeout=timeout, verbose=verbose, print_messages=True, env=env)
+            data = result.stdout.splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format, optional_params)
-        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose, env=env)
+        result = run_pipeline(pipeline, timeout=timeout, verbose=verbose, env=env)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         """Check if GStreamer decoder is valid (better than gst-inspect)"""
         try:
-            pipeline = f"{self.cmd} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
-            run_command(shlex.split(pipeline), verbose=verbose, env=self._run_env())
+            pipeline = f"appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
+            run_pipeline(pipeline, verbose=verbose, env=self._run_env())
+            return True
         except Exception:
             return False
-        return True
 
 
 class GStreamerVideo(GStreamer):
@@ -262,7 +254,6 @@ class GStreamerVideo(GStreamer):
         caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd,
             input_filepath,
             self.parser,
             self.decoder_bin,
@@ -925,7 +916,6 @@ class FluendoFluAC4DecDecoder(GStreamerAudio):
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
-            self.cmd,
             input_filepath,
             self.parser,
             decoder_bin,
@@ -964,7 +954,6 @@ class FluendoFluEAC3DecDecoder(GStreamerAudio):
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
-            self.cmd,
             input_filepath,
             self.parser,
             decoder_bin,
