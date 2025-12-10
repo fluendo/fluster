@@ -335,6 +335,7 @@ H.264
     FFmpeg-H.264-VDPAU: FFmpeg H.264 VDPAU decoder
     FFmpeg-H.264-Vulkan: FFmpeg H.264 Vulkan decoder
     FFmpeg-H.264-v4l2m2m: FFmpeg H.264 v4l2m2m decoder
+    FFmpeg-H.264-v4l2request: FFmpeg H.264 V4L2 Request API decoder
     Fluendo-H.264-DXVA2-Gst1.0: Fluendo H.264 DXVA2 decoder for GStreamer 1.0
     Fluendo-H.264-HW-lcevchwvah264dec-Gst1.0: Fluendo H.264 HW decoder for GStreamer 1.0
     Fluendo-H.264-SW-Gst1.0: Fluendo H.264 SW decoder for GStreamer 1.0
@@ -367,6 +368,7 @@ AV1
     FFmpeg-AV1-VAAPI: FFmpeg AV1 VAAPI decoder
     FFmpeg-AV1-VDPAU: FFmpeg AV1 VDPAU decoder
     FFmpeg-AV1-Vulkan: FFmpeg AV1 Vulkan decoder
+    FFmpeg-AV1-v4l2request: FFmpeg AV1 V4L2 Request API decoder
     GStreamer-AV1-D3D11-Gst1.0: GStreamer AV1 D3D11 decoder for GStreamer 1.0
     GStreamer-AV1-D3D12-Gst1.0: GStreamer AV1 D3D12 decoder for GStreamer 1.0
     GStreamer-AV1-V4L2SL-Gst1.0: GStreamer AV1 V4L2SL decoder for GStreamer 1.0
@@ -390,6 +392,7 @@ H.265
     FFmpeg-H.265-VDPAU: FFmpeg H.265 VDPAU decoder
     FFmpeg-H.265-Vulkan: FFmpeg H.265 Vulkan decoder
     FFmpeg-H.265-v4l2m2m: FFmpeg H.265 v4l2m2m decoder
+    FFmpeg-H.265-v4l2request: FFmpeg H.265 V4L2 Request API decoder
     Fluendo-H.265-DXVA2-Gst1.0: Fluendo H.265 DXVA2 decoder for GStreamer 1.0
     Fluendo-H.265-SW-Gst1.0: Fluendo H.265 SW decoder for GStreamer 1.0
     Fluendo-H.265-VAAPI-Gst1.0: Fluendo H.265 VAAPI decoder for GStreamer 1.0
@@ -422,6 +425,7 @@ H.266
 
 MPEG2_VIDEO
     FFmpeg-MPEG2_VIDEO: FFmpeg MPEG2 VIDEO SW decoder
+    FFmpeg-MPEG2_VIDEO-v4l2request: FFmpeg MPEG2 VIDEO V4L2 Request API decoder
     Fluendo-MPEG2_VIDEO-DXVA2-Gst1.0: Fluendo MPEG2_VIDEO DXVA2 decoder for GStreamer 1.0
     Fluendo-MPEG2_VIDEO-SW-Gst1.0: Fluendo MPEG2 VIDEO SW decoder for GStreamer 1.0
     Fluendo-MPEG2_VIDEO-VAAPI-Gst1.0: Fluendo MPEG2_VIDEO VAAPI decoder for GStreamer 1.0
@@ -443,6 +447,7 @@ VP8
     FFmpeg-VP8-CUDA: FFmpeg VP8 CUDA decoder
     FFmpeg-VP8-VAAPI: FFmpeg VP8 VAAPI decoder
     FFmpeg-VP8-v4l2m2m: FFmpeg VP8 v4l2m2m decoder
+    FFmpeg-VP8-v4l2request: FFmpeg VP8 V4L2 Request API decoder
     GStreamer-VP8-D3D11-Gst1.0: GStreamer VP8 D3D11 decoder for GStreamer 1.0
     GStreamer-VP8-Libav-Gst1.0: GStreamer VP8 Libav decoder for GStreamer 1.0
     GStreamer-VP8-NVDEC-Gst1.0: GStreamer VP8 NVDEC decoder for GStreamer 1.0
@@ -462,6 +467,7 @@ VP9
     FFmpeg-VP9-VDPAU: FFmpeg VP9 VDPAU decoder
     FFmpeg-VP9-Vulkan: FFmpeg VP9 Vulkan decoder
     FFmpeg-VP9-v4l2m2m: FFmpeg VP9 v4l2m2m decoder
+    FFmpeg-VP9-v4l2request: FFmpeg VP9 V4L2 Request API decoder
     GStreamer-VP9-D3D11-Gst1.0: GStreamer VP9 D3D11 decoder for GStreamer 1.0
     GStreamer-VP9-D3D12-Gst1.0: GStreamer VP9 D3D12 decoder for GStreamer 1.0
     GStreamer-VP9-Libav-Gst1.0: GStreamer VP9 Libav decoder for GStreamer 1.0
