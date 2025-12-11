@@ -15,42 +15,8 @@ help:
 install_deps: ## install Python dependencies
 	python3 -m pip install -r requirements-dev.txt
 
-check: ## check that very basic tests run
-	@echo "Running dummy test..."
-	$(FLUSTER) list
-	$(FLUSTER) list -c
-	$(FLUSTER) -ne list -c
-	$(FLUSTER) list -ts dummy -tv
-	$(FLUSTER) download dummy dummy_fail -k
-	$(FLUSTER) run -ts dummy -tv one
-	$(FLUSTER) reference Dummy dummy
-	$(FLUSTER) run -ts dummy -tv one -j1
-	$(FLUSTER) run -ts dummy -s
-	$(FLUSTER) -ne run -ts dummy -s
-	$(FLUSTER) run -ts dummy -so summary.log && cat summary.log && rm -rf summary.log
-	$(FLUSTER) run -ts dummy -j1 -s
-	$(FLUSTER) run -ts dummy -th 1
-	$(FLUSTER) run -ts dummy -tth 10
-ifneq ($(OS),Windows_NT)
-	$(FLUSTER) run -ts dummy non_existing_test_suite; test $$? -ne 0
-	$(FLUSTER) run -ts dummy -th 2; test $$? -eq 2
-	$(FLUSTER) run -ts dummy -tth 0.000000001; test $$? -eq 3
-	$(FLUSTER) run -ts dummy_fail -th 1
-	$(FLUSTER) run -ts dummy_fail -th 2; test $$? -eq 2
-	$(FLUSTER) run -ts dummy_fail -j1 -ff -s; test $$? -ne 0
-	$(FLUSTER) download dummy non_existing_test_suite -k; test $$? -ne 0
-	$(FLUSTER) download dummy dummy_download_fail -k; test $$? -ne 0
-	$(FLUSTER) download H264-min H265-min -k
-	$(FLUSTER) run -ts H264-min -d GStreamer-H.264-Libav-Gst1.0 FFmpeg-H.264 -s
-	$(FLUSTER) run -ts H265-min -d GStreamer-H.265-Libav-Gst1.0 FFmpeg-H.265 -s
-ifeq ($(KERNEL_NAME), Linux)
-	$(FLUSTER) download AV1-min VP8-min VP9-min -k
-	$(FLUSTER) run -ts AV1-min -d libaom-AV1 -s
-	$(FLUSTER) run -ts VP8-min -d libvpx-VP8 -s
-	$(FLUSTER) run -ts VP9-min -d libvpx-VP9 -s
-endif
-endif
-	@echo "\nAll test finished succesfully!"
+check: ## run Python unit tests
+	python3 -m unittest discover -v -s tests -p "test_*.py"
 
 create_dirs=mkdir -p $(CONTRIB_DIR) $(DECODERS_DIR)
 
