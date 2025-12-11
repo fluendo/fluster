@@ -203,8 +203,28 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libavformat-dev \
         libavutil-dev \
         libswscale-dev \
+  libaom-dev \
+  libaom3 \
       && rm -rf /var/lib/apt/lists/*; \
     fi
+
+# Install AV1 reference decoder (libaom)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  git \
+  cmake \
+  build-essential \
+  && mkdir /tmp/aom-tools \
+  && cd /tmp/aom-tools \
+  && git clone --depth 1 https://aomedia.googlesource.com/aom \
+  && mkdir -p aom/build \
+  && cd aom/build \
+  && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DENABLE_TESTS=OFF -DENABLE_DOCS=OFF -DENABLE_EXAMPLES=ON .. \
+  && make -j$(nproc) \
+  && make install \
+  && cd / && rm -rf /tmp/aom-tools \
+  && apt-get remove -y git cmake build-essential \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/apt/lists/*
 
 # GStreamer installation (2 methods: system, source)
 # Method "source": Build GStreamer from source (needed for new versions on old distros)
