@@ -58,9 +58,9 @@ RUN apt-get update && apt-get install -y \
     libva-dev \
     libva-drm2 \
     libva-x11-2 \
-    vainfo \
-    i965-va-driver \
+  vainfo \
     mesa-va-drivers \
+  && (apt-get install -y i965-va-driver || true) \
     && (apt-get install -y intel-media-va-driver-non-free || \
         apt-get install -y intel-media-va-driver || true) \
     && rm -rf /var/lib/apt/lists/*
@@ -90,10 +90,9 @@ RUN if [ -n "${NVIDIA_DRIVER_VERSION}" ]; then \
         rm -rf /var/lib/apt/lists/*; \
     fi
 
-# Intel QuickSync support via Media SDK and oneVPL
-RUN apt-get update && apt-get install -y \
-    libmfx1 \
-    libmfx-tools \
+# Intel QuickSync support via Media SDK and oneVPL (x86_64 only)
+RUN apt-get update \
+  && (apt-get install -y libmfx1 libmfx-tools || true) \
     && (apt-get install -y libmfx-gen1.2 || true) \
     && (apt-get install -y libvpl-dev libvpl2 || true) \
     && rm -rf /var/lib/apt/lists/*
