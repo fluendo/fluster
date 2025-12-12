@@ -1,0 +1,17 @@
+# MPEG-2 Video Reference Decoder (ISO/IEC 13818-5)
+#
+# This wrap file expects the MPEG-2 video sources to be available at
+# subprojects/mpeg2video/ (symlinked or copied from contrib/video)
+#
+# To set up:
+#   1. Run: ninja -C builddir download-mpeg2-deps
+#   2. Create symlink: ln -sf ../contrib/video subprojects/mpeg2video
+#
+# Or let the build system handle it automatically via meson setup hooks.
+
+[wrap-file]
+directory = mpeg2video
+patch_directory = mpeg2video
+
+[provide]
+program_names = mpeg2decode

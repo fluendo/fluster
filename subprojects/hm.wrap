@@ -1,0 +1,9 @@
+[wrap-git]
+url = https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git
+revision = ae4c8d6d67572e929610a205eb574bd8dc00c043
+depth = 1
+clone-recursive = false
+patch_directory = hm
+
+[provide]
+program_names = TAppDecoder

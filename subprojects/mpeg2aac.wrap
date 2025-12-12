@@ -1,0 +1,6 @@
+[wrap-file]
+directory = mpeg2aac
+patch_directory = mpeg2aac
+
+[provide]
+mpeg2aac = mpeg2aac_dep
