@@ -1,0 +1,122 @@
+# Fluster - testing framework for decoders conformance
+# Copyright (C) 2025, Fluendo, S.A.
+#
+# CI workflow to build all reference decoders on multiple platforms
+
+name: Build Reference Decoders
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'subprojects/**'
+      - 'meson.build'
+      - 'meson_options.txt'
+      - 'scripts/build_iso_decoders.sh'
+      - 'scripts/download_mpeg2_deps.sh'
+      - 'scripts/download_mpeg4_deps.sh'
+      - 'scripts/compat/**'
+      - 'scripts/patches/**'
+      - '.github/workflows/build-decoders.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'subprojects/**'
+      - 'meson.build'
+      - 'meson_options.txt'
+      - 'scripts/build_iso_decoders.sh'
+      - 'scripts/download_deps.sh'
+      - 'scripts/compat/**'
+      - 'scripts/patches/**'
+      - '.github/workflows/build-decoders.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux x86_64
+            os: ubuntu-22.04
+            arch: x86_64
+            artifact: decoders-linux-x86_64
+            iso_decoders: true
+
+          - name: Linux ARM64
+            os: ubuntu-22.04-arm
+            arch: arm64
+            artifact: decoders-linux-arm64
+            iso_decoders: true
+
+          - name: Windows x86_64
+            os: windows-2022
+            arch: x64
+            artifact: decoders-windows-x86_64
+            iso_decoders: false
+
+          - name: macOS ARM64
+            os: macos-14
+            arch: arm64
+            artifact: decoders-macos-arm64
+            iso_decoders: true
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # Linux dependencies
+    - name: Install dependencies (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build cmake build-essential unzip curl
+
+    # macOS dependencies
+    - name: Install dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: brew install ninja cmake meson
+
+    # Windows dependencies
+    - name: Setup MSVC environment (Windows)
+      if: runner.os == 'Windows'
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+
+    - name: Install Meson
+      run: pip install meson ninja
+
+    - name: Download dependencies
+      run: ./scripts/download_deps.sh
+
+    - name: Configure Meson
+      run: meson setup builddir
+
+    - name: Download ISO decoder dependencies
+      if: matrix.iso_decoders
+      run: |
+        meson compile -C builddir download-mpeg2-deps
+        meson compile -C builddir download-mpeg4-deps
+
+    - name: Build decoders
+      run: meson compile -C builddir
+
+    - name: Upload decoders
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact }}
+        path: decoders/
+        if-no-files-found: warn
