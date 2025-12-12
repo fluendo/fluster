@@ -1,0 +1,9 @@
+[wrap-git]
+url = https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM.git
+revision = 83abdf6d4bf45bf8d5f3dd30e8a8b9ee8eefb409
+depth = 1
+clone-recursive = false
+patch_directory = vvcsoftware_vtm
+
+[provide]
+program_names = DecoderApp

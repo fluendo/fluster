@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Fluster <fluster@fluendo.com>
+Date: Wed, 11 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix ARM64 build: disable SSE on ARM architectures
+
+The -msse4.1 flag is only valid for x86/x86_64 architectures.
+This patch conditionally applies it only on non-ARM systems.
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -96,8 +96,10 @@ bb_enable_warnings( msvc warnings-as-errors "/wd4996 /wd5105 /wd5103" )
+
+ # enable sse4.1 build for all source files for gcc and clang
+ if( UNIX OR MINGW )
+-  add_compile_options( "-msse4.1" )
++  if( NOT CMAKE_SYSTEM_PROCESSOR MATCHES "arm|aarch64|ARM64" )
++    add_compile_options( "-msse4.1" )
++  endif()
+ endif()
+
+ # enable parallel build for Visual Studio
