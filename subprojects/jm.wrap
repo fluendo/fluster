@@ -1,0 +1,9 @@
+[wrap-git]
+url = https://vcgit.hhi.fraunhofer.de/jct-vc/JM.git
+revision = 933098befc4b18f176e99db8f98c019c27ce9748
+depth = 1
+clone-recursive = false
+diff_files = jm/0001-Fix-ARM64-build-disable-SSE-on-ARM-architectures.patch, jm/0002-Fix-MinGW-intptr_t-redefinition.patch, jm/0003-Fix-ws2_32-linking-for-MinGW.patch
+
+[provide]
+program_names = ldecod

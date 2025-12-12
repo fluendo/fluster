@@ -1,0 +1,19 @@
+--- a/audio/natural/mp4AudVm_Rewrite/src_frame/plotmtv_interf_dummy.c
++++ b/audio/natural/mp4AudVm_Rewrite/src_frame/plotmtv_interf_dummy.c
+@@ -33,11 +33,11 @@
+ #include <stdio.h>
+ #include <string.h>
+ #ifndef WIN32
+ #include <unistd.h>
+-#endif
+-#include <stdarg.h>          /* variable artgument list */
+-#include <stdlib.h>
+-#ifndef WIN32
+ #include <sys/wait.h>
+ #include <sys/stat.h>
+ #endif
++#include <stdarg.h>          /* variable artgument list */
++#include <stdlib.h>
+ #include <fcntl.h>
+ #include <math.h>
+ #include <time.h>
