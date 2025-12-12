@@ -1,0 +1,9 @@
+[wrap-git]
+url = https://github.com/fraunhoferhhi/vvdec.git
+revision = dba55d0f93a10e608f6b7cc7a129cf62b172f1b5
+depth = 1
+clone-recursive = false
+patch_directory = vvdec
+
+[provide]
+program_names = vvdecapp
