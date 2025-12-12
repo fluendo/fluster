@@ -1,0 +1,46 @@
+--- a/general/makefile.platform
++++ b/general/makefile.platform
+@@ -101,8 +101,10 @@ else
+ TMP=$(TMPDIR)/$(shell pwd)/../
+ endif
+
+-GETMODULEDIR = $(shell cd $(1) && cat CVS/Repository CVS/Tag 2> /dev/null | sed -e's@.*/@@;N;s@[[:cntrl:]]@ @g')
+-GETTARGETDIR = $(call GETMODULEDIR,$(1))/$(SYSTEM_NAME)$(BUSWIDTH) $(2) $(MAKE_CC) O$(OPTIM_LEV)$(if $(subst 0,,$(DEBUG)),d)$(if $(subst 0,,$(GPROF)),p)
++# GETMODULEDIR returns empty when CVS/Repository doesn't exist (e.g., downloaded from ISO)
++# which causes incorrect paths with double slashes. Use $(or ...) to provide fallback 'default'.
++GETMODULEDIR = $(or $(shell cd $(1) && cat CVS/Repository CVS/Tag 2> /dev/null | sed -e's@.*/@@;N;s@[[:cntrl:]]@ @g'),default)
++GETTARGETDIR = $(call GETMODULEDIR,$(1))/$(SYSTEM_NAME)$(BUSWIDTH) $(2) $(MAKE_CC) O$(OPTIM_LEV)$(if $(subst 0,,$(DEBUG)),d)$(if $(subst 0,,$(GPROF)),p)
+ MODULEDIR   := $(call GETMODULEDIR,.)
+ TARGETBINDIR:= $(call GETTARGETDIR,.,$(ADDONDIR) $(ADDONBINDIR))
+ TARGETLIBDIR:= $(call GETTARGETDIR,.,$(ADDONDIR) $(ADDONLIBDIR))
+@@ -240,6 +242,11 @@ ifeq "$(SYSTEM_NAME)" "OS2"
+   EXE_SUFFIX = .exe
+   override CFLAGS += -ansi -pedantic -Wall
+ else
++ifeq "$(SYSTEM_NAME)" "Darwin"
++  DCC  = gcc
++  CC   = gcc
++  LINK = gcc
++else
+   SYSTEM_NAME   = unknown
+   TARGETTMPDIR := ../tmp/ $(SYSTEM_NAME) $(ADDONDIR)
+   DCC = $(CC)
+@@ -251,6 +258,7 @@ endif
+ endif
+ endif
+ endif
++endif
+
+ EMPTY:=
+ CHARSPACE:=$(EMPTY) $(EMPTY)
+@@ -368,4 +376,8 @@ endif
+ ifeq "$(SYSTEM_NAME)" "Linux"
+ PLTDIR = linux
+ RMDIR := rmdir -p
++endif
++ifeq "$(SYSTEM_NAME)" "Darwin"
++PLTDIR = darwin
++RMDIR := rmdir -p
+ endif
+
+ endif # ifneq "$(MAKELEVEL)" "0"

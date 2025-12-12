@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Build System <build@fluster>
+Date: Mon, 16 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix ws2_32 linking for MinGW/UCRT64 on Windows
+
+Link ws2_32 library for all Windows builds, not just MSVC.
+MinGW and UCRT64 also need this library for network functions
+like ntohs and ntohl used in rtp.c.
+---
+ source/app/ldecod/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/app/ldecod/CMakeLists.txt b/source/app/ldecod/CMakeLists.txt
+index 1234567..abcdefg 100644
+--- a/source/app/ldecod/CMakeLists.txt
++++ b/source/app/ldecod/CMakeLists.txt
+@@ -47,7 +47,7 @@ if( CMAKE_COMPILER_IS_GNUCC AND BUILD_STATIC )
+   target_compile_definitions( ${EXE_NAME} PUBLIC ENABLE_WPP_STATIC_LINK=1 )
+ endif()
+
+-if(NOT MSVC)
++if(NOT WIN32)
+   target_link_libraries( ${EXE_NAME} m Threads::Threads ${ADDITIONAL_LIBS} )
+ else()
+   target_link_libraries( ${EXE_NAME} WS2_32 Threads::Threads ${ADDITIONAL_LIBS} )
+--
+2.43.0
