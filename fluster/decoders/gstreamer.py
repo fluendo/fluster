@@ -313,6 +313,7 @@ class GStreamerMsdkH265Gst10Decoder(GStreamer10Video):
     codec = Codec.H265
     decoder_bin = " msdkh265dec "
     api = "MSDK"
+    parser = " h265parse "
 
 
 @register_decoder
@@ -413,6 +414,7 @@ class GStreamerQsvH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " qsvh264dec "
     api = "QSV"
+    parser = " h264parse "
 
 
 @register_decoder
@@ -422,6 +424,7 @@ class GStreamerMsdkH264Gst10Decoder(GStreamer10Video):
     codec = Codec.H264
     decoder_bin = " msdkh264dec "
     api = "MSDK"
+    parser = " h264parse "
 
 
 @register_decoder
