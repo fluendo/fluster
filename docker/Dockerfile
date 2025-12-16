@@ -58,9 +58,9 @@ RUN apt-get update && apt-get install -y \
     libva-dev \
     libva-drm2 \
     libva-x11-2 \
-    vainfo \
-    i965-va-driver \
+  vainfo \
     mesa-va-drivers \
+  && (apt-get install -y i965-va-driver || true) \
     && (apt-get install -y intel-media-va-driver-non-free || \
         apt-get install -y intel-media-va-driver || true) \
     && rm -rf /var/lib/apt/lists/*
@@ -90,10 +90,9 @@ RUN if [ -n "${NVIDIA_DRIVER_VERSION}" ]; then \
         rm -rf /var/lib/apt/lists/*; \
     fi
 
-# Intel QuickSync support via Media SDK and oneVPL
-RUN apt-get update && apt-get install -y \
-    libmfx1 \
-    libmfx-tools \
+# Intel QuickSync support via Media SDK and oneVPL (x86_64 only)
+RUN apt-get update \
+  && (apt-get install -y libmfx1 libmfx-tools || true) \
     && (apt-get install -y libmfx-gen1.2 || true) \
     && (apt-get install -y libvpl-dev libvpl2 || true) \
     && rm -rf /var/lib/apt/lists/*
@@ -204,8 +203,28 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libavformat-dev \
         libavutil-dev \
         libswscale-dev \
+  libaom-dev \
+  libaom3 \
       && rm -rf /var/lib/apt/lists/*; \
     fi
+
+# Install AV1 reference decoder (libaom)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  git \
+  cmake \
+  build-essential \
+  && mkdir /tmp/aom-tools \
+  && cd /tmp/aom-tools \
+  && git clone --depth 1 https://aomedia.googlesource.com/aom \
+  && mkdir -p aom/build \
+  && cd aom/build \
+  && cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DENABLE_TESTS=OFF -DENABLE_DOCS=OFF -DENABLE_EXAMPLES=ON .. \
+  && make -j$(nproc) \
+  && make install \
+  && cd / && rm -rf /tmp/aom-tools \
+  && apt-get remove -y git cmake build-essential \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/apt/lists/*
 
 # GStreamer installation (2 methods: system, source)
 # Method "source": Build GStreamer from source (needed for new versions on old distros)

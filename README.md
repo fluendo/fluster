@@ -59,9 +59,9 @@ but they could actually be decoders written in Python as far as Fluster is
 concerned. The [decoders](https://github.com/fluendo/fluster/tree/master/fluster/decoders) directory contains all supported
 decoders.
 
-**Fluster includes a pixel comparison method for testing decoders that don't generate identical outputs.** 
-This is essential for older video decoders with IDCT implementations where, 
-according to the standard specifications, MD5 verification cannot be used unlike newer decoder implementations, 
+**Fluster includes a pixel comparison method for testing decoders that don't generate identical outputs.**
+This is essential for older video decoders with IDCT implementations where,
+according to the standard specifications, MD5 verification cannot be used unlike newer decoder implementations,
 ensuring accurate conformance testing across different decoder generations.
 
 In order to run the tests for the different test suites and decoders, a
@@ -101,10 +101,22 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    - `./fluster.py download` downloads all available test suites
 
 2. (Optional) Build the reference decoders for AAC, H.264/AVC, H.265/HEVC,
-   H.266/VVC running `make all_reference_decoders`. This is available and has been 
-   tested with x86_64 and Linux. It assumes you have CMake and a native compiler 
-   such as gcc or clang installed so that they can be built. The resulting binaries 
-   will be moved to a new `decoders` directory in the root.
+   H.266/VVC. First, download the ISO reference software:
+
+   ```bash
+   python3 build/download_deps.py
+   ```
+
+   Then build using meson:
+
+   ```bash
+   meson setup builddir
+   ninja -C builddir
+   ```
+
+   This requires meson, ninja, and a native compiler (gcc or clang). The resulting
+   binaries will be placed in the `decoders` directory. This has been tested on
+   Linux and macOS (both x86_64 and ARM64).
 
 3. List the test suites and the decoders available `./fluster.py list`.
    Tip: You can list the decoders that can run in the current system with `./fluster.py list -c`.
@@ -181,7 +193,7 @@ MPEG2_AAC-ADIF
     Codec: AAC
     Description: ISO IEC 13818-4 MPEG2 AAC ADIF test suite
     Test vectors: 492
-    
+
 MPEG2_AAC-ADTS
     Codec: AAC
     Description: ISO IEC 13818-4 MPEG2 AAC ADTS test suite
@@ -571,7 +583,7 @@ subcommands:
 ```bash
 ./fluster.py list --help
 
-usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c] [-v] 
+usage: fluster.py list [-h] [-ts TESTSUITES [TESTSUITES ...]] [-tv] [-c] [-v]
 [-d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO,MPEG4_VIDEO}]
 
 optional arguments:
@@ -598,7 +610,7 @@ usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use (by default 1x logical cores, 
+  -j JOBS, --jobs JOBS  number of parallel jobs to use (by default 1x logical cores,
                         value 0 is interpreted as the same)
   -t TIMEOUT, --timeout TIMEOUT
                         timeout in secs for each decoding. Defaults to 30 secs
@@ -640,7 +652,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use (upper limit of 16, by default 2x logical cores). 
+  -j JOBS, --jobs JOBS  number of parallel jobs to use (upper limit of 16, by default 2x logical cores).
                         value 0 is interpreted as 1x logical cores
   -k, --keep            keep original downloaded file after extracting. Only applicable to compressed files such as .zip, .tar.gz, etc
   -r RETRIES, --retries RETRIES
@@ -668,7 +680,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -j JOBS, --jobs JOBS  number of parallel jobs to use (by default 1x logical cores, 
+  -j JOBS, --jobs JOBS  number of parallel jobs to use (by default 1x logical cores,
                         value 0 is interpreted as the same)
   -t TIMEOUT, --timeout TIMEOUT
                         timeout in secs for each decoding. Defaults to 30 secs
@@ -737,11 +749,11 @@ Check out the JSON format they follow in the [test_suites](https://github.com/fl
 directory. Add a new json file within, Fluster will automatically pick it
 up.
 
-There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py), 
-[generator script (MPEG4 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg4_video.py), 
-[generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py), 
-[generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a 
-[generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the 
+There is also a [generator script (MPEG2 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg2_video.py),
+[generator script (MPEG4 video)](https://github.com/fluendo/fluster/blob/master/scripts/gen_mpeg4_video.py),
+[generator script (H.264)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvt.py),
+[generator script (H.265)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jct_vc.py), and a
+[generator script (H.266)](https://github.com/fluendo/fluster/blob/master/scripts/gen_jvet.py) for the
 [conformance test suites](#test-suites) that you can use as a base to generate automatically new ones.
 
 ### How can I use it to test regressions?
@@ -814,8 +826,8 @@ results are obtained, we can do the following procedure:
 
 ### How can I report an issue?
 
-In case you find any problem or want to report something, please search for similar 
-[issues](https://github.com/fluendo/fluster/issues) first. If you find none, go ahead to create one. 
+In case you find any problem or want to report something, please search for similar
+[issues](https://github.com/fluendo/fluster/issues) first. If you find none, go ahead to create one.
 Please try to provide as many details and context as possible to help us diagnose it.
 
 ## License

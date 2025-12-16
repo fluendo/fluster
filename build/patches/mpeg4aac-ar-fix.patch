@@ -1,0 +1,22 @@
+--- a/general/makefile.rules	2025-12-11 13:45:37
++++ b/general/makefile.rules	2025-12-11 13:46:41
+@@ -159,9 +159,10 @@
+ # compose library
+ $(DIRTARGET) : $(PLTDIRTAG)
+ $(DIRTARGET) : $(DIROBJS)
++	@-mkdir -p $(dir $(DIRTARGET))
+ 	@echo "***** composing library $@ ..."
+ 	@-rm -f $(DIRTARGET)
+-	$(VERBOSECHAR)ar r $(DIRTARGET) $^
++	$(VERBOSECHAR)ar r $(DIRTARGET) $(DIROBJS)
+ #	$(VERBOSECHAR)ar rv $(DIRTARGET) $(DIROBJS)
+ 	$(VERBOSECHAR)ranlib $(DIRTARGET)
+ else
+@@ -170,6 +171,7 @@
+ $(DIRTARGET)$(EXE_SUFFIX) : $(PLTDIRTAG)
+ $(DIRTARGET)$(EXE_SUFFIX) : $(DIROBJS) $(COMLIBS_file) $(MODULELIBS_file) $(FORCE_LINKING)
+ 	@echo "***** linking $@ ..."
++	@-mkdir -p $(dir $@)
+ 	$(VERBOSECHAR)$(LINK) $(LDFLAGS) $(DIROBJS) $(LIBPATH) $(LIBS) -o $@
+ 	@echo "OLDLNK = " $(LNK) > $(DIRTARGET)$(LNK_SUFFIX)
+ 

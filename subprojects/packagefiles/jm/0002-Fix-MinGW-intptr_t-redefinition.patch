@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Build System <build@fluster>
+Date: Mon, 16 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix MinGW intptr_t redefinition error
+
+Fix intptr_t typedef conflict when building with MinGW on Windows.
+The issue occurs because _MSC_VER is not defined with MinGW, causing
+the condition (_MSC_VER < 1400) to evaluate to true, resulting in a
+conflicting typedef with the one from MinGW headers.
+
+Only typedef intptr_t when actually using an old MSVC compiler.
+---
+ source/lib/lcommon/win32.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source/lib/lcommon/win32.h b/source/lib/lcommon/win32.h
+index 1234567..abcdefg 100644
+--- a/source/lib/lcommon/win32.h
++++ b/source/lib/lcommon/win32.h
+@@ -30,9 +30,9 @@
+ # include <sys/types.h>
+ # include <sys/stat.h>
+ # include <windows.h>
+-#if (_MSC_VER < 1400)
++#if defined(_MSC_VER) && (_MSC_VER < 1400)
+ typedef int   intptr_t;
+-#else
++#elif defined(_MSC_VER)
+ # include <crtdefs.h>
+ #endif
+ #if defined(OPENMP)
+--
+2.43.0
