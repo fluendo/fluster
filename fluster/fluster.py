@@ -252,6 +252,8 @@ class Fluster:
             ctx.test_suites_names = [x.lower() for x in ctx.test_suites_names]
         if ctx.decoders_names:
             ctx.decoders_names = [x.lower() for x in ctx.decoders_names]
+            # Workaround to avoid BC break for prev commit. Delete when next MAYOR version
+            ctx.decoders_names = [x[0:-7] if "-gst1.0" in x else x for x in ctx.decoders_names]
         if ctx.test_vectors_names:
             ctx.test_vectors_names = [x.lower() for x in ctx.test_vectors_names]
         if ctx.skip_vectors_names:
