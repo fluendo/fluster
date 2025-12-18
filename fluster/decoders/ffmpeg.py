@@ -99,6 +99,10 @@ class FFmpegDecoder(Decoder):
         elif self.ffmpeg_codec:
             command.extend(["-codec", self.ffmpeg_codec])
 
+        # Disable film grain synthesis for Vulkan AV1 decoding as it is not mandatory.
+        if self.codec == Codec.AV1 and self.api == "Vulkan":
+            command.extend(["-export_side_data", "film_grain"])
+
         # Input file
         command.extend(["-i", input_filepath])
 
