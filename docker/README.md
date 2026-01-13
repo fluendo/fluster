@@ -7,7 +7,7 @@ Docker configuration for Fluster with comprehensive codec support including **FF
 - **Customizable Ubuntu version**: 20.04, 22.04, or 24.04
 - **Three FFmpeg installation options**:
   1. **System packages** (default) - Fast build, but older versions
-  2. **Static binaries** (7.x, 8.x) - Newer FFmpeg, but limited backend support
+  2. **Static binaries** (7.x) - Newer FFmpeg, but limited backend support
   3. **Build from source** (recommended) - Latest FFmpeg with all backends enabled
 - **Hardware Acceleration Support**:
   - **VAAPI** (Intel, AMD, NVIDIA (only on Ubuntu 24.04))
@@ -45,11 +45,8 @@ This Docker setup provides three ways to install FFmpeg, each with different tra
 **Cons**: Limited hardware backend support (no QuickSync/libmfx)
 
 ```bash
-# Build with FFmpeg 7.0 static binary
-docker build --build-arg FFMPEG_STATIC_VERSION=7.0 -t fluster:ffmpeg7 -f docker/Dockerfile .
-
-# Build with FFmpeg 8.0 static binary
-docker build --build-arg FFMPEG_STATIC_VERSION=8.0 -t fluster:ffmpeg8 -f docker/Dockerfile .
+# Build with FFmpeg static binary
+docker build --build-arg FFMPEG_INSTALL_METHOD=static -t fluster:ffmpeg-static -f docker/Dockerfile .
 ```
 
 **Note**: Static binaries from johnvansickle.com lack libmfx (QuickSync) support.
@@ -66,7 +63,7 @@ docker build --build-arg FFMPEG_STATIC_VERSION=8.0 -t fluster:ffmpeg8 -f docker/
 
 # Or manually specify version
 docker build \
-  --build-arg BUILD_FFMPEG_FROM_SOURCE=1 \
+  --build-arg FFMPEG_INSTALL_METHOD=source \
   --build-arg FFMPEG_VERSION=8.0 \
   -t fluster:ffmpeg-full \
   -f docker/Dockerfile .
@@ -157,14 +154,11 @@ Build FFmpeg from source with all backends (recommended for production):
 By default, FFmpeg from Ubuntu repositories is used. To test with newer FFmpeg versions (e.g., for future VVC support), use static binaries:
 
 ```bash
-# Build with FFmpeg 7.0 static binary
-docker build --build-arg FFMPEG_STATIC_VERSION=7.0 -t fluster:ffmpeg7 -f docker/Dockerfile .
-
-# Build with FFmpeg 8.0 static binary
-docker build --build-arg FFMPEG_STATIC_VERSION=8.0 -t fluster:ffmpeg8 -f docker/Dockerfile .
+# Build with FFmpeg static binary
+docker build --build-arg FFMPEG_INSTALL_METHOD=static -t fluster:ffmpeg-static -f docker/Dockerfile .
 
 # Verify version
-docker run --rm fluster:ffmpeg7 ffmpeg -version | head -1
+docker run --rm fluster:ffmpeg-static ffmpeg -version | head -1
 ```
 
 **Note:** Static binaries may have limited hardware acceleration support compared to system packages. Use only when testing specific features not available in system FFmpeg.

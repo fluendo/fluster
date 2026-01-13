@@ -44,8 +44,8 @@ Usage: $0 [OPTIONS] [COMMAND]
 Build Options:
   --ubuntu VERSION      Ubuntu version: 20.04, 22.04, or 24.04 (default: 24.04)
   --build-ffmpeg        Build FFmpeg from source (VAAPI, VDPAU, QuickSync - no NVDEC/CUDA)
-  --ffmpeg-static       Use static FFmpeg binary (default version: 8.0)
-  --ffmpeg-version      Specify FFmpeg version for --build-ffmpeg or --ffmpeg-static
+  --ffmpeg-static       Use static FFmpeg binary (latest version in https://johnvansickle.com/ffmpeg)
+  --ffmpeg-version      Specify FFmpeg version for --build-ffmpeg
   --build-gstreamer     Build GStreamer from source (useful for new versions on old distros)
   --gstreamer-version   Specify GStreamer version for --build-gstreamer (default: 1.24.2)
   --rebuild             Force rebuilding of Docker image
@@ -70,7 +70,6 @@ Examples:
   $0 --build-ffmpeg --rebuild list -c
   $0 --build-ffmpeg --ffmpeg-version 7.1 --rebuild list -c
   $0 --ffmpeg-static --rebuild list -c
-  $0 --ffmpeg-static --ffmpeg-version 7.0 --rebuild list -c
   $0 --build-gstreamer --gstreamer-version 1.24.10 --rebuild list -c
   $0 --ubuntu 20.04 --build-gstreamer --rebuild list -c
   $0 --ubuntu 22.04 --rebuild list -c
@@ -121,7 +120,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         --ffmpeg-static)
             FFMPEG_INSTALL_METHOD="static"
-            FFMPEG_VERSION="${2:-8.0}"
             shift
             if [[ $# -gt 0 && ! "$1" =~ ^-- ]]; then
                 shift
@@ -184,7 +182,7 @@ if [[ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]] || [ -n "$REBUIL
     if [ "$FFMPEG_INSTALL_METHOD" = "source" ]; then
         echo -e "${BLUE}Building FFmpeg ${FFMPEG_VERSION} from source with all backends...${NC}"
     elif [ "$FFMPEG_INSTALL_METHOD" = "static" ]; then
-        echo -e "${BLUE}Using static FFmpeg ${FFMPEG_VERSION} binary...${NC}"
+        echo -e "${BLUE}Using latest static FFmpeg binary...${NC}"
     else
         echo -e "${BLUE}Using system FFmpeg packages...${NC}"
     fi
@@ -265,6 +263,8 @@ DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -v $PROJECT_ROOT/test_suites:/fluster/test_sui
 DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e TERM=xterm-256color"
 DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e LANG=C.UTF-8"
 DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e LC_ALL=C.UTF-8"
+# X11 forwarding for VDPAU (requires Xvfb on host)
+[ -d /tmp/.X11-unix ] && DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=${DISPLAY:-:99}"
 [ -n "$GPU_ENV" ] && DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS $GPU_ENV"
 DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS --workdir /fluster"
 

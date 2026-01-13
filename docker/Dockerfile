@@ -21,12 +21,16 @@
 ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
+# A user is required by Ubuntu 24.04 to install meson as non-root
+ARG USERNAME='mock'
+ARG PASSWORD='mock'
+
 # Re-declare args after FROM to make them available in build stages
 ARG UBUNTU_VERSION
 ARG NVIDIA_DRIVER_VERSION
 # FFmpeg installation method: "system" (default), "static", "source"
 ARG FFMPEG_INSTALL_METHOD=system
-# FFmpeg version for "static" and "source" methods
+# FFmpeg version for "source" method
 ARG FFMPEG_VERSION=8.0
 # GStreamer installation method: "system" (default), "source"
 ARG GSTREAMER_INSTALL_METHOD=system
@@ -47,6 +51,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     ca-certificates \
     software-properties-common \
+    sudo \
     python3 \
     python3-pip \
     python3-venv \
@@ -190,12 +195,12 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
       && ldconfig \
       && cd / && rm -rf /tmp/ffmpeg /tmp/ffmpeg_sources; \
     elif [ "${FFMPEG_INSTALL_METHOD}" = "static" ]; then \
-      wget -q https://johnvansickle.com/ffmpeg/releases/ffmpeg-${FFMPEG_VERSION}-linux64-gpl.tar.xz && \
-      tar -xf ffmpeg-${FFMPEG_VERSION}-linux64-gpl.tar.xz && \
-      mv ffmpeg-${FFMPEG_VERSION}-linux64-gpl /opt/ffmpeg && \
+      wget -q https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz && \
+      tar -xf ffmpeg-release-amd64-static.tar.xz && \
+      mv ffmpeg-*-amd64-static /opt/ffmpeg && \
       ln -sf /opt/ffmpeg/ffmpeg /usr/local/bin/ffmpeg && \
       ln -sf /opt/ffmpeg/ffprobe /usr/local/bin/ffprobe && \
-      rm ffmpeg-${FFMPEG_VERSION}-linux64-gpl.tar.xz; \
+      rm ffmpeg-release-amd64-static.tar.xz; \
     else \
       apt-get update && \
       apt-get install -y --no-install-recommends \
@@ -207,6 +212,39 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
       && rm -rf /var/lib/apt/lists/*; \
     fi
 
+# Update python packages depending on Ubuntu version
+RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
+      if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
+        pip3 install --upgrade pip setuptools; \
+        apt update && apt install -y pipx ninja-build && rm -rf /var/lib/apt/lists/*; \
+      else \
+        pip3 install --upgrade pip setuptools meson; \
+      fi; \
+    fi
+
+
+# Ubuntu 24.04: Remove default user
+RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu &>/dev/null;; then \
+      userdel -r ubuntu; \
+    fi
+
+# Create USERNAME user and add it to sudoers without password
+RUN addgroup ${USERNAME} && \
+    useradd -rm -s /bin/bash -m -g ${USERNAME} -u 1000 -G sudo ${USERNAME} && \
+    echo ${USERNAME}':'${PASSWORD} | chpasswd && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers;
+
+# Change to USERNAME user
+USER ${USERNAME}
+
+# Set PATH to include pipx bin directory - only necessary for meson in Ubuntu 24.04
+ARG PATH="/home/${USERNAME}/.local/bin:${PATH}"
+
+# Ubuntu 24.04: install python packages for non-root user
+RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && [ "${UBUNTU_VERSION}" = "24.04" ]; then \
+      echo "export PATH=/home/${USERNAME}/.local/bin:\${PATH}" >> /home/${USERNAME}/.bashrc; \
+      pipx install meson; \
+    fi
+
 # GStreamer installation (2 methods: system, source)
 # Method "source": Build GStreamer from source (needed for new versions on old distros)
 #   Note: gst-libav is disabled when building from source to avoid FFmpeg API incompatibilities
@@ -214,7 +252,7 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
 #         Use GStreamer native decoders or FFmpeg directly for decoding.
 # Method "system": Install GStreamer from system packages (default)
 RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
-      apt-get update && apt-get install -y --no-install-recommends \
+      sudo apt-get update && sudo apt-get install -y --no-install-recommends \
         build-essential \
         cmake \
         ninja-build \
@@ -228,6 +266,7 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libpthread-stubs0-dev \
         libva-dev \
         libvdpau-dev \
+        libmfx-dev \
         libx11-dev \
         libxext-dev \
         libxv-dev \
@@ -240,8 +279,8 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libvpx-dev \
         libpng-dev \
         libjpeg-dev \
-      && rm -rf /var/lib/apt/lists/* \
-      && pip3 install --upgrade pip setuptools meson \
+        libxml2-dev \
+      && sudo rm -rf /var/lib/apt/lists/* \
       && mkdir -p /tmp/gstreamer && cd /tmp/gstreamer \
       && curl -L "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GSTREAMER_VERSION}/gstreamer-${GSTREAMER_VERSION}.tar.gz" | tar xz \
       && cd gstreamer-${GSTREAMER_VERSION} \
@@ -267,15 +306,15 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         -Dintrospection=disabled \
         -Ddoc=disabled \
         -Dqt5=disabled \
-        -Dqt6=disabled \
       && meson compile -C build -j$(nproc) \
-      && meson install -C build \
-      && ldconfig \
-      && cd / && rm -rf /tmp/gstreamer \
-      && apt-get purge -y 'libgstreamer*' 'gstreamer1.0-*' 2>/dev/null || true \
-      && apt-get autoremove -y 2>/dev/null || true; \
+      && sudo ninja install -C build \
+      && sudo ldconfig \
+      && cd / && sudo rm -rf /tmp/gstreamer \
+      && sudo apt-get purge -y 'libgstreamer*' 'gstreamer1.0-*' 2>/dev/null || true \
+      && sudo apt-get autoremove -y 2>/dev/null || true; \
     else \
-      apt-get update && apt-get install -y \
+      sudo DEBIAN_FRONTEND=noninteractive apt-get update && \
+      sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
         libgstreamer1.0-dev \
         libgstreamer-plugins-base1.0-dev \
         libgstreamer-plugins-bad1.0-dev \
@@ -286,10 +325,12 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         gstreamer1.0-libav \
         gstreamer1.0-tools \
         gstreamer1.0-vaapi \
-        && (apt-get install -y gstreamer1.0-va || true) \
-        && (apt-get install -y gstreamer1.0-msdk || true) \
-        && rm -rf /var/lib/apt/lists/*; \
+        && (sudo apt-get install -y gstreamer1.0-va || true) \
+        && (sudo apt-get install -y gstreamer1.0-msdk || true) \
+        && sudo rm -rf /var/lib/apt/lists/*; \
     fi
+
+USER root
 
 # Set library paths - /usr/local MUST come first to prioritize compiled versions
 ENV LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/lib/x86_64-linux-gnu \
