@@ -224,7 +224,7 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
 
 
 # Ubuntu 24.04: Remove default user
-RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu &>/dev/null;; then \
+RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu &>/dev/null; then \
       userdel -r ubuntu; \
     fi
 
