@@ -41,8 +41,8 @@ ifneq ($(OS),Windows_NT)
 	$(FLUSTER) download dummy non_existing_test_suite -k; test $$? -ne 0
 	$(FLUSTER) download dummy dummy_download_fail -k; test $$? -ne 0
 	$(FLUSTER) download H264-min H265-min -k
-	$(FLUSTER) run -ts H264-min -d GStreamer-H.264-Libav-Gst1.0 FFmpeg-H.264 -s
-	$(FLUSTER) run -ts H265-min -d GStreamer-H.265-Libav-Gst1.0 FFmpeg-H.265 -s
+	$(FLUSTER) run -ts H264-min -d GStreamer-H.264-Libav FFmpeg-H.264 -s
+	$(FLUSTER) run -ts H265-min -d GStreamer-H.265-Libav FFmpeg-H.265 -s
 ifeq ($(KERNEL_NAME), Linux)
 	$(FLUSTER) download AV1-min VP8-min VP9-min -k
 	$(FLUSTER) run -ts AV1-min -d libaom-AV1 -s
