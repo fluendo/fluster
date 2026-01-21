@@ -44,6 +44,7 @@ class TestVector:
         output_format: OutputFormat,
         result: str,
         profile: Optional[Profile] = None,
+        optional_params: Optional[Dict[str, Any]] = None,
     ):
         # JSON members
         self.name = name
@@ -51,6 +52,7 @@ class TestVector:
         self.source_checksum = source_checksum
         self.input_file = input_file
         self.profile = profile
+        self.optional_params = optional_params
         self.output_format = output_format
         self.result = result
 
@@ -84,6 +86,11 @@ class TestVector:
             data["profile"] = str(self.profile.value)
         else:
             data.pop("profile")
+        if self.optional_params is not None:
+            data["optional_params"] = self.optional_params
+        else:
+            data.pop("optional_params")
+
         return data
 
     def __str__(self) -> str:
@@ -92,6 +99,7 @@ class TestVector:
             f"            Source: {self.source}\n"
             f"            Input: {self.input_file}\n"
             f"            Profile: {self.profile}\n"
+            f"            Options: {self.optional_params}\n"
             f"            Result: {self.result}"
         )
         return ret

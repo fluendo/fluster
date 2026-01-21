@@ -16,6 +16,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from functools import lru_cache
+from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -50,6 +51,7 @@ class ChromiumH264(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         return str(main(input_filepath))
 
