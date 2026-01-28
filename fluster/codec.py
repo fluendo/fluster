@@ -30,6 +30,7 @@ class Codec(Enum):
     VP9 = "VP9"
     AAC = "AAC"
     AV1 = "AV1"
+    AC4 = "AC4"
     MPEG2_VIDEO = "MPEG2_VIDEO"
     MPEG4_VIDEO = "MPEG4_VIDEO"
 
