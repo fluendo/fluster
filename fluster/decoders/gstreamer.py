@@ -853,7 +853,7 @@ class FluendoFluAC4DecGst10Decoder(GStreamer10Audio):
         self.decoder_bin = "fluac4dec"
         self.provider = "Fluendo"
         self.api = "SW"
-        self.parser = "capsfilter"
+        self.parser = "audio/x-ac4"
         super().__init__()
 
 
