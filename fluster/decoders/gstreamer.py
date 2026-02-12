@@ -33,7 +33,7 @@ from fluster.utils import (
 )
 
 PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
-PIPELINE_TPL_FLU_H266_DEC = "{} --no-fault filesrc location={} ! {} ! {} ! {} {}"
+PIPELINE_TPL_FLU_H266_DEC = "{} --no-fault filesrc location={} {} ! {} ! {} ! {} {}"
 
 
 @lru_cache(maxsize=None)
@@ -791,9 +791,11 @@ class FluendoVVCdeCH266Decoder(GStreamer10Video):
     ) -> str:
         caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
         output = f"location={output_filepath}" if output_filepath else ""
+
         return PIPELINE_TPL_FLU_H266_DEC.format(
             self.cmd,
             input_filepath,
+            "! h266parse " if gst_element_exists("h266parse") else "",
             self.decoder_bin,
             caps,
             self.sink,
