@@ -19,64 +19,19 @@ import copy
 import fnmatch
 import json
 import os.path
-import sys
-import zipfile
 from enum import Enum
 from functools import lru_cache
 from multiprocessing import Pool
 from shutil import rmtree
 from time import perf_counter
-from typing import Any, Dict, List, Optional, Set, Type, cast
+from typing import Dict, List, Optional, Set, Type, cast
 from unittest.result import TestResult
 
-from fluster import utils
+from fluster import download_manager
 from fluster.codec import Codec
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.test import MD5ComparisonTest, PixelComparisonTest, ReferenceComparisonTest, SampleComparisonTest, Test
 from fluster.test_vector import TestVector, TestVectorResult
-
-
-class DownloadWork:
-    """Context to pass to download worker"""
-
-    def __init__(
-        self,
-        out_dir: str,
-        verify: bool,
-        extract_all: bool,
-        keep_file: bool,
-        test_suite_name: str,
-        retries: int,
-    ):
-        self.out_dir = out_dir
-        self.verify = verify
-        self.extract_all = extract_all
-        self.keep_file = keep_file
-        self.test_suite_name = test_suite_name
-        self.retries = retries
-
-    # This is added to avoid having to create an extra ancestor class
-    def set_test_vector(self, test_vector: TestVector) -> None:
-        """Setter function for member variable test vector"""
-
-        self.test_vector = test_vector
-
-
-class DownloadWorkSingleArchive(DownloadWork):
-    """Context to pass to single archive download worker"""
-
-    def __init__(
-        self,
-        out_dir: str,
-        verify: bool,
-        extract_all: bool,
-        keep_file: bool,
-        test_suite_name: str,
-        test_vectors: Dict[str, TestVector],
-        retries: int,
-    ):
-        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries)
-        self.test_vectors = test_vectors
 
 
 class Context:
@@ -210,155 +165,17 @@ class TestSuite:
             json.dump(data, json_file, indent=4)
             json_file.write("\n")
 
-    @staticmethod
-    def _download_single_test_vector(ctx: DownloadWork) -> None:
-        """Download and extract a single test vector"""
-        dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, ctx.test_vector.name)
-        dest_path = os.path.join(dest_dir, os.path.basename(ctx.test_vector.source))
-        os.makedirs(dest_dir, exist_ok=True)
+    def download_with_default_manager(self, jobs: int, *, extract_all: bool = False) -> None:
+        """Download via a fresh DownloadManager configured for generator scripts.
 
-        if (
-            ctx.verify
-            and os.path.exists(dest_path)
-            and ctx.test_vector.source_checksum == utils.file_checksum(dest_path)
-        ):
-            # Remove file only in case the input file was extractable.
-            # Otherwise, we'd be removing the original file we want to work
-            # with every even time we execute the download subcommand.
-            if utils.is_extractable(dest_path) and not ctx.keep_file:
-                os.remove(dest_path)
-            return
-
-        print(f"\tDownloading test vector {ctx.test_vector.name} from {ctx.test_vector.source}")
-        utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries)
-
-        if ctx.test_vector.source_checksum != "__skip__":
-            checksum = utils.file_checksum(dest_path)
-            if ctx.test_vector.source_checksum != checksum:
-                raise Exception(
-                    f"Checksum mismatch for {ctx.test_vector.name}: {checksum} instead of "
-                    f"{ctx.test_vector.source_checksum}"
-                )
-
-        if utils.is_extractable(dest_path):
-            print(f"\tExtracting test vector {ctx.test_vector.name} to {dest_dir}")
-            utils.extract(dest_path, dest_dir, file=ctx.test_vector.input_file if not ctx.extract_all else None)
-            if not ctx.keep_file:
-                os.remove(dest_path)
-
-    @staticmethod
-    def _download_single_archive(ctx: DownloadWorkSingleArchive) -> None:
-        """Download a single archive containing many test vectors and extract them"""
-        first_tv = ctx.test_vectors[next(iter(ctx.test_vectors))]
-        dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name)
-        dest_path = os.path.join(dest_dir, os.path.basename(first_tv.source))
-        os.makedirs(dest_dir, exist_ok=True)
-
-        # Clean up existing corrupt source file
-        if (
-            ctx.verify
-            and os.path.exists(dest_path)
-            and utils.is_extractable(dest_path)
-            and first_tv.source_checksum != utils.file_checksum(dest_path)
-        ):
-            os.remove(dest_path)
-
-        print(f"\tDownloading source file from {first_tv.source}")
-        utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries)
-
-        # Check that source file was downloaded correctly
-        if first_tv.source_checksum != "__skip__":
-            checksum = utils.file_checksum(dest_path)
-            if first_tv.source_checksum != checksum:
-                raise Exception(
-                    f"Checksum mismatch for source file {os.path.basename(first_tv.source)}: {checksum} "
-                    f"instead of '{first_tv.source_checksum}'"
-                )
-
-        try:
-            with zipfile.ZipFile(dest_path, "r") as zip_file:
-                print(f"\tExtracting test vectors from {os.path.basename(first_tv.source)}")
-                for tv in ctx.test_vectors.values():
-                    if tv.input_file in zip_file.namelist():
-                        zip_file.extract(tv.input_file, dest_dir)
-                    else:
-                        print(
-                            f"WARNING: test vector {tv.input_file} not found inside {os.path.basename(first_tv.source)}"
-                        )
-        except zipfile.BadZipFile as bad_zip_error:
-            os.remove(dest_path)
-            raise Exception(f"{dest_path} could not be opened as zip file. File was deleted") from bad_zip_error
-
-        # Remove source file, if applicable
-        if not ctx.keep_file:
-            os.remove(dest_path)
-
-    def download(
-        self,
-        jobs: int,
-        out_dir: str,
-        verify: bool,
-        extract_all: bool = False,
-        keep_file: bool = False,
-        retries: int = 2,
-    ) -> None:
-        """Download the test suite"""
-        os.makedirs(out_dir, exist_ok=True)
-        unique_sources = {tv.source for tv in self.test_vectors.values()}
-
-        if (
-            len(unique_sources) == 1
-            and len(self.test_vectors) > 1
-            and utils.is_extractable(os.path.basename(next(iter(unique_sources))))
-        ):
-            # Download test suite of multiple test vectors from a single archive
-            print(f"Downloading test suite {self.name} using 1 job (single archive)")
-            dwork_single = DownloadWorkSingleArchive(
-                out_dir, verify, extract_all, keep_file, self.name, self.test_vectors, retries
-            )
-            self._download_single_archive(dwork_single)
-        elif len(unique_sources) == 1 and len(self.test_vectors) == 1:
-            # Download test suite of single test vector
-            print(f"Downloading test suite {self.name} using 1 job (single file)")
-            single_tv = next(iter(self.test_vectors.values()))
-            dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
-            dwork.set_test_vector(single_tv)
-            self._download_single_test_vector(dwork)
-        else:
-            # Download test suite of multiple test vectors
-            print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
-            error_occurred = False
-            with Pool(jobs) as pool:
-
-                def _callback_error(err: Any) -> None:
-                    nonlocal error_occurred
-                    error_occurred = True
-                    print(f"\nError downloading -> {err}\n")
-                    pool.terminate()
-
-                downloads = []
-                for tv in self.test_vectors.values():
-                    dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
-                    dwork.set_test_vector(tv)
-                    downloads.append(
-                        pool.apply_async(
-                            self._download_single_test_vector,
-                            args=(dwork,),
-                            error_callback=_callback_error,
-                        )
-                    )
-
-                pool.close()
-                pool.join()
-
-            if error_occurred:
-                sys.exit("Some download failed")
-            else:
-                for job in downloads:
-                    if not job.successful():
-                        sys.exit("Some download failed")
-
-        print("All downloads finished")
+        Verify off, keep archives, default retries — the common settings shared
+        by the scripts/gen_*.py. Convenience wrapper so they don't each repeat
+        the manager boilerplate."""
+        cache_dir = os.path.join(self.resources_dir, ".cache")
+        with download_manager.DownloadManager(
+            cache_dir=cache_dir, verify=False, keep_file=True, retries=2, max_pool_workers=jobs
+        ) as manager:
+            manager.download_test_suite(self, jobs, self.resources_dir, extract_all=extract_all)
 
     @staticmethod
     def _rename_test(test: Test, module: str, qualname: str) -> None:

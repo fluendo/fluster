@@ -111,6 +111,16 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    files. You can change the number of parallel processes used with `-j`. It
    defaults to 2x number of logical cores.
 
+   Downloaded archives are cached in `resources/.cache/` during the run,
+   deduplicated across test suites, and downloaded in parallel. HTTP concurrency is
+   capped at 8 by default to avoid hammering remote mirrors. With `--keep`,
+   the cache is preserved after the run.
+
+   Note: running multiple `fluster.py download` instances against the same
+   `resources/` directory concurrently is not supported — one instance's
+   cleanup may remove files another is still extracting. Use `--keep` or
+   point each instance at a separate resource dir if you need parallel runs.
+
    Use the `-c/--codec` option to download test suites for specific codecs:
    - `./fluster.py download -c H.264,H.265` downloads all H.264 and H.265 test suites
    - `./fluster.py download AV1-TEST-VECTORS VP9-TEST-VECTORS` downloads the specific AV1-TEST-VECTORS and VP9-TEST-VECTORS test suite

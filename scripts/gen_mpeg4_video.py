@@ -28,9 +28,9 @@ from urllib.parse import urljoin
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat, Profile
+from fluster.download_manager import create_enhanced_opener
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector
-from fluster.utils import create_enhanced_opener
 
 BASE_URL = "https://standards.iso.org/ittf/PubliclyAvailableStandards/"
 RESOURCES = {
@@ -130,13 +130,7 @@ class MPEG4VIDEOGenerator:
                     test_suite.test_vectors[name] = test_vector
 
         if download:
-            test_suite.download(
-                jobs=jobs,
-                out_dir=test_suite.resources_dir,
-                verify=False,
-                extract_all=True,
-                keep_file=True,
-            )
+            test_suite.download_with_default_manager(jobs, extract_all=True)
 
         original_vectors = {
             name: {"source": vector.source, "source_checksum": vector.source_checksum}
