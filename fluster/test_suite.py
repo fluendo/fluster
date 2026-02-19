@@ -19,12 +19,13 @@ import copy
 import fnmatch
 import json
 import os.path
+import subprocess
 import sys
 import zipfile
 from enum import Enum
 from functools import lru_cache
 from multiprocessing import Pool
-from shutil import rmtree
+from shutil import move, rmtree
 from time import perf_counter
 from typing import Any, Dict, List, Optional, Set, Type, cast
 from unittest.result import TestResult
@@ -36,29 +37,40 @@ from fluster.test import MD5ComparisonTest, PixelComparisonTest, ReferenceCompar
 from fluster.test_vector import TestVector, TestVectorResult
 
 
+class _CorruptCacheError(Exception):
+    """Raised by an extract worker when the cached archive is unusable.
+
+    The worker runs in a multiprocessing.Pool subprocess and cannot mutate
+    the parent's DownloadManager directly; it raises this instead so the
+    parent can invalidate the URL and re-download on the next run.
+    """
+
+    def __init__(self, source_url: str, original: Exception):
+        # Pass both args to Exception so __reduce__ pickles them and the
+        # exception round-trips through multiprocessing.Pool's result queue.
+        super().__init__(source_url, original)
+        self.source_url = source_url
+        self.original = original
+
+    def __str__(self) -> str:
+        return f"corrupt cache for {self.source_url}: {self.original}"
+
+
 class DownloadWork:
     """Context to pass to download worker"""
 
     def __init__(
         self,
         out_dir: str,
-        verify: bool,
         extract_all: bool,
-        keep_file: bool,
         test_suite_name: str,
-        retries: int,
+        archive_path: str,
+        test_vector: Optional[TestVector] = None,
     ):
         self.out_dir = out_dir
-        self.verify = verify
         self.extract_all = extract_all
-        self.keep_file = keep_file
         self.test_suite_name = test_suite_name
-        self.retries = retries
-
-    # This is added to avoid having to create an extra ancestor class
-    def set_test_vector(self, test_vector: TestVector) -> None:
-        """Setter function for member variable test vector"""
-
+        self.archive_path = archive_path
         self.test_vector = test_vector
 
 
@@ -68,15 +80,17 @@ class DownloadWorkSingleArchive(DownloadWork):
     def __init__(
         self,
         out_dir: str,
-        verify: bool,
         extract_all: bool,
-        keep_file: bool,
         test_suite_name: str,
         test_vectors: Dict[str, TestVector],
-        retries: int,
+        archive_path: str,
+        source_url: str,
+        download_manager: "utils.DownloadManager",
     ):
-        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries)
+        super().__init__(out_dir, extract_all, test_suite_name, archive_path)
         self.test_vectors = test_vectors
+        self.source_url = source_url
+        self.download_manager = download_manager
 
 
 class Context:
@@ -209,95 +223,100 @@ class TestSuite:
 
     @staticmethod
     def _download_single_test_vector(ctx: DownloadWork) -> None:
-        """Download and extract a single test vector"""
+        """Extract a single test vector from a pre-downloaded archive.
+
+        The DownloadManager always provides ctx.archive_path for extractable
+        sources; non-extractable single-file sources skip this worker entirely
+        (see TestSuite.download).
+
+        Concurrency note: in the multi-TV branch this runs inside a
+        multiprocessing.Pool subprocess. Subprocesses get a fork-time copy of
+        the parent's DownloadManager, so any state mutation here (cache
+        bookkeeping, invalidation, etc.) does NOT propagate back to the
+        parent. Communicate failures by raising — the parent handles them via
+        the Pool's error_callback (e.g. _CorruptCacheError → manager
+        invalidation in TestSuite.download)."""
+        if ctx.test_vector is None:
+            raise ValueError("per-TV worker requires a test_vector")
+        if not ctx.archive_path:
+            raise ValueError("DownloadManager must provide archive_path")
         dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name, ctx.test_vector.name)
-        dest_path = os.path.join(dest_dir, os.path.basename(ctx.test_vector.source))
         os.makedirs(dest_dir, exist_ok=True)
 
-        if (
-            ctx.verify
-            and os.path.exists(dest_path)
-            and ctx.test_vector.source_checksum == utils.file_checksum(dest_path)
-        ):
-            # Remove file only in case the input file was extractable.
-            # Otherwise, we'd be removing the original file we want to work
-            # with every even time we execute the download subcommand.
-            if utils.is_extractable(dest_path) and not ctx.keep_file:
-                os.remove(dest_path)
-            return
-
-        print(f"\tDownloading test vector {ctx.test_vector.name} from {ctx.test_vector.source}")
-        utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries)
-
-        if ctx.test_vector.source_checksum != "__skip__":
-            checksum = utils.file_checksum(dest_path)
-            if ctx.test_vector.source_checksum != checksum:
-                raise Exception(
-                    f"Checksum mismatch for {ctx.test_vector.name}: {checksum} instead of "
-                    f"{ctx.test_vector.source_checksum}"
-                )
-
-        if utils.is_extractable(dest_path):
+        if utils.is_extractable(ctx.archive_path):
+            # Skip extraction if the target file is already on disk from a
+            # previous run. Trusts presence as proof of content; users can
+            # force re-extraction by removing the file (or the suite dir).
+            extracted_path = os.path.join(dest_dir, ctx.test_vector.input_file)
+            if not ctx.extract_all and os.path.exists(extracted_path):
+                print(f"\tSkipping extraction of {ctx.test_vector.name} (already extracted)")
+                return
             print(f"\tExtracting test vector {ctx.test_vector.name} to {dest_dir}")
-            utils.extract(dest_path, dest_dir, file=ctx.test_vector.input_file if not ctx.extract_all else None)
-            if not ctx.keep_file:
-                os.remove(dest_path)
+            try:
+                utils.extract(
+                    ctx.archive_path,
+                    dest_dir,
+                    file=ctx.test_vector.input_file if not ctx.extract_all else None,
+                )
+            except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
+                # Worker runs in a multiprocessing.Pool subprocess (or here in
+                # the main thread for the single-TV branch); raise so the
+                # parent can call manager.invalidate(source_url).
+                raise _CorruptCacheError(ctx.test_vector.source, exc) from exc
+        else:
+            # Raw (non-extractable) source file: move from the manager's cache
+            # into the suite dir so it's stored only once. Non-extractable
+            # files aren't shared across suites, so there's no dedup value in
+            # keeping the cache copy.
+            dest_path = os.path.join(dest_dir, os.path.basename(ctx.archive_path))
+            if os.path.exists(dest_path):
+                print(f"\tSkipping placement of {ctx.test_vector.name} (already exists)")
+            else:
+                print(f"\tPlacing test vector {ctx.test_vector.name} at {dest_path}")
+                move(ctx.archive_path, dest_path)
 
     @staticmethod
     def _download_single_archive(ctx: DownloadWorkSingleArchive) -> None:
-        """Download a single archive containing many test vectors and extract them"""
+        """Extract many test vectors from a pre-downloaded single archive.
+
+        The DownloadManager always provides ctx.archive_path."""
         first_tv = ctx.test_vectors[next(iter(ctx.test_vectors))]
         dest_dir = os.path.join(ctx.out_dir, ctx.test_suite_name)
-        dest_path = os.path.join(dest_dir, os.path.basename(first_tv.source))
         os.makedirs(dest_dir, exist_ok=True)
-
-        # Clean up existing corrupt source file
-        if (
-            ctx.verify
-            and os.path.exists(dest_path)
-            and utils.is_extractable(dest_path)
-            and first_tv.source_checksum != utils.file_checksum(dest_path)
-        ):
-            os.remove(dest_path)
-
-        print(f"\tDownloading source file from {first_tv.source}")
-        utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries)
-
-        # Check that source file was downloaded correctly
-        if first_tv.source_checksum != "__skip__":
-            checksum = utils.file_checksum(dest_path)
-            if first_tv.source_checksum != checksum:
-                raise Exception(
-                    f"Checksum mismatch for source file {os.path.basename(first_tv.source)}: {checksum} "
-                    f"instead of '{first_tv.source_checksum}'"
-                )
+        if not ctx.archive_path:
+            raise ValueError("DownloadManager must provide archive_path")
 
         try:
-            with zipfile.ZipFile(dest_path, "r") as zip_file:
-                print(f"\tExtracting test vectors from {os.path.basename(first_tv.source)}")
+            with zipfile.ZipFile(ctx.archive_path, "r") as zip_file:
+                print(f"\tExtracting test vectors from {utils.filename_from_url(first_tv.source)}")
+                namelist = zip_file.namelist()
                 for tv in ctx.test_vectors.values():
-                    if tv.input_file in zip_file.namelist():
+                    # Skip extraction if the target file is already on disk
+                    # from a previous run. Trusts presence as proof of content.
+                    if os.path.exists(os.path.join(dest_dir, tv.input_file)):
+                        continue
+                    if tv.input_file in namelist:
                         zip_file.extract(tv.input_file, dest_dir)
                     else:
                         print(
-                            f"WARNING: test vector {tv.input_file} not found inside {os.path.basename(first_tv.source)}"
+                            f"WARNING: test vector {tv.input_file} not found inside "
+                            f"{utils.filename_from_url(first_tv.source)}"
                         )
         except zipfile.BadZipFile as bad_zip_error:
-            os.remove(dest_path)
-            raise Exception(f"{dest_path} could not be opened as zip file. File was deleted") from bad_zip_error
-
-        # Remove source file, if applicable
-        if not ctx.keep_file:
-            os.remove(dest_path)
+            # Corrupt archive: ask the DownloadManager to invalidate its
+            # cache entry so the next run re-downloads from scratch.
+            ctx.download_manager.invalidate(ctx.source_url)
+            raise utils.BadArchiveError(
+                f"{ctx.archive_path} could not be opened as zip file (invalidated)"
+            ) from bad_zip_error
 
     def download(
         self,
         jobs: int,
         out_dir: str,
-        verify: bool,
+        *,
+        download_manager: utils.DownloadManager,
         extract_all: bool = False,
-        keep_file: bool = False,
-        retries: int = 2,
     ) -> None:
         """Download the test suite"""
         os.makedirs(out_dir, exist_ok=True)
@@ -306,37 +325,111 @@ class TestSuite:
         if (
             len(unique_sources) == 1
             and len(self.test_vectors) > 1
-            and utils.is_extractable(os.path.basename(next(iter(unique_sources))))
+            and utils.is_extractable(utils.filename_from_url(next(iter(unique_sources))))
         ):
             # Download test suite of multiple test vectors from a single archive
             print(f"Downloading test suite {self.name} using 1 job (single archive)")
+            first_tv = next(iter(self.test_vectors.values()))
+            shared_archive_path = download_manager.get(first_tv.source, first_tv.source_checksum)
             dwork_single = DownloadWorkSingleArchive(
-                out_dir, verify, extract_all, keep_file, self.name, self.test_vectors, retries
+                out_dir,
+                extract_all,
+                self.name,
+                self.test_vectors,
+                shared_archive_path,
+                first_tv.source,
+                download_manager,
             )
             self._download_single_archive(dwork_single)
         elif len(unique_sources) == 1 and len(self.test_vectors) == 1:
-            # Download test suite of single test vector
+            # Download test suite of single test vector (extractable or raw).
+            # The worker handles both cases: extract from archive, or copy
+            # the raw file from the cache into the suite dir.
             print(f"Downloading test suite {self.name} using 1 job (single file)")
             single_tv = next(iter(self.test_vectors.values()))
-            dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
-            dwork.set_test_vector(single_tv)
-            self._download_single_test_vector(dwork)
+            single_tv_archive_path = download_manager.get(single_tv.source, single_tv.source_checksum)
+            dwork = DownloadWork(
+                out_dir,
+                extract_all,
+                self.name,
+                single_tv_archive_path,
+                single_tv,
+            )
+            try:
+                self._download_single_test_vector(dwork)
+            except _CorruptCacheError as exc:
+                download_manager.invalidate(exc.source_url)
+                raise utils.BadArchiveError(
+                    f"corrupt cache for {exc.source_url} (invalidated, re-run to retry)"
+                ) from exc.original
+            # The worker move()s non-extractable raw sources out of the cache
+            # into the suite dir. Tell the manager so cleanup() doesn't later
+            # try to remove a path it no longer owns.
+            if not utils.is_extractable(single_tv_archive_path):
+                download_manager.release(single_tv.source)
         else:
-            # Download test suite of multiple test vectors
+            # Download test suite of multiple test vectors.
+            # Pre-download all unique source URLs in parallel (deduplicating
+            # via the thread-safe manager), then dispatch parallel workers that
+            # only extract from the pre-downloaded archives.
+            source_paths: Dict[str, str] = {}
+            unique_source_list = list(unique_sources)
+            # Map each unique URL to a representative checksum once (O(N)),
+            # so the per-URL pre-download lookup is O(1) instead of O(N).
+            url_checksum: Dict[str, str] = {}
+            for tv in self.test_vectors.values():
+                url_checksum.setdefault(tv.source, tv.source_checksum)
+
+            # Fast path: if every URL is already cached (e.g. cross-suite
+            # phase-2 in fluster.py pre-downloaded everything), skip the
+            # thread pool and short-circuit to the cached paths.
+            cached_paths = {url: download_manager.cached_path(url) for url in unique_source_list}
+            if all(p is not None for p in cached_paths.values()):
+                source_paths = {url: p for url, p in cached_paths.items() if p is not None}
+            else:
+                # Pre-download every unique URL via the manager's persistent
+                # pool. get() owns the per-URL retry budget, so a single call
+                # per URL is enough; get_many() returns errors instead of
+                # raising so we can fail the whole suite atomically below.
+                successes, persistent_errors = download_manager.get_many(url_checksum)
+                source_paths.update(successes)
+                if persistent_errors:
+                    for err_url, err_exc in persistent_errors:
+                        print(f"Error pre-downloading {err_url}: {err_exc}")
+                    raise RuntimeError(f"{len(persistent_errors)} URL(s) failed pre-download for suite {self.name}")
+
             print(f"Downloading test suite {self.name} using {jobs} parallel jobs")
             error_occurred = False
+            # Defer manager.invalidate() out of the Pool's result-handler
+            # thread; do the actual disk work after pool.join() to avoid
+            # serializing all failures behind a single lock + os.remove.
+            corrupted_urls: List[str] = []
             with Pool(jobs) as pool:
 
                 def _callback_error(err: Any) -> None:
                     nonlocal error_occurred
                     error_occurred = True
-                    print(f"\nError downloading -> {err}\n")
+                    if isinstance(err, _CorruptCacheError):
+                        corrupted_urls.append(err.source_url)
+                        print(
+                            f"\nCorrupt cached archive {err.source_url} "
+                            f"(will invalidate after job drain). "
+                            f"({err.original})\n"
+                        )
+                    else:
+                        print(f"\nError downloading -> {err}\n")
                     pool.terminate()
 
                 downloads = []
                 for tv in self.test_vectors.values():
-                    dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
-                    dwork.set_test_vector(tv)
+                    archive_path = source_paths[tv.source]
+                    dwork = DownloadWork(
+                        out_dir,
+                        extract_all,
+                        self.name,
+                        archive_path,
+                        tv,
+                    )
                     downloads.append(
                         pool.apply_async(
                             self._download_single_test_vector,
@@ -348,6 +441,9 @@ class TestSuite:
                 pool.close()
                 pool.join()
 
+            for corrupt_url in corrupted_urls:
+                download_manager.invalidate(corrupt_url)
+
             if error_occurred:
                 sys.exit("Some download failed")
             else:
@@ -356,6 +452,18 @@ class TestSuite:
                         sys.exit("Some download failed")
 
         print("All downloads finished")
+
+    def download_with_default_manager(self, jobs: int, *, extract_all: bool = False) -> None:
+        """Download via a fresh DownloadManager configured for generator scripts.
+
+        Verify off, keep archives, default retries — the common settings shared
+        by the scripts/gen_*.py. Convenience wrapper so they don't each repeat
+        the manager boilerplate."""
+        cache_dir = os.path.join(self.resources_dir, ".cache")
+        with utils.DownloadManager(
+            cache_dir=cache_dir, verify=False, keep_file=True, retries=2, max_pool_workers=jobs
+        ) as manager:
+            self.download(jobs, self.resources_dir, extract_all=extract_all, download_manager=manager)
 
     @staticmethod
     def _rename_test(test: Test, module: str, qualname: str) -> None:

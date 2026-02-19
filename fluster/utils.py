@@ -28,19 +28,64 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 import wave
 import zipfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
-from threading import Lock
-from typing import Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Type
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
-download_lock = Lock()
+# Pre-download thread-pool ceiling. HTTP concurrency is capped lower by
+# DownloadManager's BoundedSemaphore (default 8); the surplus (2x) lets a
+# waiting thread grab a freed slot without spinning up a new worker.
+MAX_PREDOWNLOAD_POOL_WORKERS = 16
+
+# Serialize concurrent progress-bar prints so lines don't garble under the
+# ThreadPoolExecutor pre-download.
+_print_lock = threading.Lock()
+
+
+def _locked_print(msg: str) -> None:
+    """Print *msg* under the shared print lock."""
+    with _print_lock:
+        print(msg)
+
+
+def filename_from_url(url: str) -> str:
+    """Return a safe filename from *url*, stripping query string and fragment.
+
+    Plain os.path.basename on a URL keeps the query string (e.g. a signed
+    GCS/S3 URL ending in "?X-Amz-Signature=..."), which then wrecks suffix
+    checks like is_extractable() and leaves odd filenames on disk.
+
+    Raises ValueError if the URL has no usable filename component (e.g.
+    "https://host/" or "https://host"). Catching this here surfaces a
+    clear error instead of an opaque IsADirectoryError further downstream.
+    """
+    filename = os.path.basename(urllib.parse.urlsplit(url).path)
+    if not filename:
+        raise ValueError(f"URL {url!r} has no filename component")
+    return filename
+
+
+class ChecksumMismatchError(Exception):
+    """Downloaded file's checksum does not match the expected value."""
+
+
+class BadArchiveError(Exception):
+    """Downloaded archive is corrupt or unreadable."""
+
+
+# Errors that make further retries pointless: the remote content genuinely
+# differs from the expected checksum, so retrying just re-downloads the same
+# wrong file.
+_NON_RETRYABLE_DOWNLOAD_ERRORS = (ChecksumMismatchError,)
 
 
 def create_enhanced_opener() -> urllib.request.OpenerDirector:
@@ -119,7 +164,7 @@ def _update_progress_bar(
             else:
                 progress_bar = f"{size_info} | {_format_bytes(int(rate))}/s"
 
-            print(f"\t{filename:<40} {progress_bar}")
+            _locked_print(f"\t{filename:<40} {progress_bar}")
 
             return current_time
     return last_update_time
@@ -159,15 +204,17 @@ def download(
     timeout: int = 300,
     chunk_size: int = 2048 * 2048,  # 4MB
 ) -> None:
-    """Downloads a file to a directory with a mutex lock
-    to avoid conflicts and retries with exponential backoff."""
+    """Downloads a file to a directory with retries and full-jitter backoff.
+
+    Between attempts it sleeps a uniform random delay in [1, 2**attempt)
+    seconds, so the backoff window grows exponentially while the actual
+    wait is randomized (AWS-style "full jitter")."""
     os.makedirs(dest_dir, exist_ok=True)
-    filename = os.path.basename(url)
+    filename = filename_from_url(url)
     dest_path = os.path.join(dest_dir, filename)
     for attempt in range(max_retries):
         try:
-            with download_lock:
-                _download_simple(url, dest_path, filename, timeout, chunk_size)
+            _download_simple(url, dest_path, filename, timeout, chunk_size)
             break
         except (
             urllib.error.URLError,
@@ -186,6 +233,271 @@ def download(
                 time.sleep(wait_time)
             else:
                 raise RuntimeError(f"Failed to download {url} after {max_retries} attempts: {e}") from e
+
+
+class DownloadManager:
+    """Centralized download manager that ensures each URL is downloaded at most once.
+
+    Thread-safe: multiple threads may call get() concurrently. If the same URL
+    is requested by multiple threads, only one performs the download while
+    the others wait for the result. Archives managed by this class are cleaned
+    up via cleanup() unless keep_file is set.
+    """
+
+    def __init__(
+        self,
+        cache_dir: str,
+        verify: bool,
+        keep_file: bool,
+        retries: int,
+        max_concurrent_downloads: int = 8,
+        max_pool_workers: int = MAX_PREDOWNLOAD_POOL_WORKERS,
+    ):
+        self._cache_dir = cache_dir
+        self._cache: Dict[str, str] = {}
+        self._verify = verify
+        self._keep_file = keep_file
+        self._retries = retries
+        self._managed_files: List[str] = []
+        self._lock = threading.Lock()
+        self._in_progress: Dict[str, threading.Event] = {}
+        self._errors: Dict[str, Exception] = {}
+        self._attempts: Dict[str, int] = {}
+        # Cap concurrent HTTP downloads across all callers. Browsers typically
+        # use 6-8 connections per host; keep that order of magnitude regardless
+        # of how many extraction workers the CLI spins up.
+        self._download_slots = threading.BoundedSemaphore(max(1, max_concurrent_downloads))
+        # Single persistent pool that drives get_many(). The fan-out width is a
+        # property of the manager, not of each batch; the BoundedSemaphore above
+        # still caps actual HTTP concurrency underneath. Shut down in __exit__.
+        workers = max(1, min(max_pool_workers, MAX_PREDOWNLOAD_POOL_WORKERS))
+        self._pool: Optional[ThreadPoolExecutor] = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="dl")
+
+    def get_many(self, url_checksums: Dict[str, str]) -> Tuple[Dict[str, str], List[Tuple[str, Exception]]]:
+        """Download many URLs concurrently via the manager's persistent pool.
+
+        Returns (successes, errors): successes maps every URL that
+        downloaded/cached OK to its local path; errors lists (url, exception)
+        for every URL that failed. Never raises for per-URL failures — the
+        caller decides policy. Fan-out width is fixed by the pool
+        (max_pool_workers); the BoundedSemaphore caps actual HTTP concurrency
+        underneath.
+        """
+        successes: Dict[str, str] = {}
+        errors: List[Tuple[str, Exception]] = []
+        if not url_checksums:
+            return successes, errors
+        if self._pool is None:
+            raise RuntimeError("get_many() called after the manager was closed")
+        futures = {self._pool.submit(self.get, url, checksum): url for url, checksum in url_checksums.items()}
+        for future in as_completed(futures):
+            url = futures[future]
+            try:
+                successes[url] = future.result()
+            except Exception as exc:  # noqa: BLE001 - report every per-URL failure
+                errors.append((url, exc))
+        return successes, errors
+
+    def get(self, url: str, source_checksum: str) -> str:
+        """Download *url* once into the session cache dir and return the local path.
+
+        Thread-safe. Concurrent calls for the same URL will block until
+        the first caller finishes, then reuse the cached result.
+        """
+        while True:
+            with self._lock:
+                # Poison the URL only after exceeding the per-URL retry budget.
+                if url in self._errors and self._attempts.get(url, 0) >= self._retries:
+                    raise RuntimeError(
+                        f"Download of {url} failed after {self._attempts[url]} attempts: {self._errors[url]}"
+                    ) from self._errors[url]
+
+                if url in self._cache and os.path.exists(self._cache[url]):
+                    _locked_print(f"\tReusing cached download for {filename_from_url(url)}")
+                    return self._cache[url]
+
+                if url in self._in_progress:
+                    event = self._in_progress[url]
+                else:
+                    event = threading.Event()
+                    self._in_progress[url] = event
+                    # Clear any previous error so this new attempt can run.
+                    self._errors.pop(url, None)
+                    break
+
+            event.wait()
+
+            with self._lock:
+                # A concurrent attempt completed. If it failed and the budget
+                # is exhausted, poison; otherwise loop and try again ourselves.
+                if url in self._errors and self._attempts.get(url, 0) >= self._retries:
+                    raise RuntimeError(
+                        f"Download of {url} failed after {self._attempts[url]} attempts: {self._errors[url]}"
+                    ) from self._errors[url]
+
+        done_event: Optional[threading.Event] = None
+        try:
+            result, downloaded_now = self._do_download(url, source_checksum)
+            with self._lock:
+                self._cache[url] = result
+                self._errors.pop(url, None)
+                self._attempts.pop(url, None)
+                if downloaded_now:
+                    self._managed_files.append(result)
+                done_event = self._in_progress.pop(url, None)
+            return result
+        except Exception as exc:
+            with self._lock:
+                self._errors[url] = exc
+                if isinstance(exc, _NON_RETRYABLE_DOWNLOAD_ERRORS):
+                    # Poison immediately — retrying won't help.
+                    self._attempts[url] = self._retries
+                else:
+                    self._attempts[url] = self._attempts.get(url, 0) + 1
+                done_event = self._in_progress.pop(url, None)
+            raise
+        finally:
+            if done_event is not None:
+                done_event.set()
+
+    def _do_download(self, url: str, source_checksum: str) -> Tuple[str, bool]:
+        """Perform the actual download/skip logic. Returns (path, downloaded_now)."""
+        dest_path = os.path.join(self._cache_dir, filename_from_url(url))
+        os.makedirs(self._cache_dir, exist_ok=True)
+
+        # When the cached file's checksum matches the expected one, skip
+        # redownload regardless of `verify`. For the CLI path, cleanup() wipes
+        # the cache dir at end-of-run; for scripts (keep_file=True), the
+        # checksum match is itself the safety gate.
+        skip = False
+        if os.path.exists(dest_path):
+            if source_checksum == "__skip__":
+                skip = True
+            elif source_checksum == file_checksum(dest_path):
+                skip = True
+            elif self._verify and is_extractable(dest_path):
+                os.remove(dest_path)
+
+        if skip:
+            _locked_print(f"\tSkipping download of {filename_from_url(url)} (already exists)")
+        else:
+            _locked_print(f"\tDownloading {filename_from_url(url)} from {url}")
+            # Hold an HTTP slot only for the network transfer; the checksum
+            # below runs unslotted (it needs no connection).
+            with self._download_slots:
+                # download() retries internally with backoff. Pass retries
+                # straight through; the per-URL budget in get() is the outer
+                # envelope. (Avoids the old retries**retries blow-up: -r 5
+                # used to mean 3125 attempts per URL.)
+                download(url, self._cache_dir, max_retries=self._retries)
+
+            if source_checksum != "__skip__":
+                checksum = file_checksum(dest_path)
+                if source_checksum != checksum:
+                    raise ChecksumMismatchError(
+                        f"Checksum mismatch for {filename_from_url(url)}: {checksum} instead of '{source_checksum}'"
+                    )
+
+        return dest_path, not skip
+
+    def is_poisoned(self, url: str) -> bool:
+        """True if this URL has exhausted its retry budget and will fail on next get()."""
+        with self._lock:
+            return url in self._errors and self._attempts.get(url, 0) >= self._retries
+
+    def cached_path(self, url: str) -> Optional[str]:
+        """Return the cached path for *url* if present and on disk, else None.
+
+        Read-only; never triggers a download or alters manager state. Useful
+        for callers that want to skip a redundant get() round-trip when an
+        earlier phase has already warmed the cache.
+        """
+        with self._lock:
+            path = self._cache.get(url)
+        if path is not None and os.path.exists(path):
+            return path
+        return None
+
+    def invalidate(self, url: str) -> None:
+        """Drop the cached download for *url* and delete the on-disk file.
+
+        Use when a consumer detects the cached archive is unusable (e.g.
+        a corrupt zip that passed the checksum). The next get() call will
+        re-download from scratch.
+        """
+        with self._lock:
+            path = self._cache.pop(url, None)
+            # Forget tracking so cleanup() won't later try to remove the
+            # re-downloaded file twice.
+            if path and path in self._managed_files:
+                self._managed_files.remove(path)
+        if path and os.path.exists(path):
+            with contextlib.suppress(OSError):
+                os.remove(path)
+
+    def release(self, url: str) -> None:
+        """Forget the cached path for *url* without deleting the file.
+
+        Use when a consumer has taken ownership of the cached file (e.g.
+        moved it elsewhere). Differs from invalidate() in that no on-disk
+        removal happens — the caller now owns the file and the manager
+        forgets it. Only meaningful in the parent process; subprocess
+        workers can't mutate the parent's manager state.
+        """
+        with self._lock:
+            path = self._cache.pop(url, None)
+            if path and path in self._managed_files:
+                self._managed_files.remove(path)
+
+    def __enter__(self) -> "DownloadManager":
+        return self
+
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Any,
+    ) -> None:
+        # Always tear the pool down so its threads never leak, even when an
+        # exception is propagating (the file cleanup below is what we skip on
+        # error, not the pool shutdown).
+        self._shutdown_pool()
+        # Skip file cleanup when an exception is propagating (especially
+        # KeyboardInterrupt mid-download), so the user can resume on the
+        # next run instead of starting over.
+        if exc_type is None:
+            self.cleanup()
+
+    def _shutdown_pool(self) -> None:
+        """Shut down the persistent download pool. Idempotent."""
+        if self._pool is not None:
+            self._pool.shutdown(wait=True)
+            self._pool = None
+
+    def cleanup(self) -> None:
+        """Remove downloaded archives unless keep_file was requested.
+
+        Not safe against concurrent DownloadManager instances sharing the
+        same cache_dir (across fluster processes). Each DownloadManager only
+        tracks files it downloaded itself, so cross-process corruption is
+        bounded, but callers running concurrent fluster sessions should
+        either use --keep or point at separate resource dirs.
+        """
+        # Direct callers (not via __exit__) still need the pool reclaimed.
+        self._shutdown_pool()
+        if self._keep_file:
+            return
+        for path in self._managed_files:
+            # Best-effort: a missing file (already removed) or one we can't
+            # delete shouldn't abort cleanup of the rest. Suppressing OSError
+            # also avoids a TOCTOU race against an exists() check.
+            with contextlib.suppress(OSError):
+                os.remove(path)
+        self._managed_files.clear()
+        # Best-effort: remove the cache dir if it is now empty. Fails quietly
+        # if the dir still contains files (e.g., concurrent fluster instance).
+        with contextlib.suppress(OSError):
+            os.rmdir(self._cache_dir)
 
 
 def file_checksum(path: str) -> str:

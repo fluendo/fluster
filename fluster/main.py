@@ -335,8 +335,8 @@ class Main:
         subparser.add_argument(
             "-k",
             "--keep",
-            help="keep original downloaded file after extracting. Only applicable to compressed "
-            "files such as .zip, .tar.gz, etc",
+            help="keep original downloaded file after extracting. Archives are stored in "
+            "<resources>/.cache/. Only applicable to compressed files (.zip, .tar.gz, etc)",
             action="store_true",
         )
         subparser.add_argument(

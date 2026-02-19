@@ -127,13 +127,7 @@ class AACGenerator:
 
         print(f"Download list of compressed bitstreams from {self.url_test_vectors}")
         if download:
-            test_suite.download(
-                jobs=jobs,
-                out_dir=test_suite.resources_dir,
-                verify=False,
-                extract_all=True,
-                keep_file=True,
-            )
+            test_suite.download_with_default_manager(jobs, extract_all=True)
 
         # MP4 test suites audio validation
         if test_suite.name in ["MPEG4_AAC-MP4", "MPEG4_AAC-MP4-ER"]:
