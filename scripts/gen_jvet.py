@@ -24,12 +24,11 @@ import re
 import sys
 import urllib.request
 from html.parser import HTMLParser
-from subprocess import CalledProcessError
 from typing import Any, List, Optional, Tuple
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
@@ -125,46 +124,59 @@ class JVETGenerator:
                 raise Exception(f"Bitstream file not found in {dest_dir}")
             test_vector.source_checksum = utils.file_checksum(dest_path)
             if self.use_ffprobe:
-                try:
-                    ffprobe = utils.normalize_binary_cmd("ffprobe")
-                    command = [
-                        ffprobe,
-                        "-v",
-                        "error",
-                        "-strict",
-                        "-2",
-                        "-select_streams",
-                        "v:0",
-                        "-show_entries",
-                        "stream=pix_fmt",
-                        "-of",
-                        "default=nokey=1:noprint_wrappers=1",
-                        absolute_input_path,
-                    ]
+                ffprobe = utils.normalize_binary_cmd("ffprobe")
+                command = [
+                    ffprobe,
+                    "-v",
+                    "error",
+                    "-strict",
+                    "-2",
+                    "-select_streams",
+                    "v:0",
+                    "-show_entries",
+                    "stream=profile,pix_fmt",
+                    "-of",
+                    "default=nokey=1:noprint_wrappers=1",
+                    absolute_input_path,
+                ]
 
-                    result = utils.run_command_with_output(command).splitlines()
-                    print(result)
-                    pix_fmt = result[0]
+                result = utils.run_command_with_output(command).splitlines()
+                profile = result[0]
+                pix_fmt = result[1]
+                try:
                     test_vector.output_format = OutputFormat[pix_fmt.upper()]
+                    if test_vector.output_format == OutputFormat.UNKNOWN:
+                        raise KeyError
                 except KeyError as key_err:
-                    exceptions = {"VPS_C_ERICSSON_1": OutputFormat.YUV420P10LE}
-                    if test_vector.name in exceptions.keys():
-                        test_vector.output_format = exceptions[test_vector.name]
+                    # This information is deduced from other vectors with the same profile as this vector
+                    exceptions_output_format = {"VPS_C_ERICSSON_1": OutputFormat.YUV420P10LE}
+                    if test_vector.name in exceptions_output_format.keys():
+                        test_vector.output_format = exceptions_output_format[test_vector.name]
                     else:
                         raise key_err
-                except CalledProcessError as proc_err:
-                    exceptions = {
-                        # All below test vectors cause ffprobe to crash
-                        # Values taken from doc, .txt from (.zip)
-                        "MNUT_A_Nokia_3": OutputFormat.YUV420P10LE,
-                        "MNUT_B_Nokia_2": OutputFormat.YUV420P10LE,
-                        "SUBPIC_C_ERICSSON_1": OutputFormat.YUV420P10LE,
-                        "SUBPIC_D_ERICSSON_1": OutputFormat.YUV420P10LE,
+                try:
+                    test_vector.profile = Profile[profile.translate(str.maketrans(" :", "__")).upper()]
+                except KeyError as key_err:
+                    # This information was deduced from mapping profile id number reported by ffprobe with profiles
+                    # names found in the codec specification document https://www.itu.int/rec/T-REC-H.266-202309-S/en
+                    exceptions_profile = {
+                        "ILRPL_A_Huawei_2": Profile.MULTILAYER_MAIN_10,
+                        "OLS_A_Tencent_4": Profile.MULTILAYER_MAIN_10,
+                        "OLS_B_Tencent_4": Profile.MULTILAYER_MAIN_10,
+                        "OLS_C_Tencent_4": Profile.MULTILAYER_MAIN_10,
+                        "OPI_B_Nokia_2": Profile.MULTILAYER_MAIN_10,
+                        "SPATSCAL444_A_Qualcomm_2": Profile.MULTILAYER_MAIN_10_4_4_4,
+                        "SPATSCAL_A_Qualcomm_3": Profile.MULTILAYER_MAIN_10,
+                        "STILL444_A_KDDI_1": Profile.MAIN_10_4_4_4_STILL_PICTURE,
+                        "STILL_A_KDDI_1": Profile.MAIN_10_STILL_PICTURE,
+                        "VPS_A_INTEL_3": Profile.MULTILAYER_MAIN_10,
+                        "VPS_B_ERICSSON_1": Profile.MULTILAYER_MAIN_10,
+                        "VPS_C_ERICSSON_1": Profile.MULTILAYER_MAIN_10,
                     }
-                    if test_vector.name in exceptions.keys():
-                        test_vector.output_format = exceptions[test_vector.name]
+                    if test_vector.name in exceptions_profile.keys():
+                        test_vector.profile = exceptions_profile[test_vector.name]
                     else:
-                        raise proc_err
+                        raise key_err
 
             self._fill_checksum_h266(test_vector, dest_dir)
 
