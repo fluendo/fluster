@@ -845,6 +845,19 @@ class FluendoFluAACDecGst10Decoder(GStreamer10Audio):
 
 
 @register_decoder
+class FluendoFluAC4DecGst10Decoder(GStreamer10Audio):
+    """Fluendo AC4 plugin decoder for GStreamer 1.0"""
+
+    def __init__(self) -> None:
+        self.codec = Codec.AC4
+        self.decoder_bin = "fluac4dec"
+        self.provider = "Fluendo"
+        self.api = "SW"
+        self.parser = "audio/x-ac4"
+        super().__init__()
+
+
+@register_decoder
 class FluendoFluLCEVCVAH264DecGst10Decoder(GStreamer10Video):
     """LCEVC-H264 decoder for GStreamer 1.0"""
 

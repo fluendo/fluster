@@ -30,6 +30,7 @@ class Codec(Enum):
     VP9 = "VP9"
     AAC = "AAC"
     AV1 = "AV1"
+    AC4 = "AC4"
     MPEG2_VIDEO = "MPEG2_VIDEO"
     MPEG4_VIDEO = "MPEG4_VIDEO"
 
@@ -88,6 +89,13 @@ class Profile(Enum):
     MAIN_STILL_PICTURE = "Main Still Picture"
     MAIN_4_2_2_10 = "Main 4:2:2 10"
     MAIN_4_4_4_12 = "Main 4:4:4 12"
+
+    # H.266
+    MAIN_10_4_4_4 = "Main 10 4:4:4"
+    MAIN_10_STILL_PICTURE = "Main 10 Still Picture"
+    MAIN_10_4_4_4_STILL_PICTURE = "Main 10 4:4:4 Still Picture"
+    MULTILAYER_MAIN_10 = "Multilayer Main 10"
+    MULTILAYER_MAIN_10_4_4_4 = "Multilayer Main 10 4:4:4"
 
     # MPEG2 video
     PROFILE_4_2_2 = "4:2:2"
