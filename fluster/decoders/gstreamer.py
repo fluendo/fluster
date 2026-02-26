@@ -18,22 +18,20 @@
 
 
 import os
-import shlex
 import subprocess
 from functools import lru_cache
 from typing import List, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
+from fluster.gstreamer import run_pipeline
 from fluster.utils import (
     file_checksum,
     normalize_binary_cmd,
-    run_command,
-    run_command_with_output,
 )
 
-PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
-PIPELINE_TPL_FLU_H266_DEC = "{} --no-fault filesrc location={} ! {} ! {} ! {} {}"
+PIPELINE_TPL = "filesrc location={} ! {} ! {} ! {} ! {} {}"
+PIPELINE_TPL_FLU_H266_DEC = "filesrc location={} ! {} ! {} ! {} {}"
 
 
 @lru_cache(maxsize=None)
@@ -86,7 +84,6 @@ class GStreamer(Decoder):
     """Base class for GStreamer decoders"""
 
     decoder_bin = ""
-    cmd = ""
     caps = ""
     gst_api = ""
     api = ""
@@ -99,7 +96,6 @@ class GStreamer(Decoder):
         if not self.name:
             self.name = f"{self.provider}-{self.codec.value}-{self.api}-Gst{self.gst_api}"
         self.description = f"{self.provider} {self.codec.value} {self.api} decoder for GStreamer {self.gst_api}"
-        self.cmd = normalize_binary_cmd(self.cmd)
 
         if not gst_element_exists(self.sink):
             self.sink = "filesink"
@@ -113,7 +109,6 @@ class GStreamer(Decoder):
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd,
             input_filepath,
             self.parser if self.parser else "parsebin",
             self.decoder_bin,
@@ -157,31 +152,32 @@ class GStreamer(Decoder):
         if self.sink == "videocodectestsink":
             output_param = output_filepath if keep_files else None
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
-            command = shlex.split(pipeline)
-            command.append("-m")
-            data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
+            result = run_pipeline(pipeline, timeout=timeout, verbose=verbose, print_messages=True)
+            if result.returncode != 0:
+                raise subprocess.CalledProcessError(result.returncode, pipeline, result.stdout, result.stderr)
+            data = result.stdout.splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)
-        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
+        result = run_pipeline(pipeline, timeout=timeout, verbose=verbose)
+        if result.returncode != 0:
+            raise subprocess.CalledProcessError(result.returncode, pipeline, result.stdout, result.stderr)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         """Check if GStreamer decoder is valid (better than gst-inspect)"""
         try:
-            binary = normalize_binary_cmd(f"gst-launch-{self.gst_api}")
-            pipeline = f"{binary} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
-            run_command(shlex.split(pipeline), verbose=verbose)
+            pipeline = f"appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
+            result = run_pipeline(pipeline, verbose=verbose)
+            return result.returncode == 0
         except Exception:
             return False
-        return True
 
 
 class GStreamer10Video(GStreamer):
     """Base class for GStreamer 1.x video decoders"""
 
-    cmd = "gst-launch-1.0"
     caps = "video/x-raw"
     gst_api = "1.0"
     sink = "videocodectestsink"
@@ -205,7 +201,6 @@ class GStreamer10Video(GStreamer):
         caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd,
             input_filepath,
             self.parser if self.parser else "parsebin",
             self.decoder_bin,
@@ -218,7 +213,6 @@ class GStreamer10Video(GStreamer):
 class GStreamer10Audio(GStreamer):
     """Base class for GStreamer 1.x audio decoders"""
 
-    cmd = "gst-launch-1.0"
     caps = "audio/x-raw"
     gst_api = "1.0"
     sink = "filesink"
@@ -792,7 +786,6 @@ class FluendoVVCdeCH266Decoder(GStreamer10Video):
         caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL_FLU_H266_DEC.format(
-            self.cmd,
             input_filepath,
             self.decoder_bin,
             caps,
