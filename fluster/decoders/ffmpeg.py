@@ -385,6 +385,14 @@ class FFmpegVP9V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
 
 
 @register_decoder
+class FFmpegMPEG2V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
+    """FFmpeg V4L2 mem2mem decoder for MPEG2 video"""
+
+    codec = Codec.MPEG2_VIDEO
+    api = "mpeg2_v4l2m2m"
+
+
+@register_decoder
 class FFmpegH264V4L2m2mDecoder(FFmpegV4L2m2mDecoder):
     """FFmpeg V4L2 mem2mem decoder for H.264"""
 

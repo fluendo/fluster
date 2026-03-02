@@ -746,6 +746,24 @@ class GStreamerMPEG2VideoDecoder(GStreamerVideo):
 
 
 @register_decoder
+class GStreamerV4l2CodecsMPEG2Decoder(GStreamerVideo):
+    """GStreamer MPEG2 V4L2 stateless decoder implementation for GStreamer"""
+
+    codec = Codec.MPEG2_VIDEO
+    decoder_bin = " v4l2slmpeg2dec "
+    api = "V4L2SL"
+
+
+@register_decoder
+class GStreamerV4l2MPEG2Decoder(GStreamerVideo):
+    """GStreamer MPEG2 V4L2 stateful decoder implementation for GStreamer"""
+
+    codec = Codec.MPEG2_VIDEO
+    decoder_bin = " v4l2mpeg2dec "
+    api = "V4L2"
+
+
+@register_decoder
 class GStreamerLibavMPEG4VideoDecoder(GStreamerVideo):
     """GStreamer MPEG4 Libav video decoder implementation for GStreamer"""
 
