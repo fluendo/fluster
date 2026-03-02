@@ -701,10 +701,11 @@ class Fluster:
             }
 
             if vectors_passed_per_profile_per_decoder:
-                output = separator
-                output += "\n|Profile|"
+                output = "|Profile|"
                 for decoder, _ in results:
                     output += f"{decoder.name}|"
+                output += "\n"
+                output += separator
 
             for profile in vectors_passed_per_profile_per_decoder.keys():
                 for decoder, _ in results:
