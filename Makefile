@@ -248,6 +248,9 @@ endif
 
 	sudo rm -f /usr/include/asm
 
+docs/fluster.1: docs/fluster.1.md
+	pandoc $< -s -t man -o $@
+
 clean: ## remove contrib temporary folder
 	rm -rf $(CONTRIB_DIR)
 
