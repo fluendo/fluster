@@ -1,7 +1,6 @@
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2020, Fluendo, S.A.
-#  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
-#  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
+# Copyright (C) 2026, Fluendo, S.A.
+#  Author: Pablo Garcia Sancho <pgarcia@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -29,6 +28,7 @@ class DolbyPADSDecoder(Decoder):
     description = "AC-4 Dolby Pro Audio Decoder Software Development Kit reference decoder implementation"
     binary = "decoder_reference_app_linux_x86_64"
     codec = Codec.AC4
+    is_reference = True
 
     def decode(
         self,
