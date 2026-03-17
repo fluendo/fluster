@@ -1,6 +1,7 @@
 CONTRIB_DIR=contrib
 DECODERS_DIR=decoders
 PYTHONPATH=.
+AC4_DECODER_BIN ?= $(HOME)/Downloads/decoder_reference_app_linux_x86_64
 FLUSTER=python3 ./fluster.py -tsd check
 ifeq ($(OS),Windows_NT)
 FLUSTER+=--no-emoji
@@ -248,11 +249,38 @@ endif
 
 	sudo rm -f /usr/include/asm
 
+ac4_reference_decoder: ## install AC4 Dolby reference decoder (requires Dolby customer credentials - NOT included in all_reference_decoders)
+	$(create_dirs)
+	@if [ ! -f "$(AC4_DECODER_BIN)" ]; then \
+		echo "ERROR: AC4 reference decoder binary not found at '$(AC4_DECODER_BIN)'"; \
+		echo ""; \
+		echo "This decoder requires Dolby customer credentials to download."; \
+		echo "1. Log in to the Dolby customer portal (credentials required):"; \
+		echo "   https://customer.dolby.com/licensing-resources/technologies/dolby-pro-audio-decoder-software-development-kit-v45/downloads/tools/decoder_reference_app/linux/x86_64"; \
+		echo "2. Download 'decoder_reference_app_linux_x86_64'"; \
+		echo "3. Run: make ac4_reference_decoder AC4_DECODER_BIN=/path/to/decoder_reference_app_linux_x86_64"; \
+		exit 1; \
+	fi
+	cp $(AC4_DECODER_BIN) $(DECODERS_DIR)/decoder_reference_app_linux_x86_64
+	chmod +x $(DECODERS_DIR)/decoder_reference_app_linux_x86_64
+
 clean: ## remove contrib temporary folder
 	rm -rf $(CONTRIB_DIR)
 
 dbg-%:
 	echo "Value of $* = $($*)"
 
-.PHONY: help all_reference_decoders h264_reference_decoder h265_reference_decoder h266_reference_decoder\
-mpeg_4_aac_reference_decoder mpeg_4_aac_error_resilient_reference_decoder mpeg_2_aac_reference_decoder mpeg_2_video_reference_decoder check install_deps clean
+.PHONY: help \
+	all_reference_decoders \
+	h264_reference_decoder \
+	h265_reference_decoder \
+	h266_reference_decoder \
+	h266_vvdec_decoder \
+	mpeg_2_aac_reference_decoder \
+	mpeg_2_video_reference_decoder \
+	mpeg_4_aac_reference_decoder \
+	mpeg_4_aac_error_resilient_reference_decoder \
+	ac4_reference_decoder \
+	check \
+	install_deps \
+	clean
