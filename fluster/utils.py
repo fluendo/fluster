@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
+import array
 import hashlib
 import http.client
 import os
@@ -28,10 +29,11 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import wave
 import zipfile
 from functools import partial
 from threading import Lock
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Tuple
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -314,39 +316,102 @@ def normalize_path(path: str) -> str:
     return path
 
 
-def compare_byte_wise_files(
-    reference_file: str, test_file: str, tolerance: int = 2, keep_files: bool = False, blocksize: int = 1024
-) -> int:
-    """
-    Compares two binary files byte by byte with a given tolerance, reading in blocks.
-    """
-    total_violations = 0
+def _is_wav(path: str) -> bool:
+    try:
+        with open(path, "rb") as f:
+            return f.read(4) == b"RIFF"
+    except Exception:
+        return False
 
-    with open(reference_file, "rb") as ref_file, open(test_file, "rb") as test_file_obj:
-        ref_iter = iter(partial(ref_file.read, blocksize), b"")
-        test_iter = iter(partial(test_file_obj.read, blocksize), b"")
 
+def _read_wav(path: str) -> Tuple[array.array[int], int, int]:
+    """Returns (samples, n_channels, sampwidth) with interleaved samples."""
+    with wave.open(path, "rb") as w:
+        n_channels = w.getnchannels()
+        sampwidth = w.getsampwidth()
+        raw = w.readframes(w.getnframes())
+    if sampwidth == 2:
+        typecode = "h"
+    elif sampwidth == 4:
+        typecode = "i"
+    else:
+        raise ValueError(f"Unsupported sample width: {sampwidth * 8}bit")
+    buf = array.array(typecode)
+    buf.frombytes(raw)
+    if sys.byteorder == "big":
+        buf.byteswap()
+    return buf, n_channels, sampwidth
+
+
+def _compare_wav_files(reference_file: str, test_file: str, tolerance: int) -> int:
+    ref_flat, ref_nch, ref_sw = _read_wav(reference_file)
+    test_flat, test_nch, test_sw = _read_wav(test_file)
+    n_ref = len(ref_flat) // ref_nch
+    n_test = len(test_flat) // test_nch
+
+    if ref_sw != test_sw:
+        raise ValueError(f"Sample width mismatch: ref={ref_sw * 8}bit test={test_sw * 8}bit")
+
+    active = [ch for ch in range(ref_nch) if any(ref_flat[ch::ref_nch])]
+    if len(active) != test_nch:
+        raise ValueError(f"Channel mismatch: ref active={len(active)} test={test_nch}")
+
+    ref_nz = next((i for i in range(n_ref) if any(ref_flat[i * ref_nch + ch] for ch in active)), None)
+    test_nz = next((i for i in range(n_test) if any(test_flat[i * test_nch + ai] for ai in range(test_nch))), None)
+
+    ref_start = test_start = 0
+    if ref_nz is not None and test_nz is not None:
+        lag = test_nz - ref_nz
+        if lag > 0:
+            test_start = lag
+        elif lag < 0:
+            ref_start = -lag
+
+    n_compare = min(n_ref - ref_start, n_test - test_start)
+    violations = 0
+    for ai, ach in enumerate(active):
+        ref_ch = ref_flat[ref_start * ref_nch + ach : (ref_start + n_compare) * ref_nch : ref_nch]
+        test_ch = test_flat[test_start * test_nch + ai : (test_start + n_compare) * test_nch : test_nch]
+        violations += sum(abs(r - t) > tolerance for r, t in zip(ref_ch, test_ch))
+    return violations
+
+
+def _compare_raw_files(reference_file: str, test_file: str, tolerance: int, blocksize: int) -> int:
+    violations = 0
+    with open(reference_file, "rb") as ref_fh, open(test_file, "rb") as test_fh:
+        ref_iter = iter(partial(ref_fh.read, blocksize), b"")
+        test_iter = iter(partial(test_fh.read, blocksize), b"")
         for ref_block in ref_iter:
             test_block = next(test_iter, None)
-
             if test_block is None:
                 raise ValueError("Test file is shorter than reference file")
-
             if len(ref_block) != len(test_block):
-                raise ValueError("File blocks do not match in size")
-
+                raise ValueError("File size mismatch between reference and test")
             for i in range(len(ref_block)):
-                diff = abs(ref_block[i] - test_block[i])
-                if diff > tolerance:
-                    total_violations += 1
-
+                if abs(ref_block[i] - test_block[i]) > tolerance:
+                    violations += 1
         if next(test_iter, None) is not None:
             raise ValueError("Test file is longer than reference file")
+    return violations
+
+
+def compare_byte_wise_files(
+    reference_file: str,
+    test_file: str,
+    tolerance: int = 2,
+    wav_tolerance: int = 128,
+    keep_files: bool = False,
+    blocksize: int = 1024,
+) -> int:
+    if _is_wav(reference_file) and _is_wav(test_file):
+        violations = _compare_wav_files(reference_file, test_file, wav_tolerance)
+    else:
+        violations = _compare_raw_files(reference_file, test_file, tolerance, blocksize)
 
     if not keep_files and os.path.isfile(test_file):
         os.remove(test_file)
 
-    return total_violations
+    return violations
 
 
 def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None) -> Optional[str]:

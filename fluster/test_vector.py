@@ -44,6 +44,7 @@ class TestVector:
         output_format: OutputFormat,
         result: str,
         profile: Optional[Profile] = None,
+        decoder_config: Optional[Dict[str, Any]] = None,
     ):
         # JSON members
         self.name = name
@@ -53,6 +54,7 @@ class TestVector:
         self.profile = profile
         self.output_format = output_format
         self.result = result
+        self.decoder_config = decoder_config
 
         # Not included in JSON
         self.test_result = TestVectorResult.NOT_RUN
@@ -84,6 +86,10 @@ class TestVector:
             data["profile"] = str(self.profile.value)
         else:
             data.pop("profile")
+        if self.decoder_config is not None:
+            data["decoder_config"] = self.decoder_config
+        else:
+            data.pop("decoder_config")
         return data
 
     def __str__(self) -> str:

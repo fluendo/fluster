@@ -32,7 +32,7 @@ from unittest.result import TestResult
 from fluster import utils
 from fluster.codec import Codec
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
-from fluster.test import MD5ComparisonTest, PixelComparisonTest, Test
+from fluster.test import MD5ComparisonTest, PixelComparisonTest, ReferenceComparisonTest, SampleComparisonTest, Test
 from fluster.test_vector import TestVector, TestVectorResult
 
 
@@ -120,6 +120,7 @@ class TestMethod(Enum):
 
     MD5 = "md5"
     PIXEL = "pixel"
+    SAMPLE = "sample"
 
 
 class TestSuite:
@@ -497,7 +498,7 @@ class TestSuite:
             )
             return None
 
-        if self.test_method == TestMethod.PIXEL:
+        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE):
             ctx.reference_decoder = get_reference_decoder_for_codec(ctx.decoder.codec)
             if ctx.reference_decoder is None or not ctx.reference_decoder.check(ctx.verbose):
                 print(f"Skipping test suite {self.name}: no reference decoder for codec {ctx.decoder.codec.name}")
@@ -548,6 +549,11 @@ class TestSuite:
         tests: List[Test] = []
         test_vectors_run = {}
 
+        reference_test_classes: Dict[TestMethod, Type[ReferenceComparisonTest]] = {
+            TestMethod.PIXEL: PixelComparisonTest,
+            TestMethod.SAMPLE: SampleComparisonTest,
+        }
+
         for name, test_vector in self.test_vectors.items():
             skip = False
             name_lower = test_vector.name.lower()
@@ -556,10 +562,11 @@ class TestSuite:
             if ctx.skip_vectors and name_lower in ctx.skip_vectors:
                 skip = True
 
-            if self.test_method == TestMethod.PIXEL:
+            if self.test_method in reference_test_classes:
                 assert ctx.reference_decoder is not None
+                test_cls = reference_test_classes[self.test_method]
                 tests.append(
-                    PixelComparisonTest(
+                    test_cls(
                         ctx.decoder,
                         self,
                         test_vector,

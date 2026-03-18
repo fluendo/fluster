@@ -1,3 +1,5 @@
+from typing import Any, Dict, Optional
+
 # Fluster - testing framework for decoders conformance
 # Copyright (C) 2020, Fluendo, S.A.
 #  Author: Ruben Gonzalez <rgonzalezs@fluendo.com>, Fluendo, S.A.
@@ -14,7 +16,6 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
-
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
@@ -37,6 +38,7 @@ class H266VVCDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        decoder_config: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath in output_filepath"""
         run_command(

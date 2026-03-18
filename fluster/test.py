@@ -86,6 +86,7 @@ class Test(unittest.TestCase):
             self.timeout,
             self.verbose,
             keep_files_for_decode,
+            self.test_vector.decoder_config,
         )
 
     def _cleanup_if_needed(self) -> None:
@@ -150,8 +151,10 @@ class MD5ComparisonTest(Test):
         self.assertEqual(expected, actual, self.test_vector.name)
 
 
-class PixelComparisonTest(Test):
-    """Test class for pixel comparison"""
+class ReferenceComparisonTest(Test):
+    """Base class for tests that compare decoded output against a reference decoder, byte-wise."""
+
+    _ref_file_extension: str  # set by each subclass, e.g. ".yuv" or ".wav"
 
     def __init__(
         self,
@@ -179,10 +182,12 @@ class PixelComparisonTest(Test):
         )
         self._keep_files_during_test = True
         self.reference_decoder = reference_decoder
-        self.reference_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + "_ref.yuv"))
+        self.reference_filepath = normalize_path(
+            os.path.join(self.output_dir, self.test_vector.name + "_ref" + self._ref_file_extension)
+        )
 
     def _decode_reference(self) -> str:
-        """Decode the reference file."""
+        """Decode the input with the reference decoder."""
         keep_files_for_decode = self._keep_files_during_test or self.keep_files
 
         return self.reference_decoder.decode(
@@ -192,23 +197,24 @@ class PixelComparisonTest(Test):
             self.timeout,
             self.verbose,
             keep_files_for_decode,
+            self.test_vector.decoder_config,
         )
 
     def _cleanup_if_needed(self) -> None:
         super()._cleanup_if_needed()
-        for filepath in [self.reference_filepath, self.reference_filepath + ".yuv"]:
+        for filepath in [self.reference_filepath, self.reference_filepath + self._ref_file_extension]:
             if not self.keep_files and os.path.exists(filepath):
                 os.remove(filepath)
 
     def compare_result(self, result: str) -> None:
-        """Compare decoded output with reference decoder output pixel-wise."""
+        """Compare decoded output against the reference decoder output byte-wise."""
         reference_result = self._decode_reference()
 
         actual_reference_file = reference_result
         if not os.path.exists(reference_result):
             actual_reference_file = (
-                self.reference_filepath + ".yuv"
-                if os.path.exists(self.reference_filepath + ".yuv")
+                self.reference_filepath + self._ref_file_extension
+                if os.path.exists(self.reference_filepath + self._ref_file_extension)
                 else self.reference_filepath
             )
 
@@ -217,3 +223,16 @@ class PixelComparisonTest(Test):
         )
 
         self.assertEqual(0, comparison_result, self.test_vector.name)
+
+
+class PixelComparisonTest(ReferenceComparisonTest):
+    """Test class for pixel-by-pixel comparison against a reference video decoder."""
+
+    _ref_file_extension = ".yuv"
+
+
+class SampleComparisonTest(ReferenceComparisonTest):
+    """Test class for audio sample-by-sample comparison against a reference audio decoder."""
+
+    _ref_file_extension = ".wav"
+
