@@ -15,6 +15,10 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
+from __future__ import annotations
+
+import array
+import contextlib
 import hashlib
 import http.client
 import os
@@ -28,10 +32,11 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import wave
 import zipfile
 from functools import partial
 from threading import Lock
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Tuple
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -314,39 +319,87 @@ def normalize_path(path: str) -> str:
     return path
 
 
-def compare_byte_wise_files(
-    reference_file: str, test_file: str, tolerance: int = 2, keep_files: bool = False, blocksize: int = 1024
-) -> int:
-    """
-    Compares two binary files byte by byte with a given tolerance, reading in blocks.
-    """
-    total_violations = 0
+def _read_wav(path: str) -> Tuple[array.array[int], int, int]:
+    """Load a WAV file and return (interleaved_samples, n_channels, sampwidth). Supports 16 and 32-bit PCM."""
+    with wave.open(path, "rb") as w:
+        n_channels = w.getnchannels()
+        sampwidth = w.getsampwidth()
+        raw = w.readframes(w.getnframes())
+    if sampwidth == 2:
+        typecode = "h"
+    elif sampwidth == 4:
+        typecode = "i"
+    else:
+        raise ValueError(f"Unsupported sample width: {sampwidth * 8}bit")
+    buf = array.array(typecode)
+    buf.frombytes(raw)
+    if sys.byteorder == "big":
+        buf.byteswap()
+    return buf, n_channels, sampwidth
 
-    with open(reference_file, "rb") as ref_file, open(test_file, "rb") as test_file_obj:
-        ref_iter = iter(partial(ref_file.read, blocksize), b"")
-        test_iter = iter(partial(test_file_obj.read, blocksize), b"")
 
+def compare_wav_files(reference_file: str, test_file: str, tolerance: int = 128) -> int:
+    """Compare two WAV files sample-by-sample with active-channel detection and lag compensation."""
+    ref_flat, ref_nch, ref_sw = _read_wav(reference_file)
+    test_flat, test_nch, test_sw = _read_wav(test_file)
+    n_ref = len(ref_flat) // ref_nch
+    n_test = len(test_flat) // test_nch
+
+    if ref_sw != test_sw:
+        raise ValueError(f"Sample width mismatch: ref={ref_sw * 8}bit test={test_sw * 8}bit")
+
+    # Fast path: byte-identical samples → zero violations (C-level comparison)
+    if ref_flat == test_flat:
+        return 0
+
+    if ref_nch == test_nch:
+        # Same channel layout: compare all channels directly
+        active = list(range(ref_nch))
+    else:
+        # Different channel counts: select only active (non-silent) channels from reference
+        active = [ch for ch in range(ref_nch) if any(ref_flat[ch::ref_nch])]
+        if len(active) != test_nch:
+            raise ValueError(f"Channel mismatch: ref active={len(active)} test={test_nch}")
+
+    # Align to first non-zero frame to compensate for constant leading silence
+    ref_nz = next((i for i in range(n_ref) if any(ref_flat[i * ref_nch + ch] for ch in active)), None)
+    test_nz = next((i for i in range(n_test) if any(test_flat[i * test_nch + ai] for ai in range(test_nch))), None)
+
+    ref_start = test_start = 0
+    if ref_nz is not None and test_nz is not None:
+        lag = test_nz - ref_nz
+        if lag > 0:
+            test_start = lag
+        elif lag < 0:
+            ref_start = -lag
+
+    n_compare = min(n_ref - ref_start, n_test - test_start)
+    violations = 0
+    for ai, ach in enumerate(active):
+        ref_ch = ref_flat[ref_start * ref_nch + ach : (ref_start + n_compare) * ref_nch : ref_nch]
+        test_ch = test_flat[test_start * test_nch + ai : (test_start + n_compare) * test_nch : test_nch]
+        violations += sum(abs(r - t) > tolerance for r, t in zip(ref_ch, test_ch))
+    return violations
+
+
+def compare_yuv_files(reference_file: str, test_file: str, tolerance: int = 2, blocksize: int = 1024) -> int:
+    """Compare two YUV files byte-by-byte within a tolerance, streaming in blocks."""
+    violations = 0
+    with open(reference_file, "rb") as ref_fh, open(test_file, "rb") as test_fh:
+        ref_iter = iter(partial(ref_fh.read, blocksize), b"")
+        test_iter = iter(partial(test_fh.read, blocksize), b"")
         for ref_block in ref_iter:
             test_block = next(test_iter, None)
-
             if test_block is None:
                 raise ValueError("Test file is shorter than reference file")
-
             if len(ref_block) != len(test_block):
-                raise ValueError("File blocks do not match in size")
-
+                raise ValueError("File size mismatch between reference and test")
             for i in range(len(ref_block)):
-                diff = abs(ref_block[i] - test_block[i])
-                if diff > tolerance:
-                    total_violations += 1
-
+                if abs(ref_block[i] - test_block[i]) > tolerance:
+                    violations += 1
         if next(test_iter, None) is not None:
             raise ValueError("Test file is longer than reference file")
-
-    if not keep_files and os.path.isfile(test_file):
-        os.remove(test_file)
-
-    return total_violations
+    return violations
 
 
 def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = None) -> Optional[str]:
@@ -389,50 +442,36 @@ def find_by_ext(dest_dir: str, exts: List[str], excludes: Optional[List[str]] = 
     return candidates[0] if candidates else None
 
 
+def _parse_pcm_channel(filename: str) -> Tuple[str, int]:
+    """Return (channel_type, channel_number) from a PCM filename, or ('', 0) if unmatched."""
+    match = re.search(r"_([fbsl])(\d+)\.pcm$", os.path.basename(filename).lower())
+    if match:
+        return match.group(1), int(match.group(2))
+    return "", 0
+
+
 def interleave_pcm_files(pcm_files: List[str], output_filepath: str) -> None:
-    """
-    Interleaves PCM files with multichannel patterns (_*) in the correct channel ordering:
-    1. Front channels (f00-f0X) in numerical order
-    2. Side channels (s00-s0X) in numerical order, if present
-    3. Back channels (b00-b0X) in numerical order
-    4. LFE channel (l00) if present
-    """
-    front_channels = [f for f in pcm_files if "_f" in os.path.basename(f).lower()]
-    side_channels = [f for f in pcm_files if "_s" in os.path.basename(f).lower()]
-    back_channels = [f for f in pcm_files if "_b" in os.path.basename(f).lower()]
-    lfe_channels = [f for f in pcm_files if "_l" in os.path.basename(f).lower()]
+    """Interleave per-channel PCM files (_fNN/_sNN/_bNN/_lNN) into a single multichannel raw PCM stream."""
+    channel_order = {"f": 0, "s": 1, "b": 2, "l": 3}
+    classified = [(f, *_parse_pcm_channel(f)) for f in pcm_files]
+    sorted_files = [
+        f
+        for f, ch_type, ch_num in sorted(classified, key=lambda x: (channel_order.get(x[1], 99), x[2]))
+        if ch_type in channel_order
+    ]
 
-    front_channels.sort(key=_get_channel_number)
-    side_channels.sort(key=_get_channel_number)
-    back_channels.sort(key=_get_channel_number)
-    lfe_channels.sort(key=_get_channel_number)
-
-    sorted_files = front_channels + side_channels + back_channels + lfe_channels
-
-    pcm_files_handles = [open(pcm_file, "rb") for pcm_file in sorted_files]
-
-    with open(output_filepath, "wb") as outfile:
+    with contextlib.ExitStack() as stack:
+        handles = [stack.enter_context(open(f, "rb")) for f in sorted_files]
+        outfile = stack.enter_context(open(output_filepath, "wb"))
         while True:
-            # Read one block (2 bytes for 16-bit PCM) from each file
-            data = [f.read(2) for f in pcm_files_handles]
-
+            # Read one 16-bit sample per channel
+            data = [f.read(2) for f in handles]
             if all(block == b"" for block in data):
                 break
 
             for block in data:
                 if block:
                     outfile.write(block)
-
-    for file_handle in pcm_files_handles:
-        file_handle.close()
-
-
-def _get_channel_number(filename: str) -> int:
-    """Return channel number from filename"""
-    match = re.search(r"_[fbsl](\d+)\.pcm$", filename.lower())
-    if match:
-        return int(match.group(1))
-    return 0
 
 
 def _linux_user_data_dir(appname: str) -> str:

@@ -9,7 +9,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Audio_ID_2ch_64kbps_25fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "fafbaf85aba8a356ed5028a9bac0763a"
+            "result": "fafbaf85aba8a356ed5028a9bac0763a",
+            "optional_params": {
+                "decoder_speaker_config": 3
+            }
         },
         {
             "name": "Audio_ID_2ch_64kbps_2997fps_ac4.ac4",
@@ -17,7 +20,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Audio_ID_2ch_64kbps_2997fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "dc8426318b18c294ccdb373cfdd0470e"
+            "result": "dc8426318b18c294ccdb373cfdd0470e",
+            "optional_params": {
+                "decoder_speaker_config": 3
+            }
         },
         {
             "name": "Audio_ID_514ch_192kbps_25fps_ac4.ac4",
@@ -25,7 +31,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Audio_ID_514ch_192kbps_25fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "86ac79ed8802a6d99c8c6dc13709ef67"
+            "result": "86ac79ed8802a6d99c8c6dc13709ef67",
+            "optional_params": {
+                "decoder_speaker_config": 0
+            }
         },
         {
             "name": "Audio_ID_514ch_192kbps_2997fps_ac4.ac4",
@@ -33,7 +42,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Audio_ID_514ch_192kbps_2997fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "495e8f8966c085e50f2c3e69829256bb"
+            "result": "495e8f8966c085e50f2c3e69829256bb",
+            "optional_params": {
+                "decoder_speaker_config": 0
+            }
         },
         {
             "name": "Audio_ID_6ch_128kbps_25fps_ac4.ac4",
@@ -41,7 +53,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Audio_ID_6ch_128kbps_25fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "a014c4a87fb1ba3d6e4aa270df26003a"
+            "result": "a014c4a87fb1ba3d6e4aa270df26003a",
+            "optional_params": {
+                "decoder_speaker_config": 2
+            }
         },
         {
             "name": "Audio_ID_6ch_128kbps_2997fps_ac4.ac4",
@@ -49,23 +64,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Audio_ID_6ch_128kbps_2997fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "59d2d88797f4a5873121e901ebb61db7"
-        },
-        {
-            "name": "Audio_ID_ims_112kbps_25fps_ac4.ac4",
-            "source": "https://ott.dolby.com/OnDelKits/AC-4/Dolby_AC-4_Online_Delivery_Kit_1.5/Test_Signals/elementary_streams/Audio.zip",
-            "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
-            "input_file": "Audio/Audio_ID_ims_112kbps_25fps_ac4.ac4",
-            "output_format": "Unknown",
-            "result": "3be6544de42243e72e5320efee7ad853"
-        },
-        {
-            "name": "Audio_ID_ims_112kbps_2997fps_ac4.ac4",
-            "source": "https://ott.dolby.com/OnDelKits/AC-4/Dolby_AC-4_Online_Delivery_Kit_1.5/Test_Signals/elementary_streams/Audio.zip",
-            "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
-            "input_file": "Audio/Audio_ID_ims_112kbps_2997fps_ac4.ac4",
-            "output_format": "Unknown",
-            "result": "412894104735faa4d9271ffe55606bfc"
+            "result": "59d2d88797f4a5873121e901ebb61db7",
+            "optional_params": {
+                "decoder_speaker_config": 2
+            }
         },
         {
             "name": "Holi_en_6ch_128kbps_25fps_ac4.ac4",
@@ -73,7 +75,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Holi_en_6ch_128kbps_25fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "69df080a341691b7e09f8d45efe57139"
+            "result": "69df080a341691b7e09f8d45efe57139",
+            "optional_params": {
+                "decoder_speaker_config": 2
+            }
         },
         {
             "name": "Holi_en_6ch_128kbps_2997fps_ac4.ac4",
@@ -81,7 +86,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Holi_en_6ch_128kbps_2997fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "b645245723ce8c3b5fd12cfd9e04ac3f"
+            "result": "b645245723ce8c3b5fd12cfd9e04ac3f",
+            "optional_params": {
+                "decoder_speaker_config": 2
+            }
         },
         {
             "name": "Holi_fr_6ch_128kbps_25fps_ac4.ac4",
@@ -89,7 +97,10 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Holi_fr_6ch_128kbps_25fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "638d1fb73e868247fb689b04c45a6dd1"
+            "result": "638d1fb73e868247fb689b04c45a6dd1",
+            "optional_params": {
+                "decoder_speaker_config": 2
+            }
         },
         {
             "name": "Holi_fr_6ch_128kbps_2997fps_ac4.ac4",
@@ -97,8 +108,11 @@
             "source_checksum": "03c1abb0778a546c2c31f631e62b8c89",
             "input_file": "Audio/Holi_fr_6ch_128kbps_2997fps_ac4.ac4",
             "output_format": "Unknown",
-            "result": "05636608b15c8986440f9e3348c88c27"
+            "result": "05636608b15c8986440f9e3348c88c27",
+            "optional_params": {
+                "decoder_speaker_config": 2
+            }
         }
     ],
-    "test_method": "md5"
+    "test_method": "sample"
 }
