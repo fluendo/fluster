@@ -16,7 +16,7 @@ from typing import Any
 
 from fluster.decoder import Decoder
 from fluster.test_vector import TestVector, TestVectorResult
-from fluster.utils import compare_byte_wise_files, normalize_path
+from fluster.utils import compare_wav_files, compare_yuv_files, normalize_path
 
 
 class Test(unittest.TestCase):
@@ -151,8 +151,10 @@ class MD5ComparisonTest(Test):
         self.assertEqual(expected, actual, self.test_vector.name)
 
 
-class PixelComparisonTest(Test):
-    """Test class for pixel comparison"""
+class ReferenceComparisonTest(Test):
+    """Base class for tests that compare decoded output against a reference decoder, byte-wise."""
+
+    _ref_file_extension: str
 
     def __init__(
         self,
@@ -180,12 +182,12 @@ class PixelComparisonTest(Test):
         )
         self._keep_files_during_test = True
         self.reference_decoder = reference_decoder
-        self.reference_filepath = normalize_path(os.path.join(self.output_dir, self.test_vector.name + "_ref.yuv"))
+        self.reference_filepath = normalize_path(
+            os.path.join(self.output_dir, self.test_vector.name + "_ref" + self._ref_file_extension)
+        )
 
     def _decode_reference(self) -> str:
-        """Decode the reference file."""
         keep_files_for_decode = self._keep_files_during_test or self.keep_files
-
         return self.reference_decoder.decode(
             self.input_filepath,
             self.reference_filepath,
@@ -193,28 +195,38 @@ class PixelComparisonTest(Test):
             self.timeout,
             self.verbose,
             keep_files_for_decode,
+            self.test_vector.optional_params,
         )
 
     def _cleanup_if_needed(self) -> None:
         super()._cleanup_if_needed()
-        for filepath in [self.reference_filepath, self.reference_filepath + ".yuv"]:
+        for filepath in [self.reference_filepath, self.reference_filepath + self._ref_file_extension]:
             if not self.keep_files and os.path.exists(filepath):
                 os.remove(filepath)
 
+    def _resolve_reference_file(self, decoded_path: str) -> str:
+        """Return the actual reference file path, falling back to known locations if needed."""
+        if os.path.exists(decoded_path):
+            return decoded_path
+        alt = self.reference_filepath + self._ref_file_extension
+        return alt if os.path.exists(alt) else self.reference_filepath
+
+
+class PixelComparisonTest(ReferenceComparisonTest):
+    """Test class for pixel-by-pixel comparison against a reference video decoder."""
+
+    _ref_file_extension = ".yuv"
+
     def compare_result(self, result: str) -> None:
-        """Compare decoded output with reference decoder output pixel-wise."""
-        reference_result = self._decode_reference()
+        violations = compare_yuv_files(self._resolve_reference_file(self._decode_reference()), self.output_filepath)
+        self.assertEqual(0, violations, self.test_vector.name)
 
-        actual_reference_file = reference_result
-        if not os.path.exists(reference_result):
-            actual_reference_file = (
-                self.reference_filepath + ".yuv"
-                if os.path.exists(self.reference_filepath + ".yuv")
-                else self.reference_filepath
-            )
 
-        comparison_result = compare_byte_wise_files(
-            actual_reference_file, self.output_filepath, keep_files=self.keep_files
-        )
+class SampleComparisonTest(ReferenceComparisonTest):
+    """Test class for audio sample-by-sample comparison against a reference audio decoder."""
 
-        self.assertEqual(0, comparison_result, self.test_vector.name)
+    _ref_file_extension = ".wav"
+
+    def compare_result(self, result: str) -> None:
+        violations = compare_wav_files(self._resolve_reference_file(self._decode_reference()), self.output_filepath)
+        self.assertEqual(0, violations, self.test_vector.name)

@@ -138,11 +138,10 @@ class GStreamer(Decoder):
     ) -> str:
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
-
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            self.parser,
+            self.parser if self.parser else "parsebin",
             self.decoder_bin,
             self.caps,
             self.sink,
@@ -187,7 +186,7 @@ class GStreamer(Decoder):
         # SUM.
         if self._get_sink_for_format(output_format) == "videocodectestsink":
             output_param = output_filepath if keep_files else None
-            pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
+            pipeline = self.gen_pipeline(input_filepath, output_param, output_format, optional_params)
             command = shlex.split(pipeline)
             command.append("-m")
             data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
@@ -839,7 +838,6 @@ class FluendoVVCdeCH266Decoder(GStreamerVideo):
     decoder_bin = " fluh266dec "
     provider = "Fluendo"
     api = "SW"
-
     parser = "h266parse " if gst_element_exists("h266parse") else "fluh266parse"
 
 
@@ -895,8 +893,36 @@ class FluendoFluAC4DecDecoder(GStreamerAudio):
         self.decoder_bin = "fluac4dec"
         self.provider = "Fluendo"
         self.api = "SW"
-        self.parser = "audio/x-ac4"
+        self.parser = "audio/x-ac4" + (" ! ac4parse" if gst_element_exists("ac4parse") else "")
+        self.caps = "audio/x-raw ! wavenc"
         super().__init__()
+
+    def gen_pipeline(
+        self,
+        input_filepath: str,
+        output_filepath: Optional[str],
+        output_format: OutputFormat,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Generate pipeline, mapping optional decoder properties to fluac4dec.
+
+        Each key in optional_params is translated to a GStreamer property name
+        by replacing underscores with hyphens (e.g. drc_mode -> drc-mode).
+        """
+        output = f"location={output_filepath}" if output_filepath else ""
+        decoder_bin = self.decoder_bin
+        if optional_params:
+            for param, value in optional_params.items():
+                decoder_bin += f" {param.replace('_', '-')}={value}"
+        return PIPELINE_TPL.format(
+            self.cmd,
+            input_filepath,
+            self.parser if self.parser else "parsebin",
+            decoder_bin,
+            self.caps,
+            self.sink,
+            output,
+        )
 
 
 @register_decoder
