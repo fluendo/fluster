@@ -16,7 +16,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 import os
 import subprocess
-from typing import Tuple
+from typing import Any, Dict, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -41,6 +41,7 @@ class ISOMPEG4VDecoder(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decodes input_filepath to output_filepath"""
         width, height = self._get_video_resolution(input_filepath, verbose)
