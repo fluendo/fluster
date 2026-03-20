@@ -31,7 +31,7 @@ import urllib.request
 import zipfile
 from functools import partial
 from threading import Lock
-from typing import Any, List, Optional
+from typing import Any, List, Mapping, Optional
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -200,14 +200,18 @@ def run_command(
     verbose: bool = False,
     check: bool = True,
     timeout: Optional[int] = None,
+    extra_env: Optional[Mapping[str, str]] = None,
 ) -> None:
     """Runs a command"""
     sout = subprocess.DEVNULL if not verbose else None
     serr = subprocess.DEVNULL if not verbose else None
+    env = os.environ.copy()
+    if extra_env:
+        env.update(extra_env)
     if verbose:
         print(f'\nRunning command "{" ".join(command)}"')
     try:
-        subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
+        subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout, env=env)
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
@@ -220,6 +224,7 @@ def run_command_with_output(
     check: bool = True,
     timeout: Optional[int] = None,
     keep_stderr: bool = False,
+    extra_env: Optional[Mapping[str, str]] = None,
 ) -> str:
     """Runs a command and returns std output trace"""
     serr = subprocess.DEVNULL
@@ -227,9 +232,12 @@ def run_command_with_output(
         serr = subprocess.STDOUT
     if verbose:
         print(f'\nRunning command "{" ".join(command)}"')
+    env = os.environ.copy()
+    if extra_env:
+        env.update(extra_env)
 
     try:
-        output = subprocess.check_output(command, stderr=serr, timeout=timeout, universal_newlines=True)
+        output = subprocess.check_output(command, stderr=serr, timeout=timeout, universal_newlines=True, env=env)
         if verbose and output:
             print(output)
         return output or ""
