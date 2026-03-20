@@ -803,7 +803,7 @@ class FluendoVVCdeCH266Decoder(GStreamer10Video):
         return PIPELINE_TPL_FLU_H266_DEC.format(
             self.cmd,
             input_filepath,
-            "! h266parse " if gst_element_exists("h266parse") else "",
+            "! parsebin",
             self.decoder_bin,
             caps,
             self.sink,
