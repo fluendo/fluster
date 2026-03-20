@@ -34,7 +34,6 @@ from fluster.utils import (
 )
 
 PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
-PIPELINE_TPL_FLU_H266_DEC = "{} --no-fault filesrc location={} {} ! {} ! {} ! {} {}"
 
 # YUV422 GStreamer format strings unsupported by videocodectestsink before 1.22.0
 # https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/3331
@@ -836,25 +835,7 @@ class FluendoVVCdeCH266Decoder(GStreamerVideo):
     decoder_bin = " fluh266dec "
     provider = "Fluendo"
     api = "SW"
-
-    def gen_pipeline(
-        self,
-        input_filepath: str,
-        output_filepath: Optional[str],
-        output_format: OutputFormat,
-    ) -> str:
-        caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
-        output = f"location={output_filepath}" if output_filepath else ""
-
-        return PIPELINE_TPL_FLU_H266_DEC.format(
-            self.cmd,
-            input_filepath,
-            "! h266parse " if gst_element_exists("h266parse") else "",
-            self.decoder_bin,
-            caps,
-            self._get_sink_for_format(output_format),
-            output,
-        )
+    parser = "h266parse " if gst_element_exists("h266parse") else "fluh266parse"
 
 
 @register_decoder
