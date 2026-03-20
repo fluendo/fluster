@@ -150,6 +150,13 @@ class GStreamer(Decoder):
         keep_files: bool,
     ) -> str:
         """Decode the test vector and do the checksum"""
+        # Ensure "decoder_name" is used in every automatic-choosing logic
+        # GStreamer has; like when "parsebin" set its caps based on the first
+        # decoder it finds
+        if self.decoder_name:
+            current_feat_rank = os.environ.get("GST_PLUGIN_FEATURE_RANK", "")
+            self.extra_env["GST_PLUGIN_FEATURE_RANK"] = f"{self.decoder_name}:MAX,{current_feat_rank}"
+
         # When using videocodectestsink we can avoid writing files to disk
         # completely, or avoid a full raw file read in order to compute the MD5
         # SUM.
@@ -158,11 +165,13 @@ class GStreamer(Decoder):
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
             command = shlex.split(pipeline)
             command.append("-m")
-            data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
+            data = run_command_with_output(
+                command, timeout=timeout, verbose=verbose, extra_env=self.extra_env
+            ).splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)
-        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
+        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose, extra_env=self.extra_env)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=128)

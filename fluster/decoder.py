@@ -18,7 +18,7 @@
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from shutil import which
-from typing import List, Optional, Type
+from typing import Dict, List, Optional, Type
 
 from fluster.codec import Codec, OutputFormat
 from fluster.utils import normalize_binary_cmd
@@ -33,8 +33,10 @@ class Decoder(ABC):
     description = ""
     binary = ""
     is_reference = False
+    decoder_name: Optional[str] = None
 
     def __init__(self) -> None:
+        self.extra_env: Dict[str, str] = {}
         if self.binary:
             self.binary = normalize_binary_cmd(self.binary)
 
