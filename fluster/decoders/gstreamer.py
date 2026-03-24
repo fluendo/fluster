@@ -18,10 +18,11 @@
 
 
 import os
+import re
 import shlex
 import subprocess
 from functools import lru_cache
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -34,6 +35,32 @@ from fluster.utils import (
 
 PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
 PIPELINE_TPL_FLU_H266_DEC = "{} --no-fault filesrc location={} {} ! {} ! {} ! {} {}"
+
+# YUV422 GStreamer format strings unsupported by videocodectestsink before 1.22.0
+# https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/3331
+_GST_YUV422_FORMATS = frozenset({"Y42B", "I422_10LE", "I422_12LE"})
+_GST_VIDEOCODECTESTSINK_YUV422_MIN_VERSION = (1, 22, 0)
+
+
+@lru_cache(maxsize=None)
+def _get_gst_version() -> Tuple[int, int, int]:
+    """Return the installed GStreamer version as a (major, minor, micro) tuple.
+    Returns (0, 0, 0) when the version cannot be determined.
+    """
+    inspect_exe = normalize_binary_cmd("gst-inspect-1.0")
+    try:
+        result = subprocess.run(
+            [inspect_exe, "--version"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+        match = re.search(r"(\d+)\.(\d+)\.(\d+)", result.stdout.decode("utf-8", errors="replace"))
+        if match:
+            return int(match.group(1)), int(match.group(2)), int(match.group(3))
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    return (0, 0, 0)
 
 
 @lru_cache(maxsize=None)
@@ -121,6 +148,9 @@ class GStreamer(Decoder):
             output,
         )
 
+    def _get_sink_for_format(self, output_format: OutputFormat) -> str:  # pylint: disable=unused-argument
+        return self.sink
+
     @staticmethod
     def parse_videocodectestsink_md5sum(data: List[str]) -> str:
         """Parse the MD5 sum out of commandline output produced when using
@@ -153,7 +183,7 @@ class GStreamer(Decoder):
         # When using videocodectestsink we can avoid writing files to disk
         # completely, or avoid a full raw file read in order to compute the MD5
         # SUM.
-        if self.sink == "videocodectestsink":
+        if self._get_sink_for_format(output_format) == "videocodectestsink":
             output_param = output_filepath if keep_files else None
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format)
             command = shlex.split(pipeline)
@@ -182,6 +212,22 @@ class GStreamerVideo(GStreamer):
     caps = "video/x-raw"
     sink = "videocodectestsink"
 
+    def _get_sink_for_format(self, output_format: OutputFormat) -> str:
+        """Return the appropriate sink for the given output format.
+
+        Falls back to filesink for YUV422 formats on GStreamer < 1.22.0, which
+        lacks YUV422 support in videocodectestsink.
+        """
+        if self.sink != "videocodectestsink":
+            return self.sink
+        try:
+            gst_fmt = output_format_to_gst(output_format)
+        except KeyError:
+            return self.sink
+        if gst_fmt in _GST_YUV422_FORMATS and _get_gst_version() < _GST_VIDEOCODECTESTSINK_YUV422_MIN_VERSION:
+            return "filesink"
+        return self.sink
+
     def gen_pipeline(
         self,
         input_filepath: str,
@@ -204,7 +250,7 @@ class GStreamerVideo(GStreamer):
             self.parser if self.parser else "parsebin",
             self.decoder_bin,
             caps,
-            self.sink,
+            self._get_sink_for_format(output_format),
             output,
         )
 
@@ -806,7 +852,7 @@ class FluendoVVCdeCH266Decoder(GStreamerVideo):
             "! h266parse " if gst_element_exists("h266parse") else "",
             self.decoder_bin,
             caps,
-            self.sink,
+            self._get_sink_for_format(output_format),
             output,
         )
 
