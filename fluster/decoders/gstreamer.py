@@ -22,7 +22,7 @@ import re
 import shlex
 import subprocess
 from functools import lru_cache
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -140,16 +140,11 @@ class GStreamer(Decoder):
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
 
-        decoder_params = ""
-        if optional_params:
-            for key, value in optional_params.items():
-                decoder_params += f" {key}={value} "
-
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
             self.parser if self.parser else "parsebin",
-            self.decoder_bin + decoder_params,
+            self.decoder_bin,
             self.caps,
             self.sink,
             output,

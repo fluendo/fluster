@@ -100,11 +100,6 @@ class FFmpegDecoder(Decoder):
         elif self.ffmpeg_codec:
             command.extend(["-codec", self.ffmpeg_codec])
 
-        # Optional decoder parameters
-        if optional_params:
-            for key, value in optional_params.items():
-                command.extend([key, str(value)])
-
         # Input file
         command.extend(["-i", input_filepath])
 
