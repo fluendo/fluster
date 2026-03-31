@@ -22,7 +22,7 @@ import re
 import shlex
 import subprocess
 from functools import lru_cache
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -135,13 +135,15 @@ class GStreamer(Decoder):
         input_filepath: str,
         output_filepath: Optional[str],
         output_format: OutputFormat,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
+
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            self.parser,
+            self.parser if self.parser else "parsebin",
             self.decoder_bin,
             self.caps,
             self.sink,
@@ -178,6 +180,7 @@ class GStreamer(Decoder):
         timeout: int,
         verbose: bool,
         keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decode the test vector and do the checksum"""
         # When using videocodectestsink we can avoid writing files to disk
@@ -191,7 +194,7 @@ class GStreamer(Decoder):
             data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
-        pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format)
+        pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format, optional_params)
         run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
         return file_checksum(output_filepath)
 
@@ -233,6 +236,7 @@ class GStreamerVideo(GStreamer):
         input_filepath: str,
         output_filepath: Optional[str],
         output_format: OutputFormat,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         raw_caps = "video/x-raw"
         try:
@@ -842,6 +846,7 @@ class FluendoVVCdeCH266Decoder(GStreamerVideo):
         input_filepath: str,
         output_filepath: Optional[str],
         output_format: OutputFormat,
+        optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         caps = f"{self.caps} ! videoconvert dither=none ! video/x-raw,format={output_format_to_gst(output_format)}"
         output = f"location={output_filepath}" if output_filepath else ""
