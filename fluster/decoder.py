@@ -24,6 +24,14 @@ from fluster.codec import Codec, OutputFormat
 from fluster.utils import normalize_binary_cmd
 
 
+class NotSupportedError(Exception):
+    """Decoder cannot handle the media."""
+
+    def __init__(self, message: str = "Media not supported by decoder"):
+        self.message = message
+        super().__init__(self.message)
+
+
 class Decoder(ABC):
     """Base class for decoders"""
 

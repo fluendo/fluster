@@ -15,9 +15,14 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
+import subprocess
+
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.decoder import Decoder, NotSupportedError, register_decoder
 from fluster.utils import file_checksum, run_command
+
+# BSD sysexits.h EX_UNAVAILABLE — media not supported.
+EX_UNAVAILABLE = 69
 
 
 class VKVSDecoder(Decoder):
@@ -46,22 +51,27 @@ class VKVSDecoder(Decoder):
             Codec.AV1: "av1",
             Codec.VP9: "vp9",
         }
-        run_command(
-            [
-                self.binary,
-                "-i",
-                input_filepath,
-                "-o",
-                output_filepath,
-                "--codec",
-                codec_mapping[self.codec],
-                "--noPresent",
-                "--enablePostProcessFilter",
-                "0",
-            ],
-            timeout=timeout,
-            verbose=verbose,
-        )
+        try:
+            run_command(
+                [
+                    self.binary,
+                    "-i",
+                    input_filepath,
+                    "-o",
+                    output_filepath,
+                    "--codec",
+                    codec_mapping[self.codec],
+                    "--noPresent",
+                    "--enablePostProcessFilter",
+                    "0",
+                ],
+                timeout=timeout,
+                verbose=verbose,
+            )
+        except subprocess.CalledProcessError as ex:
+            if ex.returncode == EX_UNAVAILABLE:
+                raise NotSupportedError(f"Media not supported: {ex.cmd}") from ex
+            raise
         return file_checksum(output_filepath)
 
 
