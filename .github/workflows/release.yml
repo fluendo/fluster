@@ -9,6 +9,23 @@ on:
       - 'v*.*.*'
 
 jobs:
+  manpage:
+    name: Check manpage is in sync
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v5
+    - name: Install pandoc
+      run: |
+        sudo apt update
+        sudo apt install -y pandoc
+    - name: Regenerate manpage
+      run: |
+        make docs/fluster.1
+    - name: Ensure generated manpage is up-to-date
+      run: |
+        git diff --exit-code -- docs/fluster.1
+
   min_linux:
     name: linux with min supported deps
     runs-on: ubuntu-22.04
@@ -110,6 +127,7 @@ jobs:
     runs-on: ubuntu-22.04
     concurrency: create_release
     needs:
+      - manpage
       - min_linux
       - linux
       - windows
