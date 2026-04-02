@@ -49,6 +49,25 @@ jobs:
       run: |
         pre-commit run --all-files --show-diff-on-failure
 
+  manpage:
+    name: Check manpage is in sync
+    runs-on: ubuntu-22.04
+    needs:
+      - commit-validation
+
+    steps:
+    - uses: actions/checkout@v5
+    - name: Install pandoc
+      run: |
+        sudo apt update
+        sudo apt install -y pandoc
+    - name: Regenerate manpage
+      run: |
+        make docs/fluster.1
+    - name: Ensure generated manpage is up-to-date
+      run: |
+        git diff --exit-code -- docs/fluster.1
+
   min_linux:
     name: linux with min supported deps
     runs-on: ubuntu-22.04
