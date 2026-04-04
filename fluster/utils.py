@@ -24,18 +24,16 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
 from functools import partial
-from threading import Lock
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
-
-download_lock = Lock()
 
 
 def create_enhanced_opener() -> urllib.request.OpenerDirector:
@@ -154,15 +152,13 @@ def download(
     timeout: int = 300,
     chunk_size: int = 2048 * 2048,  # 4MB
 ) -> None:
-    """Downloads a file to a directory with a mutex lock
-    to avoid conflicts and retries with exponential backoff."""
+    """Downloads a file to a directory with retries and exponential backoff."""
     os.makedirs(dest_dir, exist_ok=True)
     filename = os.path.basename(url)
     dest_path = os.path.join(dest_dir, filename)
     for attempt in range(max_retries):
         try:
-            with download_lock:
-                _download_simple(url, dest_path, filename, timeout, chunk_size)
+            _download_simple(url, dest_path, filename, timeout, chunk_size)
             break
         except (
             urllib.error.URLError,
@@ -181,6 +177,117 @@ def download(
                 time.sleep(wait_time)
             else:
                 raise RuntimeError(f"Failed to download {url} after {max_retries} attempts: {e}") from e
+
+
+class DownloadManager:
+    """Centralized download manager that ensures each URL is downloaded at most once.
+
+    Thread-safe: multiple threads may call get() concurrently. If the same URL
+    is requested by multiple threads, only one performs the download while
+    the others wait for the result. Archives managed by this class are cleaned
+    up via cleanup() unless keep_file is set.
+    """
+
+    def __init__(self, verify: bool, keep_file: bool, retries: int):
+        self._cache: Dict[str, str] = {}
+        self._verify = verify
+        self._keep_file = keep_file
+        self._retries = retries
+        self._managed_files: List[str] = []
+        self._lock = threading.Lock()
+        self._in_progress: Dict[str, threading.Event] = {}
+        self._errors: Dict[str, Exception] = {}
+
+    def get(self, url: str, dest_dir: str, source_checksum: str) -> str:
+        """Download *url* into *dest_dir* (once) and return the local path.
+
+        Thread-safe. Concurrent calls for the same URL will block until
+        the first caller finishes, then reuse the cached result.
+
+        Note: *dest_dir* is only used for the first call for a given URL.
+        Subsequent callers receive the cached path from the first call's
+        directory, regardless of their own *dest_dir* value.
+        """
+        while True:
+            with self._lock:
+                # Fail fast if a previous attempt for this URL already failed
+                if url in self._errors:
+                    orig = self._errors[url]
+                    raise type(orig)(str(orig)) from orig
+
+                if url in self._cache and os.path.exists(self._cache[url]):
+                    print(f"\tReusing cached download for {os.path.basename(url)}")
+                    return self._cache[url]
+
+                if url in self._in_progress:
+                    event = self._in_progress[url]
+                else:
+                    event = threading.Event()
+                    self._in_progress[url] = event
+                    break
+
+            event.wait()
+
+            with self._lock:
+                if url in self._errors:
+                    orig = self._errors[url]
+                    raise type(orig)(str(orig)) from orig
+
+        try:
+            result = self._do_download(url, dest_dir, source_checksum)
+            with self._lock:
+                self._cache[url] = result
+                self._errors.pop(url, None)
+                if is_extractable(result):
+                    self._managed_files.append(result)
+            return result
+        except Exception as exc:
+            with self._lock:
+                self._errors[url] = exc
+            raise
+        finally:
+            with self._lock:
+                done_event = self._in_progress.pop(url, None)
+            if done_event is not None:
+                done_event.set()
+
+    def _do_download(self, url: str, dest_dir: str, source_checksum: str) -> str:
+        """Perform the actual download/skip logic."""
+        dest_path = os.path.join(dest_dir, os.path.basename(url))
+        os.makedirs(dest_dir, exist_ok=True)
+
+        skip = False
+        if os.path.exists(dest_path):
+            if source_checksum == "__skip__":
+                skip = True
+            elif source_checksum == file_checksum(dest_path):
+                skip = True
+            elif self._verify and is_extractable(dest_path):
+                os.remove(dest_path)
+
+        if skip:
+            print(f"\tSkipping download of {os.path.basename(url)} (already exists)")
+        else:
+            print(f"\tDownloading {os.path.basename(url)} from {url}")
+            download(url, dest_dir, self._retries**self._retries)
+
+            if source_checksum != "__skip__":
+                checksum = file_checksum(dest_path)
+                if source_checksum != checksum:
+                    raise Exception(
+                        f"Checksum mismatch for {os.path.basename(url)}: {checksum} instead of '{source_checksum}'"
+                    )
+
+        return dest_path
+
+    def cleanup(self) -> None:
+        """Remove downloaded archives unless keep_file was requested."""
+        if self._keep_file:
+            return
+        for path in self._managed_files:
+            if os.path.exists(path):
+                os.remove(path)
+        self._managed_files.clear()
 
 
 def file_checksum(path: str) -> str:
