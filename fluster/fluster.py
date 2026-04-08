@@ -660,14 +660,12 @@ class Fluster:
         def _global_stats(
             results: List[Tuple[Decoder, TestSuite]],
             test_suites: List[TestSuite],
-            first: bool,
         ) -> str:
-            separator = f"\n|-|{'-|' * len(results)}"
-            output = separator if not first else ""
-            output += "\n|Test|" if not first else "|Test|"
+            separator = f"|-|{'-|' * len(results)}"
+            output = "|Test|"
             for decoder, _ in results:
                 output += f"{decoder.name}|"
-            output += separator if first else ""
+            output += "\n" + separator
             output += "\n|TOTAL|"
             for test_suite in test_suites:
                 output += f"{test_suite.test_vectors_success}/{len(test_suite.test_vectors)}|"
@@ -682,7 +680,6 @@ class Fluster:
                 timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
                 total_time = test_suite.time_taken - timeouts
                 output += f"{total_time:.3f}s|"
-            output += separator if first else ""
             return output
 
         def _profile_stats(
@@ -759,9 +756,9 @@ class Fluster:
                         stats["total"] += profile_data["total"]
                         stats["success"] += profile_data["success"]
 
-            separator = f"\n|-|{'-|' * len(all_decoders)}"
+            separator = f"|-|{'-|' * len(all_decoders)}"
             output = "\n# GLOBAL SUMMARY"
-            output += "\n|TOTALS|" + "".join(f"{dec.name}|" for dec in all_decoders) + separator
+            output += "\n|TOTALS|" + "".join(f"{dec.name}|" for dec in all_decoders) + "\n" + separator
             output += "\n|TOTAL|" + "".join(
                 f"{decoder_totals[dec.name]['success']}/{decoder_totals[dec.name]['total']}|" for dec in all_decoders
             )
@@ -772,15 +769,14 @@ class Fluster:
                 all_profiles.update(decoder_profiles.keys())
 
             if all_profiles:
-                output += separator
-                output += "\n|Profile|" + "".join(f"{dec.name}|" for dec in all_decoders)
+                output += "\n\n"
+                output += "|Profile|" + "".join(f"{dec.name}|" for dec in all_decoders) + "\n" + separator
                 for profile in sorted(all_profiles):
                     output += f"\n|{profile}|"
                     for dec in all_decoders:
                         stats = global_profile_stats[dec.name].get(profile, {"success": 0, "total": 0})
                         output += f"{stats['success']}/{stats['total']}|"
 
-            output += separator
             return output
 
         output = system_info.to_markdown()
@@ -789,13 +785,22 @@ class Fluster:
             decoders_names = [decoder.name for decoder, _ in test_suite_results]
             test_suites = [res[1] for res in test_suite_results]
             print(f"Generating summary for test suite {test_suite_name} and decoders {', '.join(decoders_names)}:\n")
-            output += _global_stats(test_suite_results, test_suites, True)
+            output += _global_stats(test_suite_results, test_suites)
+            output += "\n\n"
+
+            separator = f"|-|{'-|' * len(test_suite_results)}"
+            output += "|Test|"
+            for decoder, _ in test_suite_results:
+                output += f"{decoder.name}|"
+            output += "\n" + separator
             for test_vector in test_suite_results[0][1].test_vectors.values():
                 output += f"\n|{test_vector.name}|"
                 for test_suite in test_suites:
                     tvector = test_suite.test_vectors[test_vector.name]
                     output += self.emoji[tvector.test_result] + "|"
-            output += _global_stats(test_suite_results, test_suites, False)
+            output += "\n\n"
+
+            output += _global_stats(test_suite_results, test_suites)
             output += "\n\n"
 
             profile_output = _profile_stats(test_suite_results)
