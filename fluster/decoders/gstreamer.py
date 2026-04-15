@@ -141,7 +141,7 @@ class GStreamer(Decoder):
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            self.parser if self.parser else "parsebin",
+            self.parser,
             self.decoder_bin,
             self.caps,
             self.sink,
@@ -249,7 +249,7 @@ class GStreamerVideo(GStreamer):
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            self.parser if self.parser else "parsebin",
+            self.parser,
             self.decoder_bin,
             caps,
             self._get_sink_for_format(output_format),
@@ -917,7 +917,7 @@ class FluendoFluAC4DecDecoder(GStreamerAudio):
         return PIPELINE_TPL.format(
             self.cmd,
             input_filepath,
-            self.parser if self.parser else "parsebin",
+            self.parser,
             decoder_bin,
             self.caps,
             self.sink,
