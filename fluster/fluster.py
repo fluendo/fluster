@@ -26,6 +26,7 @@ from functools import lru_cache
 from shutil import rmtree
 from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
 
+from fluster import utils
 from fluster.codec import Codec, Profile
 from fluster.decoder import DECODERS, Decoder
 
@@ -857,11 +858,16 @@ class Fluster:
                 download_test_suites = self.test_suites
             print(f"Test suites: {[ts.name for ts in download_test_suites]}")
 
-        for test_suite in download_test_suites:
-            test_suite.download(
-                jobs,
-                self.resources_dir,
-                verify=True,
-                keep_file=keep_file,
-                retries=retries,
-            )
+        manager = utils.DownloadManager(verify=True, keep_file=keep_file, retries=retries)
+        try:
+            for test_suite in download_test_suites:
+                test_suite.download(
+                    jobs,
+                    self.resources_dir,
+                    verify=True,
+                    keep_file=keep_file,
+                    retries=retries,
+                    download_manager=manager,
+                )
+        finally:
+            manager.cleanup()
