@@ -8,7 +8,7 @@ application that runs a number of test suites with the supported decoders. Its
 purpose is to check different decoder implementations against known test suites
 with known and proven results. It was originally designed to check the
 conformance of H.265/HEVC decoders, but it also supports H.264/AVC, H.266/VVC,
-VP8, VP9, AV1, MPEG2 video and AAC. It can easily be extended to add more decoders and test
+VP8, VP9, AV1, MPEG2 video, AAC and AC-4. It can easily be extended to add more decoders and test
 suites.
 
 ## Table of Contents
@@ -206,6 +206,11 @@ MPEG4_AAC-MP4-ER
     Codec: AAC
     Description: ISO IEC 14496-26 MPEG4 AAC MP4 error resilient and a few other profiles test suite
     Test vectors: 117
+
+AC4_ELEMENTARY_STREAMS
+    Codec: AC-4
+    Description: Dolby AC-4 elementary stream test suite for conformance testing against the Dolby Pro Audio Decoder reference
+    Test vectors: 10
 
 VP8-TEST-VECTORS
     Codec: VP8
@@ -482,6 +487,9 @@ AAC
     ISO-MPEG2-AAC: ISO MPEG2 AAC reference decoder
     ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder
     ISO-MPEG4-AAC-ER: ISO MPEG4 AAC error resilient reference decoder
+
+AC-4
+    Fluendo-AC4-SW-Gst1.0: Fluendo AC-4 SW decoder for GStreamer 1.0
 ```
 
 4. Run the test suite (or a number of them) for all decoders (or a number of
@@ -506,6 +514,7 @@ AAC
 - Dummy test suite for testing purposes.
 - [AAC](https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_13818-4_2004_Conformance_Testing/AAC/).
 - [AAC](https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_IEC_14496-26_2010_Bitstreams/DVD1/mpeg4audio-conformance/).
+- [AC-4](https://ott.dolby.com/OnDelKits/AC-4/Dolby_AC-4_Online_Delivery_Kit_1.5/Test_Signals/elementary_streams/Audio.zip) (Dolby AC-4 Online Delivery Kit v1.5, available to Dolby licensees).
 - [AV1](https://storage.googleapis.com/aom-test-data/).
 - [AV1](https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/tast-tests/src/chromiumos/tast/local/bundles/cros/video/data/test_vectors/av1/).
 - [AV1](https://aom-cwg-av1-argon-streams-public.s3.us-east-1.amazonaws.com/).
@@ -525,7 +534,7 @@ AAC
   decoder for H.265/HEVC.
 - [JCT-VT H.266/VVC](https://vcgit.hhi.fraunhofer.de/jvet/VVCSoftware_VTM) as reference
   decoder for H.266/VVC.
-- Fluendo's proprietary decoders for MPEG2 video, MPEG4 video, H.264/AVC and H.265/HEVC that are included
+- Fluendo's proprietary decoders for MPEG2 video, MPEG4 video, H.264/AVC, H.265/HEVC and AC-4 that are included
   in [Fluendo Codec
   Pack](https://fluendo.com/products/fluendo-codec-pack/).
 - [GStreamer's](https://gstreamer.freedesktop.org/) for H.266/VVC.
