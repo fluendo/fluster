@@ -5,7 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0] - 2025-10-15
+## [0.7.0] - 2026-04-23
+
+### Added
+- Add NOT_SUPPORTED test result for unsupported media
+- Add AC4 decoder configuration sample comparison
+- Add TestVector optional decoder parameters
+- Add MPEG2 V4L2 decoders
+- Use h266parse if exists
+- Add AC-4 elementary streams and reference decoder
+- Add hardware acceleration support with customizable Docker image
+- Add summary report generation with multiple formats and system info
+- Add OpenH264 decoder support
+- Add QSV H.264 decoder support
+- Add Fluendo hardware MPEG-4 decoders
+- Add Fluendo hardware MPEG-2 decoders
+
+### Changed
+- Remove unnecessary conditions
+- AC4 decoder testing
+- Update H.266 test suite with profile information
+- Add profile information to H.266 test suite generator
+- Add extra profiles for H.266 test vectors
+- Remove pre-split Fluendo HW VA decoder classes
+
+### Fixed
+- Probe videocodectestsink format support dynamically
+- Fix broken Markdown tables in summary report
+- Move table separator under the header
+- Use fluh266parse if h266parse not present
+- Disable film grain synthesis in ffmpeg for Vulkan AV1
+- Videocodectestsink results in errors when pixel format is Y42B with GStreamer 1.20.3
+- Remove GStreamer 1.0 references and prepare for renaming
+- Resolve errors when building GStreamer from source in docker with Ubuntu 24.04
+- Resolve errors when building GStreamer from source in docker with Ubuntu 24.04
+- Replace parsebin with explicit h264parse for MSDK/QSV decoders
+- Handle duplicate decoder/test suite names in arguments
+- Handle IncompleteRead exceptions and improve parallel download
+- Force h266parse for vvdec
+
+
+## [0.6.0] - 2025-10-23
 
 ### Added
 - Add -c option to download command
