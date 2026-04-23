@@ -18,11 +18,10 @@
 
 
 import os
-import re
 import shlex
 import subprocess
 from functools import lru_cache
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
@@ -35,31 +34,22 @@ from fluster.utils import (
 
 PIPELINE_TPL = "{} --no-fault filesrc location={} ! {} ! {} ! {} ! {} {}"
 
-# YUV422 GStreamer format strings unsupported by videocodectestsink before 1.22.0
-# https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/3331
-_GST_YUV422_FORMATS = frozenset({"Y42B", "I422_10LE", "I422_12LE"})
-_GST_VIDEOCODECTESTSINK_YUV422_MIN_VERSION = (1, 22, 0)
-
 
 @lru_cache(maxsize=None)
-def _get_gst_version() -> Tuple[int, int, int]:
-    """Return the installed GStreamer version as a (major, minor, micro) tuple.
-    Returns (0, 0, 0) when the version cannot be determined.
-    """
-    inspect_exe = normalize_binary_cmd("gst-inspect-1.0")
+def _videocodectestsink_supports_format(gst_fmt: str) -> bool:
+    """Check whether videocodectestsink supports a given raw format by probing a minimal pipeline."""
+    cmd = normalize_binary_cmd("gst-launch-1.0")
     try:
-        result = subprocess.run(
-            [inspect_exe, "--version"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=True,
+        run_command(
+            shlex.split(
+                f"{cmd} --no-fault videotestsrc num-buffers=1 ! video/x-raw,width=1,height=1"
+                f" ! videoconvert ! video/x-raw,format={gst_fmt} ! videocodectestsink"
+            ),
+            verbose=False,
         )
-        match = re.search(r"(\d+)\.(\d+)\.(\d+)", result.stdout.decode("utf-8", errors="replace"))
-        if match:
-            return int(match.group(1)), int(match.group(2)), int(match.group(3))
-    except (OSError, subprocess.CalledProcessError):
-        pass
-    return (0, 0, 0)
+        return True
+    except Exception:
+        return False
 
 
 @lru_cache(maxsize=None)
@@ -225,7 +215,7 @@ class GStreamerVideo(GStreamer):
             gst_fmt = output_format_to_gst(output_format)
         except KeyError:
             return self.sink
-        if gst_fmt in _GST_YUV422_FORMATS and _get_gst_version() < _GST_VIDEOCODECTESTSINK_YUV422_MIN_VERSION:
+        if not _videocodectestsink_supports_format(gst_fmt):
             return "filesink"
         return self.sink
 
