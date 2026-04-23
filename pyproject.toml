@@ -7,7 +7,7 @@ name = "fluster-conformance"
 # TODO: Ensure that version 0.x.0 is marked as the final version in the CI release workflow only when we are certain
 # about deploying a new release. This prevents creating an irreversible history in PyPI, which would block re-uploading
 # the same version.
-version = "0.6.0"
+version = "0.7.0"
 authors = [
     {name = "Andoni Morales Alastruey", email="amorales@fluendo.com"},
     # {name = "Pablo Marcos Oltra"}, wait to (https://github.com/pypi/warehouse/issues/12877)
@@ -65,6 +65,9 @@ packages = ["fluster", "fluster.decoders"]
     "test_suites/aac/MPEG4_AAC-ADTS.json",
     "test_suites/aac/MPEG4_AAC-MP4.json",
     "test_suites/aac/MPEG4_AAC-MP4-ER.json"
+]
+"share/fluster/test_suites/ac4" = [
+    "test_suites/ac4/AC4_ELEMENTARY_STREAMS.json"
 ]
 "share/fluster/test_suites/av1" = [
     "test_suites/av1/AV1-TEST-VECTORS.json",
