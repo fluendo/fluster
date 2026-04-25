@@ -264,6 +264,9 @@ ac4_reference_decoder: ## install AC4 Dolby reference decoder (requires Dolby cu
 	cp $(AC4_DECODER_BIN) $(DECODERS_DIR)/decoder_reference_app_linux_x86_64
 	chmod +x $(DECODERS_DIR)/decoder_reference_app_linux_x86_64
 
+docs/fluster.1: docs/fluster.1.md
+	pandoc $< -s -t man -o $@
+
 clean: ## remove contrib temporary folder
 	rm -rf $(CONTRIB_DIR)
 
