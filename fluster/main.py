@@ -69,7 +69,6 @@ class Main:
         if hasattr(args, "func"):
             fluster = Fluster(
                 test_suites_dir=args.test_suites_dir,
-                decoders_dir=self.decoders_dir,
                 resources_dir=args.resources,
                 output_dir=args.output,
                 use_emoji=not args.no_emoji,
