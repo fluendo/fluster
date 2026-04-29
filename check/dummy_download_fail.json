@@ -5,11 +5,11 @@
     "test_vectors": [
         {
             "name": "download_fail",
-            "source": "https://www.itu.int/wftp3/av-arch/jctvc-site/bitstream_exchange/draft_conformance/HEVC_v1/ipcm_B_NEC_3.zip",
+            "source": "https://storage.googleapis.com/aom-test-data/av1-1-b8-01-size-200x226.ivf",
             "source_checksum": "bad checksum on purpose",
-            "input_file": "ipcm_B_NEC_3/ipcm_B_NEC_3.bit",
+            "input_file": "av1-1-b8-01-size-200x226.ivf",
             "output_format": "yuv420p",
-            "result": "23a3b7024fd9bc64b946b9961ab0f51e"
+            "result": "bad result on purpose"
         }
     ]
 }
