@@ -1,0 +1,11 @@
+--- a/general/makefile.rules	2025-12-11 14:20:18
++++ b/general/makefile.rules	2025-12-11 14:20:31
+@@ -120,7 +120,7 @@
+ ##compile a COMLIBS library
+ $(COMLIBS_file): .FORCE
+ 	@$(EXTERNALLIBCMDLINE) $(@F)  $(COMLIBS_$(@F)_OPTIONS) | tee $(DIRTARGET)_libcompile_$(@F).log; \
+-	sed -e's@######## library okay: @@;ta;d;:a;s@/[^/]*$$@/@' $(DIRTARGET)_libcompile_$(@F).log > $(DIRTARGET).lib_$(@F).log; \
++	sed -e 's@######## library okay: @@' -e 'ta' -e 'd' -e ':a' -e 's@/[^/]*$$@/@' $(DIRTARGET)_libcompile_$(@F).log > $(DIRTARGET).lib_$(@F).log; \
+ 	rm -f $(DIRTARGET)_libcompile_$(@F).log
+
+ $(CLOBBERLIBDEPS) $(CLEANLIBDEPS): .FORCE
