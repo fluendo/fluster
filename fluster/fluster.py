@@ -482,49 +482,50 @@ class Fluster:
                     time_str = f"{test_vector.test_time:.3f}" if test_vector.test_time else "0"
                     rows.append([vector_name, RESULT_MAP[test_vector.test_result], time_str, profile_name])
 
-        rows.append(["", "", "", ""])
-        rows.append(["GLOBAL SUMMARY", "", "", ""])
-
-        all_decoders = []
-        decoder_names = set()
-        for test_suite_results in results.values():
-            for decoder, _ in test_suite_results:
-                if decoder.name not in decoder_names:
-                    all_decoders.append(decoder)
-                    decoder_names.add(decoder.name)
-
-        for decoder in all_decoders:
-            total_success = 0
-            total_vectors = 0
-            total_time = 0.0
-            decoder_profile_stats: Dict[str, Dict[str, int]] = {}
-
-            for test_suite_results in results.values():
-                for dec, test_suite in test_suite_results:
-                    if dec.name == decoder.name:
-                        total_success += test_suite.test_vectors_success
-                        total_vectors += len(test_suite.test_vectors)
-                        timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
-                        total_time += test_suite.time_taken - timeouts
-
-                        test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
-                        for profile_name, profile_data in test_suite_profile_stats.items():
-                            if profile_name not in decoder_profile_stats:
-                                decoder_profile_stats[profile_name] = {"success": 0, "total": 0}
-                            decoder_profile_stats[profile_name]["total"] += profile_data["total"]
-                            decoder_profile_stats[profile_name]["success"] += profile_data["success"]
-
+        if len(results.keys()) > 1 or any(len(test_suite_res) > 1 for test_suite_res in results.values()):
             rows.append(["", "", "", ""])
-            rows.append([f"Decoder: {decoder.name}", "", "", ""])
-            rows.append(["Total Success", str(total_success), "", ""])
-            rows.append(["Total Vectors", str(total_vectors), "", ""])
-            rows.append(["Total Time (s)", f"{total_time:.3f}", "", ""])
+            rows.append(["GLOBAL SUMMARY", "", "", ""])
 
-            if decoder_profile_stats:
+            all_decoders = []
+            decoder_names = set()
+            for test_suite_results in results.values():
+                for decoder, _ in test_suite_results:
+                    if decoder.name not in decoder_names:
+                        all_decoders.append(decoder)
+                        decoder_names.add(decoder.name)
+
+            for decoder in all_decoders:
+                total_success = 0
+                total_vectors = 0
+                total_time = 0.0
+                decoder_profile_stats: Dict[str, Dict[str, int]] = {}
+
+                for test_suite_results in results.values():
+                    for dec, test_suite in test_suite_results:
+                        if dec.name == decoder.name:
+                            total_success += test_suite.test_vectors_success
+                            total_vectors += len(test_suite.test_vectors)
+                            timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
+                            total_time += test_suite.time_taken - timeouts
+
+                            test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
+                            for profile_name, profile_data in test_suite_profile_stats.items():
+                                if profile_name not in decoder_profile_stats:
+                                    decoder_profile_stats[profile_name] = {"success": 0, "total": 0}
+                                decoder_profile_stats[profile_name]["total"] += profile_data["total"]
+                                decoder_profile_stats[profile_name]["success"] += profile_data["success"]
+
                 rows.append(["", "", "", ""])
-                rows.append(["Profile", "Success", "Total", ""])
-                for profile_name, profile_data in sorted(decoder_profile_stats.items()):
-                    rows.append([profile_name, str(profile_data["success"]), str(profile_data["total"]), ""])
+                rows.append([f"Decoder: {decoder.name}", "", "", ""])
+                rows.append(["Total Success", str(total_success), "", ""])
+                rows.append(["Total Vectors", str(total_vectors), "", ""])
+                rows.append(["Total Time (s)", f"{total_time:.3f}", "", ""])
+
+                if decoder_profile_stats:
+                    rows.append(["", "", "", ""])
+                    rows.append(["Profile", "Success", "Total", ""])
+                    for profile_name, profile_data in sorted(decoder_profile_stats.items()):
+                        rows.append([profile_name, str(profile_data["success"]), str(profile_data["total"]), ""])
 
         # Ensure all rows have exactly 4 columns and format as CSV
         csv_lines = []
@@ -617,7 +618,10 @@ class Fluster:
                     all_decoders.append(decoder)
                     decoder_names.add(decoder.name)
 
-        global_summary: Dict[str, Any] = {}
+        global_summary: Optional[Dict[str, Any]] = None
+        if len(results.keys()) > 1 or any(len(test_suite_res) > 1 for test_suite_res in results.values()):
+            global_summary = {}
+
         for decoder in all_decoders:
             total_success = 0
             total_vectors = 0
@@ -640,16 +644,17 @@ class Fluster:
                             decoder_profile_stats[profile_name]["total"] += profile_data["total"]
                             decoder_profile_stats[profile_name]["success"] += profile_data["success"]
 
-            global_summary[decoder.name] = {
-                "total_success": total_success,
-                "total_vectors": total_vectors,
-                "total_time": round(total_time, 3),
-            }
+            if global_summary is not None:
+                global_summary[decoder.name] = {
+                    "total_success": total_success,
+                    "total_vectors": total_vectors,
+                    "total_time": round(total_time, 3),
+                }
+                if decoder_profile_stats:
+                    global_summary[decoder.name]["profile_stats"] = decoder_profile_stats
 
-            if decoder_profile_stats:
-                global_summary[decoder.name]["profile_stats"] = decoder_profile_stats
-
-        json_output["global_summary"] = global_summary
+        if global_summary is not None:
+            json_output["global_summary"] = global_summary
 
         if ctx.summary_output:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
@@ -666,7 +671,8 @@ class Fluster:
             test_suites: List[TestSuite],
         ) -> str:
             separator = f"|-|{'-|' * len(results)}"
-            output = "|Test|"
+            output = f"**Test Suite: {test_suites[0].name}**" + "\n\n"
+            output += "|Test|"
             for decoder, _ in results:
                 output += f"{decoder.name}|"
             output += "\n" + separator
@@ -814,6 +820,10 @@ class Fluster:
             output += _global_stats(test_suite_results, test_suites)
             output += "\n\n"
 
+            profile_output = _profile_stats(test_suite_results)
+            if profile_output:
+                output += profile_output + "\n\n"
+
             separator = f"|-|{'-|' * len(test_suite_results)}"
             output += "|Test|"
             for decoder, _ in test_suite_results:
@@ -826,16 +836,10 @@ class Fluster:
                     output += self.emoji[tvector.test_result] + "|"
             output += "\n\n"
 
-            output += _global_stats(test_suite_results, test_suites)
-            output += "\n\n"
-
-            profile_output = _profile_stats(test_suite_results)
-            if profile_output:
-                output += profile_output + "\n\n"
-
-        global_summary = _generate_global_summary(results)
-        if global_summary:
-            output += global_summary + "\n\n"
+        if len(results.keys()) > 1 or any(len(test_suite_res) > 1 for test_suite_res in results.values()):
+            global_summary = _generate_global_summary(results)
+            if global_summary:
+                output += global_summary + "\n\n"
 
         if ctx.summary_output:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
