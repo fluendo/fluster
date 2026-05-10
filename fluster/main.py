@@ -47,6 +47,7 @@ class Main:
 
     def __init__(self) -> None:
         self.decoders_dir = DECODERS_DIR
+        self.decoders_sys_dir = os.path.join(os.path.dirname(__file__), "..", DECODERS_DIR)
         self.test_suites_dir = os.path.join(os.path.dirname(__file__), "..", TEST_SUITES_DIR)
         self.resources_dir = os.path.join(os.path.dirname(__file__), "..", RESOURCES_DIR)
         self.output_dir = os.path.join(gettempdir(), OUTPUT_DIR)
@@ -59,7 +60,9 @@ class Main:
 
         # Prepend to the PATH the decoders_dir so that we can run them
         # without having to set the env for every single command
-        os.environ["PATH"] = self.decoders_dir + os.path.pathsep + os.environ["PATH"]
+        os.environ["PATH"] = (
+            self.decoders_dir + os.path.pathsep + self.decoders_sys_dir + os.path.pathsep + os.environ["PATH"]
+        )
 
     def run(self) -> None:
         """Runs Fluster"""
@@ -69,7 +72,6 @@ class Main:
         if hasattr(args, "func"):
             fluster = Fluster(
                 test_suites_dir=args.test_suites_dir,
-                decoders_dir=self.decoders_dir,
                 resources_dir=args.resources,
                 output_dir=args.output,
                 use_emoji=not args.no_emoji,

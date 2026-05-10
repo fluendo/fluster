@@ -147,14 +147,12 @@ class Fluster:
     def __init__(
         self,
         test_suites_dir: str,
-        decoders_dir: str,
         resources_dir: str,
         output_dir: str,
         verbose: bool = False,
         use_emoji: bool = True,
     ):
         self.test_suites_dir = test_suites_dir
-        self.decoders_dir = decoders_dir
         self.resources_dir = resources_dir
         self.output_dir = output_dir
         self.verbose = verbose
