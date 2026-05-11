@@ -157,6 +157,7 @@ class TestSuite:
         self.filename = filename
         self.resources_dir = resources_dir
         self.test_vectors_success = 0
+        self.test_vectors_not_run = 0
         self.test_vectors_not_supported = 0
         self.time_taken = 0.0
 
@@ -177,6 +178,7 @@ class TestSuite:
                 data["test_method"] = TestMethod(data["test_method"])
             # Remove runtime-only fields if present in malformed JSON
             data.pop("test_vectors_success", None)
+            data.pop("test_vectors_not_run", None)
             data.pop("test_vectors_not_supported", None)
             data.pop("time_taken", None)
             return cls(filename, resources_dir, **data)
@@ -188,6 +190,7 @@ class TestSuite:
             data.pop("resources_dir")
             data.pop("filename")
             data.pop("test_vectors_success")
+            data.pop("test_vectors_not_run")
             data.pop("test_vectors_not_supported")
             data.pop("time_taken")
             if self.failing_test_vectors is None:
@@ -467,28 +470,30 @@ class TestSuite:
         self.time_taken = perf_counter() - start
         print("\n")
         self.test_vectors_success = 0
+        self.test_vectors_not_run = 0
         self.test_vectors_not_supported = 0
         for test_vector_res in test_vector_results:
-            if test_vector_res.test_result == TestVectorResult.NOT_SUPPORTED:
+            if test_vector_res.test_result == TestVectorResult.SUCCESS:
+                self.test_vectors_success += 1
+            elif test_vector_res.test_result == TestVectorResult.NOT_SUPPORTED:
                 self.test_vectors_not_supported += 1
-            elif test_vector_res.errors:
-                if self.negative_test:
-                    self.test_vectors_success += 1
-                else:
-                    for error in test_vector_res.errors:
-                        # Use same format to report errors as TextTestRunner
-                        print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
-                        for line in error[1:]:
-                            print(line)
-            else:
-                if not self.negative_test:
-                    self.test_vectors_success += 1
+            elif test_vector_res.test_result == TestVectorResult.NOT_RUN:
+                self.test_vectors_not_run += 1
+
+            if test_vector_res.errors and not self.negative_test:
+                for error in test_vector_res.errors:
+                    # Use same format to report errors as TextTestRunner
+                    print(f"{'=' * 71}\nFAIL: {error[0]}\n{'-' * 70}")
+                    for line in error[1:]:
+                        print(line)
 
             # Collect the test vector results and failures since they come
             # from a different process
             self.test_vectors[test_vector_res.name] = test_vector_res
 
         status_parts = [f"{self.test_vectors_success}/{len(tests)} tests successfully"]
+        if self.test_vectors_not_run > 0:
+            status_parts.append(f"{self.test_vectors_not_run} not run")
         if self.test_vectors_not_supported > 0:
             status_parts.append(f"{self.test_vectors_not_supported} not supported")
         status_parts.append(f"in {self.time_taken:.3f} secs")
