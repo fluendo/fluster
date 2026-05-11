@@ -388,6 +388,13 @@ class TestSuite:
         test(test_result)
 
         self._collect_results(test_result)
+
+        if self.negative_test and not test.skip:
+            if test.test_vector.test_result == TestVectorResult.SUCCESS:
+                test.test_vector.test_result = TestVectorResult.FAIL
+            elif test.test_vector.test_result == TestVectorResult.FAIL:
+                test.test_vector.test_result = TestVectorResult.SUCCESS
+
         self._rename_test(test, module_orig, qualname_orig)
 
         return test.test_vector
@@ -439,11 +446,6 @@ class TestSuite:
         with Pool(jobs) as pool:
 
             def _callback(test_result: TestVector) -> None:
-                if self.negative_test:
-                    if test_result.errors:
-                        test_result.test_result = TestVectorResult.SUCCESS
-                    else:
-                        test_result.test_result = TestVectorResult.FAIL
                 print(
                     self._get_result_line(
                         self.name,
