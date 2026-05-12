@@ -375,12 +375,12 @@ class Fluster:
         """Calculate timeout adjustment for test suite timing"""
         if ctx.jobs == 1:
             return sum(
-                ctx.timeout for tv in test_suite.test_vectors.values() if tv.test_result == TestVectorResult.TIMEOUT
+                (tv.test_time for tv in test_suite.test_vectors.values() if tv.test_result == TestVectorResult.TIMEOUT),
+                0.0,
             )
         return 0.0
 
-    @staticmethod
-    def _generate_junit_summary(ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_junit_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
         try:
             import junitparser as junitp  # type: ignore
         except ImportError:
@@ -413,8 +413,6 @@ class Fluster:
             test_suite_name, test_suite_results = test_suite_tuple
 
             for suite_decoder_res in test_suite_results:
-                timeouts = 0
-
                 jsuite = junitp.TestSuite(test_suite_name)
                 jsuite.add_property("decoder", suite_decoder_res[0].name)
                 jsuite.add_property("os", f"{system_info.os_name} {system_info.os_version}")
@@ -438,10 +436,9 @@ class Fluster:
 
                     jsuite.add_testcase(jcase)
 
-                    if vector.test_result is TestVectorResult.TIMEOUT and ctx.jobs == 1:
-                        timeouts += ctx.timeout
+                timeout_time = self._calculate_timeout_adjustment(ctx, suite_decoder_res[1])
 
-                jsuite.time = round(suite_decoder_res[1].time_taken - timeouts, 3)
+                jsuite.time = round(suite_decoder_res[1].time_taken - timeout_time, 3)
 
                 jsuites.append(jsuite)
 
@@ -484,7 +481,7 @@ class Fluster:
                 tv_not_run = test_suite.test_vectors_not_run
                 tv_not_supported = test_suite.test_vectors_not_supported
                 tv_failed = tv_total - tv_passed - tv_not_run - tv_not_supported
-                timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
+                timeout_time = self._calculate_timeout_adjustment(ctx, test_suite)
 
                 # Start building the decoder summary block
                 rows.extend(
@@ -506,7 +503,7 @@ class Fluster:
                 rows.extend(
                     [
                         ["Failed\\Error", str(tv_failed), "", ""],
-                        ["Total Time (s)", f"{test_suite.time_taken - timeouts:.3f}", "", ""],
+                        ["Total Time (s)", f"{test_suite.time_taken - timeout_time:.3f}", "", ""],
                     ]
                 )
 
@@ -567,8 +564,8 @@ class Fluster:
                     entry["not_supported"] += ts.test_vectors_not_supported
 
                     # Update time
-                    timeouts = self._calculate_timeout_adjustment(ctx, ts)
-                    entry["time"] += ts.time_taken - timeouts
+                    timeout_time = self._calculate_timeout_adjustment(ctx, ts)
+                    entry["time"] += ts.time_taken - timeout_time
 
                     # Update profiles
                     ts_profiles = self._calculate_profile_stats(ts.test_vectors)
@@ -640,8 +637,8 @@ class Fluster:
                 tv_not_run = ts.test_vectors_not_run
                 tv_not_supported = ts.test_vectors_not_supported
                 tv_failed = tv_total - tv_passed - tv_not_run - tv_not_supported
-                timeouts = self._calculate_timeout_adjustment(ctx, ts)
-                time_taken = ts.time_taken - timeouts
+                timeout_time = self._calculate_timeout_adjustment(ctx, ts)
+                time_taken = ts.time_taken - timeout_time
 
                 if name not in global_stats:
                     global_stats[name] = {
@@ -781,14 +778,14 @@ class Fluster:
                 rows["NOT SUPPORTED"].append(f"{tv_not_supported}/{tv_total}")
                 rows["FAILED\\ERROR"].append(f"{tv_failed}/{tv_total}")
 
-                timeouts = self._calculate_timeout_adjustment(ctx, ts)
+                timeout_time = self._calculate_timeout_adjustment(ctx, ts)
                 # Substract from the total time that took running a test suite on a decoder
                 # the timeouts. This is not ideal since we won't be comparing decoding the
                 # same number of test vectors, but at least it is much better than comparing
                 # total times when timeouts are such a huge part of the global time taken.
                 # Note: we only do this when the number of parallel jobs is 1, because
                 # whenever there are actual parallel jobs, this gets much more complicated.
-                rows["TOTAL TIME"].append(f"{ts.time_taken - timeouts:.3f}s")
+                rows["TOTAL TIME"].append(f"{ts.time_taken - timeout_time:.3f}s")
 
             # Define the order and filter which rows to actually include
             labels_to_include = ["PASSED"]
@@ -871,8 +868,8 @@ class Fluster:
                     totals["not_supported"] += test_suite.test_vectors_not_supported
                     totals["total"] += len(test_suite.test_vectors)
 
-                    timeouts = self._calculate_timeout_adjustment(ctx, test_suite)
-                    decoder_times[decoder.name] += test_suite.time_taken - timeouts
+                    timeout_time = self._calculate_timeout_adjustment(ctx, test_suite)
+                    decoder_times[decoder.name] += test_suite.time_taken - timeout_time
 
                     test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
                     for profile_name, profile_data in test_suite_profile_stats.items():
