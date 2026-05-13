@@ -1,0 +1,21 @@
+# Fluster build options
+
+# Reference decoder options (enabled by default)
+option('h264_decoder', type: 'boolean', value: true,
+  description: 'Build H.264 reference decoder (JM)')
+option('h265_decoder', type: 'boolean', value: true,
+  description: 'Build H.265 reference decoder (HM)')
+option('h266_decoder', type: 'boolean', value: true,
+  description: 'Build H.266 reference decoder (VTM)')
+option('mpeg2_video_decoder', type: 'boolean', value: true,
+  description: 'Build MPEG-2 video reference decoder')
+option('mpeg2_aac_decoder', type: 'boolean', value: true,
+  description: 'Build MPEG-2 AAC reference decoder')
+option('mpeg4_aac_decoder', type: 'boolean', value: true,
+  description: 'Build MPEG-4 AAC reference decoder')
+option('mpeg4_aac_er_decoder', type: 'boolean', value: true,
+  description: 'Build MPEG-4 AAC Error Resilient reference decoder')
+
+# VVdeC decoder
+option('h266_vvdec', type: 'boolean', value: true,
+  description: 'Build H.266 VVdeC decoder')
