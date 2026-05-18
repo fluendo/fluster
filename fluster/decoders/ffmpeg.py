@@ -524,6 +524,8 @@ class FFmpegQsvDecoder(FFmpegDecoder):
         OutputFormat.YUV422P10LE: "y210le",
         OutputFormat.YUV444P: "vuyx",
         OutputFormat.YUV444P10LE: "xv30le",
+        OutputFormat.YUV444P14LE: "xv36",
+        # No native support for GBRP14LE
     }
 
     def __init__(self) -> None:
