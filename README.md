@@ -26,6 +26,7 @@ suites.
     - [Run](#run)
     - [Download](#download)
     - [Reference](#reference)
+    - [Local Mirror](#local-mirror)
   - [Report](#report)
   - [FAQ](#faq)
     - [Where does the name come from?](#where-does-the-name-come-from)
@@ -642,7 +643,7 @@ optional arguments:
 ```bash
 ./fluster.py download --help
 
-usage: fluster.py download [-h] [-j JOBS] [-k] [-r RETRIES] [-c CODEC] [testsuites ...]
+usage: fluster.py download [-h] [-j JOBS] [-k] [-r RETRIES] [-m MIRROR] [-c CODEC] [testsuites ...]
 
 positional arguments:
   testsuites            list of testsuites to download
@@ -654,6 +655,8 @@ optional arguments:
   -k, --keep            keep original downloaded file after extracting. Only applicable to compressed files such as .zip, .tar.gz, etc
   -r RETRIES, --retries RETRIES
                         number of retries, before failing
+  -m MIRROR, --mirror MIRROR
+                        base URL of a local mirror to download resources from (falls back to original source on failure)
   -c CODEC, --codec CODEC
                         download test suites for specific codecs only (comma-separated)
 ```
@@ -663,6 +666,82 @@ optional arguments:
 - When using both `-c/--codec` and specific test suites, the behavior is **union-based**:
   - All test suites matching the codec filter are downloaded
   - Additionally, all specified test suites are downloaded, regardless of codec
+### Local Mirror
+
+When running fluster on multiple machines or in a CI environment, downloading test vectors from the internet for each run can be slow. Fluster supports a **local mirror** to serve resources from a server on your LAN instead.
+
+#### How it works
+
+The `--mirror` option takes a base URL pointing to a mirror server. When downloading, fluster rewrites each source URL to point to the mirror first. If the mirror is unreachable or returns an error, fluster automatically falls back to the original internet source.
+
+For example, given a source URL:
+```
+https://storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-00.ivf
+```
+and a mirror base URL:
+```
+http://mirror.local:8080/fluster/
+```
+fluster will first attempt to download from:
+```
+http://mirror.local:8080/fluster/storage.googleapis.com/aom-test-data/av1-1-b10-00-quantizer-00.ivf
+```
+
+#### Usage
+
+```bash
+./fluster.py download --mirror http://mirror.local:8080/fluster/
+```
+
+The `--mirror` option works with all other download options:
+```bash
+./fluster.py download -c H.264,H.265 --mirror http://mirror.local:8080/fluster/
+./fluster.py download AV1-TEST-VECTORS -j 8 --mirror http://mirror.local:8080/fluster/
+```
+
+#### Setting up a mirror
+
+Use the `scripts/mirror_sync.py` script to populate a directory with all test vector resources:
+
+```bash
+python3 scripts/mirror_sync.py -o /path/to/mirror -j 8
+```
+
+This will scan all test suite JSON files and download every source URL into a directory tree that mirrors the original URL structure. Already-downloaded files are skipped on subsequent runs.
+
+Then serve the directory with any HTTP server:
+
+```bash
+# Python (quick testing)
+cd /path/to/mirror && python3 -m http.server 8080
+
+# nginx (production)
+# Point nginx root to /path/to/mirror
+```
+
+Use the same root path as the `--mirror` argument:
+```bash
+./fluster.py download --mirror http://mirror.local:8080/
+```
+
+#### mirror_sync.py options
+
+```bash
+python3 scripts/mirror_sync.py --help
+
+usage: mirror_sync.py [-h] [-o OUTPUT] [-t TEST_SUITES_DIR] [-j JOBS] [-r RETRIES]
+
+options:
+  -h, --help            show this help message and exit
+  -o OUTPUT, --output OUTPUT
+                        output directory for the mirror tree (default: ./mirror)
+  -t TEST_SUITES_DIR, --test-suites-dir TEST_SUITES_DIR
+                        directory containing test suite JSON files
+  -j JOBS, --jobs JOBS  number of parallel downloads (default: 4)
+  -r RETRIES, --retries RETRIES
+                        number of retries per download (default: 2)
+```
+
 ### Reference
 
 ```bash
