@@ -47,6 +47,7 @@ class DownloadWork:
         keep_file: bool,
         test_suite_name: str,
         retries: int,
+        mirror: Optional[str] = None,
     ):
         self.out_dir = out_dir
         self.verify = verify
@@ -54,6 +55,7 @@ class DownloadWork:
         self.keep_file = keep_file
         self.test_suite_name = test_suite_name
         self.retries = retries
+        self.mirror = mirror
 
     # This is added to avoid having to create an extra ancestor class
     def set_test_vector(self, test_vector: TestVector) -> None:
@@ -74,8 +76,9 @@ class DownloadWorkSingleArchive(DownloadWork):
         test_suite_name: str,
         test_vectors: Dict[str, TestVector],
         retries: int,
+        mirror: Optional[str] = None,
     ):
-        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries)
+        super().__init__(out_dir, verify, extract_all, keep_file, test_suite_name, retries, mirror)
         self.test_vectors = test_vectors
 
 
@@ -230,7 +233,7 @@ class TestSuite:
             return
 
         print(f"\tDownloading test vector {ctx.test_vector.name} from {ctx.test_vector.source}")
-        utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries)
+        utils.download(ctx.test_vector.source, dest_dir, ctx.retries**ctx.retries, mirror=ctx.mirror)
 
         if ctx.test_vector.source_checksum != "__skip__":
             checksum = utils.file_checksum(dest_path)
@@ -264,7 +267,7 @@ class TestSuite:
             os.remove(dest_path)
 
         print(f"\tDownloading source file from {first_tv.source}")
-        utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries)
+        utils.download(first_tv.source, dest_dir, ctx.retries**ctx.retries, mirror=ctx.mirror)
 
         # Check that source file was downloaded correctly
         if first_tv.source_checksum != "__skip__":
@@ -301,6 +304,7 @@ class TestSuite:
         extract_all: bool = False,
         keep_file: bool = False,
         retries: int = 2,
+        mirror: Optional[str] = None,
     ) -> None:
         """Download the test suite"""
         os.makedirs(out_dir, exist_ok=True)
@@ -314,14 +318,14 @@ class TestSuite:
             # Download test suite of multiple test vectors from a single archive
             print(f"Downloading test suite {self.name} using 1 job (single archive)")
             dwork_single = DownloadWorkSingleArchive(
-                out_dir, verify, extract_all, keep_file, self.name, self.test_vectors, retries
+                out_dir, verify, extract_all, keep_file, self.name, self.test_vectors, retries, mirror
             )
             self._download_single_archive(dwork_single)
         elif len(unique_sources) == 1 and len(self.test_vectors) == 1:
             # Download test suite of single test vector
             print(f"Downloading test suite {self.name} using 1 job (single file)")
             single_tv = next(iter(self.test_vectors.values()))
-            dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
+            dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries, mirror)
             dwork.set_test_vector(single_tv)
             self._download_single_test_vector(dwork)
         else:
@@ -338,7 +342,7 @@ class TestSuite:
 
                 downloads = []
                 for tv in self.test_vectors.values():
-                    dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries)
+                    dwork = DownloadWork(out_dir, verify, extract_all, keep_file, self.name, retries, mirror)
                     dwork.set_test_vector(tv)
                     downloads.append(
                         pool.apply_async(

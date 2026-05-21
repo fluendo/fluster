@@ -857,7 +857,13 @@ class Fluster:
             print(output)
 
     def download_test_suites(
-        self, test_suites: List[str], jobs: int, keep_file: bool, retries: int, codec_string: Optional[str] = None
+        self,
+        test_suites: List[str],
+        jobs: int,
+        keep_file: bool,
+        retries: int,
+        codec_string: Optional[str] = None,
+        mirror: Optional[str] = None,
     ) -> None:
         """Download a group of test suites"""
         self._load_test_suites()
@@ -901,4 +907,5 @@ class Fluster:
                 verify=True,
                 keep_file=keep_file,
                 retries=retries,
+                mirror=mirror,
             )
