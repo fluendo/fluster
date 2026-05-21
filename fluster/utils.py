@@ -43,6 +43,24 @@ TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
 download_lock = Lock()
 
+MIRROR_NETWORK_ERRORS = (
+    urllib.error.URLError,
+    urllib.error.HTTPError,
+    OSError,
+    IOError,
+    ConnectionError,
+    TimeoutError,
+    http.client.IncompleteRead,
+)
+
+
+def rewrite_url(source_url: str, mirror_base: str) -> str:
+    parsed = urllib.parse.urlparse(source_url)
+    path = parsed.netloc + parsed.path
+    if parsed.query:
+        path += "?" + parsed.query
+    return mirror_base.rstrip("/") + "/" + path.lstrip("/")
+
 
 def create_enhanced_opener() -> urllib.request.OpenerDirector:
     """Creates an enhanced URL opener with custom headers and cookie support."""
@@ -159,26 +177,33 @@ def download(
     max_retries: int = 5,
     timeout: int = 300,
     chunk_size: int = 2048 * 2048,  # 4MB
+    mirror: Optional[str] = None,
 ) -> None:
     """Downloads a file to a directory with a mutex lock
-    to avoid conflicts and retries with exponential backoff."""
+    to avoid conflicts and retries with exponential backoff.
+    If mirror is provided, tries the mirror URL first and falls back to the original URL."""
     os.makedirs(dest_dir, exist_ok=True)
     filename = os.path.basename(url)
     dest_path = os.path.join(dest_dir, filename)
+
+    if mirror:
+        mirror_url = rewrite_url(url, mirror)
+        try:
+            with download_lock:
+                _download_simple(mirror_url, dest_path, filename, timeout, chunk_size)
+            return
+        except MIRROR_NETWORK_ERRORS as e:
+            if os.path.exists(dest_path):
+                os.remove(dest_path)
+            print(f"\tWARNING: Mirror download failed for {mirror_url}: {e}")
+            print(f"\tFalling back to original source: {url}")
+
     for attempt in range(max_retries):
         try:
             with download_lock:
                 _download_simple(url, dest_path, filename, timeout, chunk_size)
             break
-        except (
-            urllib.error.URLError,
-            urllib.error.HTTPError,
-            OSError,
-            IOError,
-            ConnectionError,
-            TimeoutError,
-            http.client.IncompleteRead,
-        ) as e:
+        except MIRROR_NETWORK_ERRORS as e:
             if os.path.exists(dest_path):
                 os.remove(dest_path)
 

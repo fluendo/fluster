@@ -353,6 +353,13 @@ class Main:
             default=2,
         )
         subparser.add_argument(
+            "-m",
+            "--mirror",
+            help="base URL of a local mirror to download resources from (falls back to original source on failure)",
+            type=str,
+            default=None,
+        )
+        subparser.add_argument(
             "-c",
             "--codec",
             help="download test suites for specific codecs only (comma-separated)",
@@ -419,4 +426,5 @@ class Main:
             keep_file=args.keep,
             retries=args.retries,
             codec_string=args.codec,
+            mirror=args.mirror,
         )
