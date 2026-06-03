@@ -60,8 +60,12 @@ class Main:
 
         # Prepend to the PATH the decoders_dir so that we can run them
         # without having to set the env for every single command
-        os.environ["PATH"] = (
-            self.decoders_dir + os.path.pathsep + self.decoders_sys_dir + os.path.pathsep + os.environ["PATH"]
+        os.environ["PATH"] = os.path.pathsep.join(
+            [
+                self.decoders_dir,
+                self.decoders_sys_dir,
+                os.environ.get("PATH", ""),
+            ]
         )
 
     def run(self) -> None:
