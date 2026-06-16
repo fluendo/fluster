@@ -25,6 +25,9 @@ FROM ubuntu:${UBUNTU_VERSION}
 ARG USERNAME='mock'
 ARG PASSWORD='mock'
 
+ARG ARCH=x86_64
+ARG CARGO_C_VERSION=v0.10.23
+
 # Re-declare args after FROM to make them available in build stages
 ARG UBUNTU_VERSION
 ARG NVIDIA_DRIVER_VERSION
@@ -63,9 +66,9 @@ RUN apt-get update && apt-get install -y \
     libva-dev \
     libva-drm2 \
     libva-x11-2 \
-  vainfo \
+    vainfo \
     mesa-va-drivers \
-  && (apt-get install -y i965-va-driver || true) \
+    && (apt-get install -y i965-va-driver || true) \
     && (apt-get install -y intel-media-va-driver-non-free || \
         apt-get install -y intel-media-va-driver || true) \
     && rm -rf /var/lib/apt/lists/*
@@ -136,6 +139,8 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libxcb1-dev \
         libxcb-shm0-dev \
         libxcb-xfixes0-dev \
+        libssl-dev \
+        libpango1.0-dev \
         meson \
         ninja-build \
         pkg-config \
@@ -173,8 +178,8 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
       cd / && rm -rf /tmp/dav1d && \
       git clone --depth 1 --branch n${FFMPEG_VERSION} https://github.com/FFmpeg/FFmpeg.git /tmp/ffmpeg && \
       cd /tmp/ffmpeg && \
-      export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:${PKG_CONFIG_PATH:-} && \
-      export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH:-} && \
+      export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib/${ARCH}-linux-gnu/pkgconfig:${PKG_CONFIG_PATH:-} && \
+      export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib/${ARCH}-linux-gnu:${LD_LIBRARY_PATH:-} && \
       ./configure \
         --prefix=/usr/local \
         --pkg-config-flags="--static" \
@@ -299,13 +304,20 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       && mkdir -p /tmp/gstreamer && cd /tmp/gstreamer \
       && curl -L "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GSTREAMER_VERSION}/gstreamer-${GSTREAMER_VERSION}.tar.gz" | tar xz \
       && cd gstreamer-${GSTREAMER_VERSION} \
+      # Dynamically assign -Dvaapi=enabled for ANY version < 1.28 \
+      && GST_MINOR=$(echo ${GSTREAMER_VERSION} | cut -d. -f2) \
+      && if [ "$GST_MINOR" -lt 28 ]; then \
+           VAAPI_OPT="-Dvaapi=enabled"; \
+         else \
+           VAAPI_OPT=""; \
+         fi \
       && meson setup build \
         --prefix=/usr/local \
         --buildtype=release \
         -Dgpl=enabled \
         -Dugly=enabled \
-        -Dvaapi=enabled \
-        -Dlibav=disabled \
+        ${VAAPI_OPT} \
+        -Dlibav=enabled \
         -Dbase=enabled \
         -Dgood=enabled \
         -Dbad=enabled \
@@ -322,9 +334,8 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       && meson compile -C build -j$(nproc) \
       && sudo ninja install -C build \
       && sudo ldconfig \
-      && cd / && sudo rm -rf /tmp/gstreamer \
-      && sudo apt-get purge -y 'libgstreamer*' 'gstreamer1.0-*' 2>/dev/null || true \
-      && sudo apt-get autoremove -y 2>/dev/null || true; \
+      && cd / && rm -rf /tmp/gstreamer \
+      && sudo apt-get purge -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev 2>/dev/null || true; \
     else \
       sudo DEBIAN_FRONTEND=noninteractive apt-get update && \
       sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -345,10 +356,73 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
 
 USER root
 
+# =========================================================================
+# Conditionally Install Native vvdec Core, Rust & Build GStreamer Plugins
+# =========================================================================
+RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
+      GST_MINOR=$(echo ${GSTREAMER_VERSION} | cut -d. -f2) && \
+      if [ "$GST_MINOR" -ge 26 ]; then \
+        # Dynamically scope the Rust home paths to this conditional execution context \
+        export CARGO_HOME="/usr/local/.cargo" && \
+        export RUSTUP_HOME="/usr/local/.rustup" && \
+        export PATH="${CARGO_HOME}/bin:${PATH}" && \
+        \
+        # 1. Ensure OpenSSL development headers are present for the Rust compilation \
+        apt-get update && apt-get install -y --no-install-recommends \
+          libssl-dev \
+          clang \
+          libclang-dev \
+        && rm -rf /var/lib/apt/lists/* && \
+        \
+        # 2. Clone, build, and install the native Fraunhofer HHI VVC Decoder core \
+        git clone --depth 1 --branch v3.1.0 https://github.com/fraunhoferhhi/vvdec.git /tmp/vvdec && \
+        cd /tmp/vvdec && \
+        mkdir build && cd build && \
+        cmake -DCMAKE_BUILD_TYPE=Release \
+              -DBUILD_SHARED_LIBS=ON \
+              -DCMAKE_INSTALL_PREFIX=/usr/local \
+              -DCMAKE_INSTALL_LIBDIR=lib/${ARCH}-linux-gnu .. && \
+        make -j$(nproc) && \
+        make install && \
+        ldconfig && \
+        cd / && rm -rf /tmp/vvdec && \
+        \
+        # 3. Configure Cargo network optimizations \
+        mkdir -p ${CARGO_HOME} && \
+        echo '[net]\ngit-fetch-with-cli = true' > ${CARGO_HOME}/config && \
+        \
+        # 4. Install Rust toolchain environment \
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && \
+        \
+        # 5. Extract pre-compiled cargo-c binaries directly to skip compilation errors \
+        curl -L "https://github.com/lu-zero/cargo-c/releases/download/${CARGO_C_VERSION}/cargo-c-${ARCH}-unknown-linux-musl.tar.gz" | tar -xz -C ${CARGO_HOME}/bin && \
+        chmod -R 777 ${CARGO_HOME} && \
+        \
+        # 6. Map GStreamer core versions to their matching Rust plugins stable branch \
+        case "$GST_MINOR" in \
+          "26") RS_BRANCH="0.14" ;; \
+          "28") RS_BRANCH="0.15" ;; \
+          *)    RS_BRANCH="main" ;; \
+        esac && \
+        \
+        # 7. Clone and build the targeted stable gst-plugins-rs branch \
+        export PKG_CONFIG_PATH="/usr/local/lib/${ARCH}-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/${ARCH}-linux-gnu/pkgconfig:/usr/share/pkgconfig:${PKG_CONFIG_PATH:-}" && \
+        git clone --depth 1 --branch ${RS_BRANCH} https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs.git /tmp/gst-plugins-rs && \
+        cd /tmp/gst-plugins-rs && \
+        cargo cinstall -p gst-plugin-vvdec --prefix=/usr/local --libdir=/usr/local/lib/${ARCH}-linux-gnu && \
+        \
+        # 8. Refresh loader runtime cache and run post-build cleanup \
+        ldconfig && \
+        rm -rf /tmp/gst-plugins-rs ${RUSTUP_HOME} ${CARGO_HOME}; \
+      else \
+        echo "GStreamer version 1.${GST_MINOR} does not natively support the vvdec plugin. Skipping compilation smoothly."; \
+      fi; \
+    fi
+
 # Set library paths - /usr/local MUST come first to prioritize compiled versions
-ENV LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/lib/x86_64-linux-gnu \
-    GST_PLUGIN_PATH=/usr/local/lib/x86_64-linux-gnu/gstreamer-1.0:/usr/local/lib/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0 \
-    PKG_CONFIG_PATH=/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig \
+ENV LD_LIBRARY_PATH=/usr/local/lib/${ARCH}-linux-gnu:/usr/local/lib:/usr/lib/${ARCH}-linux-gnu \
+    GST_PLUGIN_PATH=/usr/local/lib/${ARCH}-linux-gnu/gstreamer-1.0:/usr/local/lib/gstreamer-1.0:/usr/lib/${ARCH}-linux-gnu/gstreamer-1.0 \
+    PKG_CONFIG_PATH=/usr/local/lib/${ARCH}-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/${ARCH}-linux-gnu/pkgconfig \
     PATH=/usr/local/bin:/usr/bin:/bin
 
 COPY . /fluster/
@@ -361,8 +435,8 @@ RUN mkdir -p /fluster/resources /fluster/test_suites
 
 # Additional environment variables
 ENV PYTHONPATH=/fluster \
-    LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri \
-    VDPAU_DRIVER_PATH=/usr/lib/x86_64-linux-gnu/vdpau \
+    LIBVA_DRIVERS_PATH=/usr/lib/${ARCH}-linux-gnu/dri \
+    VDPAU_DRIVER_PATH=/usr/lib/${ARCH}-linux-gnu/vdpau \
     MFX_HOME=/opt/intel/mediasdk \
     NVD_BACKEND=direct \
     GST_VA_ALL_DRIVERS=1 \
@@ -372,7 +446,7 @@ RUN echo "export DISPLAY=:0" >> /home/"${USERNAME}"/.profile
 
 # sshd doesn't inherit Docker's ENV in login sessions; SetEnv fixes that.
 RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 DISPLAY=:0 \
-    LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri VDPAU_DRIVER_PATH=/usr/lib/x86_64-linux-gnu/vdpau" \
+    LIBVA_DRIVERS_PATH=/usr/lib/${ARCH}-linux-gnu/dri VDPAU_DRIVER_PATH=/usr/lib/${ARCH}-linux-gnu/vdpau" \
     >> /etc/ssh/sshd_config
 
 COPY docker/hw-info.sh /usr/local/bin/hw-info
