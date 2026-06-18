@@ -17,14 +17,12 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-#!/usr/bin/env python3
 import argparse
 import sys
 import urllib.request
 import zipfile
 from pathlib import Path
 
-# Append parent directory to sys.path to allow importing fluster modules
 sys.path.append(str(Path(__file__).parent.parent))
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
@@ -34,7 +32,7 @@ from fluster.test_vector import TestVector
 SOURCE_URL = "https://ott.dolby.com/OnDelKits/EC-3_Online_Delivery_Kit_1.6/Test_Signals/elementary_streams/Audio.zip"
 BITSTREAM_EXT = ".ec3"
 
-# Channel-layout values for flueac3dec / flueac3prodec:
+# channels-layout values for flueac3prodec:
 #   0 = Auto (default, used for JOC/Atmos streams)
 #   2 = ChannelsLayout-2.0 (stereo)
 #   7 = ChannelsLayout-3.2 (5.1)
@@ -58,17 +56,18 @@ class EAC3Generator:
         """Generates the test suite and saves it to a JSON file."""
         script_dir = Path(__file__).resolve().parent
         resources_dir = script_dir / "resources"
+        zip_path = resources_dir / "EAC3_Audio.zip"
         extract_dir = resources_dir / self.suite_name
 
         if download:
             resources_dir.mkdir(exist_ok=True)
-            zip_path = resources_dir / "EAC3_Audio.zip"
             print(f"Downloading {SOURCE_URL}")
             urllib.request.urlretrieve(SOURCE_URL, zip_path)
             with zipfile.ZipFile(zip_path, "r") as zf:
                 zf.extractall(extract_dir)
 
-        # Look for files in extract_dir or the 'Audio' subdirectory
+        source_checksum = utils.file_checksum(str(zip_path)) if zip_path.exists() else "__skip__"
+
         audio_dir = extract_dir / "Audio"
         search_dir = audio_dir if audio_dir.is_dir() else extract_dir
 
@@ -76,23 +75,18 @@ class EAC3Generator:
             f"{self.suite_name}.json", str(resources_dir), self.suite_name, self.codec, self.description, {}
         )
 
-        # Iterate over files matching the bitstream extension
         for filepath in sorted(search_dir.glob(f"*{BITSTREAM_EXT}")):
-            name = filepath.name
             input_file = str(filepath.relative_to(extract_dir))
-
-            test_vector = TestVector(
-                name=name,
+            test_suite.test_vectors[filepath.name] = TestVector(
+                name=filepath.name,
                 source=SOURCE_URL,
-                source_checksum=utils.file_checksum(str(filepath)),
+                source_checksum=source_checksum,
                 input_file=input_file,
                 output_format=OutputFormat.UNKNOWN,
                 result="",
-                optional_params={"channels_layout": get_channels_layout(name)},
+                optional_params={"channels_layout": get_channels_layout(filepath.name)},
             )
-            test_suite.test_vectors[name] = test_vector
 
-        # Save the generated test suite to a JSON file
         test_suite.to_json_file(str(script_dir / f"{self.suite_name}.json"))
         print(f"Generated {self.suite_name}.json with {len(test_suite.test_vectors)} test vectors")
 
