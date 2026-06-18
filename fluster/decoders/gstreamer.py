@@ -916,6 +916,42 @@ class FluendoFluAC4DecDecoder(GStreamerAudio):
 
 
 @register_decoder
+class FluendoFluEAC3DecDecoder(GStreamerAudio):
+    """Fluendo EAC3 professional decoder for GStreamer"""
+
+    def __init__(self) -> None:
+        self.codec = Codec.EAC3
+        self.decoder_bin = "flueac3prodec"
+        self.provider = "Fluendo"
+        self.api = "SW"
+        self.parser = "ac3parse"
+        self.caps = "audio/x-raw ! wavenc"
+        super().__init__()
+
+    def gen_pipeline(
+        self,
+        input_filepath: str,
+        output_filepath: Optional[str],
+        output_format: OutputFormat,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        output = f"location={output_filepath}" if output_filepath else ""
+        decoder_bin = self.decoder_bin
+        if optional_params:
+            for param, value in optional_params.items():
+                decoder_bin += f" {param.replace('_', '-')}={value}"
+        return PIPELINE_TPL.format(
+            self.cmd,
+            input_filepath,
+            self.parser,
+            decoder_bin,
+            self.caps,
+            self.sink,
+            output,
+        )
+
+
+@register_decoder
 class FluendoFluLCEVCVAH264DecDecoder(GStreamerVideo):
     """LCEVC-H264 decoder for GStreamer"""
 

@@ -31,6 +31,7 @@ class Codec(Enum):
     AAC = "AAC"
     AV1 = "AV1"
     AC4 = "AC4"
+    EAC3 = "EAC3"
     MPEG2_VIDEO = "MPEG2_VIDEO"
     MPEG4_VIDEO = "MPEG4_VIDEO"
 
