@@ -280,6 +280,10 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libpng-dev \
         libjpeg-dev \
         libxml2-dev \
+        libegl1-mesa-dev \
+        libgles2-mesa-dev \
+        libgl1-mesa-dev \
+        libglu1-mesa-dev \
       && sudo rm -rf /var/lib/apt/lists/* \
       && mkdir -p /tmp/gstreamer && cd /tmp/gstreamer \
       && curl -L "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GSTREAMER_VERSION}/gstreamer-${GSTREAMER_VERSION}.tar.gz" | tar xz \
@@ -294,8 +298,6 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         -Dbase=enabled \
         -Dgood=enabled \
         -Dbad=enabled \
-        -Dgst-plugins-base:gl=disabled \
-        -Dgst-plugins-bad:gl=disabled \
         -Ddevtools=disabled \
         -Dges=disabled \
         -Drtsp_server=disabled \
