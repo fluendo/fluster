@@ -378,6 +378,50 @@ class Fluster:
             )
         return 0.0
 
+    def _collect_suite_stats(self, ctx: Context, test_suite: TestSuite) -> Dict[str, Any]:
+        """Return calculated statistics for a single test suite / decoder pair."""
+        total = len(test_suite.test_vectors)
+        passed = test_suite.test_vectors_success
+        not_run = test_suite.test_vectors_not_run
+        not_supported = test_suite.test_vectors_not_supported
+        return {
+            "total": total,
+            "passed": passed,
+            "not_run": not_run,
+            "not_supported": not_supported,
+            "failed": total - passed - not_run - not_supported,
+            "time_taken": test_suite.time_taken - self._calculate_timeout_adjustment(ctx, test_suite),
+            "profile_stats": self._calculate_profile_stats(test_suite.test_vectors),
+        }
+
+    def _collect_global_stats(
+        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+    ) -> Dict[str, Dict[str, Any]]:
+        """Accumulate suite stats across all test suites, grouped by decoder name."""
+        global_stats: Dict[str, Dict[str, Any]] = {}
+        for test_suite_results in results.values():
+            for decoder, test_suite in test_suite_results:
+                name = decoder.name
+                suite = self._collect_suite_stats(ctx, test_suite)
+                if name not in global_stats:
+                    global_stats[name] = {
+                        "total": 0,
+                        "passed": 0,
+                        "not_run": 0,
+                        "not_supported": 0,
+                        "failed": 0,
+                        "time_taken": 0.0,
+                        "profile_stats": {},
+                    }
+                entry = global_stats[name]
+                for key in ("total", "passed", "not_run", "not_supported", "failed", "time_taken"):
+                    entry[key] += suite[key]
+                for profile_name, data in suite["profile_stats"].items():
+                    p = entry["profile_stats"].setdefault(profile_name, {"passed": 0, "total": 0})
+                    p["passed"] += data["passed"]
+                    p["total"] += data["total"]
+        return global_stats
+
     def _generate_junit_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
         try:
             import junitparser as junitp  # type: ignore
@@ -456,7 +500,6 @@ class Fluster:
     def _generate_csv_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
         """Generate CSV summary with system info and comprehensive test results"""
         system_info = SystemInfo()
-
         rows: List[List[str]] = [
             ["SYSTEM INFORMATION", "", "", ""],
             ["OS", f"{system_info.os_name} {system_info.os_version}", "", ""],
@@ -464,60 +507,47 @@ class Fluster:
             ["GPU", ", ".join(system_info.gpu_info), "", ""],
             ["RAM", system_info.total_ram, "", ""],
         ]
-
         if system_info.backend_info:
             rows.extend([[f"Backend-{backend}", info, "", ""] for backend, info in system_info.backend_info.items()])
-
         rows.extend([["", "", "", ""], ["TEST RESULTS", "", "", ""]])
+
+        global_stats = self._collect_global_stats(ctx, results)
 
         for test_suite_name, test_suite_results in results.items():
             rows.extend([["", "", "", ""], [f"Test Suite: {test_suite_name}", "", "", ""]])
-
             for decoder, test_suite in test_suite_results:
-                tv_total = len(test_suite.test_vectors)
-                tv_passed = test_suite.test_vectors_success
-                tv_not_run = test_suite.test_vectors_not_run
-                tv_not_supported = test_suite.test_vectors_not_supported
-                tv_failed = tv_total - tv_passed - tv_not_run - tv_not_supported
-                timeout_time = self._calculate_timeout_adjustment(ctx, test_suite)
-
                 # Start building the decoder summary block
+                suite_stats = self._collect_suite_stats(ctx, test_suite)
                 rows.extend(
                     [
                         ["", "", "", ""],
                         [f"Decoder: {decoder.name}", "", "", ""],
-                        ["Total Tests", str(tv_total), "", ""],
-                        ["Passed", str(tv_passed), "", ""],
+                        ["Total Tests", str(suite_stats["total"]), "", ""],
+                        ["Passed", str(suite_stats["passed"]), "", ""],
                     ]
                 )
-
                 # Conditional rows: Only add if they contain data
-                if tv_not_run > 0:
-                    rows.append(["Not Run", str(tv_not_run), "", ""])
-                if tv_not_supported > 0:
-                    rows.append(["Not Supported", str(tv_not_supported), "", ""])
-
+                if suite_stats["not_run"] > 0:
+                    rows.append(["Not Run", str(suite_stats["not_run"]), "", ""])
+                if suite_stats["not_supported"] > 0:
+                    rows.append(["Not Supported", str(suite_stats["not_supported"]), "", ""])
                 # Remaining summary items
                 rows.extend(
                     [
-                        ["Failed\\Error", str(tv_failed), "", ""],
-                        ["Total Time (s)", f"{test_suite.time_taken - timeout_time:.3f}", "", ""],
+                        ["Failed\\Error", str(suite_stats["failed"]), "", ""],
+                        ["Total Time (s)", f"{suite_stats['time_taken']:.3f}", "", ""],
                     ]
                 )
-
-                profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
-                if profile_stats:
+                if suite_stats["profile_stats"]:
                     rows.extend([["", "", "", ""], ["Profile", "Passed", "Total", ""]])
                     rows.extend(
                         [
-                            [profile_name, str(stats["passed"]), str(stats["total"]), ""]
-                            for profile_name, stats in sorted(profile_stats.items())
+                            [profile_name, str(profile_stats["passed"]), str(profile_stats["total"]), ""]
+                            for profile_name, profile_stats in sorted(suite_stats["profile_stats"].items())
                         ]
                     )
-
                 # Detailed Vector Results
                 rows.extend([["", "", "", ""], ["Vector Name", "Result", "Time (s)", "Profile"]])
-
                 # Using list comprehension for performance
                 rows.extend(
                     [
@@ -531,81 +561,39 @@ class Fluster:
                     ]
                 )
 
-        should_show_summary = len(results) > 1 or any(len(res) > 1 for res in results.values())
-
-        if should_show_summary:
+        if len(results) > 1 or any(len(res) > 1 for res in results.values()):
             rows.extend([["", "", "", ""], ["GLOBAL SUMMARY", "", "", ""]])
-
-            stats_map: Dict[str, Dict[str, Any]] = {}
-
-            for test_suite_results in results.values():
-                for decoder, test_suite in test_suite_results:
-                    name = decoder.name
-                    if name not in stats_map:
-                        stats_map[name] = {
-                            "passed": 0,
-                            "not_run": 0,
-                            "not_supported": 0,
-                            "failed_error": 0,
-                            "total": 0,
-                            "time": 0.0,
-                            "profiles": {},
-                        }
-
-                    entry: Dict[str, Any] = stats_map[name]
-                    ts = test_suite
-
-                    # Update core counts
-                    entry["total"] += len(ts.test_vectors)
-                    entry["passed"] += ts.test_vectors_success
-                    entry["not_run"] += ts.test_vectors_not_run
-                    entry["not_supported"] += ts.test_vectors_not_supported
-
-                    # Update time
-                    timeout_time = self._calculate_timeout_adjustment(ctx, ts)
-                    entry["time"] += ts.time_taken - timeout_time
-
-                    # Update profiles
-                    ts_profiles = self._calculate_profile_stats(ts.test_vectors)
-                    for profile_name, profile_data in ts_profiles.items():
-                        profile_entry: Dict[str, int] = entry["profiles"].setdefault(
-                            profile_name, {"passed": 0, "total": 0}
-                        )
-                        profile_entry["passed"] += profile_data["passed"]
-                        profile_entry["total"] += profile_data["total"]
-
-            for name, data in stats_map.items():
-                failed = data["total"] - data["passed"] - data["not_run"] - data["not_supported"]
-
+            for decoder_name, decoder_stats in global_stats.items():
                 rows.extend(
                     [
                         ["", "", "", ""],
-                        [f"Decoder: {name}", "", "", ""],
-                        ["Total Tests", str(data["total"]), "", ""],
-                        ["Passed", str(data["passed"]), "", ""],
+                        [f"Decoder: {decoder_name}", "", "", ""],
+                        ["Total Tests", str(decoder_stats["total"]), "", ""],
+                        ["Passed", str(decoder_stats["passed"]), "", ""],
                     ]
                 )
-
-                if data["not_run"] > 0:
-                    rows.append(["Not Run", str(data["not_run"]), "", ""])
-                if data["not_supported"] > 0:
-                    rows.append(["Not Supported", str(data["not_supported"]), "", ""])
-
-                rows.extend([["Failed\\Error", str(failed), "", ""], ["Total Time (s)", f"{data['time']:.3f}", "", ""]])
-
-                if data["profiles"]:
+                if decoder_stats["not_run"] > 0:
+                    rows.append(["Not Run", str(decoder_stats["not_run"]), "", ""])
+                if decoder_stats["not_supported"] > 0:
+                    rows.append(["Not Supported", str(decoder_stats["not_supported"]), "", ""])
+                rows.extend(
+                    [
+                        ["Failed\\Error", str(decoder_stats["failed"]), "", ""],
+                        ["Total Time (s)", f"{decoder_stats['time_taken']:.3f}", "", ""],
+                    ]
+                )
+                if decoder_stats["profile_stats"]:
                     rows.extend([["", "", "", ""], ["Profile", "Passed", "Total", ""]])
                     rows.extend(
                         [
                             [profile_name, str(profile_stats["passed"]), str(profile_stats["total"]), ""]
-                            for profile_name, profile_stats in sorted(data["profiles"].items())
+                            for profile_name, profile_stats in sorted(decoder_stats["profile_stats"].items())
                         ]
                     )
 
         # Use a generator to normalize rows on the fly
         # This ensures exactly 4 columns: (row + 4 empty strings) truncated to 4
         formatted_rows = ((row + [""] * 4)[:4] for row in rows)
-
         if ctx.summary_output:
             with open(ctx.summary_output, "w", encoding="utf-8", newline="") as file:
                 csv.writer(file).writerows(formatted_rows)
@@ -623,103 +611,58 @@ class Fluster:
             "global_summary": global_summary_data,
         }
 
-        global_stats: Dict[str, Dict[str, Any]] = {}
+        global_stats = self._collect_global_stats(ctx, results)
 
         for test_suite_name, test_suite_results in results.items():
             suite_data: Dict[str, Any] = {"decoders": {}}
             for decoder, test_suite in test_suite_results:
-                ts = test_suite
                 name = decoder.name
-                tv_total = len(ts.test_vectors)
-                tv_passed = ts.test_vectors_success
-                tv_not_run = ts.test_vectors_not_run
-                tv_not_supported = ts.test_vectors_not_supported
-                tv_failed = tv_total - tv_passed - tv_not_run - tv_not_supported
-                timeout_time = self._calculate_timeout_adjustment(ctx, ts)
-                time_taken = ts.time_taken - timeout_time
-
-                if name not in global_stats:
-                    global_stats[name] = {
-                        "total_tests": 0,
-                        "passed": 0,
-                        "not_run": 0,
-                        "not_supported": 0,
-                        "failed_error": 0,
-                        "time": 0.0,
-                        "profiles": {},
-                    }
-
-                global_entry: Dict[str, Any] = global_stats[name]
-                global_entry["total_tests"] += tv_total
-                global_entry["passed"] += tv_passed
-                global_entry["not_run"] += tv_not_run
-                global_entry["not_supported"] += tv_not_supported
-                global_entry["failed_error"] += tv_failed
-                global_entry["time"] += time_taken
-
+                suite_stats = self._collect_suite_stats(ctx, test_suite)
                 # Build Decoder Data
                 decoder_data: Dict[str, Any] = {
                     "decoder_name": name,
-                    "total_tests": tv_total,
-                    "passed": tv_passed,
+                    "total_tests": suite_stats["total"],
+                    "passed": suite_stats["passed"],
                 }
-
-                if tv_not_run > 0:
-                    decoder_data["not_run"] = tv_not_run
-                if tv_not_supported > 0:
-                    decoder_data["not_supported"] = tv_not_supported
-
-                decoder_data["failed_error"] = tv_failed
-                decoder_data["total_time"] = round(time_taken, 3)
-
-                # Profile Stats
-                profile_stats = self._calculate_profile_stats(ts.test_vectors)
-                if profile_stats:
-                    decoder_data["profile_stats"] = profile_stats
-                    for profile_name, profile_data in profile_stats.items():
-                        if profile_name not in global_entry["profiles"]:
-                            global_entry["profiles"][profile_name] = {"passed": 0, "total": 0}
-                        global_profile_entry: Dict[str, int] = global_entry["profiles"][profile_name]
-                        global_profile_entry["passed"] += profile_data["passed"]
-                        global_profile_entry["total"] += profile_data["total"]
-
+                # Track if we ever encounter a non-zero value
+                if suite_stats["not_run"] > 0:
+                    decoder_data["not_run"] = suite_stats["not_run"]
+                if suite_stats["not_supported"] > 0:
+                    decoder_data["not_supported"] = suite_stats["not_supported"]
+                decoder_data["failed_error"] = suite_stats["failed"]
+                decoder_data["total_time"] = round(suite_stats["time_taken"], 3)
+                if suite_stats["profile_stats"]:
+                    decoder_data["profile_stats"] = suite_stats["profile_stats"]
                 # Vector Details
                 test_vectors_dict = {}
-                for tv_name, tv in ts.test_vectors.items():
-                    vector_data = {
+                for tv_name, tv in test_suite.test_vectors.items():
+                    vector_data: Dict[str, Any] = {
                         "result": RESULT_MAP[tv.test_result],
                         "time": round(tv.test_time, 3) if tv.test_time else 0,
                     }
                     if tv.profile:
                         vector_data["profile"] = tv.profile.name
-
                     test_vectors_dict[tv_name] = vector_data
-
                 decoder_data["vectors"] = test_vectors_dict
                 suite_data["decoders"][name] = decoder_data
-
             test_suites_data[test_suite_name] = suite_data
 
         # Global Summary
         if len(results) > 1 or any(len(res) > 1 for res in results.values()):
-            for name, data in global_stats.items():
+            for decoder_name, decoder_stats in global_stats.items():
                 summary_entry: Dict[str, Any] = {
-                    "total_tests": data["total_tests"],
-                    "passed": data["passed"],
+                    "total_tests": decoder_stats["total"],
+                    "passed": decoder_stats["passed"],
                 }
-
-                if data["not_run"] > 0:
-                    summary_entry["not_run"] = data["not_run"]
-                if data["not_supported"] > 0:
-                    summary_entry["not_supported"] = data["not_supported"]
-
-                summary_entry["failed_error"] = data["failed_error"]
-                summary_entry["total_time"] = round(data["time"], 3)
-
-                if data["profiles"]:
-                    summary_entry["profile_stats"] = data["profiles"]
-
-                global_summary_data[name] = summary_entry
+                if decoder_stats["not_run"] > 0:
+                    summary_entry["not_run"] = decoder_stats["not_run"]
+                if decoder_stats["not_supported"] > 0:
+                    summary_entry["not_supported"] = decoder_stats["not_supported"]
+                summary_entry["failed_error"] = decoder_stats["failed"]
+                summary_entry["total_time"] = round(decoder_stats["time_taken"], 3)
+                if decoder_stats["profile_stats"]:
+                    summary_entry["profile_stats"] = decoder_stats["profile_stats"]
+                global_summary_data[decoder_name] = summary_entry
         else:
             del json_output["global_summary"]
 
@@ -758,32 +701,16 @@ class Fluster:
             show_not_supported = False
 
             for ts in test_suites:
-                tv_total = len(ts.test_vectors)
-                tv_passed = ts.test_vectors_success
-                tv_not_run = ts.test_vectors_not_run
-                tv_not_supported = ts.test_vectors_not_supported
-                tv_failed = tv_total - tv_passed - tv_not_run - tv_not_supported
-
-                # Track if we ever encounter a non-zero value
-                if tv_not_run > 0:
+                suite_stats = self._collect_suite_stats(ctx, ts)
+                if suite_stats["not_run"] > 0:
                     show_not_run = True
-                if tv_not_supported > 0:
+                if suite_stats["not_supported"] > 0:
                     show_not_supported = True
-
-                # Store formatted strings for each column
-                rows["PASSED"].append(f"{tv_passed}/{tv_total}")
-                rows["NOT RUN"].append(f"{tv_not_run}/{tv_total}")
-                rows["NOT SUPPORTED"].append(f"{tv_not_supported}/{tv_total}")
-                rows["FAILED\\ERROR"].append(f"{tv_failed}/{tv_total}")
-
-                timeout_time = self._calculate_timeout_adjustment(ctx, ts)
-                # Substract from the total time that took running a test suite on a decoder
-                # the timeouts. This is not ideal since we won't be comparing decoding the
-                # same number of test vectors, but at least it is much better than comparing
-                # total times when timeouts are such a huge part of the global time taken.
-                # Note: we only do this when the number of parallel jobs is 1, because
-                # whenever there are actual parallel jobs, this gets much more complicated.
-                rows["TOTAL TIME"].append(f"{ts.time_taken - timeout_time:.3f}s")
+                rows["PASSED"].append(f"{suite_stats['passed']}/{suite_stats['total']}")
+                rows["NOT RUN"].append(f"{suite_stats['not_run']}/{suite_stats['total']}")
+                rows["NOT SUPPORTED"].append(f"{suite_stats['not_supported']}/{suite_stats['total']}")
+                rows["FAILED\\ERROR"].append(f"{suite_stats['failed']}/{suite_stats['total']}")
+                rows["TOTAL TIME"].append(f"{suite_stats['time_taken']:.3f}s")
 
             # Define the order and filter which rows to actually include
             labels_to_include = ["PASSED"]
@@ -845,65 +772,42 @@ class Fluster:
                 return ""
 
             all_decoders = []
-            decoder_names = set()
+            decoder_names: Set[str] = set()
             for test_suite_results in results.values():
                 for decoder, _ in test_suite_results:
                     if decoder.name not in decoder_names:
                         all_decoders.append(decoder)
                         decoder_names.add(decoder.name)
 
-            decoder_totals = {
-                dec.name: {"passed": 0, "not_run": 0, "not_supported": 0, "total": 0} for dec in all_decoders
-            }
-            decoder_times = {dec.name: 0.0 for dec in all_decoders}
-            global_profile_stats: Dict[str, Dict[str, Dict[str, int]]] = {dec.name: {} for dec in all_decoders}
-
-            for test_suite_results in results.values():
-                for decoder, test_suite in test_suite_results:
-                    totals = decoder_totals[decoder.name]
-                    totals["passed"] += test_suite.test_vectors_success
-                    totals["not_run"] += test_suite.test_vectors_not_run
-                    totals["not_supported"] += test_suite.test_vectors_not_supported
-                    totals["total"] += len(test_suite.test_vectors)
-
-                    timeout_time = self._calculate_timeout_adjustment(ctx, test_suite)
-                    decoder_times[decoder.name] += test_suite.time_taken - timeout_time
-
-                    test_suite_profile_stats = self._calculate_profile_stats(test_suite.test_vectors)
-                    for profile_name, profile_data in test_suite_profile_stats.items():
-                        stats = global_profile_stats[decoder.name].setdefault(profile_name, {"passed": 0, "total": 0})
-                        stats["passed"] += profile_data["passed"]
-                        stats["total"] += profile_data["total"]
+            global_stats = self._collect_global_stats(ctx, results)
 
             separator = f"|-|{'-|' * len(all_decoders)}"
             output = "\n# GLOBAL SUMMARY"
             output += "\n|Total Tests|" + "".join(f"{dec.name}|" for dec in all_decoders) + "\n" + separator
             output += "\n|PASSED|" + "".join(
-                f"{decoder_totals[dec.name]['passed']}/{decoder_totals[dec.name]['total']}|" for dec in all_decoders
+                f"{global_stats[dec.name]['passed']}/{global_stats[dec.name]['total']}|" for dec in all_decoders
             )
             # Only add NOT RUN if at least one decoder has a 'not_run' count > 0
-            if any(decoder_totals[dec.name]["not_run"] > 0 for dec in all_decoders):
+            if any(global_stats[dec.name]["not_run"] > 0 for dec in all_decoders):
                 output += "\n|NOT RUN|" + "".join(
-                    f"{decoder_totals[dec.name]['not_run']}/{decoder_totals[dec.name]['total']}|"
-                    for dec in all_decoders
+                    f"{global_stats[dec.name]['not_run']}/{global_stats[dec.name]['total']}|" for dec in all_decoders
                 )
             # Only add NOT SUPPORTED if at least one decoder has a 'not_supported' count > 0
-            if any(decoder_totals[dec.name]["not_supported"] > 0 for dec in all_decoders):
+            if any(global_stats[dec.name]["not_supported"] > 0 for dec in all_decoders):
                 output += "\n|NOT SUPPORTED|" + "".join(
-                    f"{decoder_totals[dec.name]['not_supported']}/{decoder_totals[dec.name]['total']}|"
+                    f"{global_stats[dec.name]['not_supported']}/{global_stats[dec.name]['total']}|"
                     for dec in all_decoders
                 )
-            fail_error_parts = []
-            for dec in all_decoders:
-                totals = decoder_totals[dec.name]
-                failed = totals["total"] - totals["passed"] - totals["not_run"] - totals["not_supported"]
-                fail_error_parts.append(f"{failed}/{totals['total']}|")
-            output += "\n|FAILED\\ERROR|" + "".join(fail_error_parts)
-            output += "\n|TOTAL TIME|" + "".join(f"{decoder_times[dec.name]:.3f}s|" for dec in all_decoders)
+            output += "\n|FAILED\\ERROR|" + "".join(
+                f"{global_stats[dec.name]['failed']}/{global_stats[dec.name]['total']}|" for dec in all_decoders
+            )
+            output += "\n|TOTAL TIME|" + "".join(
+                f"{global_stats[dec.name]['time_taken']:.3f}s|" for dec in all_decoders
+            )
 
             all_profiles: Set[str] = set()
-            for decoder_profiles in global_profile_stats.values():
-                all_profiles.update(decoder_profiles.keys())
+            for decoder_stats in global_stats.values():
+                all_profiles.update(decoder_stats["profile_stats"].keys())
 
             if all_profiles:
                 output += "\n\n"
@@ -911,8 +815,8 @@ class Fluster:
                 for profile in sorted(all_profiles):
                     output += f"\n|{profile}|"
                     for dec in all_decoders:
-                        stats = global_profile_stats[dec.name].get(profile, {"passed": 0, "total": 0})
-                        output += f"{stats['passed']}/{stats['total']}|"
+                        profile_stats = global_stats[dec.name]["profile_stats"].get(profile, {"passed": 0, "total": 0})
+                        output += f"{profile_stats['passed']}/{profile_stats['total']}|"
 
             return output
 
@@ -974,8 +878,6 @@ class Fluster:
                         break
                 else:
                     sys.exit(f"Unknown codec: {codec_str}")
-
-        download_test_suites: List[TestSuite] = []
 
         if codecs:
             codec_names = {codec.value for codec in codecs}
