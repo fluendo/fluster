@@ -1,0 +1,6 @@
+[wrap-file]
+directory = mpeg2video
+patch_directory = mpeg2video
+
+[provide]
+program_names = mpeg2decode

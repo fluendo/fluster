@@ -1,0 +1,6 @@
+[wrap-file]
+directory = libtsp-v7r0
+patch_directory = libtsp
+
+[provide]
+libtsp = libtsp_dep
