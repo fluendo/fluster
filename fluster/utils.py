@@ -363,32 +363,38 @@ def _extract_wav(w: wave.Wave_read) -> Tuple[array.array[int], int, int]:
     return buf, n_channels, sampwidth
 
 
+def _active_channels(flat: array.array[int], nch: int) -> List[int]:
+    """Return list of channel indices with at least one non-zero sample."""
+    return [ch for ch in range(nch) if any(flat[ch::nch])]
+
+
 def compare_wav_files(reference_file: str, test_file: str, tolerance: int = 128) -> int:
     """Compare two WAV files sample-by-sample with active-channel detection and lag compensation."""
     ref_flat, ref_nch, ref_sw = _read_wav(reference_file)
     test_flat, test_nch, test_sw = _read_wav(test_file)
-    n_ref = len(ref_flat) // ref_nch
-    n_test = len(test_flat) // test_nch
 
     if ref_sw != test_sw:
         raise ValueError(f"Sample width mismatch: ref={ref_sw * 8}bit test={test_sw * 8}bit")
-
-    # Fast path: byte-identical samples → zero violations (C-level comparison)
     if ref_flat == test_flat:
         return 0
 
+    # Select channels to compare. When counts differ, only channels that are
+    # active (non-silent) in both files at the same index are compared.
     if ref_nch == test_nch:
-        # Same channel layout: compare all channels directly
-        active = list(range(ref_nch))
+        channels = list(range(ref_nch))
     else:
-        # Different channel counts: select only active (non-silent) channels from reference
-        active = [ch for ch in range(ref_nch) if any(ref_flat[ch::ref_nch])]
-        if len(active) != test_nch:
-            raise ValueError(f"Channel mismatch: ref active={len(active)} test={test_nch}")
+        channels = _active_channels(ref_flat, ref_nch)
+        test_active = _active_channels(test_flat, test_nch)
+        if len(channels) != len(test_active):
+            raise ValueError(f"Channel mismatch: ref active={len(channels)} test active={len(test_active)}")
+        channels = [ch for ch in channels if ch < test_nch]
 
-    # Align to first non-zero frame to compensate for constant leading silence
-    ref_nz = next((i for i in range(n_ref) if any(ref_flat[i * ref_nch + ch] for ch in active)), None)
-    test_nz = next((i for i in range(n_test) if any(test_flat[i * test_nch + ai] for ai in range(test_nch))), None)
+    n_ref = len(ref_flat) // ref_nch
+    n_test = len(test_flat) // test_nch
+
+    # Align to first non-zero frame to compensate for leading silence
+    ref_nz = next((i for i in range(n_ref) if any(ref_flat[i * ref_nch + ch] for ch in channels)), None)
+    test_nz = next((i for i in range(n_test) if any(test_flat[i * test_nch + ch] for ch in channels)), None)
 
     ref_start = test_start = 0
     if ref_nz is not None and test_nz is not None:
@@ -400,9 +406,9 @@ def compare_wav_files(reference_file: str, test_file: str, tolerance: int = 128)
 
     n_compare = min(n_ref - ref_start, n_test - test_start)
     violations = 0
-    for ai, ach in enumerate(active):
-        ref_ch = ref_flat[ref_start * ref_nch + ach : (ref_start + n_compare) * ref_nch : ref_nch]
-        test_ch = test_flat[test_start * test_nch + ai : (test_start + n_compare) * test_nch : test_nch]
+    for ch in channels:
+        ref_ch = ref_flat[ref_start * ref_nch + ch : (ref_start + n_compare) * ref_nch : ref_nch]
+        test_ch = test_flat[test_start * test_nch + ch : (test_start + n_compare) * test_nch : test_nch]
         violations += sum(abs(r - t) > tolerance for r, t in zip(ref_ch, test_ch))
     return violations
 

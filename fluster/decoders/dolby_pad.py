@@ -22,6 +22,14 @@ from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
+# Mapping from test suite channels_layout to decoder speaker_config.
+# Shared by reference and GStreamer-based EAC3 decoders.
+EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG: Dict[int, int] = {
+    0: 1,  # JOC   → 5.1
+    2: 0,  # Stereo → STEREO
+    7: 1,  # 5.1   → 5.1
+}
+
 
 class DolbyPADDecoder(Decoder):
     """Generic class for Dolby Pro Audio Decoder reference decoder"""
@@ -77,4 +85,4 @@ class EAC3PRODECDecoder(DolbyPADDecoder):
     name = "Dolby_EAC3PRODEC_ReferenceDecoder"
     description = "Dolby EC-3 Online Delivery Kit 1.6 elementary stream reference decoder implementation"
     codec = Codec.EAC3
-    _speaker_config_map = {0: 1, 2: 0, 7: 1}
+    _speaker_config_map = EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG

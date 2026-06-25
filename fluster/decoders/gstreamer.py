@@ -25,6 +25,7 @@ from typing import Any, Dict, List, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
+from fluster.decoders.dolby_pad import EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG
 from fluster.utils import (
     file_checksum,
     normalize_binary_cmd,
@@ -938,6 +939,9 @@ class FluendoFluEAC3DecDecoder(GStreamerAudio):
         output = f"location={output_filepath}" if output_filepath else ""
         decoder_bin = self.decoder_bin
         if optional_params:
+            if "channels_layout" in optional_params:
+                raw = optional_params.pop("channels_layout")
+                optional_params["decoder_speaker_config"] = EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG.get(raw, 1)
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
