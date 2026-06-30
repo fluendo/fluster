@@ -88,11 +88,12 @@ RUN apt-get update && apt-get install -y \
 
 # NVIDIA VDPAU libraries (must match host driver version)
 RUN if [ -n "${NVIDIA_DRIVER_VERSION}" ]; then \
-        apt-get update && \
-        apt-get install -y \
+        apt-get update \
+        && apt-get install -y \
             libnvidia-decode-${NVIDIA_DRIVER_VERSION} \
-            libnvidia-encode-${NVIDIA_DRIVER_VERSION} && \
-        rm -rf /var/lib/apt/lists/*; \
+            libnvidia-encode-${NVIDIA_DRIVER_VERSION} \
+            nvidia-utils-${NVIDIA_DRIVER_VERSION} \
+        && rm -rf /var/lib/apt/lists/*; \
     fi
 
 # Intel QuickSync support via Media SDK and oneVPL
