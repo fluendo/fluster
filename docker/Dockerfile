@@ -71,9 +71,21 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # VAAPI driver for NVIDIA (Ubuntu 24.04+)
+# Built from source instead of "apt install nvidia-vaapi-driver": the Ubuntu
+# package defaults to the EGL backend, which is broken on NVIDIA driver
+# >=525 (upstream regression, see elFarto/nvidia-vaapi-driver#207 and
+# project README). The source build defaults to the "direct" backend
+# instead, which works correctly.
 RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         apt-get update && \
-        apt-get install -y nvidia-vaapi-driver && \
+        apt-get install -y meson ninja-build git pkg-config \
+            libegl1-mesa-dev libgstreamer-plugins-bad1.0-dev && \
+        git clone --depth 1 https://github.com/FFmpeg/nv-codec-headers.git /tmp/nv-codec-headers && \
+        make -C /tmp/nv-codec-headers install && \
+        git clone --depth 1 --branch v0.0.17 https://github.com/elFarto/nvidia-vaapi-driver.git /tmp/nvidia-vaapi-driver && \
+        meson setup /tmp/nvidia-vaapi-driver/build /tmp/nvidia-vaapi-driver --prefix=/usr --libdir=lib/x86_64-linux-gnu && \
+        ninja -C /tmp/nvidia-vaapi-driver/build install && \
+        rm -rf /tmp/nv-codec-headers /tmp/nvidia-vaapi-driver && \
         rm -rf /var/lib/apt/lists/*; \
     fi
 
@@ -353,7 +365,8 @@ RUN mkdir -p /fluster/resources /fluster/test_suites
 # Additional environment variables
 ENV PYTHONPATH=/fluster \
     LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri \
-    MFX_HOME=/opt/intel/mediasdk
+    MFX_HOME=/opt/intel/mediasdk \
+    NVD_BACKEND=direct
 
 COPY docker/hw-info.sh /usr/local/bin/hw-info
 RUN chmod +x /usr/local/bin/hw-info
