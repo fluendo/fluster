@@ -80,7 +80,7 @@ RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         apt-get update && \
         apt-get install -y meson ninja-build git pkg-config \
             libegl1-mesa-dev libgstreamer-plugins-bad1.0-dev && \
-        git clone --depth 1 https://github.com/FFmpeg/nv-codec-headers.git /tmp/nv-codec-headers && \
+        git clone --depth 1 --branch n12.2.72.0 https://github.com/FFmpeg/nv-codec-headers.git /tmp/nv-codec-headers && \
         make -C /tmp/nv-codec-headers install && \
         git clone --depth 1 --branch v0.0.17 https://github.com/elFarto/nvidia-vaapi-driver.git /tmp/nvidia-vaapi-driver && \
         meson setup /tmp/nvidia-vaapi-driver/build /tmp/nvidia-vaapi-driver --prefix=/usr --libdir=lib/x86_64-linux-gnu && \
@@ -366,7 +366,9 @@ RUN mkdir -p /fluster/resources /fluster/test_suites
 ENV PYTHONPATH=/fluster \
     LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri \
     MFX_HOME=/opt/intel/mediasdk \
-    NVD_BACKEND=direct
+    NVD_BACKEND=direct \
+    GST_VA_ALL_DRIVERS=1 \
+    GST_VAAPI_ALL_DRIVERS=1
 
 COPY docker/hw-info.sh /usr/local/bin/hw-info
 RUN chmod +x /usr/local/bin/hw-info
