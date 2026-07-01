@@ -237,13 +237,13 @@ RUN addgroup ${USERNAME} && \
 # Change to USERNAME user
 USER ${USERNAME}
 
-# Set PATH to include pipx bin directory - only necessary for meson in Ubuntu 24.04
-ARG PATH="/home/${USERNAME}/.local/bin:${PATH}"
+# Set PATH to include pipx bin directory - required for meson in Ubuntu 24.04
+ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
 
 # Ubuntu 24.04: install python packages for non-root user
 RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && [ "${UBUNTU_VERSION}" = "24.04" ]; then \
       echo "export PATH=/home/${USERNAME}/.local/bin:\${PATH}" >> /home/${USERNAME}/.bashrc; \
-      pipx install meson; \
+      pipx install meson==1.6.1; \
     fi
 
 # GStreamer installation (2 methods: system, source)
@@ -271,6 +271,7 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libx11-dev \
         libxext-dev \
         libxv-dev \
+        libx11-xcb-dev \
         libdrm-dev \
         libgudev-1.0-dev \
         libasound2-dev \
