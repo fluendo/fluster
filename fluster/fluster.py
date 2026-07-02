@@ -25,6 +25,7 @@ from functools import lru_cache
 from shutil import rmtree
 from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
 
+from fluster import utils
 from fluster.codec import Codec, Profile
 from fluster.decoder import DECODERS, Decoder
 
@@ -894,11 +895,83 @@ class Fluster:
                 download_test_suites = self.test_suites
             print(f"Test suites: {[ts.name for ts in download_test_suites]}")
 
-        for test_suite in download_test_suites:
-            test_suite.download(
-                jobs,
-                self.resources_dir,
-                verify=True,
-                keep_file=keep_file,
-                retries=retries,
-            )
+        if not download_test_suites:
+            print("No test suites to download.")
+            return
+
+        cache_dir = os.path.join(self.resources_dir, ".cache")
+        with utils.DownloadManager(
+            cache_dir=cache_dir, verify=True, keep_file=keep_file, retries=retries, max_pool_workers=jobs
+        ) as manager:
+            # Phase 1: collect every (url, checksum) across all selected suites,
+            # deduplicated. Different suites can share a URL (e.g. AV1-ARGON
+            # archive).
+            url_checksums: Dict[str, str] = {}
+            checksum_conflicts: List[Tuple[str, str, str]] = []
+            for ts in download_test_suites:
+                for tv in ts.test_vectors.values():
+                    existing = url_checksums.get(tv.source)
+                    if existing is None or existing == "__skip__":
+                        # Prefer a real checksum over an unset/__skip__ one.
+                        url_checksums[tv.source] = tv.source_checksum
+                    elif tv.source_checksum not in (existing, "__skip__"):
+                        checksum_conflicts.append((tv.source, existing, tv.source_checksum))
+            if checksum_conflicts:
+                for src, kept, other in checksum_conflicts:
+                    print(
+                        f"ERROR: conflicting checksums for {src}: "
+                        f"{kept} vs {other} — the test-suite definitions disagree."
+                    )
+                sys.exit(
+                    f"{len(checksum_conflicts)} URL(s) have conflicting checksums across "
+                    f"selected suites; refusing to download (fix the test-suite JSON)."
+                )
+
+            # Phase 2: parallel pre-download via the manager's persistent pool.
+            # The manager owns the fan-out and the BoundedSemaphore that caps
+            # actual HTTP concurrency. get_many() returns per-URL errors instead
+            # of raising so we can skip only the affected suites below.
+            if url_checksums:
+                print(
+                    f"Pre-downloading {len(url_checksums)} unique source(s) across {len(download_test_suites)} suite(s)"
+                )
+                _successes, pre_errors = manager.get_many(url_checksums)
+                if pre_errors:
+                    failed_urls = {err_url for err_url, _ in pre_errors}
+                    for err_url, err_exc in pre_errors:
+                        print(f"Error pre-downloading {err_url}: {type(err_exc).__name__}: {err_exc}")
+                    print(f"{len(pre_errors)} URL(s) failed to pre-download — skipping affected suites.")
+                else:
+                    failed_urls = set()
+            else:
+                failed_urls = set()
+
+            # Phase 3: extract per suite. Cache is now warm — TestSuite.download
+            # hits manager.get() which short-circuits to the cached path.
+            # Suites whose URLs intersect with failed_urls are skipped so the
+            # rest of the batch still extracts.
+            skipped_suites: List[str] = []
+            failed_extractions: List[str] = []
+            for test_suite in download_test_suites:
+                suite_urls = {tv.source for tv in test_suite.test_vectors.values()}
+                if suite_urls & failed_urls:
+                    skipped_suites.append(test_suite.name)
+                    continue
+                try:
+                    test_suite.download(
+                        jobs,
+                        self.resources_dir,
+                        download_manager=manager,
+                    )
+                except utils.BadArchiveError as exc:
+                    # The cache entry was already invalidated inside download();
+                    # report cleanly and keep going so the rest of the batch
+                    # still extracts.
+                    print(f"\n{test_suite.name}: {exc}")
+                    failed_extractions.append(test_suite.name)
+            if skipped_suites:
+                print(f"\nSkipped {len(skipped_suites)} suite(s) due to pre-download failures: {skipped_suites}")
+            if failed_extractions:
+                print(f"Corrupt archive(s) invalidated for: {failed_extractions} (re-run to retry)")
+            if skipped_suites or failed_extractions:
+                sys.exit(1)

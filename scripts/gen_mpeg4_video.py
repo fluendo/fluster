@@ -130,13 +130,7 @@ class MPEG4VIDEOGenerator:
                     test_suite.test_vectors[name] = test_vector
 
         if download:
-            test_suite.download(
-                jobs=jobs,
-                out_dir=test_suite.resources_dir,
-                verify=False,
-                extract_all=True,
-                keep_file=True,
-            )
+            test_suite.download_with_default_manager(jobs, extract_all=True)
 
         original_vectors = {
             name: {"source": vector.source, "source_checksum": vector.source_checksum}
