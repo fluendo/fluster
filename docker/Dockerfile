@@ -71,15 +71,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # VAAPI driver for NVIDIA (Ubuntu 24.04+)
-# Built from source instead of "apt install nvidia-vaapi-driver": the Ubuntu
-# package defaults to the EGL backend, which is broken on NVIDIA driver
-# >=525 (upstream regression, see elFarto/nvidia-vaapi-driver#207 and
-# project README). The source build defaults to the "direct" backend
-# instead, which works correctly.
+# apt's nvidia-vaapi-driver defaults to the broken EGL backend (driver >=525,
+# elFarto/nvidia-vaapi-driver#207). Build from source instead (direct backend).
 RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         apt-get update && \
         apt-get install -y meson ninja-build git pkg-config \
             libegl1-mesa-dev libgstreamer-plugins-bad1.0-dev && \
+        apt-mark manual libunwind8 libdw1t64 && \
         git clone --depth 1 --branch n12.2.72.0 https://github.com/FFmpeg/nv-codec-headers.git /tmp/nv-codec-headers && \
         make -C /tmp/nv-codec-headers install && \
         git clone --depth 1 --branch v0.0.17 https://github.com/elFarto/nvidia-vaapi-driver.git /tmp/nvidia-vaapi-driver && \
@@ -369,6 +367,9 @@ ENV PYTHONPATH=/fluster \
     NVD_BACKEND=direct \
     GST_VA_ALL_DRIVERS=1 \
     GST_VAAPI_ALL_DRIVERS=1
+
+# sshd doesn't inherit Docker's ENV in login sessions; SetEnv fixes that.
+RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri" >> /etc/ssh/sshd_config
 
 COPY docker/hw-info.sh /usr/local/bin/hw-info
 RUN chmod +x /usr/local/bin/hw-info
