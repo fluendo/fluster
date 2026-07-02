@@ -363,13 +363,16 @@ RUN mkdir -p /fluster/resources /fluster/test_suites
 # Additional environment variables
 ENV PYTHONPATH=/fluster \
     LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri \
+    VDPAU_DRIVER_PATH=/usr/lib/x86_64-linux-gnu/vdpau \
     MFX_HOME=/opt/intel/mediasdk \
     NVD_BACKEND=direct \
     GST_VA_ALL_DRIVERS=1 \
     GST_VAAPI_ALL_DRIVERS=1
 
 # sshd doesn't inherit Docker's ENV in login sessions; SetEnv fixes that.
-RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri" >> /etc/ssh/sshd_config
+RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 \
+    LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri VDPAU_DRIVER_PATH=/usr/lib/x86_64-linux-gnu/vdpau" \
+    >> /etc/ssh/sshd_config
 
 COPY docker/hw-info.sh /usr/local/bin/hw-info
 RUN chmod +x /usr/local/bin/hw-info
