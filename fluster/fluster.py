@@ -36,6 +36,7 @@ from fluster.system_info import SystemInfo
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
+from fluster.utils import DownloadManager
 
 
 class Context:
@@ -883,11 +884,10 @@ class Fluster:
                 download_test_suites = self.test_suites
             print(f"Test suites: {[ts.name for ts in download_test_suites]}")
 
-        for test_suite in download_test_suites:
-            test_suite.download(
-                jobs,
-                self.resources_dir,
-                verify=True,
-                keep_file=keep_file,
-                retries=retries,
-            )
+        manager = DownloadManager(
+            out_dir=self.resources_dir,
+            verify=True,
+            keep_file=keep_file,
+            retries=retries,
+        )
+        manager.download(download_test_suites, jobs)

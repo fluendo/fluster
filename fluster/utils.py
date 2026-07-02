@@ -35,9 +35,11 @@ import urllib.parse
 import urllib.request
 import wave
 import zipfile
+from dataclasses import dataclass, field
 from functools import partial
+from multiprocessing import Pool
 from threading import Lock
-from typing import Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -534,3 +536,312 @@ if sys.platform == "win32":
 else:
     site_data_dirs = _linux_site_data_dirs
     user_data_dir = _linux_user_data_dir
+
+
+@dataclass
+class _DownloadTask:
+    """A unique source URL to download, with all destinations that need it.
+
+    Each destination is a (test_suite_name, test_vector_name, input_file) tuple.
+    """
+
+    source_url: str
+    source_checksum: str
+    destinations: List[Tuple[str, str, str]] = field(default_factory=list)
+
+
+class DownloadManager:
+    """Manages downloading test suite resources with URI deduplication and parallel downloads.
+
+    Downloads each unique source URL once to a cache directory, then distributes
+    the files to each test suite's destination directory. Supports both single-file
+    test vectors and archives containing multiple test vectors.
+    """
+
+    CACHE_DIR = ".cache"
+
+    def __init__(
+        self,
+        out_dir: str,
+        verify: bool = True,
+        extract_all: bool = False,
+        keep_file: bool = False,
+        retries: int = 2,
+    ):
+        self.out_dir = out_dir
+        self.verify = verify
+        self.extract_all = extract_all
+        self.keep_file = keep_file
+        self.retries = retries
+
+    @property
+    def cache_dir(self) -> str:
+        """Path to the shared download cache directory."""
+        return os.path.join(self.out_dir, self.CACHE_DIR)
+
+    def download(self, test_suites: List[Any], jobs: int) -> None:
+        """Download resources for multiple test suites.
+
+        Collects all test vectors from all suites, deduplicates by source URL,
+        then downloads each unique source in parallel and distributes files
+        to their respective test suite directories.
+
+        Args:
+            test_suites: List of TestSuite instances to download resources for.
+            jobs: Number of parallel download jobs.
+        """
+        os.makedirs(self.out_dir, exist_ok=True)
+
+        # Collect all test vectors and group by source URL (deduplication)
+        source_map: Dict[str, _DownloadTask] = {}
+        for test_suite in test_suites:
+            for tv_name, tv in test_suite.test_vectors.items():
+                source = tv.source
+                if source not in source_map:
+                    source_map[source] = _DownloadTask(
+                        source_url=source,
+                        source_checksum=tv.source_checksum,
+                    )
+                source_map[source].destinations.append((test_suite.name, tv_name, tv.input_file))
+
+        if not source_map:
+            print("No test vectors to download")
+            return
+
+        tasks = list(source_map.values())
+        suite_names = sorted({ts.name for ts in test_suites})
+        print(f"Downloading resources for test suites: {', '.join(suite_names)}")
+        print(f"Unique sources: {len(tasks)}, using {min(jobs, len(tasks))} parallel job(s)")
+
+        # Download all unique sources in parallel
+        error_occurred = False
+        num_jobs = max(1, min(jobs, len(tasks)))
+
+        with Pool(num_jobs) as pool:
+
+            def _callback_error(err: Any) -> None:
+                nonlocal error_occurred
+                error_occurred = True
+                print(f"\nError downloading -> {err}\n")
+                pool.terminate()
+
+            results = []
+            for task in tasks:
+                results.append(
+                    pool.apply_async(
+                        self._process_task,
+                        args=(task,),
+                        error_callback=_callback_error,
+                    )
+                )
+
+            pool.close()
+            pool.join()
+
+        if error_occurred:
+            sys.exit("Some download failed")
+
+        for result in results:
+            if not result.successful():
+                sys.exit("Some download failed")
+
+        # Clean up cache directory
+        if not self.keep_file and os.path.isdir(self.cache_dir):
+            shutil.rmtree(self.cache_dir)
+
+        print("All downloads finished")
+
+    def download_test_suite(self, test_suite: Any, jobs: int) -> None:
+        """Download resources for a single test suite.
+
+        Convenience wrapper around :meth:`download`.
+
+        Args:
+            test_suite: TestSuite instance to download.
+            jobs: Number of parallel download jobs.
+        """
+        self.download([test_suite], jobs)
+
+    def _process_task(self, task: _DownloadTask) -> None:
+        """Download a unique source and distribute to all its destinations.
+
+        Determines whether the source is an archive (extractable with multiple
+        destinations) or individual file(s), then downloads, verifies, extracts,
+        and copies appropriately. Skips the download entirely if all destination
+        files already exist with correct checksums.
+
+        Args:
+            task: The download task with source URL and destination list.
+        """
+        source_filename = os.path.basename(task.source_url)
+        is_extractable_file = is_extractable(source_filename)
+
+        # Determine strategy: archive (extractable source shared by multiple
+        # vectors) vs individual (one source per vector or single vector)
+        is_archive = is_extractable_file and len(task.destinations) > 1
+
+        # Skip if all destinations already have their files with correct checksums
+        if self.verify and self._all_destinations_satisfied(task, is_extractable_file, is_archive):
+            return
+
+        # Use a hash of the URL to create a unique cache directory, avoiding
+        # collisions when different URLs share the same filename basename.
+        url_hash = hashlib.md5(task.source_url.encode()).hexdigest()
+        cache_dir = os.path.join(self.cache_dir, url_hash)
+        cache_path = os.path.join(cache_dir, source_filename)
+        os.makedirs(cache_dir, exist_ok=True)
+
+        if is_archive:
+            self._process_archive(task, cache_path, source_filename)
+        else:
+            self._process_individual(task, cache_path, source_filename, is_extractable_file)
+
+    def _all_destinations_satisfied(self, task: _DownloadTask, is_extractable_file: bool, is_archive: bool) -> bool:
+        """Check if all destination files for a task already exist with correct checksums.
+
+        Args:
+            task: The download task to check.
+            is_extractable_file: Whether the source file is extractable.
+            is_archive: Whether the task is an archive task.
+
+        Returns:
+            True if all destinations are already satisfied and download can be skipped.
+        """
+        source_filename = os.path.basename(task.source_url)
+        skip_checksum = task.source_checksum == "__skip__"
+
+        if is_archive:
+            for suite_name, _tv_name, input_file in task.destinations:
+                dest_path = os.path.join(self.out_dir, suite_name, input_file)
+                if not os.path.exists(dest_path):
+                    return False
+        else:
+            for suite_name, tv_name, _input_file in task.destinations:
+                dest_dir = os.path.join(self.out_dir, suite_name, tv_name)
+                dest_path = os.path.join(dest_dir, source_filename)
+
+                if is_extractable_file:
+                    input_file = _input_file
+                    if self.extract_all or not input_file:
+                        if not os.path.exists(dest_dir) or not os.listdir(dest_dir):
+                            return False
+                    else:
+                        extracted_path = os.path.join(dest_dir, input_file)
+                        if not os.path.exists(extracted_path):
+                            return False
+                else:
+                    if not os.path.exists(dest_path):
+                        return False
+                    if not skip_checksum and task.source_checksum != file_checksum(dest_path):
+                        return False
+
+        return True
+
+    def _download_to_cache(self, task: _DownloadTask, cache_path: str) -> bool:
+        """Download a source file to the cache directory, with verification.
+
+        Skips download if the file already exists in cache and checksum matches.
+
+        Args:
+            task: The download task.
+            cache_path: Destination path in the cache.
+
+        Returns:
+            True if the file was downloaded (or already present), False if skipped.
+        """
+        if self.verify and os.path.exists(cache_path) and task.source_checksum == file_checksum(cache_path):
+            return True
+
+        # Remove corrupt cached file if present
+        if os.path.exists(cache_path):
+            os.remove(cache_path)
+
+        print(f"\tDownloading source from {task.source_url}")
+        cache_dir = os.path.dirname(cache_path)
+        download(task.source_url, cache_dir, self.retries**self.retries)
+
+        # Verify checksum
+        if task.source_checksum != "__skip__":
+            checksum = file_checksum(cache_path)
+            if task.source_checksum != checksum:
+                raise Exception(
+                    f"Checksum mismatch for {os.path.basename(task.source_url)}: "
+                    f"{checksum} instead of '{task.source_checksum}'"
+                )
+
+        return True
+
+    def _process_archive(self, task: _DownloadTask, cache_path: str, source_filename: str) -> None:
+        """Process an archive source containing multiple test vectors.
+
+        Downloads the archive once, then extracts each destination's input_file
+        into the corresponding test suite directory.
+
+        Args:
+            task: The download task.
+            cache_path: Path to the cached archive file.
+            source_filename: Basename of the source URL.
+        """
+        self._download_to_cache(task, cache_path)
+
+        print(f"\tExtracting test vectors from {source_filename}")
+        for suite_name, _tv_name, input_file in task.destinations:
+            dest_dir = os.path.join(self.out_dir, suite_name)
+            os.makedirs(dest_dir, exist_ok=True)
+            try:
+                extract(cache_path, dest_dir, file=input_file)
+            except FileNotFoundError:
+                print(f"WARNING: test vector {input_file} not found inside {source_filename}")
+
+        # Remove the archive from cache unless keep_file is set
+        if not self.keep_file and os.path.exists(cache_path):
+            os.remove(cache_path)
+
+    def _process_individual(
+        self,
+        task: _DownloadTask,
+        cache_path: str,
+        source_filename: str,
+        is_extractable_file: bool,
+    ) -> None:
+        """Process an individual source file (one per test vector).
+
+        Downloads the file to cache, then copies it to each destination's
+        test vector subdirectory. If extractable, extracts the input file
+        and removes the archive.
+
+        Args:
+            task: The download task.
+            cache_path: Path to the cached file.
+            source_filename: Basename of the source URL.
+            is_extractable_file: Whether the source file can be extracted.
+        """
+        self._download_to_cache(task, cache_path)
+
+        for suite_name, tv_name, input_file in task.destinations:
+            dest_dir = os.path.join(self.out_dir, suite_name, tv_name)
+            dest_path = os.path.join(dest_dir, source_filename)
+            os.makedirs(dest_dir, exist_ok=True)
+
+            # Check if already correctly downloaded at the destination
+            if self.verify and os.path.exists(dest_path) and task.source_checksum == file_checksum(dest_path):
+                if is_extractable_file and not self.keep_file:
+                    os.remove(dest_path)
+                continue
+
+            # Copy from cache to destination
+            shutil.copy2(cache_path, dest_path)
+
+            if is_extractable_file:
+                print(f"\tExtracting test vector {tv_name} to {dest_dir}")
+                extract(
+                    dest_path,
+                    dest_dir,
+                    file=input_file if not self.extract_all else None,
+                )
+                if not self.keep_file:
+                    os.remove(dest_path)
+
+        # Remove from cache
+        if os.path.exists(cache_path):
+            os.remove(cache_path)
