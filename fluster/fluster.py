@@ -31,6 +31,7 @@ from fluster.decoder import DECODERS, Decoder
 # Import decoders that will auto-register
 from fluster.decoders import *  # noqa: F403
 from fluster.decoders.av1_aom import AV1AOMDecoder
+from fluster.download_manager import DownloadManager
 from fluster.system_info import SystemInfo
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
@@ -931,12 +932,11 @@ class Fluster:
                 download_test_suites = self.test_suites
             print(f"Test suites: {[ts.name for ts in download_test_suites]}")
 
-        for test_suite in download_test_suites:
-            test_suite.download(
-                jobs,
-                self.resources_dir,
-                verify=True,
-                keep_file=keep_file,
-                retries=retries,
-                mirror=mirror,
-            )
+        manager = DownloadManager(
+            out_dir=self.resources_dir,
+            verify=True,
+            keep_file=keep_file,
+            retries=retries,
+            mirror=mirror,
+        )
+        manager.download(download_test_suites, jobs)
