@@ -137,6 +137,8 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libxcb1-dev \
         libxcb-shm0-dev \
         libxcb-xfixes0-dev \
+        libssl-dev \
+        libpango1.0-dev \
         meson \
         ninja-build \
         pkg-config \
@@ -300,13 +302,20 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       && mkdir -p /tmp/gstreamer && cd /tmp/gstreamer \
       && curl -L "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GSTREAMER_VERSION}/gstreamer-${GSTREAMER_VERSION}.tar.gz" | tar xz \
       && cd gstreamer-${GSTREAMER_VERSION} \
+      # Dynamically assign -Dvaapi=enabled for ANY version older than 1.28 \
+      && GST_MINOR=$(echo ${GSTREAMER_VERSION} | cut -d. -f2) \
+      && if [ "$GST_MINOR" -lt 28 ]; then \
+           VAAPI_OPT="-Dvaapi=enabled"; \
+         else \
+           VAAPI_OPT=""; \
+         fi \
       && meson setup build \
         --prefix=/usr/local \
         --buildtype=release \
         -Dgpl=enabled \
         -Dugly=enabled \
-        -Dvaapi=enabled \
-        -Dlibav=disabled \
+        ${VAAPI_OPT} \
+        -Dlibav=enabled \
         -Dbase=enabled \
         -Dgood=enabled \
         -Dbad=enabled \
@@ -323,7 +332,7 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       && meson compile -C build -j$(nproc) \
       && sudo ninja install -C build \
       && sudo ldconfig \
-      && cd / && sudo rm -rf /tmp/gstreamer \
+      && cd / && rm -rf /tmp/gstreamer \
       && sudo apt-get purge -y 'libgstreamer*' 'gstreamer1.0-*' 2>/dev/null || true \
       && sudo apt-get autoremove -y 2>/dev/null || true; \
     else \
@@ -345,6 +354,69 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
     fi
 
 USER root
+
+# =========================================================================
+# Conditionally Install Native vvdec Core, Rust & Build GStreamer Plugins
+# =========================================================================
+RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
+      GST_MINOR=$(echo ${GSTREAMER_VERSION} | cut -d. -f2) && \
+      if [ "$GST_MINOR" -ge 26 ]; then \
+        # Dynamically scope the Rust home paths to this conditional execution context \
+        export CARGO_HOME="/usr/local/.cargo" && \
+        export RUSTUP_HOME="/usr/local/.rustup" && \
+        export PATH="${CARGO_HOME}/bin:${PATH}" && \
+        \
+        # 1. Ensure OpenSSL development headers are present for the Rust compilation \
+        apt-get update && apt-get install -y --no-install-recommends \
+          libssl-dev \
+          clang \
+          libclang-dev \
+        && rm -rf /var/lib/apt/lists/* && \
+        \
+        # 2. Clone, build, and install the native Fraunhofer HHI VVC Decoder core \
+        git clone --depth 1 --branch v3.1.0 https://github.com/fraunhoferhhi/vvdec.git /tmp/vvdec && \
+        cd /tmp/vvdec && \
+        mkdir build && cd build && \
+        cmake -DCMAKE_BUILD_TYPE=Release \
+              -DBUILD_SHARED_LIBS=ON \
+              -DCMAKE_INSTALL_PREFIX=/usr/local \
+              -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu .. && \
+        make -j$(nproc) && \
+        make install && \
+        ldconfig && \
+        cd / && rm -rf /tmp/vvdec && \
+        \
+        # 3. Configure Cargo network optimizations \
+        mkdir -p ${CARGO_HOME} && \
+        echo '[net]\ngit-fetch-with-cli = true' > ${CARGO_HOME}/config && \
+        \
+        # 4. Install Rust toolchain environment \
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+        \
+        # 5. Extract pre-compiled cargo-c binaries directly to skip compilation errors \
+        curl -L "https://github.com/lu-zero/cargo-c/releases/latest/download/cargo-c-x86_64-unknown-linux-musl.tar.gz" | tar -xz -C ${CARGO_HOME}/bin && \
+        chmod -R 777 ${CARGO_HOME} && \
+        \
+        # 6. Map GStreamer core versions to their matching Rust plugins stable branch \
+        case "$GST_MINOR" in \
+          "26") RS_BRANCH="0.14" ;; \
+          "28") RS_BRANCH="0.15" ;; \
+          *)    RS_BRANCH="main" ;; \
+        esac && \
+        \
+        # 7. Clone and build the targeted stable gst-plugins-rs branch \
+        export PKG_CONFIG_PATH="/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:${PKG_CONFIG_PATH:-}" && \
+        git clone --depth 1 --branch ${RS_BRANCH} https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs.git /tmp/gst-plugins-rs && \
+        cd /tmp/gst-plugins-rs && \
+        cargo cinstall -p gst-plugin-vvdec --prefix=/usr/local --libdir=/usr/local/lib/x86_64-linux-gnu && \
+        \
+        # 8. Refresh loader runtime cache and run post-build cleanup \
+        ldconfig && \
+        rm -rf /tmp/gst-plugins-rs ${CARGO_HOME}/registry ${CARGO_HOME}/git; \
+      else \
+        echo "GStreamer version 1.${GST_MINOR} does not natively support the vvdec plugin. Skipping compilation smoothly."; \
+      fi; \
+    fi
 
 # Set library paths - /usr/local MUST come first to prioritize compiled versions
 ENV LD_LIBRARY_PATH=/usr/local/lib/x86_64-linux-gnu:/usr/local/lib:/usr/lib/x86_64-linux-gnu \
