@@ -369,8 +369,10 @@ ENV PYTHONPATH=/fluster \
     GST_VA_ALL_DRIVERS=1 \
     GST_VAAPI_ALL_DRIVERS=1
 
+RUN echo "export DISPLAY=:0" >> /home/"${USERNAME}"/.profile
+
 # sshd doesn't inherit Docker's ENV in login sessions; SetEnv fixes that.
-RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 \
+RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 DISPLAY=:0 \
     LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri VDPAU_DRIVER_PATH=/usr/lib/x86_64-linux-gnu/vdpau" \
     >> /etc/ssh/sshd_config
 
