@@ -107,3 +107,9 @@ class Profile(Enum):
     ADVANCED_SIMPLE_PROFILE = "Advanced Simple Profile"
     SIMPLE_STUDIO_PROFILE = "Simple Studio Profile"
     ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE = "Error Resilient Simple Scalable Profile"
+
+    # VP9
+    VP9_PROFILE_0 = "VP9 Profile 0"
+    VP9_PROFILE_1 = "VP9 Profile 1"
+    VP9_PROFILE_2 = "VP9 Profile 2"
+    VP9_PROFILE_3 = "VP9 Profile 3"
