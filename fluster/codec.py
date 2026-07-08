@@ -116,3 +116,9 @@ class Profile(Enum):
     ER_AAC_LC = "Error Resilient AAC Low Complexity"
     ER_AAC_ELD = "Error Resilient AAC Enhanced Low Delay"
     ER_AAC_LD = "Error Resilient AAC Low Delay"
+
+    # VP9
+    VP9_PROFILE_0 = "VP9 Profile 0"
+    VP9_PROFILE_1 = "VP9 Profile 1"
+    VP9_PROFILE_2 = "VP9 Profile 2"
+    VP9_PROFILE_3 = "VP9 Profile 3"
