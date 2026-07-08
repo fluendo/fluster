@@ -58,6 +58,7 @@ class Context:
         verbose: bool = False,
         summary_output: str = "",
         summary_format: str = "",
+        profiles: Optional[List[str]] = None,
     ):
         self.jobs = jobs
         self.timeout = timeout
@@ -77,6 +78,8 @@ class Context:
         self.verbose = verbose
         self.summary_output = summary_output
         self.summary_format = summary_format
+        self.profiles_names = profiles
+        self.profiles: List[Profile] = []
 
     def to_test_suite_context(
         self,
@@ -98,6 +101,7 @@ class Context:
             skip_vectors=skip_vectors,
             keep_files=self.keep_files,
             verbose=self.verbose,
+            profiles=self.profiles,
         )
         return ts_context
 
@@ -258,6 +262,14 @@ class Fluster:
             ctx.test_vectors_names = [x.lower() for x in ctx.test_vectors_names]
         if ctx.skip_vectors_names:
             ctx.skip_vectors_names = [x.lower() for x in ctx.skip_vectors_names]
+        if ctx.profiles_names:
+            profile_values = {p.value.lower(): p for p in Profile}
+            for name in ctx.profiles_names:
+                if name.lower() in profile_values:
+                    ctx.profiles.append(profile_values[name.lower()])
+                else:
+                    available = ", ".join(sorted(p.value for p in Profile if p != Profile.NONE))
+                    sys.exit(f"Unknown profile '{name}'. Available profiles: {available}")
         ctx.test_suites = self._get_matches(ctx.test_suites_names, self.test_suites, "test suite")
         ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
 
