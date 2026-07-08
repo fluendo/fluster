@@ -30,7 +30,7 @@ from typing import Any, Dict, List, Optional, Set, Type, cast
 from unittest.result import TestResult
 
 from fluster import utils
-from fluster.codec import Codec
+from fluster.codec import Codec, Profile
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.test import MD5ComparisonTest, PixelComparisonTest, ReferenceComparisonTest, SampleComparisonTest, Test
 from fluster.test_vector import TestVector, TestVectorResult
@@ -98,6 +98,7 @@ class Context:
         verbose: bool = False,
         reference_decoder: Optional[Decoder] = None,
         test_vector_names: Optional[Set[str]] = None,
+        profiles: Optional[List[Profile]] = None,
     ):
         self.jobs = jobs
         self.decoder = decoder
@@ -113,6 +114,7 @@ class Context:
         self.verbose = verbose
         self.reference_decoder = reference_decoder
         self.test_vector_names = test_vector_names
+        self.profiles = profiles
 
 
 class TestMethod(Enum):
@@ -165,6 +167,18 @@ class TestSuite:
         """Create a deep copy of the object"""
         return copy.deepcopy(self)
 
+    @staticmethod
+    def _infer_vp9_profile(name: str) -> Optional[Profile]:
+        if name.startswith("vp90-"):
+            return Profile.VP9_PROFILE_0
+        if name.startswith("vp91-"):
+            return Profile.VP9_PROFILE_1
+        if name.startswith("vp92-"):
+            return Profile.VP9_PROFILE_2
+        if name.startswith("vp93-"):
+            return Profile.VP9_PROFILE_3
+        return None
+
     @classmethod
     def from_json_file(cls: Type["TestSuite"], filename: str, resources_dir: str) -> "TestSuite":
         """Create a TestSuite instance from a file"""
@@ -181,7 +195,15 @@ class TestSuite:
             data.pop("test_vectors_not_run", None)
             data.pop("test_vectors_not_supported", None)
             data.pop("time_taken", None)
-            return cls(filename, resources_dir, **data)
+            test_suite = cls(filename, resources_dir, **data)
+            # Infer VP9 profile from filename when not explicitly set
+            if test_suite.codec == Codec.VP9:
+                for test_vector in test_suite.test_vectors.values():
+                    if test_vector.profile is None:
+                        inferred = cls._infer_vp9_profile(test_vector.name)
+                        if inferred:
+                            test_vector.profile = inferred
+            return test_suite
 
     def to_json_file(self, filename: str) -> None:
         """Serialize the test suite to a file"""
@@ -576,6 +598,8 @@ class TestSuite:
             skip = False
             name_lower = test_vector.name.lower()
             if ctx.test_vector_names is not None and name_lower not in ctx.test_vector_names:
+                continue
+            if ctx.profiles and test_vector.profile not in ctx.profiles:
                 continue
             if ctx.skip_vectors and name_lower in ctx.skip_vectors:
                 skip = True

@@ -281,6 +281,12 @@ class Main:
             type=float,
         )
         subparser.add_argument(
+            "-p",
+            "--profiles",
+            help="run only test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
             "-v",
             "--verbose",
             help="show stdout and stderr of commands executed",
@@ -385,6 +391,7 @@ class Main:
             verbose=args.verbose,
             summary_output=args.summary_output,
             summary_format=args.format,
+            profiles=args.profiles,
         )
         try:
             fluster.run_test_suites(context)
