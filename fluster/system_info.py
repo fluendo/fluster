@@ -334,6 +334,10 @@ class SystemInfo:
                 if quicksync_info:
                     backends["QuickSync"] = quicksync_info
 
+                v4l2_m2m_info = self._detect_v4l2_m2m()
+                if v4l2_m2m_info:
+                    backends["V4L2 M2M"] = v4l2_m2m_info
+
             elif self.os_name == "Darwin":
                 try:
                     output = run_command_with_output(["sw_vers", "-productVersion"], check=False)
@@ -406,6 +410,91 @@ class SystemInfo:
                 except OSError:
                     continue
 
+        except (OSError, ValueError):
+            pass
+
+        return None
+
+    @staticmethod
+    def _v4l2_card_type(node: str) -> Optional[str]:
+        """Return the V4L2 node's card type if it exposes the M2M capability, else None.
+
+        Codecs expose themselves as V4L2 memory-to-memory (M2M) devices, reporting
+        the ``Video Memory-to-Memory`` capability in their per-node ``Device Caps``.
+        """
+        output = run_command_with_output(["v4l2-ctl", "-d", node, "--info"], check=False)
+        if not output:
+            return None
+
+        card = None
+        in_device_caps = False
+        is_m2m = False
+        for line in output.split("\n"):
+            stripped = line.strip()
+            if stripped.startswith("Card type"):
+                card = stripped.split(":", 1)[1].strip()
+            elif stripped.startswith("Device Caps"):
+                in_device_caps = True
+            elif in_device_caps:
+                # Capability entries are indented deeper than the "Device Caps"
+                # header; a shallower line marks the end of the block.
+                if line.startswith("\t\t"):
+                    if "Memory-to-Memory" in stripped:
+                        is_m2m = True
+                else:
+                    in_device_caps = False
+
+        return card if is_m2m else None
+
+    @staticmethod
+    def _v4l2_is_decoder(node: str) -> bool:
+        """Return True if the V4L2 M2M node is a decoder rather than an encoder.
+
+        A decoder consumes a compressed bitstream on its OUTPUT queue and produces
+        raw frames on its CAPTURE queue; an encoder does the reverse, exposing only
+        compressed formats on CAPTURE. Note that a raw ``compressed`` band format
+        (e.g. QCOM Q08C) can appear alongside NV12, so a device is treated as a
+        decoder when its OUTPUT queue is compressed and its CAPTURE queue offers at
+        least one uncompressed format.
+        """
+
+        def _has_compressed(args: List[str]) -> bool:
+            output = run_command_with_output(["v4l2-ctl", "-d", node] + args, check=False)
+            return bool(output) and any(
+                "compressed" in line for line in output.split("\n") if re.match(r"\s*\[\d+\]:", line)
+            )
+
+        def _has_uncompressed(args: List[str]) -> bool:
+            output = run_command_with_output(["v4l2-ctl", "-d", node] + args, check=False)
+            return bool(output) and any(
+                "compressed" not in line for line in output.split("\n") if re.match(r"\s*\[\d+\]:", line)
+            )
+
+        return _has_compressed(["--list-formats-out"]) and _has_uncompressed(["--list-formats"])
+
+    @classmethod
+    def _detect_v4l2_m2m(cls) -> Optional[str]:
+        """Detect V4L2 memory-to-memory (M2M) decoder devices via v4l2-ctl (Linux only).
+
+        Returns a human-readable list of decoder devices, or None when v4l2-ctl is
+        unavailable or no M2M decoder is present.
+        """
+        try:
+            listing = run_command_with_output(["v4l2-ctl", "-A"], check=False)
+            if not listing:
+                return None
+
+            video_nodes = [line.strip() for line in listing.split("\n") if line.strip().startswith("/dev/video")]
+
+            devices = []
+            for node in video_nodes:
+                card = cls._v4l2_card_type(node)
+                if card is None or not cls._v4l2_is_decoder(node):
+                    continue
+                devices.append(f"{card} ({node})")
+
+            if devices:
+                return ", ".join(devices)
         except (OSError, ValueError):
             pass
 
