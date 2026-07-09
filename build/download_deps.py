@@ -5,6 +5,7 @@
 # Helper script to download all ISO reference decoder dependencies
 # Downloads: MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, and libtsp
 
+import argparse
 import hashlib
 import os
 import shutil
@@ -199,14 +200,69 @@ def _fix_libtsp_permissions(libtsp_dir):
         subprocess.run(["chmod", "-R", "u+rwx", str(libtsp_dir)], check=True)
 
 
+def prompt_iso_license(auto_accept=False):
+    """Prompt the user to accept the ISO licence agreement before downloading.
+
+    Args:
+        auto_accept: If True, skip the interactive prompt and accept automatically.
+    """
+    license_text = """
+International Organization for Standardization
+
+Licence Agreement for Publicly Available Standards
+
+You are about to download a document protected by copyright.
+When you download (an) ISO publication(s) from this site, you must accept the
+ISO Customer Licence Agreement ("Licence Agreement"), excluding clauses
+2. Watermark, 5. Paper copies, and 6. Codes and Graphical Symbols (and their
+Collections).
+
+See: https://www.iso.org/terms-conditions-licence-agreement.html#Customer-Licence
+
+Should you have any questions about this Licence Agreement, please contact:
+copyright@iso.org
+
+"""
+    if auto_accept:
+        print(license_text)
+        print("Licence accepted (via --accept-license).\n")
+        return True
+
+    print(license_text)
+    while True:
+        response = input("Do you accept the ISO Licence Agreement? [y/N]: ").strip().lower()
+        if response in ("y", "yes"):
+            print("Licence accepted.\n")
+            return True
+        if response in ("", "n", "no"):
+            print("Licence not accepted. Cannot download ISO reference software.")
+            return False
+        print("Please answer 'y' or 'n'.")
+
+
 def main():
+    parser = argparse.ArgumentParser(
+        description="Download ISO reference decoder dependencies (MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, libtsp)"
+    )
+    parser.add_argument(
+        "dest_dir",
+        nargs="?",
+        type=Path,
+        help="Destination directory for downloaded dependencies (default: <repo_root>/contrib)",
+    )
+    parser.add_argument(
+        "--accept-license",
+        action="store_true",
+        help="Accept the ISO Licence Agreement non-interactively",
+    )
+    args = parser.parse_args()
+
     # Get script directory and calculate paths
     script_dir = Path(__file__).parent.resolve()
     root_dir = script_dir.parent
 
     # Get contrib directory from argument or default
-    contrib_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else root_dir / "contrib"
-    contrib_dir = contrib_dir.resolve()
+    contrib_dir = (args.dest_dir or root_dir / "contrib").resolve()
 
     subprojects_dir = root_dir / "subprojects"
     packagefiles_dir = subprojects_dir / "packagefiles"
@@ -218,6 +274,10 @@ def main():
     print("  - MPEG-4 AAC decoders")
     print("  - libtsp audio library")
     print()
+
+    # Prompt user to accept ISO licence before downloading
+    if not prompt_iso_license(auto_accept=args.accept_license):
+        sys.exit(1)
 
     # Create contrib directory
     contrib_dir.mkdir(parents=True, exist_ok=True)

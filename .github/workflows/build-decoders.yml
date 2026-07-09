@@ -103,7 +103,7 @@ jobs:
           curl
 
     - name: Download dependencies
-      run: python3 build/download_deps.py
+      run: python3 build/download_deps.py --accept-license
 
     - name: Configure Meson
       run: meson setup builddir
