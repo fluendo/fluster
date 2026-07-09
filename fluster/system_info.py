@@ -20,13 +20,161 @@ import ctypes.util
 import os
 import platform
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from fluster.utils import run_command_with_output
 
 
 class SystemInfo:
     """Collects hardware and software information about the system"""
+
+    # ARM CPU implementer (JEP106) identifiers, keyed by the "CPU implementer" field.
+    _ARM_IMPLEMENTERS = {
+        0x41: "ARM",
+        0x42: "Broadcom",
+        0x43: "Cavium",
+        0x44: "DEC",
+        0x46: "Fujitsu",
+        0x48: "HiSilicon",
+        0x4E: "NVIDIA",
+        0x50: "APM",
+        0x51: "Qualcomm",
+        0x53: "Samsung",
+        0x56: "Marvell",
+        0x61: "Apple",
+        0x69: "Intel",
+        0x6D: "Microsoft",
+        0x70: "Phytium",
+        0xC0: "Ampere",
+    }
+
+    # ARM (implementer 0x41) core names, keyed by the "CPU part" field.
+    _ARM_PARTS = {
+        0xB02: "ARM11 MPCore",
+        0xB36: "ARM1136",
+        0xB56: "ARM1156",
+        0xB76: "ARM1176",
+        0xC05: "Cortex-A5",
+        0xC07: "Cortex-A7",
+        0xC08: "Cortex-A8",
+        0xC09: "Cortex-A9",
+        0xC0D: "Cortex-A17",
+        0xC0E: "Cortex-A17",
+        0xC0F: "Cortex-A15",
+        0xC14: "Cortex-R4",
+        0xC15: "Cortex-R5",
+        0xC17: "Cortex-R7",
+        0xC18: "Cortex-R8",
+        0xC20: "Cortex-M0",
+        0xC21: "Cortex-M1",
+        0xC23: "Cortex-M3",
+        0xC24: "Cortex-M4",
+        0xC27: "Cortex-M7",
+        0xD01: "Cortex-A32",
+        0xD02: "Cortex-A34",
+        0xD03: "Cortex-A53",
+        0xD04: "Cortex-A35",
+        0xD05: "Cortex-A55",
+        0xD06: "Cortex-A65",
+        0xD07: "Cortex-A57",
+        0xD08: "Cortex-A72",
+        0xD09: "Cortex-A73",
+        0xD0A: "Cortex-A75",
+        0xD0B: "Cortex-A76",
+        0xD0C: "Neoverse-N1",
+        0xD0D: "Cortex-A77",
+        0xD0E: "Cortex-A76AE",
+        0xD13: "Cortex-R52",
+        0xD15: "Cortex-R82",
+        0xD40: "Neoverse-V1",
+        0xD41: "Cortex-A78",
+        0xD42: "Cortex-A78AE",
+        0xD44: "Cortex-X1",
+        0xD46: "Cortex-A510",
+        0xD47: "Cortex-A710",
+        0xD48: "Cortex-X2",
+        0xD49: "Neoverse-N2",
+        0xD4A: "Neoverse-E1",
+        0xD4B: "Cortex-A78C",
+        0xD4C: "Cortex-X1C",
+        0xD4D: "Cortex-A715",
+        0xD4E: "Cortex-X3",
+        0xD4F: "Neoverse-V2",
+        0xD80: "Cortex-A520",
+        0xD81: "Cortex-A720",
+        0xD82: "Cortex-X4",
+        0xD84: "Neoverse-V3",
+        0xD8E: "Neoverse-N3",
+    }
+
+    # Qualcomm (implementer 0x51) core names, keyed by the "CPU part" field.
+    _QCOM_PARTS = {
+        0x00F: "Scorpion",
+        0x02D: "Scorpion",
+        0x04D: "Krait",
+        0x06F: "Krait",
+        0x201: "Kryo",
+        0x205: "Kryo",
+        0x211: "Kryo",
+        0x800: "Falkor V1/Kryo",
+        0x801: "Kryo V2",
+        0x802: "Kryo 3XX Gold",
+        0x803: "Kryo 3XX Silver",
+        0x804: "Kryo 4XX Gold",
+        0x805: "Kryo 4XX Silver",
+        0xC00: "Falkor",
+        0xC01: "Saphira",
+    }
+
+    # NVIDIA (implementer 0x4e) core names, keyed by the "CPU part" field.
+    _NVIDIA_PARTS = {
+        0x000: "Denver",
+        0x003: "Denver 2",
+        0x004: "Carmel",
+    }
+
+    # Apple (implementer 0x61) core names, keyed by the "CPU part" field.
+    _APPLE_PARTS = {
+        0x000: "Swift",
+        0x001: "Cyclone",
+        0x002: "Typhoon",
+        0x003: "Typhoon/Capri",
+        0x004: "Twister",
+        0x005: "Twister/Elba/Malta",
+        0x006: "Hurricane",
+        0x007: "Hurricane/Myst",
+        0x008: "Monsoon",
+        0x009: "Mistral",
+        0x00B: "Vortex",
+        0x00C: "Tempest",
+        0x00F: "Tempest-M9",
+        0x010: "Vortex/Aruba",
+        0x011: "Tempest/Aruba",
+        0x012: "Lightning",
+        0x013: "Thunder",
+        0x020: "Icestorm-A14",
+        0x021: "Firestorm-A14",
+        0x022: "Icestorm-M1",
+        0x023: "Firestorm-M1",
+        0x024: "Icestorm-M1-Pro",
+        0x025: "Firestorm-M1-Pro",
+        0x028: "Icestorm-M1-Max",
+        0x029: "Firestorm-M1-Max",
+        0x030: "Blizzard-M2",
+        0x031: "Avalanche-M2",
+        0x032: "Blizzard-M2-Pro",
+        0x033: "Avalanche-M2-Pro",
+        0x034: "Blizzard-M2-Max",
+        0x035: "Avalanche-M2-Max",
+    }
+
+    # Per-implementer "CPU part" -> core-name tables.
+    _PART_TABLES = {
+        0x41: _ARM_PARTS,
+        0x4E: _NVIDIA_PARTS,
+        0x51: _QCOM_PARTS,
+        0x61: _APPLE_PARTS,
+    }
 
     def __init__(self) -> None:
         self.os_name = platform.system()
@@ -66,9 +214,15 @@ class SystemInfo:
         try:
             if self.os_name == "Linux":
                 with open("/proc/cpuinfo", encoding="utf-8") as f:
-                    for line in f:
-                        if "model name" in line:
-                            return line.split(":")[1].strip()
+                    cpuinfo = f.read()
+                for line in cpuinfo.split("\n"):
+                    if "model name" in line:
+                        return line.split(":")[1].strip()
+                # ARM cores expose no "model name"; describe them from the MIDR
+                # fields instead.
+                arm_model = self._get_arm_cpu_model(cpuinfo)
+                if arm_model:
+                    return arm_model
             elif self.os_name == "Darwin":
                 output = run_command_with_output(["sysctl", "-n", "machdep.cpu.brand_string"], check=False)
                 if output:
@@ -88,6 +242,50 @@ class SystemInfo:
         except (FileNotFoundError, OSError, ValueError, IndexError):
             pass
         return "Unknown CPU"
+
+    @classmethod
+    def _get_arm_cpu_model(cls, cpuinfo: str) -> Optional[str]:
+        """Describe ARM cores (ARM, Qualcomm, NVIDIA, Apple) from /proc/cpuinfo MIDR fields.
+
+        Such cores report no "model name"; instead each processor block carries a
+        "CPU implementer" (vendor) and "CPU part" (core) code. Returns a summary
+        grouping identical cores with their counts (e.g.
+        "ARM Cortex-A78C x4, ARM Cortex-X1C x4" or "Qualcomm Kryo 4XX Gold x1"),
+        or None when no core is found.
+        """
+
+        def _parse_hex(line: str) -> Optional[int]:
+            try:
+                return int(line.split(":", 1)[1].strip(), 16)
+            except (ValueError, IndexError):
+                return None
+
+        cores: List[Tuple[int, int]] = []
+        implementer: Optional[int] = None
+        for line in cpuinfo.split("\n"):
+            if line.startswith("CPU implementer"):
+                implementer = _parse_hex(line)
+            elif line.startswith("CPU part"):
+                part = _parse_hex(line)
+                if implementer is not None and part is not None:
+                    cores.append((implementer, part))
+                implementer = None
+
+        if not cores:
+            return None
+
+        # Count identical cores while preserving first-seen order.
+        counts: Dict[Tuple[int, int], int] = {}
+        for key in cores:
+            counts[key] = counts.get(key, 0) + 1
+
+        descriptions = []
+        for implementer, part in counts:
+            vendor = cls._ARM_IMPLEMENTERS.get(implementer, f"0x{implementer:02x}")
+            core = cls._PART_TABLES.get(implementer, {}).get(part, f"part 0x{part:03x}")
+            descriptions.append(f"{vendor} {core} x{counts[(implementer, part)]}")
+
+        return ", ".join(descriptions)
 
     @staticmethod
     def _get_primary_gpu_pci() -> Optional[str]:
