@@ -17,6 +17,7 @@ suites.
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [How to get started](#how-to-get-started)
+  - [Snap Package](#snap-package)
   - [Docker Support](#docker-support)
   - [How to use](#how-to-use)
   - [Test Suites](#test-suites)
@@ -77,6 +78,22 @@ or
 - [Release source code](https://github.com/fluendo/fluster/releases) assets are available in the following formats zip, tar.gz
 
 Find more about how to use Fluster in the next section.
+
+## Snap Package
+
+A snap package for Fluster is available. It provides a
+self-contained installation experience and is intended for integration into
+Ubuntu and other snap-compatible Linux distributions.
+
+It can be installed from the [Snap Store](https://snapcraft.io/fluster) with:
+
+```bash
+sudo snap install fluster
+```
+
+The development of the snap package is tracked separately in
+https://github.com/canonical/fluster-snap. Contributions and feedback are
+welcome.
 
 ## Docker Support
 
