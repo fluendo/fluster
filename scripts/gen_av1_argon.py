@@ -28,6 +28,7 @@ from time import sleep
 from typing import Any, List
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from fluster import download_manager as dm
 from fluster import utils
 from fluster.codec import Codec, OutputFormat
 from fluster.decoders import av1_aom
@@ -83,7 +84,7 @@ class AV1ArgonGenerator:
 
         # Download source checksum reference file
         try:
-            utils.download(source_checksum_ref_url, extract_folder)
+            dm.download(source_checksum_ref_url, extract_folder)
             source_checksum_ref = self._fill_checksum_argon(os.path.join(extract_folder, self.name + ".md5sum"))
         except urllib.error.URLError as url_error:
             raise Exception(
@@ -102,7 +103,7 @@ class AV1ArgonGenerator:
         if download and source_checksum != source_checksum_ref:
             print(f"Downloading test suite archive from {source_url}")
             try:
-                utils.download(source_url, extract_folder)
+                dm.download(source_url, extract_folder)
                 source_checksum = utils.file_checksum(os.path.join(extract_folder, self.name))
             except urllib.error.URLError as url_error:
                 raise Exception(f"\tUnable to download {source_url} to {extract_folder}, {url_error}") from url_error
