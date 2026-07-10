@@ -237,6 +237,25 @@ class Fluster:
         if len(self.test_suites) == 0:
             print(f'    No test suites found in "{self.test_suites_dir}"')
 
+    def list_profiles(self, codec: Optional[Codec] = None) -> None:
+        """List all available profiles"""
+        print("\nList of available profiles:")
+        profiles_dict: Dict[Codec, List[Profile]] = {}
+        for profile in Profile:
+            if profile == Profile.NONE:
+                continue
+            current_codec = profile.codec
+            if current_codec not in profiles_dict:
+                profiles_dict[current_codec] = []
+            profiles_dict[current_codec].append(profile)
+
+        for current_codec, profile_list in profiles_dict.items():
+            if codec and codec != current_codec:
+                continue
+            print(f"\n{current_codec}")
+            for profile in profile_list:
+                print(f"    {profile.value}")
+
     @staticmethod
     def _get_matches(in_list: List[str], check_list: List[Any], name: str) -> List[Any]:
         if in_list:
