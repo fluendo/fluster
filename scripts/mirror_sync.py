@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2026, Fluendo, S.A.
+# Copyright (C) 2026, Canonical Ltd.
+#  Author: Alexandre Esse <alexandre.esse@canonical.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
