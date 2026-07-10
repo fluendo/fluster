@@ -16,6 +16,7 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
 from enum import Enum
+from typing import Optional
 
 
 class Codec(Enum):
@@ -67,49 +68,68 @@ class OutputFormat(Enum):
 
 
 class Profile(Enum):
-    """Profile"""
+    """Profile
 
-    NONE = "None"
+    Each member carries a ``codec`` attribute identifying its codec.
+    """
+
+    codec: Codec
+
+    NONE = ("None", Codec.NONE)
 
     # H.264
-    CONSTRAINED_BASELINE = "Constrained Baseline"
-    BASELINE = "Baseline"
-    EXTENDED = "Extended"
-    MAIN = "Main"
-    HIGH = "High"
-    HIGH_10 = "High 10"
-    HIGH_10_INTRA = "High 10 Intra"
-    HIGH_4_2_2 = "High 4:2:2"
-    HIGH_4_2_2_INTRA = "High 4:2:2 Intra"
-    HIGH_4_4_4_INTRA = "High 4:4:4 Intra"
-    HIGH_4_4_4_PREDICTIVE = "High 4:4:4 Predictive"
-    CAVLC_4_4_4 = "CAVLC 4:4:4"
-    CAVLC_4_4_4_INTRA = "CAVLC 4:4:4 Intra"
+    CONSTRAINED_BASELINE = ("Constrained Baseline", Codec.H264)
+    BASELINE = ("Baseline", Codec.H264)
+    EXTENDED = ("Extended", Codec.H264)
+    MAIN = ("Main", Codec.H264)
+    HIGH = ("High", Codec.H264)
+    HIGH_10 = ("High 10", Codec.H264)
+    HIGH_10_INTRA = ("High 10 Intra", Codec.H264)
+    HIGH_4_2_2 = ("High 4:2:2", Codec.H264)
+    HIGH_4_2_2_INTRA = ("High 4:2:2 Intra", Codec.H264)
+    HIGH_4_4_4_INTRA = ("High 4:4:4 Intra", Codec.H264)
+    HIGH_4_4_4_PREDICTIVE = ("High 4:4:4 Predictive", Codec.H264)
+    CAVLC_4_4_4 = ("CAVLC 4:4:4", Codec.H264)
+    CAVLC_4_4_4_INTRA = ("CAVLC 4:4:4 Intra", Codec.H264)
 
-    MAIN_10 = "Main 10"
-    MAIN_STILL_PICTURE = "Main Still Picture"
-    MAIN_4_2_2_10 = "Main 4:2:2 10"
-    MAIN_4_4_4_12 = "Main 4:4:4 12"
+    MAIN_10 = ("Main 10", Codec.H264)
+    MAIN_STILL_PICTURE = ("Main Still Picture", Codec.H264)
+    MAIN_4_2_2_10 = ("Main 4:2:2 10", Codec.H264)
+    MAIN_4_4_4_12 = ("Main 4:4:4 12", Codec.H264)
 
     # H.266
-    MAIN_10_4_4_4 = "Main 10 4:4:4"
-    MAIN_10_STILL_PICTURE = "Main 10 Still Picture"
-    MAIN_10_4_4_4_STILL_PICTURE = "Main 10 4:4:4 Still Picture"
-    MULTILAYER_MAIN_10 = "Multilayer Main 10"
-    MULTILAYER_MAIN_10_4_4_4 = "Multilayer Main 10 4:4:4"
+    MAIN_10_4_4_4 = ("Main 10 4:4:4", Codec.H266)
+    MAIN_10_STILL_PICTURE = ("Main 10 Still Picture", Codec.H266)
+    MAIN_10_4_4_4_STILL_PICTURE = ("Main 10 4:4:4 Still Picture", Codec.H266)
+    MULTILAYER_MAIN_10 = ("Multilayer Main 10", Codec.H266)
+    MULTILAYER_MAIN_10_4_4_4 = ("Multilayer Main 10 4:4:4", Codec.H266)
 
     # MPEG2 video
-    PROFILE_4_2_2 = "4:2:2"
-    SIMPLE = "Simple"
+    PROFILE_4_2_2 = ("4:2:2", Codec.MPEG2_VIDEO)
+    SIMPLE = ("Simple", Codec.MPEG2_VIDEO)
 
     # MPEG4 video
-    SIMPLE_PROFILE = "Simple Profile"
-    ADVANCED_SIMPLE_PROFILE = "Advanced Simple Profile"
-    SIMPLE_STUDIO_PROFILE = "Simple Studio Profile"
-    ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE = "Error Resilient Simple Scalable Profile"
+    SIMPLE_PROFILE = ("Simple Profile", Codec.MPEG4_VIDEO)
+    ADVANCED_SIMPLE_PROFILE = ("Advanced Simple Profile", Codec.MPEG4_VIDEO)
+    SIMPLE_STUDIO_PROFILE = ("Simple Studio Profile", Codec.MPEG4_VIDEO)
+    ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE = (
+        "Error Resilient Simple Scalable Profile",
+        Codec.MPEG4_VIDEO,
+    )
 
     # VP9
-    VP9_PROFILE_0 = "VP9 Profile 0"
-    VP9_PROFILE_1 = "VP9 Profile 1"
-    VP9_PROFILE_2 = "VP9 Profile 2"
-    VP9_PROFILE_3 = "VP9 Profile 3"
+    VP9_PROFILE_0 = ("VP9 Profile 0", Codec.VP9)
+    VP9_PROFILE_1 = ("VP9 Profile 1", Codec.VP9)
+    VP9_PROFILE_2 = ("VP9 Profile 2", Codec.VP9)
+    VP9_PROFILE_3 = ("VP9 Profile 3", Codec.VP9)
+
+    def __new__(cls, display_name: str, codec: Optional[Codec] = None) -> "Profile":
+        if codec is None:
+            for member in cls:
+                if member.value == display_name:
+                    return member
+            raise ValueError(f"{display_name!r} is not a valid {cls.__qualname__}")
+        obj = object.__new__(cls)
+        obj._value_ = display_name
+        obj.codec = codec
+        return obj

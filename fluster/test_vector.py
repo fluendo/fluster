@@ -18,7 +18,7 @@
 from enum import Enum
 from typing import Any, Dict, List, Optional, Type
 
-from fluster.codec import OutputFormat, Profile
+from fluster.codec import Codec, OutputFormat, Profile
 
 
 class TestVectorResult(Enum):
@@ -45,6 +45,7 @@ class TestVector:
         output_format: OutputFormat,
         result: str,
         profile: Optional[Profile] = None,
+        codec: Optional[Codec] = None,
         optional_params: Optional[Dict[str, Any]] = None,
     ):
         # JSON members
@@ -53,6 +54,7 @@ class TestVector:
         self.source_checksum = source_checksum
         self.input_file = input_file
         self.profile = profile
+        self.codec = codec or (profile.codec if profile else None)
         self.optional_params = optional_params
         self.output_format = output_format
         self.result = result
@@ -73,6 +75,7 @@ class TestVector:
         # We only define profile if the paramter is found in .json of test suite
         if "profile" in data:
             data["profile"] = Profile(data["profile"])
+            data["codec"] = data["profile"].codec
 
         return (data["name"], cls(**data))
 
@@ -85,8 +88,10 @@ class TestVector:
         data["output_format"] = str(self.output_format.value)
         if self.profile is not None:
             data["profile"] = str(self.profile.value)
+            data["codec"] = str(self.codec)
         else:
             data.pop("profile")
+            data.pop("codec", None)
         if self.optional_params is not None:
             data["optional_params"] = self.optional_params
         else:
