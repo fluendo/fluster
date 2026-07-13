@@ -58,6 +58,7 @@ class Context:
         verbose: bool = False,
         summary_output: str = "",
         summary_format: str = "",
+        profiles: Optional[List[str]] = None,
     ):
         self.jobs = jobs
         self.timeout = timeout
@@ -77,6 +78,8 @@ class Context:
         self.verbose = verbose
         self.summary_output = summary_output
         self.summary_format = summary_format
+        self.profiles_names = profiles
+        self.profiles: List[Profile] = []
 
     def to_test_suite_context(
         self,
@@ -98,6 +101,7 @@ class Context:
             skip_vectors=skip_vectors,
             keep_files=self.keep_files,
             verbose=self.verbose,
+            profiles=self.profiles,
         )
         return ts_context
 
@@ -233,6 +237,25 @@ class Fluster:
         if len(self.test_suites) == 0:
             print(f'    No test suites found in "{self.test_suites_dir}"')
 
+    def list_profiles(self, codec: Optional[Codec] = None) -> None:
+        """List all available profiles"""
+        print("\nList of available profiles:")
+        profiles_dict: Dict[Codec, List[Profile]] = {}
+        for profile in Profile:
+            if profile == Profile.NONE:
+                continue
+            current_codec = profile.codec
+            if current_codec not in profiles_dict:
+                profiles_dict[current_codec] = []
+            profiles_dict[current_codec].append(profile)
+
+        for current_codec, profile_list in profiles_dict.items():
+            if codec and codec != current_codec:
+                continue
+            print(f"\n{current_codec}")
+            for profile in profile_list:
+                print(f"    {profile.value}")
+
     @staticmethod
     def _get_matches(in_list: List[str], check_list: List[Any], name: str) -> List[Any]:
         if in_list:
@@ -258,6 +281,14 @@ class Fluster:
             ctx.test_vectors_names = [x.lower() for x in ctx.test_vectors_names]
         if ctx.skip_vectors_names:
             ctx.skip_vectors_names = [x.lower() for x in ctx.skip_vectors_names]
+        if ctx.profiles_names:
+            profile_values = {p.value.lower(): p for p in Profile}
+            for name in ctx.profiles_names:
+                if name.lower() in profile_values:
+                    ctx.profiles.append(profile_values[name.lower()])
+                else:
+                    available = ", ".join(sorted(p.value for p in Profile if p != Profile.NONE))
+                    sys.exit(f"Unknown profile '{name}'. Available profiles: {available}")
         ctx.test_suites = self._get_matches(ctx.test_suites_names, self.test_suites, "test suite")
         ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
 

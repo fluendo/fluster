@@ -632,7 +632,7 @@ optional arguments:
 usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
 [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]]
 [-sv SKIPVECTORS [SKIPVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s]
-[-so SUMMARY_OUTPUT] [-f {md,csv,junitxml}] [-k] [-th THRESHOLD]
+[-so SUMMARY_OUTPUT] [-f {md,csv,junitxml}] [-k] [-p PROFILES [PROFILES ...]] [-th THRESHOLD]
 [-tth TIME_THRESHOLD] [-v]
 
 optional arguments:
@@ -658,6 +658,8 @@ optional arguments:
   -f {md,csv,json,junitxml}, --format {md,csv,json,junitxml}
                         specify the format for the summary file
   -k, --keep            keep output files generated during the test
+  -p PROFILES [PROFILES ...], --profiles PROFILES [PROFILES ...]
+                        run only test vectors matching the given profiles (e.g. 'VP9 Profile 0')
   -th THRESHOLD, --threshold THRESHOLD
                         set exit code to 2 if threshold tests are not success.
                         exit code is 0 otherwise
@@ -666,6 +668,20 @@ optional arguments:
                         threshold seconds. exit code is 0 otherwise
   -v, --verbose         show stdout and stderr of commands executed
 ```
+
+**Profile Filtering:**
+- The `-p/--profiles` option filters test vectors by their codec profile. Only vectors
+  with a matching profile are run; vectors without profile metadata are excluded.
+- Multiple profiles can be specified (OR logic).
+- Profile names are case-insensitive (e.g. `-p Main`, `-p "VP9 Profile 0"`).
+- VP9 profiles are automatically inferred from test vector names
+  (`vp90-` prefix → Profile 0, `vp91-` → Profile 1, etc.).
+- Vectors without a profile field in the JSON file are always excluded
+  when profile filtering is active.
+- Examples:
+  - `./fluster.py run -ts JVT-AVC_V1 -p Baseline` runs only Baseline profile vectors
+  - `./fluster.py run -ts VP9-TEST-VECTORS -p "VP9 Profile 0"` runs only Profile 0 vectors
+  - `./fluster.py run -ts JVT-AVC_V1 -p Baseline Main High` runs vectors matching any of the three profiles
 
 ### Download
 

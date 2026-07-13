@@ -281,6 +281,12 @@ class Main:
             type=float,
         )
         subparser.add_argument(
+            "-p",
+            "--profiles",
+            help="run only test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
             "-v",
             "--verbose",
             help="show stdout and stderr of commands executed",
@@ -372,6 +378,7 @@ class Main:
     def _list_cmd(args: Any, fluster: Fluster) -> None:
         fluster.list_test_suites(show_test_vectors=args.testvectors, test_suites=args.testsuites, codec=args.codec)
         fluster.list_decoders(check=args.check, verbose=args.verbose, codec=args.codec)
+        fluster.list_profiles(codec=args.codec)
 
     @staticmethod
     def _run_cmd(args: Any, fluster: Fluster) -> None:
@@ -392,6 +399,7 @@ class Main:
             verbose=args.verbose,
             summary_output=args.summary_output,
             summary_format=args.format,
+            profiles=args.profiles,
         )
         try:
             fluster.run_test_suites(context)
