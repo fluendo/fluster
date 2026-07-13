@@ -9,7 +9,8 @@
             "source_checksum": "fbfbcc287abaa61bb1d4e6209dc7b351",
             "input_file": "al18_32.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "al18_22",
@@ -17,7 +18,8 @@
             "source_checksum": "9bd1df720da86de0f12a5e13cd9bac3f",
             "input_file": "al18_22.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap04_48",
@@ -25,7 +27,8 @@
             "source_checksum": "07092bd549a107aab9546b4a7e0ececa",
             "input_file": "ap04_48.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Long Term Prediction"
         },
         {
             "name": "al18_64",
@@ -33,7 +36,8 @@
             "source_checksum": "908ef86a5c5b546f2707e7abf6a4fcbf",
             "input_file": "al18_64.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap02_48",
@@ -41,7 +45,8 @@
             "source_checksum": "f918c11808e687e6dc5a64154d0685b3",
             "input_file": "ap02_48.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Long Term Prediction"
         },
         {
             "name": "al18_08",
@@ -49,7 +54,8 @@
             "source_checksum": "354eeece733c86fc4f22b63c2a6e0dbc",
             "input_file": "al18_08.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap01_48",
@@ -57,7 +63,8 @@
             "source_checksum": "fb59fdf49e4c6ca1b7a766ce2112e36f",
             "input_file": "ap01_48.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Long Term Prediction"
         },
         {
             "name": "al18_96",
@@ -65,7 +72,8 @@
             "source_checksum": "3a2cc79299fb52481170cced3441b5de",
             "input_file": "al18_96.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap05_48",
@@ -73,7 +81,8 @@
             "source_checksum": "9470863a3df3daf3d4a47a8226933501",
             "input_file": "ap05_48.adts",
             "output_format": "fltp",
-            "result": ""
+            "result": "",
+            "profile": "AAC Long Term Prediction"
         }
     ]
 }
