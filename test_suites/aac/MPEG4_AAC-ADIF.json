@@ -9,7 +9,8 @@
             "source_checksum": "3681801c90588ef83398b67f36b60d1b",
             "input_file": "al18_22.adif",
             "output_format": "Unknown",
-            "result": "9c650228dea2c563560dcf3fbc31bff1"
+            "result": "9c650228dea2c563560dcf3fbc31bff1",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap01_48",
@@ -17,7 +18,8 @@
             "source_checksum": "895521190aba64eaabfc7a1dfa4a5849",
             "input_file": "ap01_48.adif",
             "output_format": "Unknown",
-            "result": "cb8a260c08236e342d2122496ae126d9"
+            "result": "cb8a260c08236e342d2122496ae126d9",
+            "profile": "AAC Long Term Prediction"
         },
         {
             "name": "al18_96",
@@ -25,7 +27,8 @@
             "source_checksum": "56ead998d01a5eab736fd969a70aba93",
             "input_file": "al18_96.adif",
             "output_format": "Unknown",
-            "result": "02b0f333d4caa37379a8ab513dbc4dbf"
+            "result": "02b0f333d4caa37379a8ab513dbc4dbf",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap04_48",
@@ -33,7 +36,8 @@
             "source_checksum": "05027b12053bd06a0a62de4cc9cd45e6",
             "input_file": "ap04_48.adif",
             "output_format": "Unknown",
-            "result": "6e1767241de43646691c21587ccbab9f"
+            "result": "6e1767241de43646691c21587ccbab9f",
+            "profile": "AAC Long Term Prediction"
         },
         {
             "name": "al18_08",
@@ -41,7 +45,8 @@
             "source_checksum": "41348311f534009080c69a26ec1f1855",
             "input_file": "al18_08.adif",
             "output_format": "Unknown",
-            "result": "b2927751ae7a97613a9d9d0d2748eca7"
+            "result": "b2927751ae7a97613a9d9d0d2748eca7",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "al18_64",
@@ -49,7 +54,8 @@
             "source_checksum": "86ce9461e663a1fb130268d04810f6f9",
             "input_file": "al18_64.adif",
             "output_format": "Unknown",
-            "result": "756d27e1b1bead05839758072cea9690"
+            "result": "756d27e1b1bead05839758072cea9690",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap02_48",
@@ -57,7 +63,8 @@
             "source_checksum": "ac186216e1d85c0962cd0b9ee068c8c7",
             "input_file": "ap02_48.adif",
             "output_format": "Unknown",
-            "result": "57f4964f065c75fa825bf7c795ae621f"
+            "result": "57f4964f065c75fa825bf7c795ae621f",
+            "profile": "AAC Long Term Prediction"
         },
         {
             "name": "al18_32",
@@ -65,7 +72,8 @@
             "source_checksum": "f6d92ad51c73c1c6a00a7c3956fe43aa",
             "input_file": "al18_32.adif",
             "output_format": "Unknown",
-            "result": "26c2430033002a138568d17ca3317ade"
+            "result": "26c2430033002a138568d17ca3317ade",
+            "profile": "AAC Low Complexity"
         },
         {
             "name": "ap05_48",
@@ -73,7 +81,8 @@
             "source_checksum": "f96cb4c929e1de8ef35d98791aed273e",
             "input_file": "ap05_48.adif",
             "output_format": "Unknown",
-            "result": "e5f3db7043119313eb29f6f670989ecd"
+            "result": "e5f3db7043119313eb29f6f670989ecd",
+            "profile": "AAC Long Term Prediction"
         }
     ]
 }

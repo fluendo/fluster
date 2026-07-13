@@ -28,7 +28,7 @@ from typing import Any, List, Optional, Tuple
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.test_suite import TestSuite
 from fluster.test_vector import TestVector
 
@@ -199,7 +199,7 @@ class AACGenerator:
             # Calculate source file checksum
             test_vector.source_checksum = utils.file_checksum(dest_path)
 
-            # Extract sample format of input file using ffprobe
+            # Detect profile and sample format via ffprobe
             if self.use_ffprobe:
                 ffprobe = utils.normalize_binary_cmd("ffprobe")
                 command = [
@@ -209,17 +209,27 @@ class AACGenerator:
                     "-select_streams",
                     "a:0",
                     "-show_entries",
-                    "stream=sample_fmt",
+                    "stream=profile,sample_fmt",
                     "-of",
                     "default=nokey=1:noprint_wrappers=1",
                     absolute_input_path,
                 ]
+                probe_output = utils.run_command_with_output(command, check=False).splitlines()
 
-                sample_format = utils.run_command_with_output(command).splitlines()[0]
-                try:
-                    test_vector.output_format = OutputFormat[sample_format.upper()]
-                except KeyError as key_err:
-                    raise key_err
+                profile = probe_output[0] if len(probe_output) > 0 else None
+                sample_format = probe_output[1] if len(probe_output) > 1 else None
+
+                if profile:
+                    try:
+                        test_vector.profile = Profile[f"AAC_{profile.upper()}"]
+                    except KeyError:
+                        pass
+
+                if sample_format:
+                    try:
+                        test_vector.output_format = OutputFormat[sample_format.upper()]
+                    except KeyError as key_err:
+                        raise key_err
 
         absolute_output_filepath = os.path.join(absolute_dest_dir, output_filepath)
         test_suite.to_json_file(absolute_output_filepath)

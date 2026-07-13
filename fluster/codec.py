@@ -107,3 +107,12 @@ class Profile(Enum):
     ADVANCED_SIMPLE_PROFILE = "Advanced Simple Profile"
     SIMPLE_STUDIO_PROFILE = "Simple Studio Profile"
     ERROR_RESILIENT_SIMPLE_SCALABLE_PROFILE = "Error Resilient Simple Scalable Profile"
+
+    # AAC
+    AAC_MAIN = "AAC Main"
+    AAC_LC = "AAC Low Complexity"
+    AAC_SSR = "AAC Scalable Sampling Rate"
+    AAC_LTP = "AAC Long Term Prediction"
+    ER_AAC_LC = "Error Resilient AAC Low Complexity"
+    ER_AAC_ELD = "Error Resilient AAC Enhanced Low Delay"
+    ER_AAC_LD = "Error Resilient AAC Low Delay"
