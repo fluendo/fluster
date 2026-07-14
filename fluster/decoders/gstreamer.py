@@ -847,7 +847,7 @@ class FluendoH264Decoder(GStreamerVideo):
     """Fluendo H.264 software decoder implementation for GStreamer"""
 
     codec = Codec.H264
-    decoder_bin = " fluh264dec "
+    decoder_bin = " fluh264dec deinterlace=off "
     provider = "Fluendo"
     api = "SW"
 
