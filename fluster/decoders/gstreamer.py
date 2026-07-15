@@ -120,6 +120,24 @@ class GStreamer(Decoder):
         if not gst_element_exists(self.sink):
             self.sink = "filesink"
 
+    @staticmethod
+    def _decoder_factory_name(decoder_bin: str) -> str:
+        """Extract the first element factory name from decoder_bin.
+
+        E.g. "avdec_h264 max-threads=1 ! videoconvert" -> "avdec_h264"
+        """
+        element_desc = decoder_bin.strip().split("!", 1)[0].strip()
+        return element_desc.split()[0] if element_desc else ""
+
+    def _wrap_cmd(self) -> str:
+        """Prepend GST_PLUGIN_FEATURE_RANK so parsebin's autoplugger picks this decoder's factory"""
+        if "parsebin" not in self.parser:
+            return self.cmd
+        factory_name = self._decoder_factory_name(self.decoder_bin)
+        if not factory_name:
+            return self.cmd
+        return f"GST_PLUGIN_FEATURE_RANK={factory_name}:MAX {self.cmd}"
+
     def gen_pipeline(
         self,
         input_filepath: str,
@@ -130,7 +148,7 @@ class GStreamer(Decoder):
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd,
+            self._wrap_cmd(),
             input_filepath,
             self.parser,
             self.decoder_bin,
@@ -191,7 +209,7 @@ class GStreamer(Decoder):
     def check(self, verbose: bool) -> bool:
         """Check if GStreamer decoder is valid (better than gst-inspect)"""
         try:
-            pipeline = f"{self.cmd} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
+            pipeline = f"{self._wrap_cmd()} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
             run_command(shlex.split(pipeline), verbose=verbose)
         except Exception:
             return False
@@ -238,7 +256,7 @@ class GStreamerVideo(GStreamer):
         caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self.cmd,
+            self._wrap_cmd(),
             input_filepath,
             self.parser,
             self.decoder_bin,
@@ -342,7 +360,6 @@ class GStreamerMsdkH265Decoder(GStreamerVideo):
     codec = Codec.H265
     decoder_bin = " msdkh265dec "
     api = "MSDK"
-    parser = " h265parse "
 
 
 @register_decoder
@@ -433,7 +450,6 @@ class GStreamerOpenH264Decoder(GStreamerVideo):
     codec = Codec.H264
     decoder_bin = " openh264dec "
     api = "OpenH264"
-    parser = " h264parse "
 
 
 @register_decoder
@@ -443,7 +459,6 @@ class GStreamerQsvH264Decoder(GStreamerVideo):
     codec = Codec.H264
     decoder_bin = " qsvh264dec "
     api = "QSV"
-    parser = " h264parse "
 
 
 @register_decoder
@@ -453,7 +468,6 @@ class GStreamerMsdkH264Decoder(GStreamerVideo):
     codec = Codec.H264
     decoder_bin = " msdkh264dec "
     api = "MSDK"
-    parser = " h264parse "
 
 
 @register_decoder
@@ -772,7 +786,6 @@ class GStreamerVVdeCH266Decoder(GStreamerVideo):
     codec = Codec.H266
     decoder_bin = " vvdec "
     api = "VVdeC"
-    parser = " h266parse "
 
 
 @register_decoder
@@ -829,7 +842,6 @@ class FluendoVVCdeCH266Decoder(GStreamerVideo):
     decoder_bin = " fluh266dec "
     provider = "Fluendo"
     api = "SW"
-    parser = "h266parse " if gst_element_exists("h266parse") else "fluh266parse"
 
 
 @register_decoder
@@ -906,7 +918,7 @@ class FluendoFluAC4DecDecoder(GStreamerAudio):
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
-            self.cmd,
+            self._wrap_cmd(),
             input_filepath,
             self.parser,
             decoder_bin,
@@ -945,7 +957,7 @@ class FluendoFluEAC3DecDecoder(GStreamerAudio):
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
-            self.cmd,
+            self._wrap_cmd(),
             input_filepath,
             self.parser,
             decoder_bin,
