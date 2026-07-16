@@ -221,8 +221,10 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
       apt-get install -y --no-install-recommends \
         ffmpeg \
         libavcodec-dev \
+        libavfilter-dev \
         libavformat-dev \
         libavutil-dev \
+        libswresample-dev \
         libswscale-dev \
       && rm -rf /var/lib/apt/lists/*; \
     fi
@@ -239,7 +241,7 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
 
 
 # Ubuntu 24.04: Remove default user
-RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu &>/dev/null; then \
+RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu >/dev/null 2>&1; then \
       userdel -r ubuntu; \
     fi
 
@@ -262,9 +264,6 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && [ "${UBUNTU_VERSION}" = "
 
 # GStreamer installation (2 methods: system, source)
 # Method "source": Build GStreamer from source (needed for new versions on old distros)
-#   Note: gst-libav is disabled when building from source to avoid FFmpeg API incompatibilities
-#         (GStreamer 1.24.x is not compatible with FFmpeg 7+/8+ APIs)
-#         Use GStreamer native decoders or FFmpeg directly for decoding.
 # Method "system": Install GStreamer from system packages (default)
 RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -277,6 +276,10 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         flex \
         nasm \
         libglib2.0-dev \
+        # To avoid 1.24.12 compilation error
+        libsysprof-capture-4-dev \
+        # To avoid 1.24.12 runtime error
+        libsqlite3-dev \
         liborc-0.4-dev \
         libpthread-stubs0-dev \
         libva-dev \
@@ -311,12 +314,21 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
          else \
            VAAPI_OPT=""; \
          fi \
-      && meson setup build \
+      && if [ "${FFMPEG_INSTALL_METHOD}" = "static" ]; \
+         then \
+           FFMPEG_FALLBACK="--force-fallback-for=FFmpeg,libavcodec,libavformat,libavutil,libavfilter,libswscale,libswresample"; \
+         else \
+           FFMPEG_FALLBACK=""; \
+         fi \
+      && PKG_CONFIG_PATH="/usr/local/lib/${ARCH}-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/${ARCH}-linux-gnu/pkgconfig:${PKG_CONFIG_PATH:-}" \
+         LD_LIBRARY_PATH="/usr/local/lib/${ARCH}-linux-gnu:/usr/local/lib:/usr/lib/${ARCH}-linux-gnu:${LD_LIBRARY_PATH:-}" \
+        meson setup build \
         --prefix=/usr/local \
         --buildtype=release \
         -Dgpl=enabled \
         -Dugly=enabled \
         ${VAAPI_OPT} \
+        ${FFMPEG_FALLBACK} \
         -Dlibav=enabled \
         -Dbase=enabled \
         -Dgood=enabled \
