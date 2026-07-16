@@ -49,9 +49,9 @@ Build Options:
   --build-gstreamer     Build GStreamer from source (useful for new versions on old distros)
   --gstreamer-version   Specify GStreamer version for --build-gstreamer (default: 1.24.2)
   --rebuild             Force rebuilding of Docker image
-  --intel               Optimize for Intel GPU (VAAPI + QuickSync)
-  --amd                 Optimize for AMD GPU (VAAPI + VDPAU)
-  --nvidia              Enable NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU/VAAPI)
+  --intel               Optimize for Intel GPU (VAAPI, VDPAU, QuickSync)
+  --amd                 Optimize for AMD GPU (VAAPI, VDPAU)
+  --nvidia              Optimize for NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU, VAAPI)
 
 Environment Variables:
   LIBVA_DRIVER_NAME     Override VAAPI driver (e.g., i965, iHD, radeonsi, nouveau)
@@ -229,11 +229,11 @@ done
 if [ $HAS_INTEL -eq 1 ]; then
     GPU_ENV="-e LIBVA_DRIVER_NAME=${LIBVA_DRIVER_NAME:-iHD}"
     GPU_ENV="$GPU_ENV -e VDPAU_DRIVER=${VDPAU_DRIVER:-va_gl}"
-    echo -e "${BLUE}Optimizing for Intel GPU (VAAPI + QuickSync)${NC}"
+    echo -e "${BLUE}Optimizing for Intel GPU (VAAPI, VDPAU, QuickSync)${NC}"
 elif [ $HAS_AMD -eq 1 ]; then
     GPU_ENV="-e LIBVA_DRIVER_NAME=${LIBVA_DRIVER_NAME:-radeonsi}"
     GPU_ENV="$GPU_ENV -e VDPAU_DRIVER=${VDPAU_DRIVER:-radeonsi}"
-    echo -e "${BLUE}Optimizing for AMD GPU (VAAPI + VDPAU)${NC}"
+    echo -e "${BLUE}Optimizing for AMD GPU (VAAPI, VDPAU)${NC}"
 fi
 
 if [ $HAS_NVIDIA -eq 1 ]; then
@@ -242,7 +242,7 @@ if [ $HAS_NVIDIA -eq 1 ]; then
         GPU_ENV="-e LIBVA_DRIVER_NAME=${LIBVA_DRIVER_NAME:-nouveau}"
     fi
     GPU_ENV="$GPU_ENV -e VDPAU_DRIVER=${VDPAU_DRIVER:-nvidia}"
-    echo -e "${BLUE}Enabling NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU/VAAPI)${NC}"
+    echo -e "${BLUE}Enabling NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU, VAAPI)${NC}"
 fi
 
 # Warn about dual GPU setups
