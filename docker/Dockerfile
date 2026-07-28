@@ -61,11 +61,19 @@ RUN apt-get update && apt-get install -y \
     pciutils \
     && rm -rf /var/lib/apt/lists/*
 
+# X11 and Wayland dependencies
+RUN apt-get update && apt-get install -y \
+    libwayland-client0 \
+    libwayland-cursor0 \
+    wayland-protocols \
+    libwayland-egl1
+
 # VAAPI support, Intel and AMD drivers
 RUN apt-get update && apt-get install -y \
     libva-dev \
     libva-drm2 \
     libva-x11-2 \
+    libva-wayland2 \
     vainfo \
     mesa-va-drivers \
     && (apt-get install -y i965-va-driver || true) \
@@ -136,6 +144,9 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libva-dev \
         libvdpau-dev \
         libvorbis-dev \
+        libdrm-dev \
+        libwayland-dev \
+        libxkbcommon-dev \
         libxcb1-dev \
         libxcb-shm0-dev \
         libxcb-xfixes0-dev \
@@ -289,6 +300,8 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libxv-dev \
         libx11-xcb-dev \
         libdrm-dev \
+        libwayland-dev \
+        libxkbcommon-dev \
         libgudev-1.0-dev \
         libasound2-dev \
         libopus-dev \
@@ -456,7 +469,7 @@ ENV PYTHONPATH=/fluster \
 RUN echo "export DISPLAY=:0" >> /home/"${USERNAME}"/.profile
 
 # sshd doesn't inherit Docker's ENV in login sessions; SetEnv fixes that.
-RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 DISPLAY=:0 \
+RUN echo "SetEnv NVD_BACKEND=direct GST_VA_ALL_DRIVERS=1 GST_VAAPI_ALL_DRIVERS=1 DISPLAY=:0 WAYLAND_DISPLAY=wayland-0 \
     LIBVA_DRIVERS_PATH=/usr/lib/${ARCH}-linux-gnu/dri VDPAU_DRIVER_PATH=/usr/lib/${ARCH}-linux-gnu/vdpau" \
     >> /etc/ssh/sshd_config
 
