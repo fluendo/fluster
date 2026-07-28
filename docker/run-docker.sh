@@ -257,16 +257,29 @@ if [ -z "$GPU_ENV" ]; then
 fi
 
 # Prepare docker run command with volumes and GPU access
-DOCKER_RUN_OPTS="-it --rm --privileged --device=/dev/dri:/dev/dri"
-DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -v $PROJECT_ROOT/resources:/fluster/resources"
-DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -v $PROJECT_ROOT/test_suites:/fluster/test_suites"
-DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e TERM=xterm-256color"
-DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e LANG=C.UTF-8"
-DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e LC_ALL=C.UTF-8"
-# X11 forwarding for VDPAU (requires Xvfb on host)
-[ -d /tmp/.X11-unix ] && DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -v /tmp/.X11-unix:/tmp/.X11-unix:rw -e DISPLAY=${DISPLAY:-:99}"
-[ -n "$GPU_ENV" ] && DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS $GPU_ENV"
-DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS --workdir /fluster"
+DOCKER_RUN_OPTS="-it --rm --privileged"
+DOCKER_RUN_OPTS+=" -v $PROJECT_ROOT/resources:/fluster/resources"
+DOCKER_RUN_OPTS+=" -v $PROJECT_ROOT/test_suites:/fluster/test_suites"
+DOCKER_RUN_OPTS+=" -e TERM=xterm-256color"
+DOCKER_RUN_OPTS+=" -e LANG=C.UTF-8"
+DOCKER_RUN_OPTS+=" -e LC_ALL=C.UTF-8"
+# GPU access
+DOCKER_RUN_OPTS+=" --device=/dev/dri:/dev/dri"
+# Display access for rendering
+DOCKER_RUN_OPTS+=" -e DISPLAY -e XDG_SESSION_TYPE -e XDG_RUNTIME_DIR"
+# Wayland display access (must for VDPAU initialization) (requires Xvfb on host)
+if [ -n "$XDG_RUNTIME_DIR" ] && [ -n "$WAYLAND_DISPLAY" ] && [ -e "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY" ]; then
+    DOCKER_RUN_OPTS+=" -e WAYLAND_DISPLAY -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
+fi
+# X11 display access (must for VDPAU initialization) (requires Xvfb on host)
+DOCKER_RUN_OPTS+=" -v /tmp/.X11-unix:/tmp/.X11-unix:rw"
+# X11 authentication (.Xauthority), must for X11 and XWayland
+XAUTH="${XAUTHORITY:-$HOME/.Xauthority}"
+if [ -f "$XAUTH" ]; then
+    DOCKER_RUN_OPTS+=" -v $XAUTH:/tmp/.Xauthority:ro -e XAUTHORITY=/tmp/.Xauthority"
+fi
+[ -n "$GPU_ENV" ] && DOCKER_RUN_OPTS+=" $GPU_ENV"
+DOCKER_RUN_OPTS+=" --workdir /fluster"
 
 # Detect -k/--keep for run command to persist outputs by mounting /tmp/fluster_output
 FLUSTER_ARGS=("$@")
@@ -282,10 +295,10 @@ if [[ "$COMMAND" == "run" || "$COMMAND" == "r" ]]; then
         HOST_OUTPUT_DIR="$PROJECT_ROOT/fluster_output"
         CONTAINER_OUTPUT_DIR="/tmp/fluster_output"
         mkdir -p "$HOST_OUTPUT_DIR"
-        DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -v $HOST_OUTPUT_DIR:$CONTAINER_OUTPUT_DIR"
+        DOCKER_RUN_OPTS+=" -v $HOST_OUTPUT_DIR:$CONTAINER_OUTPUT_DIR"
         HOST_UID=$(id -u)
         HOST_GID=$(id -g)
-        DOCKER_RUN_OPTS="$DOCKER_RUN_OPTS -e HOST_UID=$HOST_UID -e HOST_GID=$HOST_GID"
+        DOCKER_RUN_OPTS+=" -e HOST_UID=$HOST_UID -e HOST_GID=$HOST_GID"
         POST_RUN_CHOWN="chown -R $HOST_UID:$HOST_GID $CONTAINER_OUTPUT_DIR >/dev/null 2>&1 || true"
         echo -e "${YELLOW}Persisting output files to host directory 'fluster_output/' (flag -k).${NC}"
     fi
