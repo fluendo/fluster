@@ -129,14 +129,19 @@ class GStreamer(Decoder):
         element_desc = decoder_bin.strip().split("!", 1)[0].strip()
         return element_desc.split()[0] if element_desc else ""
 
-    def _wrap_cmd(self) -> str:
-        """Prepend GST_PLUGIN_FEATURE_RANK so parsebin's autoplugger picks this decoder's factory"""
+    def _extra_env(self) -> Dict[str, str]:
+        """Extra env vars so parsebin's autoplugger picks this decoder's factory"""
         if "parsebin" not in self.parser:
-            return self.cmd
+            return {}
         factory_name = self._decoder_factory_name(self.decoder_bin)
         if not factory_name:
-            return self.cmd
-        return f"GST_PLUGIN_FEATURE_RANK={factory_name}:MAX {self.cmd}"
+            return {}
+        return {"GST_PLUGIN_FEATURE_RANK": f"{factory_name}:MAX"}
+
+    def _run_env(self) -> Optional[Dict[str, str]]:
+        """Current env plus decoder-specific overrides, for subprocess calls"""
+        extra = self._extra_env()
+        return {**os.environ, **extra} if extra else None
 
     def gen_pipeline(
         self,
@@ -148,7 +153,7 @@ class GStreamer(Decoder):
         """Generate the GStreamer pipeline used to decode the test vector"""
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self._wrap_cmd(),
+            self.cmd,
             input_filepath,
             self.parser,
             self.decoder_bin,
@@ -190,6 +195,7 @@ class GStreamer(Decoder):
         optional_params: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Decode the test vector and do the checksum"""
+        env = self._run_env()
         # When using videocodectestsink we can avoid writing files to disk
         # completely, or avoid a full raw file read in order to compute the MD5
         # SUM.
@@ -198,19 +204,19 @@ class GStreamer(Decoder):
             pipeline = self.gen_pipeline(input_filepath, output_param, output_format, optional_params)
             command = shlex.split(pipeline)
             command.append("-m")
-            data = run_command_with_output(command, timeout=timeout, verbose=verbose).splitlines()
+            data = run_command_with_output(command, timeout=timeout, verbose=verbose, env=env).splitlines()
             return self.parse_videocodectestsink_md5sum(data)
 
         pipeline = self.gen_pipeline(input_filepath, output_filepath, output_format, optional_params)
-        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose)
+        run_command(shlex.split(pipeline), timeout=timeout, verbose=verbose, env=env)
         return file_checksum(output_filepath)
 
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
         """Check if GStreamer decoder is valid (better than gst-inspect)"""
         try:
-            pipeline = f"{self._wrap_cmd()} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
-            run_command(shlex.split(pipeline), verbose=verbose)
+            pipeline = f"{self.cmd} --no-fault appsrc num-buffers=0 ! {self.decoder_bin} ! fakesink"
+            run_command(shlex.split(pipeline), verbose=verbose, env=self._run_env())
         except Exception:
             return False
         return True
@@ -256,7 +262,7 @@ class GStreamerVideo(GStreamer):
         caps = f"{self.caps} ! videoconvert dither=none ! {raw_caps}"
         output = f"location={output_filepath}" if output_filepath else ""
         return PIPELINE_TPL.format(
-            self._wrap_cmd(),
+            self.cmd,
             input_filepath,
             self.parser,
             self.decoder_bin,
@@ -918,7 +924,7 @@ class FluendoFluAC4DecDecoder(GStreamerAudio):
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
-            self._wrap_cmd(),
+            self.cmd,
             input_filepath,
             self.parser,
             decoder_bin,
@@ -957,7 +963,7 @@ class FluendoFluEAC3DecDecoder(GStreamerAudio):
             for param, value in optional_params.items():
                 decoder_bin += f" {param.replace('_', '-')}={value}"
         return PIPELINE_TPL.format(
-            self._wrap_cmd(),
+            self.cmd,
             input_filepath,
             self.parser,
             decoder_bin,
