@@ -37,7 +37,7 @@ import wave
 import zipfile
 from functools import partial
 from threading import Lock
-from typing import Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -231,14 +231,16 @@ def run_command(
     verbose: bool = False,
     check: bool = True,
     timeout: Optional[int] = None,
+    env: Optional[Dict[str, str]] = None,
 ) -> None:
-    """Runs a command"""
+    """Runs a command. `env`, if given, replaces the environment entirely -
+    pass {**os.environ, ...} to add vars instead of replacing them."""
     sout = subprocess.DEVNULL if not verbose else None
     serr = subprocess.DEVNULL if not verbose else None
     if verbose:
         print(f'\nRunning command "{" ".join(command)}"')
     try:
-        subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout)
+        subprocess.run(command, stdout=sout, stderr=serr, check=check, timeout=timeout, env=env)
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as ex:
         # Developer experience improvement (facilitates copy/paste)
         ex.cmd = " ".join(ex.cmd)
@@ -251,8 +253,9 @@ def run_command_with_output(
     check: bool = True,
     timeout: Optional[int] = None,
     keep_stderr: bool = False,
+    env: Optional[Dict[str, str]] = None,
 ) -> str:
-    """Runs a command and returns std output trace"""
+    """Runs a command and returns std output trace. See run_command() for `env` semantics."""
     serr = subprocess.DEVNULL
     if verbose or keep_stderr:
         serr = subprocess.STDOUT
@@ -260,7 +263,7 @@ def run_command_with_output(
         print(f'\nRunning command "{" ".join(command)}"')
 
     try:
-        output = subprocess.check_output(command, stderr=serr, timeout=timeout, universal_newlines=True)
+        output = subprocess.check_output(command, stderr=serr, timeout=timeout, universal_newlines=True, env=env)
         if verbose and output:
             print(output)
         return output or ""
