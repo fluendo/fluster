@@ -848,6 +848,7 @@ class FluendoVVCdeCH266Decoder(GStreamerVideo):
     decoder_bin = " fluh266dec "
     provider = "Fluendo"
     api = "SW"
+    parser = "parsebin " if gst_element_exists("h266parse") else "fluh266parse"
 
 
 @register_decoder
