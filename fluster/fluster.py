@@ -244,10 +244,10 @@ class Fluster:
         for profile in Profile:
             if profile == Profile.NONE:
                 continue
-            current_codec = profile.codec
-            if current_codec not in profiles_dict:
-                profiles_dict[current_codec] = []
-            profiles_dict[current_codec].append(profile)
+            for current_codec in profile.codecs:
+                if current_codec not in profiles_dict:
+                    profiles_dict[current_codec] = []
+                profiles_dict[current_codec].append(profile)
 
         for current_codec, profile_list in profiles_dict.items():
             if codec and codec != current_codec:

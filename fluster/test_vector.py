@@ -54,7 +54,7 @@ class TestVector:
         self.source_checksum = source_checksum
         self.input_file = input_file
         self.profile = profile
-        self.codec = codec or (profile.codec if profile else None)
+        self.codec = codec
         self.optional_params = optional_params
         self.output_format = output_format
         self.result = result
@@ -75,7 +75,6 @@ class TestVector:
         # We only define profile if the paramter is found in .json of test suite
         if "profile" in data:
             data["profile"] = Profile(data["profile"])
-            data["codec"] = data["profile"].codec
 
         return (data["name"], cls(**data))
 
@@ -88,7 +87,8 @@ class TestVector:
         data["output_format"] = str(self.output_format.value)
         if self.profile is not None:
             data["profile"] = str(self.profile.value)
-            data["codec"] = str(self.codec)
+            if self.codec is not None:
+                data["codec"] = str(self.codec)
         else:
             data.pop("profile")
             data.pop("codec", None)
