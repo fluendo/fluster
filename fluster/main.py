@@ -332,6 +332,12 @@ class Main:
             help="show stdout and stderr of commands executed",
             action="store_true",
         )
+        subparser.add_argument(
+            "-p",
+            "--profiles",
+            help="run only test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
         subparser.set_defaults(func=self._reference_cmd)
 
     def _add_download_cmd(self, subparsers: Any) -> None:
@@ -419,6 +425,7 @@ class Main:
             quiet=args.quiet,
             verbose=args.verbose,
             reference=True,
+            profiles=args.profiles,
         )
         try:
             fluster.run_test_suites(context)

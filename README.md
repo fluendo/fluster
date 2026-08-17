@@ -793,6 +793,7 @@ options:
 ./fluster.py reference --help
 
 usage: fluster.py reference [-h] [-j JOBS] [-t TIMEOUT] [-q] [-v]
+                            [-p PROFILES [PROFILES ...]]
 decoder testsuites [testsuites ...]
 
 positional arguments:
@@ -807,6 +808,9 @@ optional arguments:
                         timeout in secs for each decoding. Defaults to 30 secs
   -q, --quiet           don't show every test run
   -v, --verbose         show stdout and stderr of commands executed
+  -p PROFILES [PROFILES ...], --profiles PROFILES [PROFILES ...]
+                        run only test vectors for the given profiles (e.g.
+                        'VP9 Profile 0')
 ```
 
 ## Report
