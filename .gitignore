@@ -1,4 +1,5 @@
 .vscode
+.venv
 __pycache__
 __MACOSX
 .DS_Store
