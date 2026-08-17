@@ -22,6 +22,7 @@ import json
 import os
 import sys
 import urllib.parse
+from functools import partial
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
@@ -56,27 +57,28 @@ def url_to_mirror_path(url: str) -> str:
     return os.path.join(parsed.netloc, parsed.path.lstrip("/"))
 
 
+def _sync_one(url: str, output_dir: str, retries: int) -> None:
+    mirror_path = url_to_mirror_path(url)
+    dest_dir = os.path.join(output_dir, os.path.dirname(mirror_path))
+    dest_file = os.path.join(output_dir, mirror_path)
+
+    if os.path.exists(dest_file):
+        print(f"  SKIP (exists): {mirror_path}")
+        return
+
+    print(f"  DOWNLOAD: {mirror_path}")
+    utils.download(url, dest_dir, max_retries=retries)
+
+
 def sync_urls(urls: list[str], output_dir: str, jobs: int, retries: int) -> None:
     from multiprocessing import Pool
 
-    def _sync_one(url: str) -> None:
-        mirror_path = url_to_mirror_path(url)
-        dest_dir = os.path.join(output_dir, os.path.dirname(mirror_path))
-        dest_file = os.path.join(output_dir, mirror_path)
-
-        if os.path.exists(dest_file):
-            print(f"  SKIP (exists): {mirror_path}")
-            return
-
-        print(f"  DOWNLOAD: {mirror_path}")
-        utils.download(url, dest_dir, max_retries=retries)
-
     if jobs <= 1:
         for url in urls:
-            _sync_one(url)
+            _sync_one(url, output_dir, retries)
     else:
         with Pool(jobs) as pool:
-            pool.map(_sync_one, urls)
+            pool.map(partial(_sync_one, output_dir=output_dir, retries=retries), urls)
 
 
 def main() -> None:
