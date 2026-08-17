@@ -249,11 +249,11 @@ class Fluster:
                     profiles_dict[current_codec] = []
                 profiles_dict[current_codec].append(profile)
 
-        for current_codec, profile_list in profiles_dict.items():
+        for current_codec, profile_list in sorted(profiles_dict.items(), key=lambda item: item[0].value):
             if codec and codec != current_codec:
                 continue
             print(f"\n{current_codec}")
-            for profile in profile_list:
+            for profile in sorted(profile_list, key=lambda p: p.value):
                 print(f"    {profile.value}")
 
     @staticmethod
