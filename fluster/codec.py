@@ -82,7 +82,7 @@ class Profile(Enum):
     CONSTRAINED_BASELINE = ("Constrained Baseline", [Codec.H264])
     BASELINE = ("Baseline", [Codec.H264])
     EXTENDED = ("Extended", [Codec.H264])
-    HIGH = ("High", [Codec.H264])
+    HIGH = ("High", [Codec.H264, Codec.AV1])
     HIGH_10 = ("High 10", [Codec.H264])
     HIGH_10_INTRA = ("High 10 Intra", [Codec.H264])
     HIGH_4_2_2 = ("High 4:2:2", [Codec.H264])
