@@ -79,7 +79,7 @@ class Context:
         self.summary_output = summary_output
         self.summary_format = summary_format
         self.profiles_names = profiles
-        self.profiles: List[Profile] = []
+        self.profiles: Set[Profile] = set()
 
     def to_test_suite_context(
         self,
@@ -285,7 +285,7 @@ class Fluster:
             profile_values = {p.value.lower(): p for p in Profile}
             for name in ctx.profiles_names:
                 if name.lower() in profile_values:
-                    ctx.profiles.append(profile_values[name.lower()])
+                    ctx.profiles.add(profile_values[name.lower()])
                 else:
                     available = ", ".join(sorted(p.value for p in Profile if p != Profile.NONE))
                     sys.exit(f"Unknown profile '{name}'. Available profiles: {available}")

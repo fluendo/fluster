@@ -101,7 +101,7 @@ class Context:
         verbose: bool = False,
         reference_decoder: Optional[Decoder] = None,
         test_vector_names: Optional[Set[str]] = None,
-        profiles: Optional[List[Profile]] = None,
+        profiles: Optional[Set[Profile]] = None,
     ):
         self.jobs = jobs
         self.decoder = decoder
