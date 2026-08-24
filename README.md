@@ -697,7 +697,7 @@ optional arguments:
   - Additionally, all specified test suites are downloaded, regardless of codec
 ### Local Mirror
 
-When running fluster on multiple machines or in a CI environment, downloading test vectors from the internet for each run can be slow. Fluster supports a **local mirror** to serve resources from a server on your LAN instead.
+When running fluster on multiple machines or in a CI environment, downloading test vectors from the internet for each run can be slow. Fluster supports a **local mirror** to serve resources from a server on your LAN instead. The mirror can be a plain HTTP-served directory or a radosgw (Ceph RGW) bucket (see [Setting up a mirror](#setting-up-a-mirror)).
 
 #### How it works
 
@@ -730,13 +730,20 @@ The `--mirror` option works with all other download options:
 
 #### Setting up a mirror
 
-Use the `scripts/mirror_sync.py` script to populate a directory with all test vector resources:
+Use the `scripts/mirror_sync.py` script to populate a mirror with all test vector resources. It scans all test suite JSON files and fetches every source URL, laying files out in a tree that mirrors the original URL structure (`<host>/<path>`). Already-present files are skipped on subsequent runs, so the script is safe to re-run incrementally.
+
+The script supports two mirror backends:
+
+- a **local directory** served by any HTTP server (default), or
+- a **radosgw (Ceph RGW) bucket** that files are uploaded to over HTTP.
+
+##### Option A: local directory
+
+Populate a directory with all resources:
 
 ```bash
 python3 scripts/mirror_sync.py -o /path/to/mirror -j 8
 ```
-
-This will scan all test suite JSON files and download every source URL into a directory tree that mirrors the original URL structure. Already-downloaded files are skipped on subsequent runs.
 
 Then serve the directory with any HTTP server:
 
@@ -753,17 +760,51 @@ Use the same root path as the `--mirror` argument:
 ./fluster.py download --mirror http://mirror.local:8080/
 ```
 
+##### Option B: radosgw bucket
+
+Instead of writing to a local directory, upload every resource to a radosgw
+bucket by passing the radosgw endpoint with `--rgw-host` and the target bucket
+with `--bucket`:
+
+```bash
+python3 scripts/mirror_sync.py --rgw-host <RGW_HOST> --bucket <BUCKET> -j 8
+```
+
+Each file is downloaded from its original source and then uploaded to the bucket
+with an HTTP `PUT` (equivalent to
+`curl -X PUT --data-binary @file http://<RGW_HOST>/<BUCKET>/<key>`),
+preserving the same `<host>/<path>` key layout. Objects that already exist in
+the bucket are skipped (checked via an HTTP `HEAD` request).
+
+Because the bucket keeps the same layout as a local mirror, the bucket URL can
+be used directly as the `--mirror` base:
+
+```bash
+./fluster.py download --mirror http://<RGW_HOST>/<BUCKET>/
+```
+
+> **Note:** uploads use plain, unauthenticated HTTP `PUT`, so the bucket must
+> allow anonymous writes. If your radosgw requires AWS SigV4 credentials, this
+> script does not sign requests.
+
 #### mirror_sync.py options
 
 ```bash
 python3 scripts/mirror_sync.py --help
 
-usage: mirror_sync.py [-h] [-o OUTPUT] [-t TEST_SUITES_DIR] [-j JOBS] [-r RETRIES]
+usage: mirror_sync.py [-h] [-o OUTPUT] [--rgw-host RGW_HOST] [--bucket BUCKET]
+                      [-t TEST_SUITES_DIR] [-j JOBS] [-r RETRIES]
 
 options:
   -h, --help            show this help message and exit
   -o OUTPUT, --output OUTPUT
-                        output directory for the mirror tree (default: ./mirror)
+                        output directory for the local mirror tree (default:
+                        ./mirror). Ignored when --rgw-host is set.
+  --rgw-host RGW_HOST   IP or host of the radosgw endpoint (e.g. RGW_HOST or
+                        RGW_HOST:PORT). When set, resources are uploaded to a
+                        bucket instead of a local directory.
+  --bucket BUCKET       name of the radosgw bucket to fill (e.g. BUCKET).
+                        Required when --rgw-host is set.
   -t TEST_SUITES_DIR, --test-suites-dir TEST_SUITES_DIR
                         directory containing test suite JSON files
   -j JOBS, --jobs JOBS  number of parallel downloads (default: 4)
