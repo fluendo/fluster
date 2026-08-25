@@ -26,6 +26,7 @@ import os
 import tempfile
 import threading
 import unittest
+import urllib.parse
 
 from fluster import utils
 
@@ -172,6 +173,17 @@ class TestDownloadWithMirror(unittest.TestCase):
                 server.shutdown()
 
 
+def _key_to_fs_path(root: str, key: str) -> str:
+    """Maps an object key (URL path) to a filesystem path under ``root``.
+
+    Object keys can contain characters that are illegal in Windows paths (most
+    notably ':' from ``host:port``) and may be percent-encoded. Decode them and
+    replace ':' so the fake bucket can store them on any platform."""
+    key = urllib.parse.unquote(key).lstrip("/")
+    parts = [part.replace(":", "_") for part in key.split("/")]
+    return os.path.join(root, *parts)
+
+
 class _BucketHandler(http.server.BaseHTTPRequestHandler):
     """Minimal radosgw-like handler storing objects under a root dir."""
 
@@ -181,7 +193,7 @@ class _BucketHandler(http.server.BaseHTTPRequestHandler):
         pass
 
     def _object_path(self) -> str:
-        return os.path.join(self.root, self.path.lstrip("/"))
+        return _key_to_fs_path(self.root, self.path)
 
     def do_HEAD(self):  # noqa: N802
         if os.path.isfile(self._object_path()):
@@ -237,7 +249,9 @@ class TestBucketUpload(unittest.TestCase):
                     bucket="test-bucket",
                     retries=1,
                 )
-                expected = os.path.join(bucket_root, "test-bucket", f"127.0.0.1:{src_port}", "data", "vector.bin")
+                expected = _key_to_fs_path(
+                    bucket_root, f"test-bucket/127.0.0.1:{src_port}/data/vector.bin"
+                )
                 self.assertTrue(os.path.exists(expected), f"missing {expected}")
                 with open(expected, "rb") as f:
                     self.assertEqual(f.read(), test_content)
@@ -248,8 +262,7 @@ class TestBucketUpload(unittest.TestCase):
     def test_upload_skips_existing_object(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             bucket_root = os.path.join(tmpdir, "bucket")
-            key = os.path.join("test-bucket", "127.0.0.1:9", "data", "vector.bin")
-            existing = os.path.join(bucket_root, key)
+            existing = _key_to_fs_path(bucket_root, "test-bucket/127.0.0.1:9/data/vector.bin")
             os.makedirs(os.path.dirname(existing), exist_ok=True)
             with open(existing, "wb") as f:
                 f.write(b"already here")
