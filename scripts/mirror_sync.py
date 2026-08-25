@@ -26,6 +26,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from functools import partial
+from typing import Callable
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
@@ -88,7 +89,7 @@ def _object_exists(object_url: str, timeout: int = 60) -> bool:
     req = urllib.request.Request(object_url, method="HEAD")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as response:
-            return 200 <= response.status < 300
+            return bool(200 <= response.status < 300)
     except urllib.error.HTTPError:
         return False
     except urllib.error.URLError:
@@ -133,7 +134,7 @@ def _upload_one(url: str, rgw_host: str, bucket: str, retries: int) -> None:
     print(f"  ERROR: failed to upload {key}: {last_exc}")
 
 
-def sync_urls(urls: list[str], worker, jobs: int) -> None:
+def sync_urls(urls: list[str], worker: Callable[[str], None], jobs: int) -> None:
     from multiprocessing import Pool
 
     if jobs <= 1:
