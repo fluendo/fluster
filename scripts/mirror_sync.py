@@ -57,14 +57,21 @@ def collect_source_urls(test_suites_dir: str) -> List[str]:
 
 
 def url_to_mirror_path(url: str) -> str:
+    """Returns the mirror key for a URL as a forward-slash path (``<netloc>/<path>``).
+
+    This matches the layout produced by ``fluster``'s ``rewrite_url`` and is used
+    both as the radosgw object key and, after converting separators, as the local
+    mirror file path. It always uses '/' so bucket keys are consistent across
+    platforms (Windows included)."""
     parsed = urllib.parse.urlparse(url)
-    return os.path.join(parsed.netloc, parsed.path.lstrip("/"))
+    return f"{parsed.netloc}/{parsed.path.lstrip('/')}"
 
 
 def _sync_one(url: str, output_dir: str, retries: int) -> None:
     mirror_path = url_to_mirror_path(url)
-    dest_dir = os.path.join(output_dir, os.path.dirname(mirror_path))
-    dest_file = os.path.join(output_dir, mirror_path)
+    local_path = mirror_path.replace("/", os.sep)
+    dest_dir = os.path.join(output_dir, os.path.dirname(local_path))
+    dest_file = os.path.join(output_dir, local_path)
 
     if os.path.exists(dest_file):
         print(f"  SKIP (exists): {mirror_path}")
@@ -123,7 +130,7 @@ def _upload_one(url: str, rgw_host: str, bucket: str, retries: int) -> None:
             with tempfile.TemporaryDirectory() as tmpdir:
                 print(f"  DOWNLOAD: {key}")
                 utils.download(url, tmpdir, max_retries=retries)
-                src_file = os.path.join(tmpdir, os.path.basename(key))
+                src_file = os.path.join(tmpdir, key.rsplit("/", 1)[-1])
                 print(f"  UPLOAD: {object_url}")
                 _put_object(object_url, src_file)
             return
