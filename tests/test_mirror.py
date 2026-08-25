@@ -249,9 +249,7 @@ class TestBucketUpload(unittest.TestCase):
                     bucket="test-bucket",
                     retries=1,
                 )
-                expected = _key_to_fs_path(
-                    bucket_root, f"test-bucket/127.0.0.1:{src_port}/data/vector.bin"
-                )
+                expected = _key_to_fs_path(bucket_root, f"test-bucket/127.0.0.1:{src_port}/data/vector.bin")
                 self.assertTrue(os.path.exists(expected), f"missing {expected}")
                 with open(expected, "rb") as f:
                     self.assertEqual(f.read(), test_content)
