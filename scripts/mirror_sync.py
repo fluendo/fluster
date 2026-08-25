@@ -26,13 +26,13 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from functools import partial
-from typing import Callable
+from typing import Callable, List
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from fluster import utils
 
 
-def collect_source_urls(test_suites_dir: str) -> list[str]:
+def collect_source_urls(test_suites_dir: str) -> List[str]:
     urls = []
     for root, _, files in os.walk(test_suites_dir):
         for filename in files:
@@ -134,7 +134,7 @@ def _upload_one(url: str, rgw_host: str, bucket: str, retries: int) -> None:
     print(f"  ERROR: failed to upload {key}: {last_exc}")
 
 
-def sync_urls(urls: list[str], worker: Callable[[str], None], jobs: int) -> None:
+def sync_urls(urls: List[str], worker: Callable[[str], None], jobs: int) -> None:
     from multiprocessing import Pool
 
     if jobs <= 1:
