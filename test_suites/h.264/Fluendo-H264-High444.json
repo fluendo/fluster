@@ -1,0 +1,115 @@
+{
+    "name": "Fluendo-H264-High444",
+    "codec": "H.264",
+    "description": "Fluendo High444 test suite",
+    "test_vectors": [
+        {
+            "name": "y444p12le_1920x1080_stress",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p12le/stress/y444p12le_1920x1080_stress.zip",
+            "source_checksum": "24ee7facaa1eaaae3b25643bab2ad531",
+            "input_file": "y444p12le_1920x1080_stress.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p12le",
+            "result": "a6b16c54daf8453dfd70f09d17392493"
+        },
+	{
+            "name": "y444p12le_1920x1080_lossless",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p12le/lossless/y444p12le_1920x1080_lossless.zip",
+            "source_checksum": "56052cdb3d14769da2b2f6467b6f62fa",
+            "input_file": "y444p12le_1920x1080_lossless.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p12le",
+            "result": "0b8ca7c2b8a462dbb63c7566b3b72378"
+        },
+	{
+            "name": "y444p12le_1920x1080_fake_lossless",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p12le/fake-lossless/y444p12le_1920x1080_fake_lossless.zip",
+            "source_checksum": "9207bbeb48a85df3624a26b38317f411",
+            "input_file": "y444p12le_1920x1080_fake_lossless.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p12le",
+            "result": "0eadda5cfc7a2c65284f70595b1ae47e"
+        },
+	{
+            "name": "y444p_630x360_g12_bf0",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p/y444p_630x360_g12_bf0.zip",
+            "source_checksum": "bd2459bd6eadb5e12a69be6048c66f53",
+            "input_file": "y444p_630x360_g12_bf0.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p",
+            "result": "60b24b1152a81484fdf148a1fa364310"
+        },
+	{
+            "name": "y444p_630x360_g1",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p/y444p_630x360_g1.zip",
+            "source_checksum": "37c1f98ca5c09276e017fa60d4ca5a53",
+            "input_file": "y444p_630x360_g1.h264",
+            "profile": "High 4:4:4 Intra",
+            "output_format": "yuv444p",
+            "result": "586e824e5c93f2df316bdcbb08b8fea1"
+        },
+	{
+            "name": "y444p_lossless_642x358",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p/y444p_lossless_642x358.zip",
+            "source_checksum": "9ed20f1d0f6135133931add04263179b",
+            "input_file": "y444p_lossless_642x358.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p",
+            "result": "71fa0254a81021a211f48b1be22ba315"
+        },
+        {
+            "name": "y444p_lossless",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p/y444p_lossless.zip",
+            "source_checksum": "9e12cb6165d17c970f7f4f7ff9077efe",
+            "input_file": "y444p_lossless.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p",
+            "result": "cef95d8ba80e82cc086187ca2ede5201"
+        },
+        {
+            "name": "y444p_stress",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p/y444p_stress.zip",
+            "source_checksum": "ee224c0dec498f347243bb80cc299efe",
+            "input_file": "y444p_stress.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p",
+            "result": "18f994b41d3aa00281c100660a5cdb50"
+        },
+        {
+            "name": "y444p_4096x1714_g15_bf3",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p/y444p_4096x1714_g15_bf3.zip",
+            "source_checksum": "d1d613673e70be1cd882e851abec2cba",
+            "input_file": "y444p_4096x1714_g15_bf3.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p",
+            "result": "c9562bb9a2c18f02e17b3d0dcd26d8c1"
+        },
+        {
+            "name": "y444p10le_4096x1714_g30_bf6",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p10le/y444p10le_4096x1714_g30_bf6.zip",
+            "source_checksum": "b6315810c772d9006f479ac6ef1af9ce",
+            "input_file": "y444p10le_4096x1714_g30_bf6.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p10le",
+            "result": "dd0e957c3ff05fb28738acf25c527d6d"
+        },
+        {
+            "name": "y444p10le_642x358_lossless",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p10le/y444p10le_642x358_lossless.zip",
+            "source_checksum": "a5d9b3eb2e4d2d51868f12123a48873f",
+            "input_file": "y444p10le_642x358_lossless.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p10le",
+            "result": "bc636724e975a456af2789e938d691db"
+        },
+        {
+            "name": "y444p10le_642x358_g30_bf6",
+            "source": "https://github.com/fluendo/fluendo-fluster-test-vectors/raw/refs/heads/main/h264/high444/y444p10le/y444p10le_642x358_g30_bf6.zip",
+            "source_checksum": "a13c3a1366f9c5a9fc3ba789b70a7778",
+            "input_file": "y444p10le_642x358_g30_bf6.h264",
+            "profile": "High 4:4:4 Predictive",
+            "output_format": "yuv444p10le",
+            "result": "9ddb81a1f1b14771db5c72e4229a64cb"
+        }
+    ]
+}
