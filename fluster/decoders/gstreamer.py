@@ -876,7 +876,7 @@ class FluendoMPEG2VideoDecoder(GStreamerVideo):
     """Fluendo MPEG2 video software decoder implementation for GStreamer"""
 
     codec = Codec.MPEG2_VIDEO
-    decoder_bin = " flumpeg2vdec "
+    decoder_bin = " flumpeg2vdec deinterlace=off "
     provider = "Fluendo"
     api = "SW"
 
@@ -991,7 +991,7 @@ class FluendoFluHWVAH264DecBase(GStreamerVideo):
     provider = "Fluendo"
     api = "INVALID"
     codec = Codec.H264
-    decoder_bin_tmpl = " fluhwva{backend}h264dec "
+    decoder_bin_tmpl = " fluhwva{backend}h264dec deinterlace=disabled "
 
     def __init__(self) -> None:
         self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
@@ -1004,7 +1004,7 @@ class FluendoFluHWVAH265DecBase(GStreamerVideo):
     provider = "Fluendo"
     api = "INVALID"
     codec = Codec.H265
-    decoder_bin_tmpl = " fluhwva{backend}h265dec "
+    decoder_bin_tmpl = " fluhwva{backend}h265dec deinterlace=disabled "
 
     def __init__(self) -> None:
         self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
@@ -1017,7 +1017,7 @@ class FluendoFluHWVAMPEG2DecBase(GStreamerVideo):
     provider = "Fluendo"
     api = "INVALID"
     codec = Codec.MPEG2_VIDEO
-    decoder_bin_tmpl = " fluhwva{backend}mpeg2dec "
+    decoder_bin_tmpl = " fluhwva{backend}mpeg2dec deinterlace=disabled "
 
     def __init__(self) -> None:
         self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
@@ -1030,7 +1030,7 @@ class FluendoFluHWVAMPEG4DecBase(GStreamerVideo):
     provider = "Fluendo"
     api = "INVALID"
     codec = Codec.MPEG4_VIDEO
-    decoder_bin_tmpl = " fluhwva{backend}mpeg4dec "
+    decoder_bin_tmpl = " fluhwva{backend}mpeg4dec deinterlace=disabled "
 
     def __init__(self) -> None:
         self.decoder_bin = self.decoder_bin_tmpl.format(backend=self.api.lower())
