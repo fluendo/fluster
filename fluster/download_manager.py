@@ -25,7 +25,7 @@ from dataclasses import dataclass, field
 from multiprocessing import Pool
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from fluster.utils import download, extract, file_checksum, is_extractable
+from fluster.utils import download, extract, file_checksum, filename_from_url, is_extractable
 
 
 @dataclass
@@ -218,7 +218,7 @@ class DownloadManager:
         Args:
             task: The download task with source URL and destination list.
         """
-        source_filename = os.path.basename(task.source_url)
+        source_filename = filename_from_url(task.source_url)
         is_extractable_file = is_extractable(source_filename)
 
         # Skip if all destinations already have their files
@@ -247,7 +247,7 @@ class DownloadManager:
         Returns:
             True if all destinations are already satisfied and download can be skipped.
         """
-        source_filename = os.path.basename(task.source_url)
+        source_filename = filename_from_url(task.source_url)
         return all(
             self._destination_satisfied(task, destination, is_extractable_file, source_filename)
             for destination in task.destinations
@@ -325,7 +325,7 @@ class DownloadManager:
             checksum = file_checksum(cache_path)
             if task.source_checksum != checksum:
                 raise Exception(
-                    f"Checksum mismatch for {os.path.basename(task.source_url)}: "
+                    f"Checksum mismatch for {filename_from_url(task.source_url)}: "
                     f"{checksum} instead of '{task.source_checksum}'"
                 )
 
