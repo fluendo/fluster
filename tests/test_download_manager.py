@@ -207,6 +207,32 @@ class TestDownloadManager(unittest.TestCase):
 
         self._assert_exists("satisfied", "v", "a.bits")
 
+    def test_checksum_conflicts_are_counted_per_url(self) -> None:
+        url1 = _url("one.zip")
+        url2 = _url("two.zip")
+        suites = [
+            _FakeSuite(
+                "s1",
+                {
+                    "a": _FakeVector(url1, "aaa", "a.bits"),
+                    "b": _FakeVector(url2, "bbb", "b.bits"),
+                },
+            ),
+            _FakeSuite(
+                "s2",
+                {
+                    "c": _FakeVector(url1, "ccc", "c.bits"),
+                    "d": _FakeVector(url2, "ddd", "d.bits"),
+                },
+            ),
+            _FakeSuite("s3", {"e": _FakeVector(url1, "eee", "e.bits")}),
+        ]
+
+        with self.assertRaises(SystemExit) as ctx:
+            self._download(suites)
+
+        self.assertIn("2 URL(s)", str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

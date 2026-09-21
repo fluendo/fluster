@@ -23,7 +23,7 @@ import shutil
 import sys
 from dataclasses import dataclass, field
 from multiprocessing import Pool
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 
 from fluster.utils import download, extract, file_checksum, filename_from_url, is_extractable
 
@@ -113,7 +113,7 @@ class DownloadManager:
         }
 
         source_map: Dict[str, _DownloadTask] = {}
-        checksum_conflicts: List[Tuple[str, str, str]] = []
+        checksum_conflicts: Dict[str, List[str]] = {}
         for test_suite in test_suites:
             for tv_name, tv in test_suite.test_vectors.items():
                 source = tv.source
@@ -128,7 +128,7 @@ class DownloadManager:
                         # Prefer a real checksum over an unset/__skip__ one.
                         source_map[source].source_checksum = tv.source_checksum
                     elif tv.source_checksum not in ("__skip__", known_checksum):
-                        checksum_conflicts.append((source, known_checksum, tv.source_checksum))
+                        checksum_conflicts.setdefault(source, []).append(tv.source_checksum)
                 source_map[source].destinations.append(
                     _Destination(
                         suite_name=test_suite.name,
@@ -139,9 +139,11 @@ class DownloadManager:
                 )
 
         if checksum_conflicts:
-            for source, kept, other in checksum_conflicts:
+            for source, others in checksum_conflicts.items():
+                kept = source_map[source].source_checksum
+                conflicts = ", ".join(sorted(set(others)))
                 print(
-                    f"ERROR: conflicting checksums for {source}: {kept} vs {other} - "
+                    f"ERROR: conflicting checksums for {source}: {kept} vs {conflicts} - "
                     f"the test-suite definitions disagree."
                 )
             sys.exit(f"{len(checksum_conflicts)} URL(s) have conflicting checksums across the selected suites")
