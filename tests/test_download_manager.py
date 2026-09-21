@@ -166,6 +166,21 @@ class TestDownloadManager(unittest.TestCase):
         self._assert_exists("multi", "v1", "a.bits")
         self._assert_missing("multi", "a.bits")
 
+    def test_corrupt_cached_archive_is_discarded(self) -> None:
+        path = os.path.join(self.build, "bad.zip")
+        with open(path, "wb") as handle:
+            handle.write(b"not a zip file")
+        checksum = file_checksum(path)
+        url = _url("bad.zip")
+        cache_path = _seed_cache(self.resources, url, path)
+        suite = _FakeSuite("corrupt", {"v": _FakeVector(url, checksum, "a.bits")})
+
+        with self.assertRaises(SystemExit):
+            self._download([suite])
+
+        self.assertFalse(os.path.exists(cache_path))
+        self._assert_missing("corrupt", "v", "bad.zip")
+
     def test_extract_all_reextracts_into_non_empty_dir(self) -> None:
         url, checksum = self._archive("shared.zip", {"a.bits": b"a", "nested/c.bits": b"c"})
         suite = _FakeSuite("extract_all", {"v": _FakeVector(url, checksum, "ignored.bits")})

@@ -17,10 +17,13 @@
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import os
 import shutil
+import subprocess
 import sys
+import zipfile
 from dataclasses import dataclass, field
 from multiprocessing import Pool
 from typing import Any, Dict, List, Optional, Set
@@ -333,6 +336,15 @@ class DownloadManager:
 
         return True
 
+    @staticmethod
+    def _discard_corrupt_archive(cache_path: str) -> None:
+        """Delete a cached archive that failed to extract so it is re-downloaded."""
+        if os.path.exists(cache_path):
+            os.remove(cache_path)
+        # Best-effort: drop the now-empty per-URL cache directory.
+        with contextlib.suppress(OSError):
+            os.rmdir(os.path.dirname(cache_path))
+
     def _process_archive(self, task: _DownloadTask, cache_path: str, source_filename: str) -> None:
         """Process an archive source shared by one or more test vectors.
 
@@ -382,6 +394,9 @@ class DownloadManager:
             extract(cache_path, dest_dir, file=None if self.extract_all else destination.input_file)
         except FileNotFoundError:
             print(f"WARNING: test vector {destination.input_file} not found inside {source_filename}")
+        except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
+            self._discard_corrupt_archive(cache_path)
+            raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
 
     def _extract_to_test_vector(self, destination: _Destination, cache_path: str) -> None:
         """Extract an archive member into its test vector directory.
@@ -393,11 +408,18 @@ class DownloadManager:
         dest_dir = os.path.join(self.out_dir, destination.suite_name, destination.test_vector_name)
         os.makedirs(dest_dir, exist_ok=True)
         print(f"\tExtracting test vector {destination.test_vector_name} to {dest_dir}")
-        extract(
-            cache_path,
-            dest_dir,
-            file=None if self.extract_all else destination.input_file,
-        )
+        try:
+            extract(
+                cache_path,
+                dest_dir,
+                file=None if self.extract_all else destination.input_file,
+            )
+        except FileNotFoundError:
+            # A missing member is not a corrupt archive: keep the cache.
+            raise
+        except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
+            self._discard_corrupt_archive(cache_path)
+            raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
 
     def _process_plain_file(self, task: _DownloadTask, cache_path: str, source_filename: str) -> None:
         """Process a non-extractable source file (one per test vector).
