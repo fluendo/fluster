@@ -62,6 +62,23 @@ def rewrite_url(source_url: str, mirror_base: str) -> str:
     return mirror_base.rstrip("/") + "/" + path.lstrip("/")
 
 
+def filename_from_url(url: str) -> str:
+    """Return a safe filename from *url*, stripping query string and fragment.
+
+    Plain os.path.basename on a URL keeps the query string (e.g. a signed
+    GCS/S3 URL ending in "?X-Amz-Signature=..."), which then wrecks suffix
+    checks like is_extractable() and leaves odd filenames on disk.
+
+    Raises ValueError if the URL has no usable filename component (e.g.
+    "https://host/" or "https://host"). Catching this here surfaces a
+    clear error instead of an opaque IsADirectoryError further downstream.
+    """
+    filename = os.path.basename(urllib.parse.urlsplit(url).path)
+    if not filename:
+        raise ValueError(f"URL {url!r} has no filename component")
+    return filename
+
+
 def create_enhanced_opener() -> urllib.request.OpenerDirector:
     """Creates an enhanced URL opener with custom headers and cookie support."""
     opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor())
@@ -183,7 +200,7 @@ def download(
     to avoid conflicts and retries with exponential backoff.
     If mirror is provided, tries the mirror URL first and falls back to the original URL."""
     os.makedirs(dest_dir, exist_ok=True)
-    filename = os.path.basename(url)
+    filename = filename_from_url(url)
     dest_path = os.path.join(dest_dir, filename)
 
     if mirror:

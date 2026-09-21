@@ -27,7 +27,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
 from fluster.download_manager import DownloadManager
-from fluster.utils import file_checksum
+from fluster.utils import file_checksum, filename_from_url
 
 
 def _url(filename: str) -> str:
@@ -60,7 +60,7 @@ def _seed_cache(out_dir: str, url: str, source_path: str) -> str:
     """Place *source_path* in the shared cache where the manager looks for it."""
     cache_dir = os.path.join(out_dir, DownloadManager.CACHE_DIR, hashlib.md5(url.encode()).hexdigest())
     os.makedirs(cache_dir, exist_ok=True)
-    cache_path = os.path.join(cache_dir, os.path.basename(url))
+    cache_path = os.path.join(cache_dir, filename_from_url(url))
     shutil.copy2(source_path, cache_path)
     return cache_path
 
