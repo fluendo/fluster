@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
-
+import platform
 from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
@@ -34,9 +34,11 @@ EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG: Dict[int, int] = {
 class DolbyPADDecoder(Decoder):
     """Generic class for Dolby Pro Audio Decoder reference decoder"""
 
+    if platform.system() not in ("Linux", "Windows"):
+        raise RuntimeError(f"ac4 decoder is not available for OS {platform.system()}")
     name = ""
     description = ""
-    binary = "decoder_reference_app_linux_x86_64"
+    binary = f"decoder_reference_app_{platform.system().lower()}_x86_64"
     codec = Codec.NONE
     is_reference = True
     _speaker_config_map: Dict[int, int] = {}
