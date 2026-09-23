@@ -55,20 +55,18 @@ class Test(unittest.TestCase):
         self._initialize_file_paths()
 
     def _find_input_path(self, input_file: str) -> str:
-        if os.path.sep in input_file:
-            path_option1 = normalize_path(os.path.join(self.resources_dir, self.test_suite.name, input_file))
-            path_option2 = normalize_path(
-                os.path.join(self.resources_dir, self.test_suite.name, self.test_vector.name, input_file)
-            )
-            if os.path.exists(path_option1):
-                return path_option1
-            if os.path.exists(path_option2):
-                return path_option2
-            return path_option2  # fallback for backward compatibility
-        else:
-            return normalize_path(
-                os.path.join(self.resources_dir, self.test_suite.name, self.test_vector.name, input_file)
-            )
+        """Return the existing input file path, trying the known layouts.
+
+        Test vectors may be stored directly under the test suite directory
+        (e.g. suites extracted from a single archive) or under a per-vector
+        subdirectory. Prefer the location that actually exists, defaulting to
+        the suite-root layout.
+        """
+        suite_dir = os.path.join(self.resources_dir, self.test_suite.name)
+        path_with_vector = os.path.join(suite_dir, self.test_vector.name, input_file)
+
+        target_path = path_with_vector if os.path.exists(path_with_vector) else os.path.join(suite_dir, input_file)
+        return normalize_path(target_path)
 
     def _initialize_file_paths(self) -> None:
         """Initialize input and output file paths."""
