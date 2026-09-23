@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 import platform
-from functools import lru_cache
 from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
@@ -41,15 +40,6 @@ class DolbyPADDecoder(Decoder):
     codec = Codec.NONE
     is_reference = True
     _speaker_config_map: Dict[int, int] = {}
-
-    @lru_cache(maxsize=128)
-    def check(self, verbose: bool) -> bool:
-        """Check if the reference decoder binary is available for this platform."""
-        if platform.system() not in ("Linux", "Windows"):
-            if verbose:
-                print(f"ac4 decoder is not available for OS {platform.system()}")
-            return False
-        return super().check(verbose)
 
     def decode(
         self,
