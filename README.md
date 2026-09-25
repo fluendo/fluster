@@ -112,6 +112,17 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    files. You can change the number of parallel processes used with `-j`. It
    defaults to 2x number of logical cores.
 
+   Sources shared by multiple test suites are downloaded only once and fetched
+   in parallel into a cache directory under `resources/.cache/`. The cache is
+   removed at the end of a successful run unless `-k/--keep` is used, in which
+   case the downloaded archives are preserved there. If a run fails, the cache
+   is kept so a subsequent run can resume without downloading everything again.
+
+   Note: running multiple `fluster.py download` instances against the same
+   `resources/` directory concurrently is not supported - one instance's cache
+   cleanup may remove files another is still extracting. Use `--keep` or point
+   each instance at a separate resource directory if you need parallel runs.
+
    Use the `-c/--codec` option to download test suites for specific codecs:
    - `./fluster.py download -c H.264,H.265` downloads all H.264 and H.265 test suites
    - `./fluster.py download AV1-TEST-VECTORS VP9-TEST-VECTORS` downloads the specific AV1-TEST-VECTORS and VP9-TEST-VECTORS test suite
@@ -697,7 +708,8 @@ optional arguments:
   -h, --help            show this help message and exit
   -j JOBS, --jobs JOBS  number of parallel jobs to use (upper limit of 16, by default 2x logical cores).
                         value 0 is interpreted as 1x logical cores
-  -k, --keep            keep original downloaded file after extracting. Only applicable to compressed files such as .zip, .tar.gz, etc
+  -k, --keep            keep original downloaded file after extracting. Archives are stored in
+                        <resources>/.cache/. Only applicable to compressed files (.zip, .tar.gz, etc)
   -r RETRIES, --retries RETRIES
                         number of retries, before failing
   -m MIRROR, --mirror MIRROR

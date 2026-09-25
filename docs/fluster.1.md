@@ -107,7 +107,7 @@ it also supports H.264/AVC, H.266/VVC, VP8, VP9, AV1 and AAC.
     : **\-j** *JOBS*, **\-\-jobs** *JOBS*
         : Number of parallel jobs to use. 2x logical cores by default. 0 means all logical cores.
     : **\-k**, **\-\-keep**
-        : Keep original downloaded file after extracting. Only applicable to compressed files such as .zip, .tar.gz, etc
+        : Keep original downloaded file after extracting. Archives are stored in `resources/.cache/`. Only applicable to compressed files (.zip, .tar.gz, etc)
 
 **reference** **\(r\)**
 :   Use a specific decoder to set its results for the test suites given.
