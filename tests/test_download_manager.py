@@ -17,10 +17,13 @@
 
 from __future__ import annotations
 
+import functools
 import hashlib
+import http.server
 import os
 import shutil
 import tempfile
+import threading
 import unittest
 import zipfile
 from dataclasses import dataclass
@@ -247,6 +250,78 @@ class TestDownloadManager(unittest.TestCase):
             self._download(suites)
 
         self.assertIn("2 URL(s)", str(ctx.exception))
+
+    def test_missing_zip_member_warns_and_continues(self) -> None:
+        url, checksum = self._archive("shared.zip", {"a.bits": b"a"})
+        suite = _FakeSuite("missing", {"v": _FakeVector(url, checksum, "missing.bits")})
+
+        self._download([suite])
+
+        self._assert_missing("missing", "v", "missing.bits")
+
+    def test_single_plain_source_stays_per_vector(self) -> None:
+        plain_url, plain_checksum = self._plain("shared.bin", b"data")
+        suite = _FakeSuite(
+            "single_plain",
+            {
+                "v1": _FakeVector(plain_url, plain_checksum, "shared.bin"),
+                "v2": _FakeVector(plain_url, plain_checksum, "shared.bin"),
+            },
+        )
+
+        self._download([suite])
+
+        self._assert_exists("single_plain", "v1", "shared.bin")
+        self._assert_exists("single_plain", "v2", "shared.bin")
+        self._assert_missing("single_plain", "shared.bin")
+
+    def test_shared_archive_downloaded_once_across_suites(self) -> None:
+        members = {"a.bits": b"a", "b.bits": b"b"}
+        serve_root = os.path.join(self.build, "serve")
+        os.makedirs(serve_root)
+        zip_path = os.path.join(serve_root, "shared.zip")
+        with zipfile.ZipFile(zip_path, "w") as zip_file:
+            for name, data in members.items():
+                zip_file.writestr(name, data)
+        checksum = file_checksum(zip_path)
+
+        requests: List[str] = []
+
+        class Handler(http.server.SimpleHTTPRequestHandler):
+            def log_message(self, fmt: str, *args: object) -> None:
+                pass
+
+            def do_GET(self) -> None:  # noqa: N802
+                requests.append(self.path)
+                super().do_GET()
+
+        server = http.server.HTTPServer(("127.0.0.1", 0), functools.partial(Handler, directory=serve_root))
+        port = server.server_address[1]
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+
+        try:
+            url = f"http://127.0.0.1:{port}/shared.zip"
+            suites = [
+                _FakeSuite(
+                    name,
+                    {
+                        "va": _FakeVector(url, checksum, "a.bits"),
+                        "vb": _FakeVector(url, checksum, "b.bits"),
+                    },
+                )
+                for name in ("s1", "s2")
+            ]
+
+            self._download(suites)
+
+            self.assertEqual([path for path in requests if "shared.zip" in path], ["/shared.zip"])
+            self._assert_exists("s1", "a.bits")
+            self._assert_exists("s1", "b.bits")
+            self._assert_exists("s2", "a.bits")
+            self._assert_exists("s2", "b.bits")
+        finally:
+            server.shutdown()
+            server.server_close()
 
 
 if __name__ == "__main__":
