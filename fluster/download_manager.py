@@ -1,7 +1,6 @@
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2020, Fluendo, S.A.
-#  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
-#  Author: Andoni Morales Alastruey <amorales@fluendo.com>, Fluendo, S.A.
+# Copyright (C) 2026, Igalia, S.L.
+#  Author: Stephane Cerveau <scerveau@igalia.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -26,9 +25,9 @@ import sys
 import zipfile
 from dataclasses import dataclass, field
 from multiprocessing import Pool
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-from fluster.utils import download, extract, file_checksum, filename_from_url, is_extractable
+from fluster.utils import download, extract, extract_zip_members, file_checksum, filename_from_url, is_extractable
 
 
 @dataclass
@@ -54,6 +53,10 @@ class _DownloadTask:
     source_url: str
     source_checksum: str
     destinations: List[_Destination] = field(default_factory=list)
+
+
+class _ChecksumConflictError(Exception):
+    """Raised when test suites disagree on the checksum of a shared source."""
 
 
 class DownloadManager:
@@ -100,12 +103,49 @@ class DownloadManager:
         """
         os.makedirs(self.out_dir, exist_ok=True)
 
-        # Collect all test vectors and group by source URL (deduplication)
-        suite_sources: Dict[str, Set[str]] = {}
-        suite_vector_count: Dict[str, int] = {}
-        for test_suite in test_suites:
-            suite_sources[test_suite.name] = {tv.source for tv in test_suite.test_vectors.values()}
-            suite_vector_count[test_suite.name] = len(test_suite.test_vectors)
+        try:
+            tasks = self._collect_tasks(test_suites)
+        except _ChecksumConflictError as exc:
+            sys.exit(str(exc))
+        if not tasks:
+            print("No test vectors to download")
+            return
+
+        suite_names = sorted({ts.name for ts in test_suites})
+        print(f"Downloading resources for test suites: {', '.join(suite_names)}")
+        num_jobs = max(1, min(jobs, len(tasks)))
+        print(f"Unique sources: {len(tasks)}, using {num_jobs} parallel job(s)")
+
+        # Download all unique sources in parallel
+        with Pool(num_jobs) as pool:
+
+            def _callback_error(err: Any) -> None:
+                # Do not call pool.terminate() here: this callback runs in the
+                # result handler thread and terminating from it deadlocks
+                # pool.join(). Let the remaining tasks finish, then bail out.
+                print(f"\nError downloading -> {err}\n")
+
+            results = [
+                pool.apply_async(self._process_task, args=(task,), error_callback=_callback_error) for task in tasks
+            ]
+
+            pool.close()
+            pool.join()
+
+        if any(not result.successful() for result in results):
+            sys.exit("Some download failed")
+
+        # Clean up cache directory
+        if not self.keep_file and os.path.isdir(self.cache_dir):
+            shutil.rmtree(self.cache_dir)
+
+        print("All downloads finished")
+
+    @staticmethod
+    def _collect_tasks(test_suites: List[Any]) -> List[_DownloadTask]:
+        """Group test vectors by source URL into deduplicated download tasks."""
+        suite_sources = {ts.name: {tv.source for tv in ts.test_vectors.values()} for ts in test_suites}
+        suite_vector_count = {ts.name: len(ts.test_vectors) for ts in test_suites}
 
         # Suites with a single source shared by several test vectors extract
         # the archive at the suite level. The decision is per suite: a source
@@ -116,100 +156,42 @@ class DownloadManager:
         }
 
         source_map: Dict[str, _DownloadTask] = {}
-        checksum_conflicts: Dict[str, List[str]] = {}
+        checksum_conflicts: Dict[str, Set[str]] = {}
         for test_suite in test_suites:
             for tv_name, tv in test_suite.test_vectors.items():
-                source = tv.source
-                if source not in source_map:
-                    source_map[source] = _DownloadTask(
-                        source_url=source,
+                task = source_map.get(tv.source)
+                if task is None:
+                    task = source_map[tv.source] = _DownloadTask(
+                        source_url=tv.source,
                         source_checksum=tv.source_checksum,
                     )
-                else:
-                    known_checksum = source_map[source].source_checksum
-                    if known_checksum == "__skip__" and tv.source_checksum != "__skip__":
-                        # Prefer a real checksum over an unset/__skip__ one.
-                        source_map[source].source_checksum = tv.source_checksum
-                    elif tv.source_checksum not in ("__skip__", known_checksum):
-                        checksum_conflicts.setdefault(source, []).append(tv.source_checksum)
-                source_map[source].destinations.append(
+                elif task.source_checksum == "__skip__" and tv.source_checksum != "__skip__":
+                    # Prefer a real checksum over an unset/__skip__ one.
+                    task.source_checksum = tv.source_checksum
+                elif tv.source_checksum not in ("__skip__", task.source_checksum):
+                    checksum_conflicts.setdefault(tv.source, set()).add(tv.source_checksum)
+                task.destinations.append(
                     _Destination(
                         suite_name=test_suite.name,
                         test_vector_name=tv_name,
                         input_file=tv.input_file,
-                        suite_root=test_suite.name in root_suites,
+                        suite_root=test_suite.name in root_suites and is_extractable(filename_from_url(tv.source)),
                     )
                 )
 
         if checksum_conflicts:
             for source, others in checksum_conflicts.items():
-                kept = source_map[source].source_checksum
-                conflicts = ", ".join(sorted(set(others)))
+                conflicts = ", ".join(sorted(others))
                 print(
-                    f"ERROR: conflicting checksums for {source}: {kept} vs {conflicts} - "
+                    f"ERROR: conflicting checksums for {source}: "
+                    f"{source_map[source].source_checksum} vs {conflicts} - "
                     f"the test-suite definitions disagree."
                 )
-            sys.exit(f"{len(checksum_conflicts)} URL(s) have conflicting checksums across the selected suites")
+            raise _ChecksumConflictError(
+                f"{len(checksum_conflicts)} URL(s) have conflicting checksums across the selected suites"
+            )
 
-        if not source_map:
-            print("No test vectors to download")
-            return
-
-        tasks = list(source_map.values())
-        suite_names = sorted({ts.name for ts in test_suites})
-        print(f"Downloading resources for test suites: {', '.join(suite_names)}")
-        num_jobs = max(1, min(jobs, len(tasks)))
-        print(f"Unique sources: {len(tasks)}, using {num_jobs} parallel job(s)")
-
-        # Download all unique sources in parallel
-        error_occurred = False
-
-        with Pool(num_jobs) as pool:
-
-            def _callback_error(err: Any) -> None:
-                nonlocal error_occurred
-                error_occurred = True
-                # Do not call pool.terminate() here: this callback runs in the
-                # result handler thread and terminating from it deadlocks
-                # pool.join(). Let the remaining tasks finish, then bail out.
-                print(f"\nError downloading -> {err}\n")
-
-            results = []
-            for task in tasks:
-                results.append(
-                    pool.apply_async(
-                        self._process_task,
-                        args=(task,),
-                        error_callback=_callback_error,
-                    )
-                )
-
-            pool.close()
-            pool.join()
-
-        if error_occurred:
-            sys.exit("Some download failed")
-
-        for result in results:
-            if not result.successful():
-                sys.exit("Some download failed")
-
-        # Clean up cache directory
-        if not self.keep_file and os.path.isdir(self.cache_dir):
-            shutil.rmtree(self.cache_dir)
-
-        print("All downloads finished")
-
-    def download_test_suite(self, test_suite: Any, jobs: int) -> None:
-        """Download resources for a single test suite.
-
-        Convenience wrapper around :meth:`download`.
-
-        Args:
-            test_suite: TestSuite instance to download.
-            jobs: Number of parallel download jobs.
-        """
-        self.download([test_suite], jobs)
+        return list(source_map.values())
 
     def _process_task(self, task: _DownloadTask) -> None:
         """Download a unique source and distribute it to all its destinations.
@@ -227,44 +209,35 @@ class DownloadManager:
         is_extractable_file = is_extractable(source_filename)
 
         # Skip if all destinations already have their files
-        if self.verify and self._all_destinations_satisfied(task, is_extractable_file):
+        if self.verify and self._all_destinations_satisfied(task, source_filename):
             return
 
-        # Use a hash of the URL to create a unique cache directory, avoiding
-        # collisions when different URLs share the same filename basename.
-        url_hash = hashlib.md5(task.source_url.encode()).hexdigest()
-        cache_dir = os.path.join(self.cache_dir, url_hash)
-        cache_path = os.path.join(cache_dir, source_filename)
+        cache_dir = self._cache_dir_for(task.source_url)
         os.makedirs(cache_dir, exist_ok=True)
+        cache_path = os.path.join(cache_dir, source_filename)
 
         if is_extractable_file:
             self._process_archive(task, cache_path, source_filename)
         else:
             self._process_plain_file(task, cache_path, source_filename)
 
-    def _all_destinations_satisfied(self, task: _DownloadTask, is_extractable_file: bool) -> bool:
+    def _cache_dir_for(self, source_url: str) -> str:
+        """Unique per-URL cache directory, avoiding basename collisions."""
+        return os.path.join(self.cache_dir, hashlib.md5(source_url.encode()).hexdigest())
+
+    def _all_destinations_satisfied(self, task: _DownloadTask, source_filename: str) -> bool:
         """Check if all destinations for a task already have their files.
 
         Args:
             task: The download task to check.
-            is_extractable_file: Whether the source file is extractable.
+            source_filename: Basename of the source URL.
 
         Returns:
             True if all destinations are already satisfied and download can be skipped.
         """
-        source_filename = filename_from_url(task.source_url)
-        return all(
-            self._destination_satisfied(task, destination, is_extractable_file, source_filename)
-            for destination in task.destinations
-        )
+        return all(self._destination_satisfied(task, destination, source_filename) for destination in task.destinations)
 
-    def _destination_satisfied(
-        self,
-        task: _DownloadTask,
-        destination: _Destination,
-        is_extractable_file: bool,
-        source_filename: str,
-    ) -> bool:
+    def _destination_satisfied(self, task: _DownloadTask, destination: _Destination, source_filename: str) -> bool:
         """Check if a destination already has the file(s) the source provides.
 
         Extractable destinations can only be verified when the expected
@@ -276,33 +249,31 @@ class DownloadManager:
         Args:
             task: The download task.
             destination: Destination to check.
-            is_extractable_file: Whether the source file is extractable.
             source_filename: Basename of the source URL.
 
         Returns:
             True if the destination is already satisfied.
         """
-        if is_extractable_file:
+        if is_extractable(source_filename):
             if self.extract_all or not destination.input_file:
                 return False
-            dest_dir = os.path.join(self.out_dir, destination.suite_name)
-            if not destination.suite_root:
-                dest_dir = os.path.join(dest_dir, destination.test_vector_name)
-            return os.path.exists(os.path.join(dest_dir, destination.input_file))
+            return os.path.exists(os.path.join(self._destination_dir(destination), destination.input_file))
 
-        dest_path = os.path.join(
-            self.out_dir,
-            destination.suite_name,
-            destination.test_vector_name,
-            source_filename,
-        )
+        dest_path = os.path.join(self._destination_dir(destination), source_filename)
         if not os.path.exists(dest_path):
             return False
         if task.source_checksum == "__skip__":
             return True
         return task.source_checksum == file_checksum(dest_path)
 
-    def _download_to_cache(self, task: _DownloadTask, cache_path: str) -> bool:
+    def _destination_dir(self, destination: _Destination) -> str:
+        """Target directory for a destination, per-vector unless suite-root."""
+        dest_dir = os.path.join(self.out_dir, destination.suite_name)
+        if not destination.suite_root:
+            dest_dir = os.path.join(dest_dir, destination.test_vector_name)
+        return dest_dir
+
+    def _download_to_cache(self, task: _DownloadTask, cache_path: str) -> None:
         """Download a source file to the cache directory, with verification.
 
         Skips download if the file already exists in cache and checksum matches.
@@ -310,12 +281,9 @@ class DownloadManager:
         Args:
             task: The download task.
             cache_path: Destination path in the cache.
-
-        Returns:
-            True once the file is present in the cache, either downloaded or reused.
         """
         if self.verify and os.path.exists(cache_path) and task.source_checksum == file_checksum(cache_path):
-            return True
+            return
 
         # Remove corrupt cached file if present
         if os.path.exists(cache_path):
@@ -334,8 +302,6 @@ class DownloadManager:
                     f"{checksum} instead of '{task.source_checksum}'"
                 )
 
-        return True
-
     @staticmethod
     def _discard_corrupt_archive(cache_path: str) -> None:
         """Delete a cached archive that failed to extract so it is re-downloaded."""
@@ -350,8 +316,9 @@ class DownloadManager:
 
         Downloads the archive once and extracts it from the cache: at the
         suite level for destinations that need it there, and per test vector
-        otherwise. The cached archive is removed at the end unless
-        ``keep_file`` is set.
+        otherwise. Zip archives are opened only once and all their members
+        are extracted in a single pass. The cached archive is removed at the
+        end unless ``keep_file`` is set.
 
         Args:
             task: The download task.
@@ -361,9 +328,11 @@ class DownloadManager:
         self._download_to_cache(task, cache_path)
 
         print(f"\tExtracting test vectors from {source_filename}")
+
+        entries: List[Tuple[Optional[str], str]] = []
         extracted_suite_roots: Set[str] = set()
         for destination in task.destinations:
-            if self.verify and self._destination_satisfied(task, destination, True, source_filename):
+            if self.verify and self._destination_satisfied(task, destination, source_filename):
                 continue
 
             if destination.suite_root:
@@ -372,54 +341,32 @@ class DownloadManager:
                 if self.extract_all and destination.suite_name in extracted_suite_roots:
                     continue
                 extracted_suite_roots.add(destination.suite_name)
-                self._extract_to_suite_root(destination, cache_path, source_filename)
-            else:
-                self._extract_to_test_vector(destination, cache_path)
 
-        # Remove the archive from cache unless keep_file is set
+            dest_dir = self._destination_dir(destination)
+            os.makedirs(dest_dir, exist_ok=True)
+            member = None if (self.extract_all or not destination.input_file) else destination.input_file
+            entries.append((member, dest_dir))
+
+        if cache_path.endswith(".zip"):
+            try:
+                missing = extract_zip_members(cache_path, entries)
+            except zipfile.BadZipFile as exc:
+                self._discard_corrupt_archive(cache_path)
+                raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
+            for member in missing:
+                print(f"WARNING: test vector {member} not found inside {source_filename}")
+        else:
+            for entry_member, entry_dir in entries:
+                try:
+                    extract(cache_path, entry_dir, file=entry_member)
+                except FileNotFoundError:
+                    print(f"WARNING: test vector {entry_member} not found inside {source_filename}")
+                except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
+                    self._discard_corrupt_archive(cache_path)
+                    raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
+
         if not self.keep_file and os.path.exists(cache_path):
             os.remove(cache_path)
-
-    def _extract_to_suite_root(self, destination: _Destination, cache_path: str, source_filename: str) -> None:
-        """Extract an archive member into the test suite directory.
-
-        Args:
-            destination: Destination to extract to.
-            cache_path: Path to the cached archive.
-            source_filename: Basename of the source URL.
-        """
-        dest_dir = os.path.join(self.out_dir, destination.suite_name)
-        os.makedirs(dest_dir, exist_ok=True)
-        try:
-            extract(cache_path, dest_dir, file=None if self.extract_all else destination.input_file)
-        except FileNotFoundError:
-            print(f"WARNING: test vector {destination.input_file} not found inside {source_filename}")
-        except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
-            self._discard_corrupt_archive(cache_path)
-            raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
-
-    def _extract_to_test_vector(self, destination: _Destination, cache_path: str) -> None:
-        """Extract an archive member into its test vector directory.
-
-        Args:
-            destination: Destination to extract to.
-            cache_path: Path to the cached archive.
-        """
-        dest_dir = os.path.join(self.out_dir, destination.suite_name, destination.test_vector_name)
-        os.makedirs(dest_dir, exist_ok=True)
-        print(f"\tExtracting test vector {destination.test_vector_name} to {dest_dir}")
-        try:
-            extract(
-                cache_path,
-                dest_dir,
-                file=None if self.extract_all else destination.input_file,
-            )
-        except FileNotFoundError:
-            # A missing member is not a corrupt archive: keep the cache.
-            raise
-        except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
-            self._discard_corrupt_archive(cache_path)
-            raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
 
     def _process_plain_file(self, task: _DownloadTask, cache_path: str, source_filename: str) -> None:
         """Process a non-extractable source file (one per test vector).
@@ -435,9 +382,9 @@ class DownloadManager:
         self._download_to_cache(task, cache_path)
 
         for destination in task.destinations:
-            if self.verify and self._destination_satisfied(task, destination, False, source_filename):
+            if self.verify and self._destination_satisfied(task, destination, source_filename):
                 continue
-            dest_dir = os.path.join(self.out_dir, destination.suite_name, destination.test_vector_name)
+            dest_dir = self._destination_dir(destination)
             os.makedirs(dest_dir, exist_ok=True)
             shutil.copy2(cache_path, os.path.join(dest_dir, source_filename))
 

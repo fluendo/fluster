@@ -349,6 +349,57 @@ def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
         raise Exception(f"Unknown tarball format {filepath}")
 
 
+def _safe_join(base_dir: str, name: str) -> str:
+    """Join *name* to *base_dir*, refusing paths that escape it (Zip Slip)."""
+    base = os.path.realpath(base_dir)
+    target = os.path.realpath(os.path.join(base, name))
+    if os.path.commonpath([base, target]) != base:
+        raise ValueError(f"Unsafe path in archive: {name!r} escapes {base_dir!r}")
+    return target
+
+
+def extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
+    """Extract entries from a zip archive, opening it only once.
+
+    ``entries`` is a list of ``(member, output_dir)`` tuples. A falsy ``member``
+    (``None`` or ``""``) extracts the whole archive into ``output_dir``.
+    Returns the names of the named members that were not found in the archive.
+    Raises ``ValueError`` if an archive item would be written outside its
+    ``output_dir``.
+    """
+    prefix = os.path.basename(filepath) + "/"
+    missing: List[str] = []
+    with zipfile.ZipFile(filepath, "r") as zip_file:
+        namelist = zip_file.namelist()
+        names = set(namelist)
+        for member, output_dir in entries:
+            if not member:
+                # Extract all files, removing the prefix if present.
+                for item in namelist:
+                    if item.endswith("/"):
+                        continue
+                    target = item[len(prefix) :] if item.startswith(prefix) else item
+                    if not target:
+                        continue
+                    target_path = _safe_join(output_dir, target)
+                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+                    with zip_file.open(item) as source, open(target_path, "wb") as dest:
+                        shutil.copyfileobj(source, dest)
+                continue
+            # Find the member with or without the prefix.
+            target_file = next((c for c in (member, prefix + member) if c in names), None)
+            if target_file is None:
+                missing.append(member)
+                continue
+            # Remove the prefix if present.
+            final_name = target_file[len(prefix) :] if target_file.startswith(prefix) else target_file
+            target_path = _safe_join(output_dir, final_name)
+            os.makedirs(os.path.dirname(target_path), exist_ok=True)
+            with zip_file.open(target_file) as source, open(target_path, "wb") as dest:
+                shutil.copyfileobj(source, dest)
+    return missing
+
+
 def normalize_binary_cmd(cmd: str) -> str:
     """Return the OS-form binary"""
     if platform.system() == "Windows":
