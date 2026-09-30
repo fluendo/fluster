@@ -358,6 +358,15 @@ def _safe_join(base_dir: str, name: str) -> str:
     return target
 
 
+def _write_zip_member(zip_file: zipfile.ZipFile, item: str, target_path: str) -> None:
+    """Write via a temporary file so an interrupted extraction never leaves a truncated target."""
+    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+    tmp_path = target_path + ".part"
+    with zip_file.open(item) as source, open(tmp_path, "wb") as dest:
+        shutil.copyfileobj(source, dest)
+    os.replace(tmp_path, target_path)
+
+
 def extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
     """Extract entries from a zip archive, opening it only once.
 
@@ -382,9 +391,7 @@ def extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]])
                     if not target:
                         continue
                     target_path = _safe_join(output_dir, target)
-                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
-                    with zip_file.open(item) as source, open(target_path, "wb") as dest:
-                        shutil.copyfileobj(source, dest)
+                    _write_zip_member(zip_file, item, target_path)
                 continue
             # Find the member with or without the prefix.
             target_file = next((c for c in (member, prefix + member) if c in names), None)
@@ -394,9 +401,7 @@ def extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]])
             # Remove the prefix if present.
             final_name = target_file[len(prefix) :] if target_file.startswith(prefix) else target_file
             target_path = _safe_join(output_dir, final_name)
-            os.makedirs(os.path.dirname(target_path), exist_ok=True)
-            with zip_file.open(target_file) as source, open(target_path, "wb") as dest:
-                shutil.copyfileobj(source, dest)
+            _write_zip_member(zip_file, target_file, target_path)
     return missing
 
 
