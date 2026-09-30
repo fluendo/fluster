@@ -291,7 +291,8 @@ class DownloadManager:
 
         print(f"\tDownloading source from {task.source_url}")
         cache_dir = os.path.dirname(cache_path)
-        download(task.source_url, cache_dir, self.retries, mirror=self.mirror)
+        # download() takes a total attempt count; --retries counts retries after the first attempt.
+        download(task.source_url, cache_dir, self.retries + 1, mirror=self.mirror)
 
         # Verify checksum
         if task.source_checksum != "__skip__":
