@@ -23,8 +23,9 @@ from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.decoder import Decoder, NotSupportedError, register_decoder
 from fluster.decoders.dolby_pad import EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG
+from fluster.decoders.mpegh_mhas import mhas_to_mp4
 from fluster.gstreamer import run_pipeline
 from fluster.utils import (
     file_checksum,
@@ -960,6 +961,85 @@ class FluendoFluEAC3DecDecoder(GStreamerAudio):
             self.sink,
             output,
         )
+
+
+# Range of the "loudness" property of flumpeghdec, in LKFS
+LOUDNESS_RANGE = range(-31, -15)
+
+
+@register_decoder
+class FluendoFluMPEGHDecDecoder(GStreamerAudio):
+    """Fluendo MPEG-H 3D Audio plugin decoder for GStreamer.
+
+    flumpeghdec only decodes one MHAS access unit per buffer, as given by qtdemux for the 'mhm1' tracks of ISOBMFF
+    files, so the raw MHAS test vectors are previously wrapped in a temporary MP4 file (see mpegh_mhas.py)."""
+
+    def __init__(self) -> None:
+        self.codec = Codec.MPEGH_3DA
+        self.decoder_bin = "flumpeghdec"
+        self.provider = "Fluendo"
+        self.api = "SW"
+        self.parser = "qtdemux"
+        # The plugin outputs 32 bit float samples while fluster compares 16 bit WAV files
+        self.caps = "audio/x-raw,format=S16LE ! wavenc"
+        super().__init__()
+
+    @staticmethod
+    def _properties(optional_params: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        """Translate the optional parameters of a test vector to flumpeghdec properties"""
+        params = dict(optional_params or {})
+        properties: Dict[str, Any] = {}
+        if "target_layout" in params:
+            properties["cicp"] = params.pop("target_layout")
+        if "target_loudness" in params:
+            loudness = params.pop("target_loudness")
+            if loudness not in LOUDNESS_RANGE:
+                raise NotSupportedError(f"Target loudness {loudness} is out of the range supported by flumpeghdec")
+            properties["loudness"] = loudness
+        for unsupported in ("preset_id", "drc_effect_type"):
+            if unsupported in params:
+                raise NotSupportedError(f"{unsupported} is not supported by flumpeghdec")
+        if params:
+            raise NotSupportedError(f"Unknown parameters for flumpeghdec: {sorted(params)}")
+        return properties
+
+    def gen_pipeline(
+        self,
+        input_filepath: str,
+        output_filepath: Optional[str],
+        output_format: OutputFormat,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        output = f"location={output_filepath}" if output_filepath else ""
+        decoder_bin = self.decoder_bin
+        for name, value in self._properties(optional_params).items():
+            decoder_bin += f" {name}={value}"
+        return PIPELINE_TPL.format(
+            input_filepath, self.parser, decoder_bin, f"audioconvert ! {self.caps}", self.sink, output
+        )
+
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Wraps input_filepath in a MP4 file and decodes it in output_filepath"""
+        self._properties(optional_params)  # Fail before doing any work if a parameter is not supported
+        mp4_filepath = f"{output_filepath}.mp4"
+        layout = mhas_to_mp4(input_filepath, mp4_filepath)
+        params = dict(optional_params or {})
+        # flumpeghdec renders to CICP 16 by default, the reference decoder keeps the layout of the stream
+        params.setdefault("target_layout", layout)
+        try:
+            return super().decode(mp4_filepath, output_filepath, output_format, timeout, verbose, keep_files, params)
+        finally:
+            if not keep_files:
+                os.remove(mp4_filepath)
 
 
 @register_decoder
