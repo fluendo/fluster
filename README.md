@@ -253,6 +253,11 @@ AC4_ELEMENTARY_STREAMS
     Description: Dolby AC-4 elementary stream test suite for conformance testing against the Dolby Pro Audio Decoder reference
     Test vectors: 10
 
+MPEGH_3D_AUDIO-ED3
+    Codec: MPEGH_3DA
+    Description: ISO/IEC 23008-9 MPEG-H 3D Audio conformance bitstreams (edition 3)
+    Test vectors: 91
+
 VP8-TEST-VECTORS
     Codec: VP8
     Description: VP8 Test Vector Catalogue from https://github.com/webmproject/vp8-test-vectors
