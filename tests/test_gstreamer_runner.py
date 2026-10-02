@@ -211,8 +211,13 @@ class TestHandleMessage(unittest.TestCase):
         runner = make_runner(FakeGst(msg_type=GST_MESSAGE_ERROR, error=error))
         self.assertEqual(handle(runner), ExitCode.NOT_SUPPORTED)
 
-    def test_missing_plugin_element_is_not_supported(self) -> None:
+    def test_missing_plugin_element_does_not_stop_the_pipeline(self) -> None:
         runner = make_runner(FakeGst(msg_type=GST_MESSAGE_ELEMENT, structure_name="missing-plugin"))
+        self.assertIsNone(handle(runner))
+
+    def test_error_after_missing_plugin_is_not_supported(self) -> None:
+        runner = make_runner(FakeGst(msg_type=GST_MESSAGE_ERROR))
+        runner._missing_plugin = True  # noqa: SLF001
         self.assertEqual(handle(runner), ExitCode.NOT_SUPPORTED)
 
     def test_non_missing_plugin_element_is_ignored(self) -> None:
