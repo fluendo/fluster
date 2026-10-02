@@ -16,7 +16,11 @@
 
 from __future__ import annotations
 
+import gzip
+import io
 import os
+import shutil
+import tarfile
 import tempfile
 import unittest
 import zipfile
@@ -43,12 +47,12 @@ class _ZipTestCase(unittest.TestCase):
         return path
 
 
-class TestExtract(_ZipTestCase):
-    def test_empty_file_means_extract_all(self) -> None:
+class TestExtractArchive(_ZipTestCase):
+    def test_empty_member_means_extract_all(self) -> None:
         zp = self._zip("flat.zip", {"a.bits": b"a", "nested/c.bits": b"c"})
         out = os.path.join(self.tmp, "out")
         os.makedirs(out)
-        utils.extract(zp, out, file="")
+        utils.extract_archive(zp, [("", out)])
         self.assertTrue(os.path.exists(os.path.join(out, "a.bits")))
         self.assertTrue(os.path.exists(os.path.join(out, "nested", "c.bits")))
 
@@ -56,24 +60,15 @@ class TestExtract(_ZipTestCase):
         zp = self._zip("flat.zip", {"a.bits": b"a", "b.bits": b"b"})
         out = os.path.join(self.tmp, "out")
         os.makedirs(out)
-        utils.extract(zp, out, file="a.bits")
+        utils.extract_archive(zp, [("a.bits", out)])
         self.assertTrue(os.path.exists(os.path.join(out, "a.bits")))
         self.assertFalse(os.path.exists(os.path.join(out, "b.bits")))
 
-    def test_missing_member_raises(self) -> None:
-        zp = self._zip("flat.zip", {"a.bits": b"a"})
-        out = os.path.join(self.tmp, "out")
-        os.makedirs(out)
-        with self.assertRaises(FileNotFoundError):
-            utils.extract(zp, out, file="missing.bits")
-
-
-class TestExtractZipMembers(_ZipTestCase):
     def test_named_member_with_prefix(self) -> None:
         zp = self._zip("pkg.zip", {"pkg.zip/a.bits": b"a", "pkg.zip/nested/c.bits": b"c"})
         out = os.path.join(self.tmp, "out")
         os.makedirs(out)
-        missing = utils.extract_zip_members(zp, [("a.bits", out)])
+        missing = utils.extract_archive(zp, [("a.bits", out)])
         self.assertEqual(missing, [])
         self.assertTrue(os.path.exists(os.path.join(out, "a.bits")))
 
@@ -83,7 +78,7 @@ class TestExtractZipMembers(_ZipTestCase):
         out2 = os.path.join(self.tmp, "out2")
         os.makedirs(out1)
         os.makedirs(out2)
-        missing = utils.extract_zip_members(zp, [(None, out1), ("b.bits", out2)])
+        missing = utils.extract_archive(zp, [(None, out1), ("b.bits", out2)])
         self.assertEqual(missing, [])
         self.assertTrue(os.path.exists(os.path.join(out1, "a.bits")))
         self.assertTrue(os.path.exists(os.path.join(out1, "b.bits")))
@@ -93,7 +88,7 @@ class TestExtractZipMembers(_ZipTestCase):
         zp = self._zip("flat.zip", {"a.bits": b"a"})
         out = os.path.join(self.tmp, "out")
         os.makedirs(out)
-        missing = utils.extract_zip_members(zp, [("nope.bits", out)])
+        missing = utils.extract_archive(zp, [("nope.bits", out)])
         self.assertEqual(missing, ["nope.bits"])
 
     def test_zip_slip_rejected(self) -> None:
@@ -101,8 +96,36 @@ class TestExtractZipMembers(_ZipTestCase):
         out = os.path.join(self.tmp, "out")
         os.makedirs(out)
         with self.assertRaises(ValueError):
-            utils.extract_zip_members(zp, [(None, out)])
+            utils.extract_archive(zp, [(None, out)])
         self.assertFalse(os.path.exists(os.path.join(self.tmp, "escaped.txt")))
+
+    @unittest.skipUnless(shutil.which("tar"), "tar not available")
+    def test_tar_named_members_grouped_and_extract_all(self) -> None:
+        tp = os.path.join(self.tmp, "pkg.tar.gz")
+        with tarfile.open(tp, "w:gz") as tar_file:
+            for name in ("a.bits", "b.bits"):
+                info = tarfile.TarInfo(name)
+                info.size = 1
+                tar_file.addfile(info, io.BytesIO(b"x"))
+        out1 = os.path.join(self.tmp, "out1")
+        out2 = os.path.join(self.tmp, "out2")
+        os.makedirs(out1)
+        os.makedirs(out2)
+        missing = utils.extract_archive(tp, [("a.bits", out1), ("b.bits", out1), (None, out2)])
+        self.assertEqual(missing, [])
+        self.assertEqual(sorted(os.listdir(out1)), ["a.bits", "b.bits"])
+        self.assertEqual(sorted(os.listdir(out2)), ["a.bits", "b.bits"])
+
+    @unittest.skipUnless(shutil.which("gunzip"), "gunzip not available")
+    def test_gzip_decompressed_into_each_dir(self) -> None:
+        gp = os.path.join(self.tmp, "clip.bs.gz")
+        with gzip.open(gp, "wb") as gz_file:
+            gz_file.write(b"data")
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        self.assertEqual(utils.extract_archive(gp, [("ignored", out)]), [])
+        with open(os.path.join(out, "clip.bs"), "rb") as handle:
+            self.assertEqual(handle.read(), b"data")
 
 
 if __name__ == "__main__":

@@ -20,14 +20,12 @@ import contextlib
 import hashlib
 import os
 import shutil
-import subprocess
 import sys
-import zipfile
 from dataclasses import dataclass, field
 from multiprocessing import Pool
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from fluster.utils import download, extract, extract_zip_members, file_checksum, filename_from_url, is_extractable
+from fluster.utils import ArchiveError, download, extract_archive, file_checksum, filename_from_url, is_extractable
 
 
 @dataclass
@@ -348,23 +346,13 @@ class DownloadManager:
             member = None if (self.extract_all or not destination.input_file) else destination.input_file
             entries.append((member, dest_dir))
 
-        if cache_path.endswith(".zip"):
-            try:
-                missing = extract_zip_members(cache_path, entries)
-            except zipfile.BadZipFile as exc:
-                self._discard_corrupt_archive(cache_path)
-                raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
-            for member in missing:
-                print(f"WARNING: test vector {member} not found inside {source_filename}")
-        else:
-            for entry_member, entry_dir in entries:
-                try:
-                    extract(cache_path, entry_dir, file=entry_member)
-                except FileNotFoundError:
-                    print(f"WARNING: test vector {entry_member} not found inside {source_filename}")
-                except (zipfile.BadZipFile, subprocess.CalledProcessError, OSError) as exc:
-                    self._discard_corrupt_archive(cache_path)
-                    raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
+        try:
+            missing = extract_archive(cache_path, entries)
+        except ArchiveError as exc:
+            self._discard_corrupt_archive(cache_path)
+            raise Exception(f"{cache_path} could not be extracted as archive. File was deleted") from exc
+        for member in missing:
+            print(f"WARNING: test vector {member} not found inside {source_filename}")
 
         if not self.keep_file and os.path.exists(cache_path):
             os.remove(cache_path)
