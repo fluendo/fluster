@@ -37,7 +37,7 @@ import wave
 import zipfile
 from functools import partial
 from threading import Lock
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 TARBALL_EXTS = ("tar.gz", "tgz", "tar.bz2", "tbz2", "tar.xz")
 
@@ -305,48 +305,28 @@ def is_extractable(filepath: str) -> bool:
     return filepath.endswith((*TARBALL_EXTS, ".zip", ".gz"))
 
 
-def extract(filepath: str, output_dir: str, file: Optional[str] = None) -> None:
-    """Extracts a file to a directory"""
-    if filepath.endswith(TARBALL_EXTS):
-        command = ["tar", "-C", output_dir, "-xf", filepath]
-        if file:
-            command.append(file)
-        subprocess.run(command, check=True)
-    elif filepath.endswith(".zip"):
-        with zipfile.ZipFile(filepath, "r") as zip_file:
-            prefix = os.path.basename(filepath) + "/"
-            if file:
-                # Find file with or without prefix
-                target_file = next(
-                    (member for member in zip_file.namelist() if member == file or member == prefix + file), None
-                )
-                if not target_file:
-                    raise FileNotFoundError(f"There is no item named '{file}' in the archive")
-                # Remove prefix if present
-                final_name = target_file[len(prefix) :] if target_file.startswith(prefix) else target_file
-                target_path = os.path.join(output_dir, final_name)
-                os.makedirs(os.path.dirname(target_path), exist_ok=True)
-                with zip_file.open(target_file) as source, open(target_path, "wb") as dest:
-                    shutil.copyfileobj(source, dest)
-            else:
-                # Extract all files, removing prefix if present
-                for member in zip_file.namelist():
-                    if member.endswith("/"):
-                        continue
-                    target = member[len(prefix) :] if member.startswith(prefix) else member
-                    if not target:
-                        continue
-                    target_path = os.path.join(output_dir, target)
-                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
-                    with zip_file.open(member) as source, open(target_path, "wb") as dest:
-                        shutil.copyfileobj(source, dest)
-    elif filepath.endswith(".gz"):
-        output_file = os.path.join(output_dir, os.path.basename(filepath[:-3]))
-        command = ["gunzip", "-c", filepath]
-        with open(output_file, "wb") as f:
-            subprocess.run(command, check=True, stdout=f)
-    else:
-        raise Exception(f"Unknown tarball format {filepath}")
+class ArchiveError(Exception):
+    """The archive could not be read or extracted by its backend."""
+
+
+def extract_archive(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
+    """Extract ``(member, output_dir)`` entries from a zip, tar or gzip archive.
+
+    A falsy member extracts the whole archive into its ``output_dir``. Returns the named
+    members not found in a zip archive. Raises ArchiveError if the archive cannot be
+    extracted; tar reports a missing member this way too.
+    """
+    try:
+        if filepath.endswith(".zip"):
+            return _extract_zip_members(filepath, entries)
+        # Checked before ".gz", which "x.tar.gz" also ends with.
+        if filepath.endswith(TARBALL_EXTS):
+            return _extract_tar_members(filepath, entries)
+        if filepath.endswith(".gz"):
+            return _extract_gzip_members(filepath, entries)
+    except (zipfile.BadZipFile, subprocess.CalledProcessError) as exc:
+        raise ArchiveError(f"{filepath} could not be extracted") from exc
+    raise Exception(f"Unknown archive format {filepath}")
 
 
 def _safe_join(base_dir: str, name: str) -> str:
@@ -359,15 +339,12 @@ def _safe_join(base_dir: str, name: str) -> str:
 
 
 def _write_zip_member(zip_file: zipfile.ZipFile, item: str, target_path: str) -> None:
-    """Write via a temporary file so an interrupted extraction never leaves a truncated target."""
     os.makedirs(os.path.dirname(target_path), exist_ok=True)
-    tmp_path = target_path + ".part"
-    with zip_file.open(item) as source, open(tmp_path, "wb") as dest:
+    with zip_file.open(item) as source, open(target_path, "wb") as dest:
         shutil.copyfileobj(source, dest)
-    os.replace(tmp_path, target_path)
 
 
-def extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
+def _extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
     """Extract entries from a zip archive, opening it only once.
 
     ``entries`` is a list of ``(member, output_dir)`` tuples. A falsy ``member``
@@ -382,27 +359,42 @@ def extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]])
         namelist = zip_file.namelist()
         names = set(namelist)
         for member, output_dir in entries:
-            if not member:
-                # Extract all files, removing the prefix if present.
-                for item in namelist:
-                    if item.endswith("/"):
-                        continue
-                    target = item[len(prefix) :] if item.startswith(prefix) else item
-                    if not target:
-                        continue
-                    target_path = _safe_join(output_dir, target)
-                    _write_zip_member(zip_file, item, target_path)
-                continue
-            # Find the member with or without the prefix.
-            target_file = next((c for c in (member, prefix + member) if c in names), None)
-            if target_file is None:
-                missing.append(member)
-                continue
-            # Remove the prefix if present.
-            final_name = target_file[len(prefix) :] if target_file.startswith(prefix) else target_file
-            target_path = _safe_join(output_dir, final_name)
-            _write_zip_member(zip_file, target_file, target_path)
+            if member:
+                # The member may be stored with or without the archive-name prefix.
+                found = next((c for c in (member, prefix + member) if c in names), None)
+                if found is None:
+                    missing.append(member)
+                    continue
+                items: Iterable[str] = [found]
+            else:
+                items = (item for item in namelist if not item.endswith("/"))
+            for item in items:
+                name = item[len(prefix) :] if item.startswith(prefix) else item
+                _write_zip_member(zip_file, item, _safe_join(output_dir, name))
     return missing
+
+
+def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
+    """Run ``tar`` once per output directory; a falsy member extracts everything there."""
+    extract_all_dirs = {output_dir for member, output_dir in entries if not member}
+    # An empty member list makes tar extract everything.
+    members_by_dir: Dict[str, List[str]] = {}
+    for member, output_dir in entries:
+        members = members_by_dir.setdefault(output_dir, [])
+        if member and output_dir not in extract_all_dirs:
+            members.append(member)
+    for output_dir, members in members_by_dir.items():
+        subprocess.run(["tar", "-C", output_dir, "-xf", filepath, *members], check=True)
+    return []
+
+
+def _extract_gzip_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
+    """Decompress a single-file gzip into each output directory; member names are ignored."""
+    output_name = os.path.basename(filepath[:-3])
+    for _, output_dir in entries:
+        with open(os.path.join(output_dir, output_name), "wb") as dest:
+            subprocess.run(["gunzip", "-c", filepath], check=True, stdout=dest)
+    return []
 
 
 def normalize_binary_cmd(cmd: str) -> str:
