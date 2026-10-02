@@ -38,6 +38,13 @@ h266_vvdec_decoder: ## build H.266 VVdeC, the Fraunhofer Versatile Video Decoder
 	cd $(CONTRIB_DIR)/vvdec && cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-Wno-stringop-truncation -Wno-stringop-overflow" && $(MAKE) -C build vvdecapp
 	find $(CONTRIB_DIR)/vvdec/bin/release-static/ -name "vvdecapp" -type f -exec cp {} $(DECODERS_DIR)/ \;
 
+mpegh_reference_decoder: ## build Fraunhofer MPEG-H 3D Audio decoder (mpeghdec) with a raw MHAS front-end
+	$(create_dirs)
+	cd $(CONTRIB_DIR) && git clone https://github.com/Fraunhofer-IIS/mpeghdec.git --depth=1 || true
+	cd $(CONTRIB_DIR)/mpeghdec && git pull --autostash || true
+	cd $(CONTRIB_DIR)/mpeghdec && cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && $(MAKE) -C build mpeghdec
+	$(CXX) -std=c++11 -O2 -I$(CONTRIB_DIR)/mpeghdec/include scripts/mpeghdec_mhas/mhasdec.cpp $(CONTRIB_DIR)/mpeghdec/build/lib/libmpeghdec.a -o $(DECODERS_DIR)/mhasdec
+
 h265_reference_decoder: ## build H.265 reference decoder
 	$(create_dirs)
 	cd $(CONTRIB_DIR) && git clone https://vcgit.hhi.fraunhofer.de/jct-vc/HM.git --depth=1 || true
@@ -245,6 +252,7 @@ dbg-%:
 	h265_reference_decoder \
 	h266_reference_decoder \
 	h266_vvdec_decoder \
+	mpegh_reference_decoder \
 	mpeg_2_aac_reference_decoder \
 	mpeg_2_video_reference_decoder \
 	mpeg_4_aac_reference_decoder \
