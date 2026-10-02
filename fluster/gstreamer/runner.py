@@ -108,6 +108,7 @@ class GStreamerRunner:
         self.pipeline: Optional[ctypes.c_void_p] = None
         self.bus: Optional[ctypes.c_void_p] = None
         self._interrupted = False
+        self._missing_plugin = False
 
     def _is_not_supported_error(self, error: GstMessageError) -> bool:
         """Return whether a Gst error maps to an unsupported decoder result."""
@@ -288,7 +289,7 @@ class GStreamerRunner:
             self._log_error(f"ERROR: {error.message}")
             if self.verbose and error.debug:
                 self._log_error(f"Debug: {error.debug}")
-            if self._is_not_supported_error(error):
+            if self._missing_plugin or self._is_not_supported_error(error):
                 return ExitCode.NOT_SUPPORTED
             return ExitCode.ERROR
 
@@ -301,12 +302,11 @@ class GStreamerRunner:
 
         elif msg_type == GST_MESSAGE_ELEMENT:
             structure = self.gst.message_get_structure(msg)
-            # A missing-plugin message means GStreamer has no element able to
-            # handle this media (missing demuxer, parser or decoder), which is
-            # an unsupported format rather than a pipeline error.
+            # Autopluggers post this for any stream they cannot handle and keep going, so it
+            # only means "not supported" if the pipeline then fails.
             if structure and self.gst.structure_get_name(structure) == "missing-plugin":
-                self._log_error("ERROR: Media not supported, no suitable plugin found")
-                return ExitCode.NOT_SUPPORTED
+                self._log_error("WARNING: No suitable plugin found for a stream")
+                self._missing_plugin = True
 
         # -m prints the structure of every message, like gst-launch -m.
         if self.print_messages:
