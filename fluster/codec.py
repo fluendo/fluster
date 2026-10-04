@@ -39,6 +39,9 @@ class Codec(Enum):
     def __str__(self) -> str:
         return self.value
 
+    def is_audio(self) -> bool:
+        return self in (Codec.AAC, Codec.AC4, Codec.EAC3)
+
 
 class OutputFormat(Enum):
     """Output format"""

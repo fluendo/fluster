@@ -121,14 +121,19 @@ class FFmpegDecoder(Decoder):
             download = f"hwdownload,format={self.hw_download_mapping[output_format]},"
 
         # Output format filter
-        command.extend(["-filter", f"{download}format=pix_fmts={output_format.value}"])
+        if output_format != OutputFormat.UNKNOWN:
+            command.extend(["-filter", f"{download}format=pix_fmts={output_format.value}"])
+
+        if self.codec.is_audio():
+            command.extend(["-c:a", "pcm_s32le"])
 
         # MD5 muxer
         if self.use_md5_muxer and not keep_files:
             command.extend(["-f", "md5", "-"])
         # Output file
         else:
-            command.extend(["-f", "rawvideo", output_filepath])
+            out_format = "wav" if self.codec.is_audio() else "rawvideo"
+            command.extend(["-f", out_format, output_filepath])
 
         output = run_command_with_output(command, timeout=timeout, verbose=verbose, keep_stderr=True)
 
@@ -160,10 +165,12 @@ class FFmpegDecoder(Decoder):
             Codec.VP8: "vp8",
             Codec.VP9: "vp9",
             Codec.AV1: "av1",
+            Codec.EAC3: "eac3",
             Codec.MPEG2_VIDEO: "mpeg2video",
             Codec.MPEG4_VIDEO: "mpeg4",
         }
         if self.codec not in codec_mapping:
+            print(f"{self.codec} not supported by ffmpeg")
             return False
         self.ffmpeg_codec = codec_mapping[self.codec]
 
@@ -240,6 +247,13 @@ class FFmpegMPEG4VideoDecoder(FFmpegDecoder):
     """FFmpeg SW decoder for MPEG4 video"""
 
     codec = Codec.MPEG4_VIDEO
+
+
+@register_decoder
+class FFmpegEAC3Decoder(FFmpegDecoder):
+    """FFmpeg SW decoder for EAC3 audio"""
+
+    codec = Codec.EAC3
 
 
 class FFmpegVaapiDecoder(FFmpegDecoder):
