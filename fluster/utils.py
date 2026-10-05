@@ -493,6 +493,15 @@ def compare_wav_files(reference_file: str, test_file: str, tolerance: int = 128)
     n_ref = len(ref_flat) // ref_nch
     n_test = len(test_flat) // test_nch
 
+    def count_violations(ref_start: int, test_start: int) -> int:
+        n_compare = min(n_ref - ref_start, n_test - test_start)
+        violations = 0
+        for ch in channels:
+            ref_ch = ref_flat[ref_start * ref_nch + ch : (ref_start + n_compare) * ref_nch : ref_nch]
+            test_ch = test_flat[test_start * test_nch + ch : (test_start + n_compare) * test_nch : test_nch]
+            violations += sum(abs(r - t) > tolerance for r, t in zip(ref_ch, test_ch))
+        return violations
+
     # Align to first non-zero frame to compensate for leading silence
     ref_nz = next((i for i in range(n_ref) if any(ref_flat[i * ref_nch + ch] for ch in channels)), None)
     test_nz = next((i for i in range(n_test) if any(test_flat[i * test_nch + ch] for ch in channels)), None)
@@ -505,12 +514,11 @@ def compare_wav_files(reference_file: str, test_file: str, tolerance: int = 128)
         elif lag < 0:
             ref_start = -lag
 
-    n_compare = min(n_ref - ref_start, n_test - test_start)
-    violations = 0
-    for ch in channels:
-        ref_ch = ref_flat[ref_start * ref_nch + ch : (ref_start + n_compare) * ref_nch : ref_nch]
-        test_ch = test_flat[test_start * test_nch + ch : (test_start + n_compare) * test_nch : test_nch]
-        violations += sum(abs(r - t) > tolerance for r, t in zip(ref_ch, test_ch))
+    violations = count_violations(ref_start, test_start)
+    if violations and (ref_start or test_start):
+        # One of the files may start with a few frames of +-1 LSB noise while the other has exact zeros, so its
+        # first non-zero frame is not a real alignment point: keep the best of the aligned and the unaligned result
+        violations = min(violations, count_violations(0, 0))
     return violations
 
 
