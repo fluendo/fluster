@@ -8,6 +8,7 @@
 import argparse
 import hashlib
 import os
+import re
 import shutil
 import ssl
 import subprocess
@@ -145,6 +146,32 @@ def download_mpeg4(contrib_dir):
     obj_dir.mkdir(parents=True, exist_ok=True)
 
 
+def download_mpegh(contrib_dir):
+    """Download the MPEG-H 3D Audio (ISO/IEC 23008-6) reference software"""
+    print()
+    print("=== Downloading MPEG-H 3D Audio reference software ===")
+
+    mpegh_dir = contrib_dir / "MPEG-H_3DA_refSoft"
+    mpegh_url = "https://standards.iso.org/iso-iec/23008/-6/ed-4/en/refSoft_src.zip"
+    mpegh_zip = contrib_dir / "refSoft_src.zip"
+
+    if mpegh_dir.exists():
+        print(f"Skipping MPEG-H 3D Audio: {mpegh_dir} already exists")
+        return
+
+    request = Request(mpegh_url, headers={"User-Agent": "Mozilla/5.0"})
+    with urlopen(request) as response:
+        mpegh_zip.write_bytes(response.read())
+    extract_zip(mpegh_zip, contrib_dir)
+    mpegh_zip.unlink()
+    next(contrib_dir.glob("MPEG-H_3DA_refSoft_src_*")).rename(mpegh_dir)
+
+    # GCC 13 rejects the Visual Studio "#pragma region" lines placed between an if block and its else
+    spatial_decoder = mpegh_dir / "modules/hoaCoder/spatialCoder/spatialDecoding/src/SpatialDecoder.cpp"
+    source = spatial_decoder.read_text(encoding="utf-8", errors="ignore")
+    spatial_decoder.write_text(re.sub(r"^[ \t]*#pragma (end)?region.*\n", "", source, flags=re.M), encoding="utf-8")
+
+
 def download_libtsp(contrib_dir):
     """Download libtsp audio library"""
     print()
@@ -242,7 +269,7 @@ copyright@iso.org
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Download ISO reference decoder dependencies (MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, libtsp)"
+        description="Download ISO reference decoder dependencies (MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, MPEG-H, libtsp)"
     )
     parser.add_argument(
         "dest_dir",
@@ -272,6 +299,7 @@ def main():
     print("  - MPEG-2 AAC decoder")
     print("  - MPEG-2 video decoder")
     print("  - MPEG-4 AAC decoders")
+    print("  - MPEG-H 3D Audio decoder")
     print("  - libtsp audio library")
     print()
 
@@ -285,6 +313,7 @@ def main():
     # Download dependencies
     download_mpeg2(contrib_dir)
     download_mpeg4(contrib_dir)
+    download_mpegh(contrib_dir)
     download_libtsp(contrib_dir)
 
     # Copy meson.build files to contrib directories
