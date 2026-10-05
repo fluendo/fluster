@@ -147,6 +147,14 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    binaries will be placed in the `decoders` directory. This has been tested on
    Linux and macOS (both x86_64 and ARM64).
 
+   The MPEG-H 3D Audio reference decoder (ISO/IEC 23008-6), used by the
+   `MPEGH_3D_AUDIO-ED3` test suite, is not built by default. It also needs cmake
+   and network access, as its CMake project fetches some sources:
+
+   ```bash
+   meson setup builddir -Dmpegh_decoder=true
+   ```
+
 3. List the test suites and the decoders available `./fluster.py list`.
    Tip: You can list the decoders that can run in the current system with `./fluster.py list -c`.
 
