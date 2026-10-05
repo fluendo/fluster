@@ -69,6 +69,9 @@ packages = ["fluster", "fluster.decoders", "fluster.gstreamer"]
 "share/fluster/test_suites/ac4" = [
     "test_suites/ac4/AC4_ELEMENTARY_STREAMS.json"
 ]
+"share/fluster/test_suites/mpegh" = [
+    "test_suites/mpegh/MPEGH_3D_AUDIO-ED3.json"
+]
 "share/fluster/test_suites/av1" = [
     "test_suites/av1/AV1-TEST-VECTORS.json",
     "test_suites/av1/AV1-ARGON-PROFILE0-CORE-ANNEX-B.json",
