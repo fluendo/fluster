@@ -1,0 +1,1395 @@
+{
+    "name": "MPEGH_3D_AUDIO-ED3",
+    "codec": "MPEGH_3DA",
+    "description": "ISO/IEC 23008-9 MPEG-H 3D Audio conformance bitstreams (edition 3)",
+    "test_vectors": [
+        {
+            "name": "C102_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C102_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "f59f11bfe4ed396c4e771c356767facc"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Gr-0-1__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Gr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "be9be68d79de7ce24837bfc43d8cc060"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Gr-0-1__Lou-24_Eff-6_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Gr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "83b16ff12392436c9d3de954ced8b6db"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "566c49215b848af7204f2dc004957fe0"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1__Lou-24_Eff-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 2
+            },
+            "output_format": "Unknown",
+            "result": "e88094a02ff2276172d3d671806edf4d"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1__Lou-24_Eff-2_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 2,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "5ebc66bb11fb0f7b8f8083454e88bdf0"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "b0a22d7761923e3920009a9f8290bd28"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1__Lou-24_Eff-6_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Mb-2_D-Duck-Pr-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "d82495feda262b5a6fe9a746ab9e2996"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Pr-0-1__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Pr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "be9be68d79de7ce24837bfc43d8cc060"
+        },
+        {
+            "name": "C103_3_FD_D-Drc-1-Pr-0-1__Lou-24_Eff-6_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Drc-1-Pr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "83b16ff12392436c9d3de954ced8b6db"
+        },
+        {
+            "name": "C103_3_FD_D-Duck-Gr-0-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Duck-Gr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "1b9290d23642696d1ef08c6ba19318c7"
+        },
+        {
+            "name": "C103_3_FD_D-Duck-Gr-0-1__Lou-24_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Duck-Gr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "0b36b093ed3d28a44e453f18f3a14f0a"
+        },
+        {
+            "name": "C103_3_FD_D-Duck-Pr-0-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Duck-Pr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "ff2d6c3367e111cddd5a49dbcbbedec1"
+        },
+        {
+            "name": "C103_3_FD_D-Duck-Pr-0-1__Lou-24_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Duck-Pr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "1e2037cb2179cdb13754a1acb5cdebca"
+        },
+        {
+            "name": "C103_3_FD_D-Ln-Gr-0-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Ln-Gr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "09f46ae36cc6eca53fe98355b702475e"
+        },
+        {
+            "name": "C103_3_FD_D-Ln-Gr-0-1__Lou-24_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Ln-Gr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "d94b07ec1e7e16957749e83839ef9f1a"
+        },
+        {
+            "name": "C103_3_FD_D-Ln-Pr-0-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Ln-Pr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "09f46ae36cc6eca53fe98355b702475e"
+        },
+        {
+            "name": "C103_3_FD_D-Ln-Pr-0-1__Lou-24_Pr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C103_3_FD_D-Ln-Pr-0-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "preset_id": 1
+            },
+            "output_format": "Unknown",
+            "result": "d94b07ec1e7e16957749e83839ef9f1a"
+        },
+        {
+            "name": "C104_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C104_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "bb3bdfe775a853156856a73fb6280822"
+        },
+        {
+            "name": "C19_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C19_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "9a50e9478f00522ee79de9a10c19beec"
+        },
+        {
+            "name": "C19_3_FD_D-Ln-Lay-2-6__Lay-2_Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C19_3_FD_D-Ln-Lay-2-6.mhas",
+            "optional_params": {
+                "target_layout": 2,
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "97fc25540747fe45570c43db1a25610a"
+        },
+        {
+            "name": "C19_3_FD_D-Ln-Lay-2-6__Lay-6_Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C19_3_FD_D-Ln-Lay-2-6.mhas",
+            "optional_params": {
+                "target_layout": 6,
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "744c2f1e950348737a3608ec6397009b"
+        },
+        {
+            "name": "C19_3_FD_D-Ln-Lay-2-6__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C19_3_FD_D-Ln-Lay-2-6.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "285908a2d873411c86dfdebfe952da6b"
+        },
+        {
+            "name": "C1_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C1_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "f2a29ddd9c13086f57da08d499343d23"
+        },
+        {
+            "name": "C2_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "b616cc424aea14d606e11618632244c4"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1-Mb__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1-Mb.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "2ff876676ddf6a03b844be3d8579eb78"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1-Mb__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1-Mb.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "f2eea9458ea6b4c29b0a8f4d82ca3dc2"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1-Mb__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1-Mb.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "47d5f1296a48c8a70c01e1c0137bc383"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1__Lou-10_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -10,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "c8328883ffed079128e61e39243345c2"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "13b5964fafc6387d098a24b47a810234"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "5536edf72ff84c6d88ccf159e2df6fe9"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-1__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "791190a4364a4ec99a421a2e7fdcc32d"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-2__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-2.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "0e1dd66c717daaea825f6d6b8052451d"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-2__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-2.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "f0cc0b058581007477d2416e2c60ea7a"
+        },
+        {
+            "name": "C2_3_FD_D-Drc-2__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Drc-2.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "10a681125d9b63b49547eb55de829d43"
+        },
+        {
+            "name": "C2_3_FD_D-Ln__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Ln.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "6cd71449f97a6136dad510fb69adb53f"
+        },
+        {
+            "name": "C2_3_FD_D-Ln__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Ln.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "2c15157b1b7719ed04429ecc2da39ec6"
+        },
+        {
+            "name": "C2_3_FD_D-Ln__Lou-31",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C2_3_FD_D-Ln.mhas",
+            "optional_params": {
+                "target_loudness": -31
+            },
+            "output_format": "Unknown",
+            "result": "87d39daee9bb3c6191698dfe7ae152f2"
+        },
+        {
+            "name": "C6_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "df3d7d879effc93af63864359be532d4"
+        },
+        {
+            "name": "C6_3_FD_Asy",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Asy.mhas",
+            "output_format": "Unknown",
+            "result": "695ed0ae0ce876e615c4be5dbdb10463"
+        },
+        {
+            "name": "C6_3_FD_Cp",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Cp.mhas",
+            "output_format": "Unknown",
+            "result": "2496ef73863e175212292cdc008ba062"
+        },
+        {
+            "name": "C6_3_FD_D-Drc-1-3-Lay-2__Lay-2_Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_D-Drc-1-3-Lay-2.mhas",
+            "optional_params": {
+                "target_layout": 2,
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "037b07be09d16f9dd6f122c9a90e8a98"
+        },
+        {
+            "name": "C6_3_FD_D-Drc-1-3-Lay-2__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_D-Drc-1-3-Lay-2.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "1322c17191410a8429733b078879060d"
+        },
+        {
+            "name": "C6_3_FD_D-Ln-Lay-2__Lay-2_Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_D-Ln-Lay-2.mhas",
+            "optional_params": {
+                "target_layout": 2,
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "43f04d6d411abd116e6ea83d54951c25"
+        },
+        {
+            "name": "C6_3_FD_D-Ln-Lay-2__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_D-Ln-Lay-2.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "0fe102e41f8be83efc3c17ed3cbe3fb2"
+        },
+        {
+            "name": "C6_3_FD_E-SFi",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_E-SFi.mhas",
+            "output_format": "Unknown",
+            "result": "0f2b9276f03a02cb625452c4654ae44d"
+        },
+        {
+            "name": "C6_3_FD_E-ran-01-00",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_E-ran-01-00.mhas",
+            "output_format": "Unknown",
+            "result": "d8cdbe6efc47b57d9ec4debf6796b99e"
+        },
+        {
+            "name": "C6_3_FD_E-ran-01-15",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_E-ran-01-15.mhas",
+            "output_format": "Unknown",
+            "result": "1625345797c769bdb303a58f937957bc"
+        },
+        {
+            "name": "C6_3_FD_E-ran-31-04",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_E-ran-31-04.mhas",
+            "output_format": "Unknown",
+            "result": "4b3259aa7ad7ca51a737cbf17c9621f3"
+        },
+        {
+            "name": "C6_3_FD_E-ran-31-15",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_E-ran-31-15.mhas",
+            "output_format": "Unknown",
+            "result": "c669e7919413327e5266156fc20c826d"
+        },
+        {
+            "name": "C6_3_FD_I-foo-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_I-foo-0.mhas",
+            "output_format": "Unknown",
+            "result": "e1d7732734bf616c2aec3b35477bb266"
+        },
+        {
+            "name": "C6_3_FD_I-foo-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_I-foo-24.mhas",
+            "output_format": "Unknown",
+            "result": "d6a6011ad5f500185c63a7765a338ce0"
+        },
+        {
+            "name": "C6_3_FD_M-Mec",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-Mec.mhas",
+            "output_format": "Unknown",
+            "result": "2b0da851380468a8ce0dcc612f4918ed"
+        },
+        {
+            "name": "C6_3_FD_M-Pre_M-Typ-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-Pre_M-Typ-0.mhas",
+            "output_format": "Unknown",
+            "result": "9ec382ba34c03911beefe0d647ada7ad"
+        },
+        {
+            "name": "C6_3_FD_M-Rot_M-Typ-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-Rot_M-Typ-1.mhas",
+            "output_format": "Unknown",
+            "result": "e47ca486143be85ed4f791ef0d8719a4"
+        },
+        {
+            "name": "C6_3_FD_M-SFi-0_M-Typ-10",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-SFi-0_M-Typ-10.mhas",
+            "output_format": "Unknown",
+            "result": "e7f5b0c12b2609d04a06e91bc23d9050"
+        },
+        {
+            "name": "C6_3_FD_M-SFi-1_M-Typ-10",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-SFi-1_M-Typ-10.mhas",
+            "output_format": "Unknown",
+            "result": "18576d6a1b02b1eb79466cec37e4588c"
+        },
+        {
+            "name": "C6_3_FD_M-SFi-2_M-Typ-10",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-SFi-2_M-Typ-10.mhas",
+            "output_format": "Unknown",
+            "result": "f3ed8a269700eab0dd1274b5cacb4b40"
+        },
+        {
+            "name": "C6_3_FD_M-SFi-2_M-Typ-11",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-SFi-2_M-Typ-11.mhas",
+            "output_format": "Unknown",
+            "result": "e5f3b72bba5ef0c4a3d1f693deee4c5f"
+        },
+        {
+            "name": "C6_3_FD_M-SFi-2_M-Typ-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-SFi-2_M-Typ-2.mhas",
+            "output_format": "Unknown",
+            "result": "adfeef90a00c266f2a685de0cc071a01"
+        },
+        {
+            "name": "C6_3_FD_M-SFi-2_M-Typ-3",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-SFi-2_M-Typ-3.mhas",
+            "output_format": "Unknown",
+            "result": "1164721753c95b4c911b1c0bfa616ac7"
+        },
+        {
+            "name": "C6_3_FD_M-Typ-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-Typ-0.mhas",
+            "output_format": "Unknown",
+            "result": "f78f010b12c219c033eab28f8e6717dd"
+        },
+        {
+            "name": "C6_3_FD_M-Typ-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-Typ-1.mhas",
+            "output_format": "Unknown",
+            "result": "3dde9581175c825f6784a1556ca87dfb"
+        },
+        {
+            "name": "C6_3_FD_M-chM-1B",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-chM-1B.mhas",
+            "output_format": "Unknown",
+            "result": "22944f97efcf6f9a3530213aa0c24d1d"
+        },
+        {
+            "name": "C6_3_FD_M-chM-29",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-chM-29.mhas",
+            "output_format": "Unknown",
+            "result": "e7c1c7007854de17b990893e8eeb9347"
+        },
+        {
+            "name": "C6_3_FD_M-chM-32",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_M-chM-32.mhas",
+            "output_format": "Unknown",
+            "result": "caf157b3c65f21f87f180cb621af8bb6"
+        },
+        {
+            "name": "C6_3_FD_Ms",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Ms.mhas",
+            "output_format": "Unknown",
+            "result": "95eb7de4ce6c71fba5693f6b241b5209"
+        },
+        {
+            "name": "C6_3_FD_Nf",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Nf.mhas",
+            "output_format": "Unknown",
+            "result": "df446d43c97c735899419d21a892d0f0"
+        },
+        {
+            "name": "C6_3_FD_Nmf",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Nmf.mhas",
+            "output_format": "Unknown",
+            "result": "8e6978cd539a559540523fdb8e95b4ed"
+        },
+        {
+            "name": "C6_3_FD_Sfb",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Sfb.mhas",
+            "output_format": "Unknown",
+            "result": "76c9b544e66cd656565a566cee1f5aeb"
+        },
+        {
+            "name": "C6_3_FD_Tns",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Tns.mhas",
+            "output_format": "Unknown",
+            "result": "40e29f3b413368eff3c4fcf43c94595e"
+        },
+        {
+            "name": "C6_3_FD_Win",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_Win.mhas",
+            "output_format": "Unknown",
+            "result": "5d77bb680af24cd2d0429c3c7bf40bb6"
+        },
+        {
+            "name": "C6_3_FD_cpc-1-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_cpc-1-0.mhas",
+            "output_format": "Unknown",
+            "result": "558ab8f580a64b221f39f96fac871d20"
+        },
+        {
+            "name": "C6_3_FD_cpc-2-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_cpc-2-0.mhas",
+            "output_format": "Unknown",
+            "result": "fd97790f2ee3efb31de0389b4c56f01d"
+        },
+        {
+            "name": "C6_3_FD_cpc-3-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_cpc-3-0.mhas",
+            "output_format": "Unknown",
+            "result": "ad64b16d00c93643666f2478eedd696f"
+        },
+        {
+            "name": "C6_3_FD_cpc-4-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/C6_3_FD_cpc-4-0.mhas",
+            "output_format": "Unknown",
+            "result": "2d33eb15408d3200ba4a539622d5072f"
+        },
+        {
+            "name": "H16_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "1603a9be9e7bfbc963bfab18a6285dac"
+        },
+        {
+            "name": "H16_3_FD_D-Drc-1__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "cf272d2db4bb1f1571a883264a700915"
+        },
+        {
+            "name": "H16_3_FD_D-Drc-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "4f76f987052650c4a0567b53e1afa124"
+        },
+        {
+            "name": "H16_3_FD_D-Drc-1__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "ec97d95c57fd9d0a513edcf93321d68d"
+        },
+        {
+            "name": "H16_3_FD_H-PSP-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-PSP-0.mhas",
+            "output_format": "Unknown",
+            "result": "020214722774c2a7273a3611e6e0008d"
+        },
+        {
+            "name": "H16_3_FD_H-PSP-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-PSP-1.mhas",
+            "output_format": "Unknown",
+            "result": "2241bff56fb17b7d4cfb9b9f49cd7192"
+        },
+        {
+            "name": "H16_3_FD_H-PSP-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-PSP-2.mhas",
+            "output_format": "Unknown",
+            "result": "1df8cf40b9c515ab0a79b82c0d462303"
+        },
+        {
+            "name": "H16_3_FD_H-PSP-3",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-PSP-3.mhas",
+            "output_format": "Unknown",
+            "result": "4d4d32dd81c9914cc91b65cf1ca45219"
+        },
+        {
+            "name": "H16_3_FD_H-Tca",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-Tca.mhas",
+            "output_format": "Unknown",
+            "result": "62392e65a3f4e8a3977725b700b8003a"
+        },
+        {
+            "name": "H16_3_FD_H-idec-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-idec-0.mhas",
+            "output_format": "Unknown",
+            "result": "ddf145096868c37828d1fa8f948a3dbf"
+        },
+        {
+            "name": "H16_3_FD_H-idec-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-idec-1.mhas",
+            "output_format": "Unknown",
+            "result": "eb82ddcb9823f3be31065213ff9abe3b"
+        },
+        {
+            "name": "H16_3_FD_H-idec-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-idec-2.mhas",
+            "output_format": "Unknown",
+            "result": "d243faab40c8c071c9e6feb3b4d6cd8e"
+        },
+        {
+            "name": "H16_3_FD_H-idec-3",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H16_3_FD_H-idec-3.mhas",
+            "output_format": "Unknown",
+            "result": "103f420692efee1c3a95f686ad724836"
+        },
+        {
+            "name": "H1_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H1_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "4cc38b1a22d21562fd8657f52dade8e9"
+        },
+        {
+            "name": "H4_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H4_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "572182787a5d1023ac108c09866035b8"
+        },
+        {
+            "name": "H4_3_FD_D-Drc-1-Mb__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H4_3_FD_D-Drc-1-Mb.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "4a87c3aafdd2c3606b3526ee5c8accef"
+        },
+        {
+            "name": "H4_3_FD_D-Drc-1-Mb__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H4_3_FD_D-Drc-1-Mb.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "658b052f89a3148453a36f724610d430"
+        },
+        {
+            "name": "H8_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "572182787a5d1023ac108c09866035b8"
+        },
+        {
+            "name": "H8_3_FD_H-Dir-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Dir-2.mhas",
+            "output_format": "Unknown",
+            "result": "24c8c4d0b480d5a6a610efcc4bb7b546"
+        },
+        {
+            "name": "H8_3_FD_H-Dir-3",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Dir-3.mhas",
+            "output_format": "Unknown",
+            "result": "fbd5af60746684caad34e340eebd1e80"
+        },
+        {
+            "name": "H8_3_FD_H-Dir-4",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Dir-4.mhas",
+            "output_format": "Unknown",
+            "result": "fb9beabb7802d03e7e884b3270452a7e"
+        },
+        {
+            "name": "H8_3_FD_H-Dir-5",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Dir-5.mhas",
+            "output_format": "Unknown",
+            "result": "c85b44fc81e2799dff250c3c52802a84"
+        },
+        {
+            "name": "H8_3_FD_H-Dir-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Dir-6.mhas",
+            "output_format": "Unknown",
+            "result": "19984d82f369da2d33941ec4c28ca46b"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-0.mhas",
+            "output_format": "Unknown",
+            "result": "841921fec43f4a0fc6be9cc71627f8e4"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-1.mhas",
+            "output_format": "Unknown",
+            "result": "c3a179db3cbbd74efeb9346bfc50131b"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-10",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-10.mhas",
+            "output_format": "Unknown",
+            "result": "3db6c065367ed3e645a859fb5831a21c"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-11",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-11.mhas",
+            "output_format": "Unknown",
+            "result": "e0b58cebb053274e154dca80d81e7e8f"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-12",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-12.mhas",
+            "output_format": "Unknown",
+            "result": "adfafc79f8d3834b3eec422d0c0a5588"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-13",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-13.mhas",
+            "output_format": "Unknown",
+            "result": "bc554e7152b4c3172ccd5eaedf423a4c"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-14",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-14.mhas",
+            "output_format": "Unknown",
+            "result": "793d5bd13c31f9cb413b0de79b20bd77"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-15",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-15.mhas",
+            "output_format": "Unknown",
+            "result": "4c2b098391172d20ce02bf6a1423c364"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-2.mhas",
+            "output_format": "Unknown",
+            "result": "ce31511896f095482687ec79ec957f07"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-3",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-3.mhas",
+            "output_format": "Unknown",
+            "result": "d53efc35740bd86579e55ac257e39de4"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-4",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-4.mhas",
+            "output_format": "Unknown",
+            "result": "42e8c3b2c6858208ea53a1ee2eb4ac80"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-5",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-5.mhas",
+            "output_format": "Unknown",
+            "result": "d42680add94580f87dfcfd1e7957dfad"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-6.mhas",
+            "output_format": "Unknown",
+            "result": "5533c361f81b80574c58053ef790d506"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-7",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-7.mhas",
+            "output_format": "Unknown",
+            "result": "e00718bcc79af3a7d016a80cfbc7c02a"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-8",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-8.mhas",
+            "output_format": "Unknown",
+            "result": "27a5dbb69b484371221121be20d8afb0"
+        },
+        {
+            "name": "H8_3_FD_H-Vvec-9",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_H-Vvec-9.mhas",
+            "output_format": "Unknown",
+            "result": "5234caeb7e918397b46913dd72f2a07f"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 1
+            },
+            "output_format": "Unknown",
+            "result": "804e1491963f8d983d48150ca754b67f"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-15",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 15
+            },
+            "output_format": "Unknown",
+            "result": "75583f76d4d9676114b1c0772c66422c"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 16
+            },
+            "output_format": "Unknown",
+            "result": "6958155d28cd584926e9f17e42284986"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-19",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 19
+            },
+            "output_format": "Unknown",
+            "result": "093bef506672065d0cce05b436642f14"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 2
+            },
+            "output_format": "Unknown",
+            "result": "795d217d6d0c12bce9a52a97bb963b3e"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 6
+            },
+            "output_format": "Unknown",
+            "result": "6d92a3fdfb7b4fc5c8bef05a789639f4"
+        },
+        {
+            "name": "H8_3_FD_Hmx__Lay-7",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H8_3_FD_Hmx.mhas",
+            "optional_params": {
+                "target_layout": 7
+            },
+            "output_format": "Unknown",
+            "result": "45067f4a8726c5ffc29fa6de7a56bea7"
+        },
+        {
+            "name": "H9_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "934b37eb6e81d009f259a034a43b9dc9"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-0.mhas",
+            "output_format": "Unknown",
+            "result": "f11adbcf8a7be95dd97752dcc3b65918"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-1.mhas",
+            "output_format": "Unknown",
+            "result": "0e9a849e8ea946247047842892159f74"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-2.mhas",
+            "output_format": "Unknown",
+            "result": "c07b5b558f332f085653d743cfeb77a7"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-3",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-3.mhas",
+            "output_format": "Unknown",
+            "result": "1996eb0efbba8dd6651d87ccf25a8fd7"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-4",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-4.mhas",
+            "output_format": "Unknown",
+            "result": "0e23f4f6cf6d3a2d351fa19332a10690"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-5",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-5.mhas",
+            "output_format": "Unknown",
+            "result": "7691ab42cf39d99c5d4e6c308efd5ac8"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-6.mhas",
+            "output_format": "Unknown",
+            "result": "22745af8fc72eafc9066f2090c8d4b06"
+        },
+        {
+            "name": "H9_3_FD_H-Gain-7",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/H9_3_FD_H-Gain-7.mhas",
+            "output_format": "Unknown",
+            "result": "bb896a6438133995d489fde0d9933d3d"
+        },
+        {
+            "name": "M1_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/M1_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "f7d16982836df195a618a9ef77410863"
+        },
+        {
+            "name": "O1_3_FD_D-Drc-1-Mb-2__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O1_3_FD_D-Drc-1-Mb-2.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "9a67a30c95e23d2a46a388d1577fffe0"
+        },
+        {
+            "name": "O1_3_FD_D-Drc-1-Mb-2__Lou-24_Eff-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O1_3_FD_D-Drc-1-Mb-2.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 1
+            },
+            "output_format": "Unknown",
+            "result": "f1679ae99422ff75ac356445d450d1ca"
+        },
+        {
+            "name": "O1_3_FD_D-Drc-1__Lou-16",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O1_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -16
+            },
+            "output_format": "Unknown",
+            "result": "baca90eff587129e45311b77cff9ccbf"
+        },
+        {
+            "name": "O1_3_FD_D-Drc-1__Lou-24",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O1_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -24
+            },
+            "output_format": "Unknown",
+            "result": "886c9a3a410e51caf88c0b0a3fb77098"
+        },
+        {
+            "name": "O1_3_FD_D-Drc-1__Lou-24_Eff-6",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O1_3_FD_D-Drc-1.mhas",
+            "optional_params": {
+                "target_loudness": -24,
+                "drc_effect_type": 6
+            },
+            "output_format": "Unknown",
+            "result": "8dc01cfb6d80893f91668ddd8ef0cd8b"
+        },
+        {
+            "name": "O20_3_FD_Bl-3__Lay-19",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O20_3_FD_Bl-3.mhas",
+            "optional_params": {
+                "target_layout": 19
+            },
+            "output_format": "Unknown",
+            "result": "b45d22fb0586a295129db18eef0f48e6"
+        },
+        {
+            "name": "O20_3_FD__Lay-19",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O20_3_FD.mhas",
+            "optional_params": {
+                "target_layout": 19
+            },
+            "output_format": "Unknown",
+            "result": "457e5931559ced370c910ac52001af72"
+        },
+        {
+            "name": "O24_3_FD_Bl-3__Lay-19",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O24_3_FD_Bl-3.mhas",
+            "optional_params": {
+                "target_layout": 19
+            },
+            "output_format": "Unknown",
+            "result": "7a5517364b7f8b80226225a63a9b345e"
+        },
+        {
+            "name": "O24_3_FD__Lay-19",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O24_3_FD.mhas",
+            "optional_params": {
+                "target_layout": 19
+            },
+            "output_format": "Unknown",
+            "result": "94c2b63da2ca36e754a70bd0fb893d14"
+        },
+        {
+            "name": "O9_3_FD",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD.mhas",
+            "output_format": "Unknown",
+            "result": "2975ef6a12d8c95bc917ee7a497b832f"
+        },
+        {
+            "name": "O9_3_FD_O-pos",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD_O-pos.mhas",
+            "output_format": "Unknown",
+            "result": "edc1fdf6ef4d2401ab4ebd1264e705f6"
+        },
+        {
+            "name": "O9_3_FD_O-rat-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD_O-rat-1.mhas",
+            "output_format": "Unknown",
+            "result": "2975ef6a12d8c95bc917ee7a497b832f"
+        },
+        {
+            "name": "O9_3_FD_O-rat-2",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD_O-rat-2.mhas",
+            "output_format": "Unknown",
+            "result": "88455ab6f25646ac50e0627c5b55ae7f"
+        },
+        {
+            "name": "O9_3_FD_O-rat-4",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD_O-rat-4.mhas",
+            "output_format": "Unknown",
+            "result": "97136a0648bfce8336e4144f5fc497ae"
+        },
+        {
+            "name": "O9_3_FD_O-spr-0",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD_O-spr-0.mhas",
+            "output_format": "Unknown",
+            "result": "eb8dc4818a8fe6a289f8f2267a5bfbb3"
+        },
+        {
+            "name": "O9_3_FD_O-spr-1",
+            "source": "https://standards.iso.org/iso-iec/23008/-9/ed-3/en/MPEG-H_3D_audio_conformanceData.zip",
+            "source_checksum": "a8ce041bcbc65a1d92a36b94c405b9e8",
+            "input_file": "compressedMhas/O9_3_FD_O-spr-1.mhas",
+            "output_format": "Unknown",
+            "result": "9a9d623eed460a814aef38abf7bc7d6f"
+        }
+    ],
+    "test_method": "sample"
+}
