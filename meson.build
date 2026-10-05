@@ -45,6 +45,7 @@ build_mpeg2_aac = get_option('mpeg2_aac_decoder')
 build_mpeg4_aac = get_option('mpeg4_aac_decoder')
 build_mpeg4_aac_er = get_option('mpeg4_aac_er_decoder')
 build_mpeg2_video = get_option('mpeg2_video_decoder')
+build_mpegh = get_option('mpegh_decoder')
 
 missing_deps = []
 
@@ -62,6 +63,13 @@ endif
 if build_mpeg4_aac or build_mpeg4_aac_er
   if not fs.is_dir(contrib_dir / 'C050470e_Electronic_inserts')
     missing_deps += ['contrib/C050470e_Electronic_inserts (MPEG-4 AAC decoder)']
+  endif
+endif
+
+# Check MPEG-H 3D Audio dependency
+if build_mpegh
+  if not fs.is_dir(contrib_dir / 'MPEG-H_3DA_refSoft')
+    missing_deps += ['contrib/MPEG-H_3DA_refSoft (MPEG-H 3D Audio decoder)']
   endif
 endif
 
@@ -288,6 +296,16 @@ if iso_decoders_list.length() > 0
   )
 endif
 
+# MPEG-H 3D Audio reference decoder (ISO/IEC 23008-6): it has its own CMake project, built by a script
+if build_mpegh
+  custom_target('mpegh-3da-reference-decoder',
+    output: 'mpegh-3da.stamp',
+    command: [python, build_dir / 'build_mpegh_decoder.py', '@OUTPUT@'],
+    build_by_default: true,
+    console: true,
+  )
+endif
+
 # =============================================================================
 # Create symlinks for decoders in decoders/ directory to be usable by fluster
 # =============================================================================
@@ -389,6 +407,7 @@ summary({
   'H.266 decoder (VVdeC)': build_h266_vvdec,
   'MPEG-2 video decoder': build_mpeg2_video,
   'MPEG-2 AAC decoder': build_mpeg2_aac,
+  'MPEG-H 3D Audio decoder': build_mpegh,
   'isobmff library': build_isobmff,
 }, section: 'Meson Subproject Decoders')
 
