@@ -30,6 +30,7 @@ class H264JCTVTDecoder(Decoder):
     description = "JCT-VT H.264/AVC reference decoder"
     codec = Codec.H264
     binary = "ldecod"
+    is_reference = True
 
     def decode(
         self,

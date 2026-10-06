@@ -30,6 +30,7 @@ class AV1AOMDecoder(Decoder):
     binary = "aomdec"
     codec = Codec.AV1
     annexb = False
+    is_reference = True
 
     def decode(
         self,
