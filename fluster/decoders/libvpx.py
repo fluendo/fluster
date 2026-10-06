@@ -29,6 +29,7 @@ class VPXDecoder(Decoder):
     description = ""
     binary = "vpxdec"
     codec = Codec.NONE
+    is_reference = True
 
     def __init__(self) -> None:
         super().__init__()
