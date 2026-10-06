@@ -206,6 +206,8 @@ class Fluster:
             print(f"\n{current_codec}")
             for decoder in decoder_list:
                 string = f"{decoder}"
+                if decoder.is_reference:
+                    string += " [R]"
                 if check:
                     string += "... " + (
                         self.emoji[TestVectorResult.SUCCESS]
