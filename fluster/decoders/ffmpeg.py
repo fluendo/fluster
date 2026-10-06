@@ -16,14 +16,16 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
+import os
 import re
 import subprocess
 from functools import lru_cache
 from typing import Any, Dict, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
-from fluster.utils import file_checksum, run_command_with_output
+from fluster.decoder import Decoder, NotSupportedError, register_decoder
+from fluster.decoders.mpegh_mhas import mhas_to_mp4
+from fluster.utils import file_checksum, run_command, run_command_with_output
 
 
 @lru_cache(maxsize=128)
@@ -240,6 +242,60 @@ class FFmpegMPEG4VideoDecoder(FFmpegDecoder):
     """FFmpeg SW decoder for MPEG4 video"""
 
     codec = Codec.MPEG4_VIDEO
+
+
+@register_decoder
+class FFmpegMPEGH3DADecoder(FFmpegDecoder):
+    """FFmpeg SW decoder for MPEG-H 3D Audio.
+
+    Needs a ffmpeg built with --enable-nonfree --enable-libmpeghdec (Fraunhofer mpeghdec). FFmpeg has no demuxer for
+    raw MHAS streams, so the test vectors are previously wrapped in a temporary MP4 file (see mpegh_mhas.py)."""
+
+    codec = Codec.MPEGH_3DA
+    ffmpeg_decoder = "libmpeghdec"
+    # fluster compares 16 bit WAV files
+    output_codec = "pcm_s16le"
+
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Wraps input_filepath in a MP4 file and decodes it in output_filepath"""
+        params = dict(optional_params or {})
+        # libmpeghdec decodes to the layout of the stream given by the container, so the only way to select it is
+        # writing the target one in the MP4 file. It has no options for loudness, DRC or preset selection
+        target_layout = params.pop("target_layout", None)
+        if params:
+            raise NotSupportedError(f"Unsupported parameters for {self.name}: {sorted(params)}")
+        mp4_filepath = f"{output_filepath}.mp4"
+        # libmpeghdec needs the channel layout of the stream, which FFmpeg reads from the mhaC box
+        mhas_to_mp4(input_filepath, mp4_filepath, with_config=True, layout=target_layout)
+        command = [self.binary, "-hide_banner", "-nostdin"]
+        if not verbose:
+            command.extend(["-loglevel", "warning"])
+        command.extend(["-codec", self.ffmpeg_decoder, "-i", mp4_filepath])
+        command.extend(["-codec", self.output_codec, "-f", "wav", output_filepath])
+        try:
+            run_command(command, timeout=timeout, verbose=verbose)
+        finally:
+            if not keep_files:
+                os.remove(mp4_filepath)
+        return file_checksum(output_filepath)
+
+    @lru_cache(maxsize=128)
+    def check(self, verbose: bool) -> bool:
+        """Checks whether the decoder can be run"""
+        # Skip FFmpegDecoder.check(), which only knows about video codecs
+        if not super(FFmpegDecoder, self).check(verbose):
+            return False
+        output = _run_ffmpeg_command(self.binary, "-decoders", verbose=verbose)
+        return re.search(rf"^\s*A\S*\s+{re.escape(self.ffmpeg_decoder)}\s", output, re.MULTILINE) is not None
 
 
 class FFmpegVaapiDecoder(FFmpegDecoder):
