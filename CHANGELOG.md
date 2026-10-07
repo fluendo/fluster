@@ -5,6 +5,85 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-10-07
+
+### Added
+- Add MPEG-H 3D Audio ED3 test suite and reference decoder
+- Add a GStreamer runner to launch pipelines
+- Support profile filtering in the reference subcommand
+- Add profiles to list output in CLI
+- Add run --profiles CLI option
+- Add VP9 coding profiles definition
+- Add Fluendo-H264-High444 test suite
+- Add AAC profiles to codec, test suites, and generator
+- Describe ARM CPU cores in system info
+- Report V4L2 M2M decoder devices in backend info
+- Add mirror_sync script to populate mirrors
+- Add download mirrors
+- Add Dolby PADS reference decoder with AC4 and EAC3prodec support
+- Add test suite for EAC3 decoder
+- Support both local and system directories with decoders
+
+### Changed
+- Extract all archives through extract_archive()
+- Address review comments on the download manager
+- Use a Set for the profile filter
+- Add profiles shared by multiple codecs
+- Remove duplicated stat calculations
+- Use os.path.pathsep.join instead of string algebra
+- Drop decoders_dir
+- Optimise test reporting for markdown, json and csv
+- Condition global summary in test reports
+- Add unit tests for the GStreamer runner
+- Add unit tests for the download manager and zip extraction
+- Use unittest for tests
+- Sort profiles in the list output
+- Ignore .venv directories
+- Enable libav (incl. vvdec) plugins for source-compiled GStreamer in Dockerfile
+- Add nvidia-utils package to Dockerfile to enable nvidia-smi
+- Add gstreamer decoder for EAC3prodec
+
+### Fixed
+- Include EAC3 and Fluendo-H264-High444 test suites in the package
+- Align wav comparison when the output starts with low-level noise
+- Keep the GStreamer runner going on missing-plugin messages
+- Use a part zip file
+- Set retries to -r + 1 in download_manager
+- Discard cached archives that fail to extract
+- Detect conflicting checksums for shared sources
+- Pass the retry count straight to download()
+- Derive download filenames from the URL path
+- Handle downloads deduplication over multiple test suites
+- Make mirror_sync parallel downloads work on Python 3.14
+- Remove ac4 dolby reference decoder OS check
+- Resolve test vector input paths on Windows
+- Keep fluster importable on unsupported platforms
+- Parameterise ac4 dolby reference decoder naming
+- Add AV1 to the High profile
+- Remove dead codec field from TestVector
+- Disable deinterlacing in Fluendo decoders
+- Disable deinterlacing in Fluendo H.264 SW decoder
+- Revert H.266 decoders to explicit h266parse parser
+- Docker access to X11 and Wayland displays
+- Gstreamer compilation and other errors in Dockerfile
+- Pass GST_PLUGIN_FEATURE_RANK via subprocess env instead of command string
+- Use parsebin with GST_PLUGIN_FEATURE_RANK=decoder:MAX
+- Update mirror script author and copyright
+- Add DISPLAY env var to solve VDPAU init failures in docker
+- Add environment variable VDPAU_DRIVER_PATH in Dockerfile
+- Docker keep libunwind/libdw and propagate VAAPI env vars over SSH
+- Docker pin nv-codec-headers to n12.2.72.0
+- Docker build nvidia-vaapi-driver from source instead of apt
+- GStreamer source build fails on Ubuntu 24.04
+- Support Fluendo EAC3 GStreamer decoder in EAC3 test suite
+- Use zip archive checksum as source_checksum in gen_eac3.py
+- Missing OutputFormat.YUV444P10LE format for FFMPEG QSV decoders
+- Timeout time calculation in reporting mechanism
+- Test results and reports when negative_test is True
+- Support WAVE_FORMAT_EXTENSIBLE in _read_wav for Python < 3.12
+- Correct expected fluster manpage output for pandoc 2.9.2.1 (Ubuntu 22.04)
+
+
 ## [0.7.1] - 2026-04-23
 
 ### Fixed
