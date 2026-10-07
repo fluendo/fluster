@@ -69,6 +69,9 @@ packages = ["fluster", "fluster.decoders", "fluster.gstreamer"]
 "share/fluster/test_suites/ac4" = [
     "test_suites/ac4/AC4_ELEMENTARY_STREAMS.json"
 ]
+"share/fluster/test_suites/eac3" = [
+    "test_suites/eac3/EAC3_ELEMENTARY_STREAMS.json"
+]
 "share/fluster/test_suites/mpegh" = [
     "test_suites/mpegh/MPEGH_3D_AUDIO-ED3.json"
 ]
@@ -94,7 +97,8 @@ packages = ["fluster", "fluster.decoders", "fluster.gstreamer"]
     "test_suites/h.264/JVT-FR-EXT.json",
     "test_suites/h.264/JVT-MVC.json",
     "test_suites/h.264/JVT-Professional_profiles.json",
-    "test_suites/h.264/JVT-SVC.json"
+    "test_suites/h.264/JVT-SVC.json",
+    "test_suites/h.264/Fluendo-H264-High444.json"
 ]
 "share/fluster/test_suites/h.265" = [
     "test_suites/h.265/JCT-VC-3D-HEVC.json",
