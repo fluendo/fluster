@@ -99,7 +99,6 @@ class TestExtractArchive(_ZipTestCase):
             utils.extract_archive(zp, [(None, out)])
         self.assertFalse(os.path.exists(os.path.join(self.tmp, "escaped.txt")))
 
-    @unittest.skipUnless(shutil.which("tar"), "tar not available")
     def test_tar_named_members_grouped_and_extract_all(self) -> None:
         tp = os.path.join(self.tmp, "pkg.tar.gz")
         with tarfile.open(tp, "w:gz") as tar_file:
@@ -115,6 +114,41 @@ class TestExtractArchive(_ZipTestCase):
         self.assertEqual(missing, [])
         self.assertEqual(sorted(os.listdir(out1)), ["a.bits", "b.bits"])
         self.assertEqual(sorted(os.listdir(out2)), ["a.bits", "b.bits"])
+
+    def test_tar_nested_member_creates_directories(self) -> None:
+        tp = os.path.join(self.tmp, "pkg.tar.gz")
+        with tarfile.open(tp, "w:gz") as tar_file:
+            info = tarfile.TarInfo("A6-GE19/ti_vga.cmp")
+            info.size = 4
+            tar_file.addfile(info, io.BytesIO(b"bits"))
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        missing = utils.extract_archive(tp, [("A6-GE19/ti_vga.cmp", out)])
+        self.assertEqual(missing, [])
+        target = os.path.join(out, "A6-GE19", "ti_vga.cmp")
+        self.assertTrue(os.path.exists(target))
+        with open(target, "rb") as handle:
+            self.assertEqual(handle.read(), b"bits")
+
+    def test_tar_missing_member_raises_archive_error(self) -> None:
+        tp = os.path.join(self.tmp, "pkg.tar.gz")
+        with tarfile.open(tp, "w:gz") as tar_file:
+            info = tarfile.TarInfo("a.bits")
+            info.size = 1
+            tar_file.addfile(info, io.BytesIO(b"x"))
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        with self.assertRaises(utils.ArchiveError):
+            utils.extract_archive(tp, [("nope.bits", out)])
+
+    def test_tar_corrupt_archive_raises_archive_error(self) -> None:
+        tp = os.path.join(self.tmp, "corrupt.tar.gz")
+        with open(tp, "wb") as handle:
+            handle.write(b"not a tar archive")
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        with self.assertRaises(utils.ArchiveError):
+            utils.extract_archive(tp, [(None, out)])
 
     @unittest.skipUnless(shutil.which("gunzip"), "gunzip not available")
     def test_gzip_decompressed_into_each_dir(self) -> None:
