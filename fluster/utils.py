@@ -29,6 +29,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tarfile
 import time
 import urllib.error
 import urllib.parse
@@ -383,7 +384,17 @@ def _extract_zip_members(filepath: str, entries: List[Tuple[Optional[str], str]]
 
 
 def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]) -> List[str]:
-    """Run ``tar`` once per output directory; a falsy member extracts everything there."""
+    """Extract tar members using Python's ``tarfile`` instead of the external ``tar`` binary.
+
+    The external GNU tar is not usable inside strictly confined snaps: snapd's
+    seccomp profile denies the ``openat2`` syscall that tar relies on, so every
+    extraction fails with "Cannot open: Operation not permitted". The ``data``
+    filter (Python 3.12+) is used when available to reject unsafe members;
+    older Pythons fall back to the default extraction.
+
+    A falsy member extracts everything into its ``output_dir``. Raises
+    ``ArchiveError`` on corrupt archives, missing members or unsafe members.
+    """
     extract_all_dirs = {output_dir for member, output_dir in entries if not member}
     # An empty member list makes tar extract everything.
     members_by_dir: Dict[str, List[str]] = {}
@@ -391,8 +402,23 @@ def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]
         members = members_by_dir.setdefault(output_dir, [])
         if member and output_dir not in extract_all_dirs:
             members.append(member)
-    for output_dir, members in members_by_dir.items():
-        subprocess.run(["tar", "-C", output_dir, "-xf", filepath, *members], check=True)
+    filter_kwargs: Dict[str, str] = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}
+    try:
+        with tarfile.open(filepath) as tar:
+            names = set(tar.getnames())
+            for output_dir, members in members_by_dir.items():
+                os.makedirs(output_dir, exist_ok=True)
+                if members:
+                    for member in members:
+                        if member not in names:
+                            raise ArchiveError(f"{filepath} does not contain member {member}")
+                        tar.extract(member, output_dir, **filter_kwargs)  # type: ignore[arg-type]
+                else:
+                    tar.extractall(output_dir, **filter_kwargs)  # type: ignore[arg-type]
+    except ArchiveError:
+        raise
+    except Exception as exc:
+        raise ArchiveError(f"{filepath} could not be extracted") from exc
     return []
 
 
