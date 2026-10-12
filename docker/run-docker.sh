@@ -42,7 +42,7 @@ usage() {
 Usage: $0 [OPTIONS] [COMMAND]
 
 Build Options:
-  --ubuntu VERSION      Ubuntu version: 20.04, 22.04, or 24.04 (default: 24.04)
+  --ubuntu VERSION      Ubuntu version: 20.04, 22.04, 24.04, or 26.04 (default: 26.04)
   --build-ffmpeg        Build FFmpeg from source (VAAPI, VDPAU, QuickSync - no NVDEC/CUDA)
   --ffmpeg-static       Use static FFmpeg binary (latest version in https://johnvansickle.com/ffmpeg)
   --ffmpeg-version      Specify FFmpeg version for --build-ffmpeg
@@ -51,7 +51,7 @@ Build Options:
   --rebuild             Force rebuilding of Docker image
   --intel               Optimize for Intel GPU (VAAPI, VDPAU, QuickSync)
   --amd                 Optimize for AMD GPU (VAAPI, VDPAU)
-  --nvidia              Optimize for NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU, VAAPI)
+  --nvidia              Optimize for NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04/26.04, VDPAU, VAAPI)
 
 Environment Variables:
   LIBVA_DRIVER_NAME     Override VAAPI driver (e.g., i965, iHD, radeonsi, nouveau)
@@ -96,7 +96,7 @@ fi
 
 
 # Parse options
-UBUNTU_VERSION="24.04"
+UBUNTU_VERSION="26.04"
 REBUILD=""
 GPU_TYPES=()
 FFMPEG_INSTALL_METHOD="system"
@@ -242,7 +242,7 @@ if [ $HAS_NVIDIA -eq 1 ]; then
         GPU_ENV="-e LIBVA_DRIVER_NAME=${LIBVA_DRIVER_NAME:-nouveau}"
     fi
     GPU_ENV="$GPU_ENV -e VDPAU_DRIVER=${VDPAU_DRIVER:-nvidia}"
-    echo -e "${BLUE}Enabling NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU, VAAPI)${NC}"
+    echo -e "${BLUE}Enabling NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04/26.04, VDPAU, VAAPI)${NC}"
 fi
 
 # Warn about dual GPU setups

@@ -18,10 +18,10 @@
 # Fluster Docker Image with Hardware Acceleration Support
 # Supports VAAPI, VDPAU, NVDEC, and Intel QuickSync
 
-ARG UBUNTU_VERSION=24.04
+ARG UBUNTU_VERSION=26.04
 FROM ubuntu:${UBUNTU_VERSION}
 
-# A user is required by Ubuntu 24.04 to install meson as non-root
+# A user is required by Ubuntu 24.04+ to install meson as non-root
 ARG USERNAME='mock'
 ARG PASSWORD='mock'
 
@@ -81,9 +81,10 @@ RUN apt-get update && apt-get install -y \
         apt-get install -y intel-media-va-driver || true) \
     && rm -rf /var/lib/apt/lists/*
 
-# VAAPI driver for NVIDIA (Ubuntu 24.04+)
+# VAAPI driver for NVIDIA
 # apt's nvidia-vaapi-driver defaults to the broken EGL backend (driver >=525,
-# elFarto/nvidia-vaapi-driver#207). Build from source instead (direct backend).
+# elFarto/nvidia-vaapi-driver#207), so on Ubuntu 24.04 build from source instead
+# (direct backend). Ubuntu 26.04+ ships a fixed driver, use the distro package.
 RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         apt-get update && \
         apt-get install -y meson ninja-build git pkg-config \
@@ -95,6 +96,10 @@ RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         meson setup /tmp/nvidia-vaapi-driver/build /tmp/nvidia-vaapi-driver --prefix=/usr --libdir=lib/x86_64-linux-gnu && \
         ninja -C /tmp/nvidia-vaapi-driver/build install && \
         rm -rf /tmp/nv-codec-headers /tmp/nvidia-vaapi-driver && \
+        rm -rf /var/lib/apt/lists/*; \
+    elif dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then \
+        apt-get update && \
+        (apt-get install -y nvidia-vaapi-driver || true) && \
         rm -rf /var/lib/apt/lists/*; \
     fi
 
@@ -121,7 +126,7 @@ RUN if [ -n "${NVIDIA_DRIVER_VERSION}" ]; then \
 RUN apt-get update \
   && (apt-get install -y libmfx1 libmfx-tools || true) \
     && (apt-get install -y libmfx-gen1.2 || true) \
-    && (apt-get install -y libvpl-dev libvpl2 || true) \
+    && (apt-get install -y libvpl2 || true) \
     && rm -rf /var/lib/apt/lists/*
 
 # FFmpeg installation (3 methods: system, static, source)
@@ -129,7 +134,13 @@ RUN apt-get update \
 # Method "static": Download pre-built static FFmpeg binary
 # Method "system": Install FFmpeg from system packages (default)
 RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
-      apt-get update -qq && apt-get install -y \
+      # QuickSync backend: MSDK libmfx up to 24.04, oneVPL from 26.04 on
+      if dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then \
+        QSV_OPT="--enable-libvpl"; QSV_PKG="libvpl-dev"; \
+      else \
+        QSV_OPT="--enable-libmfx"; QSV_PKG="libmfx-dev libmfx-gen-dev"; \
+      fi \
+      && apt-get update -qq && apt-get install -y \
         autoconf \
         automake \
         build-essential \
@@ -166,8 +177,8 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libvpx-dev \
         libfdk-aac-dev \
         libopus-dev \
-        libmfx-dev \
         libunistring-dev \
+        ${QSV_PKG} \
       && rm -rf /var/lib/apt/lists/* && \
       mkdir /tmp/aom && \
       cd /tmp/aom && \
@@ -205,7 +216,7 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         --enable-nonfree \
         --enable-libx264 \
         --enable-libx265 \
-        --enable-libmfx \
+        ${QSV_OPT} \
         --enable-gnutls \
         --enable-libaom \
         --enable-libass \
@@ -242,7 +253,7 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
 
 # Update python packages depending on Ubuntu version
 RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
-      if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
+      if dpkg --compare-versions "${UBUNTU_VERSION}" ge 24.04; then \
         pip3 install --upgrade pip setuptools; \
         apt update && apt install -y pipx ninja-build && rm -rf /var/lib/apt/lists/*; \
       else \
@@ -250,8 +261,8 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       fi; \
     fi
 
-# Ubuntu 24.04: Remove default user
-RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu >/dev/null 2>&1; then \
+# Ubuntu 24.04+: Remove default user
+RUN if dpkg --compare-versions "${UBUNTU_VERSION}" ge 24.04 && id ubuntu >/dev/null 2>&1; then \
       userdel -r ubuntu; \
     fi
 
@@ -263,11 +274,11 @@ RUN addgroup ${USERNAME} && \
 # Change to USERNAME user
 USER ${USERNAME}
 
-# Set PATH to include pipx bin directory - required for meson in Ubuntu 24.04
+# Set PATH to include pipx bin directory - required for meson in Ubuntu 24.04+
 ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
 
-# Ubuntu 24.04: install python packages for non-root user
-RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && [ "${UBUNTU_VERSION}" = "24.04" ]; then \
+# Ubuntu 24.04+: install python packages for non-root user
+RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && dpkg --compare-versions "${UBUNTU_VERSION}" ge 24.04; then \
       echo "export PATH=/home/${USERNAME}/.local/bin:\${PATH}" >> /home/${USERNAME}/.bashrc; \
       pipx install meson==1.6.1; \
     fi
@@ -276,7 +287,9 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && [ "${UBUNTU_VERSION}" = "
 # Method "source": Build GStreamer from source (needed for new versions on old distros)
 # Method "system": Install GStreamer from system packages (default)
 RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
-      sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+      # msdk plugin: MSDK libmfx up to 24.04, oneVPL from 26.04 on
+      if dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then QSV_PKG="libvpl-dev"; else QSV_PKG="libmfx-dev"; fi \
+      && sudo apt-get update && sudo apt-get install -y --no-install-recommends \
         build-essential \
         cmake \
         ninja-build \
@@ -294,7 +307,6 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libpthread-stubs0-dev \
         libva-dev \
         libvdpau-dev \
-        libmfx-dev \
         libx11-dev \
         libxext-dev \
         libxv-dev \
@@ -315,6 +327,7 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libgles2-mesa-dev \
         libgl1-mesa-dev \
         libglu1-mesa-dev \
+        ${QSV_PKG} \
       && sudo rm -rf /var/lib/apt/lists/* \
       && mkdir -p /tmp/gstreamer && cd /tmp/gstreamer \
       && curl -L "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GSTREAMER_VERSION}/gstreamer-${GSTREAMER_VERSION}.tar.gz" | tar xz \
