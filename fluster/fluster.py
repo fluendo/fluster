@@ -60,6 +60,7 @@ class Context:
         summary_output: str = "",
         summary_format: str = "",
         profiles: Optional[List[str]] = None,
+        skip_profiles: Optional[List[str]] = None,
     ):
         self.jobs = jobs
         self.timeout = timeout
@@ -81,6 +82,8 @@ class Context:
         self.summary_format = summary_format
         self.profiles_names = profiles
         self.profiles: Set[Profile] = set()
+        self.skip_profiles_names = skip_profiles
+        self.skip_profiles: Set[Profile] = set()
 
     def to_test_suite_context(
         self,
@@ -103,6 +106,7 @@ class Context:
             keep_files=self.keep_files,
             verbose=self.verbose,
             profiles=self.profiles,
+            skip_profiles=self.skip_profiles,
         )
         return ts_context
 
@@ -270,6 +274,20 @@ class Fluster:
             matches_ret = check_list
         return matches_ret
 
+    @staticmethod
+    def _parse_profiles(names: Optional[List[str]]) -> Set[Profile]:
+        """Convert a list of profile names into a set of Profile members"""
+        profiles: Set[Profile] = set()
+        if names:
+            profile_values = {p.value.lower(): p for p in Profile}
+            for name in names:
+                if name.lower() in profile_values:
+                    profiles.add(profile_values[name.lower()])
+                else:
+                    available = ", ".join(sorted(p.value for p in Profile if p != Profile.NONE))
+                    sys.exit(f"Unknown profile '{name}'. Available profiles: {available}")
+        return profiles
+
     def _normalize_context(self, ctx: Context) -> None:
         # Convert all test suites and decoders to lowercase to make the filter greedy
         if ctx.test_suites:
@@ -282,14 +300,8 @@ class Fluster:
             ctx.test_vectors_names = [x.lower() for x in ctx.test_vectors_names]
         if ctx.skip_vectors_names:
             ctx.skip_vectors_names = [x.lower() for x in ctx.skip_vectors_names]
-        if ctx.profiles_names:
-            profile_values = {p.value.lower(): p for p in Profile}
-            for name in ctx.profiles_names:
-                if name.lower() in profile_values:
-                    ctx.profiles.add(profile_values[name.lower()])
-                else:
-                    available = ", ".join(sorted(p.value for p in Profile if p != Profile.NONE))
-                    sys.exit(f"Unknown profile '{name}'. Available profiles: {available}")
+        ctx.profiles = self._parse_profiles(ctx.profiles_names)
+        ctx.skip_profiles = self._parse_profiles(ctx.skip_profiles_names)
         ctx.test_suites = self._get_matches(ctx.test_suites_names, self.test_suites, "test suite")
         ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
 

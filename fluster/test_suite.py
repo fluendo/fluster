@@ -54,6 +54,7 @@ class Context:
         reference_decoder: Optional[Decoder] = None,
         test_vector_names: Optional[Set[str]] = None,
         profiles: Optional[Set[Profile]] = None,
+        skip_profiles: Optional[Set[Profile]] = None,
     ):
         self.jobs = jobs
         self.decoder = decoder
@@ -70,6 +71,7 @@ class Context:
         self.reference_decoder = reference_decoder
         self.test_vector_names = test_vector_names
         self.profiles = profiles
+        self.skip_profiles = skip_profiles
 
 
 class TestMethod(Enum):
@@ -421,6 +423,8 @@ class TestSuite:
             if ctx.test_vector_names is not None and name_lower not in ctx.test_vector_names:
                 continue
             if ctx.profiles and test_vector.profile not in ctx.profiles:
+                continue
+            if ctx.skip_profiles and test_vector.profile in ctx.skip_profiles:
                 continue
             if ctx.skip_vectors and name_lower in ctx.skip_vectors:
                 skip = True
