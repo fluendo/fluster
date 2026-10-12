@@ -39,6 +39,8 @@ ARG FFMPEG_VERSION=8.0
 ARG GSTREAMER_INSTALL_METHOD=system
 # GStreamer version for "source" method
 ARG GSTREAMER_VERSION=1.24.2
+# Build the ISO/reference decoders (JM, HM, VTM, VVdeC, MPEG-2/4 AAC, MPEG-2 video)
+ARG BUILD_REFERENCE_DECODERS=false
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm-256color \
@@ -470,6 +472,27 @@ RUN pip3 install . --no-cache-dir --break-system-packages 2>/dev/null || \
     pip3 install . --no-cache-dir
 
 RUN mkdir -p /fluster/resources /fluster/test_suites
+
+# Optional: build the ISO/reference decoders used for conformance checking.
+# This downloads the ISO reference software (automatically accepting its licence)
+# and the wrap-based subprojects, so it needs network access at build time and
+# increases both build time and image size. Enable with
+# --build-arg BUILD_REFERENCE_DECODERS=true.
+# -D_DEFAULT_SOURCE exposes POSIX prototypes (e.g. fileno) that GCC 15 rejects
+# as implicit declarations under the decoders' -std=c99.
+RUN if [ "${BUILD_REFERENCE_DECODERS}" = "true" ]; then \
+      apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        cmake \
+        meson \
+        ninja-build \
+        pkg-config \
+        patch \
+      && rm -rf /var/lib/apt/lists/* \
+      && python3 build/download_deps.py --accept-license \
+      && meson setup builddir -Dc_args=-D_DEFAULT_SOURCE \
+      && ninja -C builddir; \
+    fi
 
 # Additional environment variables
 ENV PYTHONPATH=/fluster \
