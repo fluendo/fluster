@@ -41,6 +41,10 @@ ARG GSTREAMER_INSTALL_METHOD=system
 ARG GSTREAMER_VERSION=1.24.2
 # Build the ISO/reference decoders (JM, HM, VTM, VVdeC, MPEG-2/4 AAC, MPEG-2 video)
 ARG BUILD_REFERENCE_DECODERS=false
+# Build the libva fake VA-API backend for headless testing
+ARG BUILD_LIBVA_FAKE_DRIVER=false
+# libva-fake-driver revision (commit, tag or branch) to build
+ARG LIBVA_FAKE_DRIVER_VERSION=04fce0c3260b293357689d21d601300197fb0a80
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm-256color \
@@ -492,6 +496,33 @@ RUN if [ "${BUILD_REFERENCE_DECODERS}" = "true" ]; then \
       && python3 build/download_deps.py --accept-license \
       && meson setup builddir -Dc_args=-D_DEFAULT_SOURCE \
       && ninja -C builddir; \
+    fi
+
+# Optional: build the libva fake VA-API backend
+# (https://github.com/rgonzalezfluendo/libva-fake-driver) for headless testing
+# without a real GPU. Enable with --build-arg BUILD_LIBVA_FAKE_DRIVER=true.
+# The driver is installed into LIBVA_DRIVERS_PATH and used with:
+#   LIBVA_DRIVER_NAME=fake LD_PRELOAD=<libdir>/dri/fake_gbm.so vainfo
+RUN if [ "${BUILD_LIBVA_FAKE_DRIVER}" = "true" ]; then \
+      apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        meson \
+        ninja-build \
+        pkg-config \
+        libgbm-dev \
+        libdrm-dev \
+        libdav1d-dev \
+        libvpx-dev \
+        libopenh264-dev \
+        libyuv-dev \
+      && rm -rf /var/lib/apt/lists/* \
+      && git clone https://github.com/rgonzalezfluendo/libva-fake-driver.git /tmp/libva-fake-driver \
+      && git -C /tmp/libva-fake-driver checkout ${LIBVA_FAKE_DRIVER_VERSION} \
+      && meson setup /tmp/libva-fake-driver/builddir /tmp/libva-fake-driver \
+           --prefix=/usr --libdir=lib/${ARCH}-linux-gnu/dri \
+      && ninja -C /tmp/libva-fake-driver/builddir \
+      && meson install -C /tmp/libva-fake-driver/builddir \
+      && rm -rf /tmp/libva-fake-driver; \
     fi
 
 # Additional environment variables
