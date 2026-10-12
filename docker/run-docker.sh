@@ -53,6 +53,9 @@ Build Options:
                         MPEG-2/4 AAC, MPEG-2 video). Downloads the ISO reference
                         software and accepts its licence agreement automatically,
                         so it needs network access and increases build time/size
+  --build-libva-fake-driver
+                        Build the libva fake VA-API backend for headless testing
+                        (https://github.com/rgonzalezfluendo/libva-fake-driver)
   --rebuild             Force rebuilding of Docker image
   --intel               Optimize for Intel GPU (VAAPI, VDPAU, QuickSync)
   --amd                 Optimize for AMD GPU (VAAPI, VDPAU)
@@ -109,6 +112,7 @@ FFMPEG_VERSION="8.0"
 GSTREAMER_INSTALL_METHOD="system"
 GSTREAMER_VERSION="1.24.2"
 BUILD_REFERENCE_DECODERS="false"
+BUILD_LIBVA_FAKE_DRIVER="false"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -141,6 +145,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --build-reference-decoders)
             BUILD_REFERENCE_DECODERS="true"
+            shift
+            ;;
+        --build-libva-fake-driver)
+            BUILD_LIBVA_FAKE_DRIVER="true"
             shift
             ;;
         --rebuild)
@@ -205,6 +213,9 @@ if [[ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]] || [ -n "$REBUIL
         echo -e "${BLUE}Building the ISO/reference decoders...${NC}"
         echo -e "${YELLOW}Note: this downloads the ISO reference software and automatically accepts its licence agreement.${NC}"
     fi
+    if [ "$BUILD_LIBVA_FAKE_DRIVER" = "true" ]; then
+        echo -e "${BLUE}Building the libva fake VA-API backend...${NC}"
+    fi
     docker build \
         --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
         --build-arg FFMPEG_INSTALL_METHOD="$FFMPEG_INSTALL_METHOD" \
@@ -212,6 +223,7 @@ if [[ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]] || [ -n "$REBUIL
         --build-arg GSTREAMER_INSTALL_METHOD="$GSTREAMER_INSTALL_METHOD" \
         --build-arg GSTREAMER_VERSION="$GSTREAMER_VERSION" \
         --build-arg BUILD_REFERENCE_DECODERS="$BUILD_REFERENCE_DECODERS" \
+        --build-arg BUILD_LIBVA_FAKE_DRIVER="$BUILD_LIBVA_FAKE_DRIVER" \
         $NVIDIA_DRIVER_ARG \
         $REBUILD \
         -t "$DOCKER_IMAGE" \

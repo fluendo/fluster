@@ -190,6 +190,41 @@ from their upstream git repositories. The built decoders are linked into
 `/fluster/decoders`, which Fluster adds to its `PATH`.
 
 
+### libva fake driver (optional)
+
+The image can optionally build the [libva fake VA-API
+backend](https://github.com/rgonzalezfluendo/libva-fake-driver), a software
+VA-API driver for headless environments (VMs, CI) where no real GPU is
+available. It is **disabled by default**.
+
+```bash
+# Build the image with the fake VA-API driver
+./run-docker.sh --build-libva-fake-driver --rebuild list -c
+
+# Equivalent manual build (optionally pin a different revision)
+docker build --build-arg BUILD_LIBVA_FAKE_DRIVER=true \
+             --build-arg LIBVA_FAKE_DRIVER_VERSION=<commit|tag|branch> \
+             -t fluster:latest -f docker/Dockerfile .
+```
+
+`fake_drv_video.so` and `fake_gbm.so` are installed into `LIBVA_DRIVERS_PATH`
+(`/usr/lib/x86_64-linux-gnu/dri`). `fake_drv_video.so` resolves
+`gbm_bo_map2()` from the companion `fake_gbm.so` at load time, so it must be
+preloaded:
+
+```bash
+# Verify the driver
+LIBVA_DRIVER_NAME=fake \
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/fake_gbm.so \
+vainfo --display drm --device /dev/null
+
+# Run Fluster with the fake VA-API driver
+LIBVA_DRIVER_NAME=fake \
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/dri/fake_gbm.so \
+python3 fluster.py list -c
+```
+
+
 ### FFmpeg Version Override
 
 By default, FFmpeg from Ubuntu repositories is used. To test with newer FFmpeg versions (e.g., for future VVC support), use static binaries:
