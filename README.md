@@ -656,8 +656,8 @@ optional arguments:
 usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
 [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]]
 [-sv SKIPVECTORS [SKIPVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s]
-[-so SUMMARY_OUTPUT] [-f {md,csv,junitxml}] [-k] [-p PROFILES [PROFILES ...]] [-th THRESHOLD]
-[-tth TIME_THRESHOLD] [-v]
+[-so SUMMARY_OUTPUT] [-f {md,csv,junitxml}] [-k] [-p PROFILES [PROFILES ...]]
+[-sp SKIP_PROFILES [SKIP_PROFILES ...]] [-th THRESHOLD] [-tth TIME_THRESHOLD] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -684,6 +684,8 @@ optional arguments:
   -k, --keep            keep output files generated during the test
   -p PROFILES [PROFILES ...], --profiles PROFILES [PROFILES ...]
                         run only test vectors matching the given profiles (e.g. 'VP9 Profile 0')
+  -sp SKIP_PROFILES [SKIP_PROFILES ...], --skip-profiles SKIP_PROFILES [SKIP_PROFILES ...]
+                        skip test vectors for the given profiles (e.g. 'VP9 Profile 0')
   -th THRESHOLD, --threshold THRESHOLD
                         set exit code to 2 if threshold tests are not success.
                         exit code is 0 otherwise
@@ -702,10 +704,14 @@ optional arguments:
   (`vp90-` prefix → Profile 0, `vp91-` → Profile 1, etc.).
 - Vectors without a profile field in the JSON file are always excluded
   when profile filtering is active.
+- The `-sp/--skip-profiles` option excludes test vectors with the given profiles.
+  It accepts the same names as `-p/--profiles` (case-insensitive) and can be
+  combined with it; when a profile is both included and skipped, it is skipped.
 - Examples:
   - `./fluster.py run -ts JVT-AVC_V1 -p Baseline` runs only Baseline profile vectors
   - `./fluster.py run -ts VP9-TEST-VECTORS -p "VP9 Profile 0"` runs only Profile 0 vectors
   - `./fluster.py run -ts JVT-AVC_V1 -p Baseline Main High` runs vectors matching any of the three profiles
+  - `./fluster.py run -ts JVT-AVC_V1 -sp Main` runs every vector except Main profile ones
 
 ### Download
 
