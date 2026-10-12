@@ -48,6 +48,11 @@ Build Options:
   --ffmpeg-version      Specify FFmpeg version for --build-ffmpeg
   --build-gstreamer     Build GStreamer from source (useful for new versions on old distros)
   --gstreamer-version   Specify GStreamer version for --build-gstreamer (default: 1.24.2)
+  --build-reference-decoders
+                        Build the ISO/reference decoders (JM, HM, VTM, VVdeC,
+                        MPEG-2/4 AAC, MPEG-2 video). Downloads the ISO reference
+                        software and accepts its licence agreement automatically,
+                        so it needs network access and increases build time/size
   --rebuild             Force rebuilding of Docker image
   --intel               Optimize for Intel GPU (VAAPI, VDPAU, QuickSync)
   --amd                 Optimize for AMD GPU (VAAPI, VDPAU)
@@ -103,6 +108,7 @@ FFMPEG_INSTALL_METHOD="system"
 FFMPEG_VERSION="8.0"
 GSTREAMER_INSTALL_METHOD="system"
 GSTREAMER_VERSION="1.24.2"
+BUILD_REFERENCE_DECODERS="false"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -132,6 +138,10 @@ while [[ $# -gt 0 ]]; do
         --gstreamer-version)
             GSTREAMER_VERSION="$2"
             shift 2
+            ;;
+        --build-reference-decoders)
+            BUILD_REFERENCE_DECODERS="true"
+            shift
             ;;
         --rebuild)
             REBUILD="--no-cache"
@@ -191,12 +201,17 @@ if [[ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]] || [ -n "$REBUIL
     else
         echo -e "${BLUE}Using system GStreamer packages...${NC}"
     fi
+    if [ "$BUILD_REFERENCE_DECODERS" = "true" ]; then
+        echo -e "${BLUE}Building the ISO/reference decoders...${NC}"
+        echo -e "${YELLOW}Note: this downloads the ISO reference software and automatically accepts its licence agreement.${NC}"
+    fi
     docker build \
         --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
         --build-arg FFMPEG_INSTALL_METHOD="$FFMPEG_INSTALL_METHOD" \
         --build-arg FFMPEG_VERSION="$FFMPEG_VERSION" \
         --build-arg GSTREAMER_INSTALL_METHOD="$GSTREAMER_INSTALL_METHOD" \
         --build-arg GSTREAMER_VERSION="$GSTREAMER_VERSION" \
+        --build-arg BUILD_REFERENCE_DECODERS="$BUILD_REFERENCE_DECODERS" \
         $NVIDIA_DRIVER_ARG \
         $REBUILD \
         -t "$DOCKER_IMAGE" \

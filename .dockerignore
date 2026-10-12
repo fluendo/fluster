@@ -14,7 +14,9 @@ env/
 ENV/
 *.egg-info/
 dist/
-build/
+build/lib/
+build/bdist.*
+builddir/
 .mypy_cache/
 .ruff_cache/
 .pytest_cache/
@@ -29,6 +31,8 @@ build/
 # Output directories (mounted as volumes at runtime)
 fluster_output/
 resources/
+contrib/
+decoders/
 
 # Docker files (not needed inside image)
 .dockerignore

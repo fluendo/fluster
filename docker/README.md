@@ -154,6 +154,42 @@ Build FFmpeg from source with all backends (recommended for production):
 **Note**: For NVIDIA CUDA/NVDEC decoders (FFmpeg-H.265-CUDA, etc.), use system packages (default, without `--build-ffmpeg` flag), as Ubuntu 24.04 and 26.04 include CUDA support in system FFmpeg packages.
 
 
+### Reference Decoders (optional)
+
+The image can optionally build the ISO/reference decoders used for conformance
+checking (H.264 JM, H.265 HM, H.266 VTM and VVdeC, MPEG-2 video, MPEG-2 AAC and
+MPEG-4 AAC/ER). These are built from source with meson and are **disabled by
+default** because they need network access at build time and increase both build
+time and image size.
+
+```bash
+# Build the image with the reference decoders
+./run-docker.sh --build-reference-decoders --rebuild list -c
+
+# Equivalent manual build
+docker build --build-arg BUILD_REFERENCE_DECODERS=true -t fluster:latest -f docker/Dockerfile .
+```
+
+Inside the image the decoders are produced with:
+
+```bash
+python3 build/download_deps.py --accept-license
+meson setup builddir -Dc_args=-D_DEFAULT_SOURCE
+ninja -C builddir
+```
+
+(`-D_DEFAULT_SOURCE` is needed because the decoders build with `-std=c99`, which
+hides POSIX prototypes such as `fileno` that GCC 15 rejects as implicit
+declarations.)
+
+**Note**: `build/download_deps.py` downloads the ISO reference software. During
+the Docker build the ISO Licence Agreement is accepted automatically
+(`--accept-license`); building this image therefore implies accepting that
+licence. The wrap-based subprojects (JM, HM, VTM, VVdeC, isobmff) are fetched
+from their upstream git repositories. The built decoders are linked into
+`/fluster/decoders`, which Fluster adds to its `PATH`.
+
+
 ### FFmpeg Version Override
 
 By default, FFmpeg from Ubuntu repositories is used. To test with newer FFmpeg versions (e.g., for future VVC support), use static binaries:
