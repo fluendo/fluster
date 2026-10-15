@@ -287,6 +287,12 @@ class Main:
             nargs="+",
         )
         subparser.add_argument(
+            "-sp",
+            "--skip-profiles",
+            help="skip test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
             "-v",
             "--verbose",
             help="show stdout and stderr of commands executed",
@@ -406,6 +412,7 @@ class Main:
             summary_output=args.summary_output,
             summary_format=args.format,
             profiles=args.profiles,
+            skip_profiles=args.skip_profiles,
         )
         try:
             fluster.run_test_suites(context)

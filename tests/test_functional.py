@@ -140,6 +140,15 @@ class TestRun(unittest.TestCase):
         result = run_fluster(["run", "-ts", "dummy", "-tv", "one", "-j1"])
         self.assertIn("Success", result.stdout)
 
+    def test_run_help_shows_skip_profiles(self) -> None:
+        result = run_fluster(["run", "--help"])
+        self.assertIn("--skip-profiles", result.stdout)
+
+    def test_run_unknown_skip_profile_fails(self) -> None:
+        result = run_fluster(["run", "-ts", "dummy", "-sp", "NotAProfile"])
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Unknown profile", result.stderr)
+
     def test_run_with_summary(self) -> None:
         result = run_fluster(["run", "-ts", "dummy", "-s"])
         self.assertIn("Success", result.stdout)
