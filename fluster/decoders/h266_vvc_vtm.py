@@ -29,6 +29,7 @@ class H266VVCVTMDecoder(Decoder):
     description = "VVCSoftware_VTM H.266/VVC reference decoder"
     codec = Codec.H266
     binary = "DecoderApp"
+    is_reference = True
 
     def decode(
         self,

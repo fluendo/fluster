@@ -158,6 +158,11 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
 3. List the test suites and the decoders available `./fluster.py list`.
    Tip: You can list the decoders that can run in the current system with `./fluster.py list -c`.
 
+
+   The `[R]` mark identifies reference decoders, i.e. the decoders used to obtain
+   the reference results that other decoders are compared against.
+
+
 ```bash
 List of available test suites:
 
@@ -424,16 +429,16 @@ H.264
     GStreamer-H.264-VA: GStreamer H.264 VA decoder for GStreamer
     GStreamer-H.264-VAAPI: GStreamer H.264 VAAPI decoder for GStreamer
     GStreamer-H.264-Vulkan: GStreamer H.264 Vulkan decoder for GStreamer
-    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder
+    JCT-VT-H.264: JCT-VT H.264/AVC reference decoder [R]
     VKVS-H.264: Vulkan Video Samples H.264 decoder
     ccdec-H.264: H.264 cros-codecs decoder
 
 AC4
-    DolbyPADSReferenceDecoder: AC-4 Dolby Pro Audio Decoder Software Development Kit reference decoder implementation
+    DolbyPADSReferenceDecoder: AC-4 Dolby Pro Audio Decoder Software Development Kit reference decoder implementation [R]
     Fluendo-AC4-SW: Fluendo AC4 SW decoder for GStreamer
 
 EAC3
-    Dolby_EAC3PRODEC_ReferenceDecoder: Dolby EC-3 Online Delivery Kit 1.6 elementary stream reference decoder implementation
+    Dolby_EAC3PRODEC_ReferenceDecoder: Dolby EC-3 Online Delivery Kit 1.6 elementary stream reference decoder implementation [R]
     Fluendo-EAC3-SW: Fluendo EAC3 SW decoder for GStreamer
 
 Dummy
@@ -456,7 +461,7 @@ AV1
     VKVS-AV1: Vulkan Video Samples AV1 decoder
     ccdec-AV1: AV1 cros-codecs decoder
     dav1d-AV1: dav1d AV1 decoder
-    libaom-AV1: libaom AV1 reference decoder
+    libaom-AV1: libaom AV1 reference decoder [R]
 
 H.265
     FFmpeg-H.265: FFmpeg H.265 SW decoder
@@ -484,7 +489,7 @@ H.265
     GStreamer-H.265-VA: GStreamer H.265 VA decoder for GStreamer
     GStreamer-H.265-VAAPI: GStreamer H.265 VAAPI decoder for GStreamer
     GStreamer-H.265-Vulkan: GStreamer H.265 Vulkan decoder for GStreamer
-    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder
+    JCT-VT-H.265: JCT-VT H.265/HEVC reference decoder [R]
     VKVS-H.265: Vulkan Video Samples H.265 decoder
     ccdec-H.265: H.265 cros-codecs decoder
 
@@ -494,7 +499,7 @@ H.266
     GStreamer-H.266-Libav: GStreamer H.266 Libav decoder for GStreamer
     GStreamer-H.266-VA: GStreamer H.266 VA decoder for GStreamer
     GStreamer-H.266-VVdeC: GStreamer H.266 VVdeC decoder for GStreamer
-    VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder
+    VVCSoftware_VTM-H266: VVCSoftware_VTM H.266/VVC reference decoder [R]
     VVdeC-H266: VVdeC H.266/VVC decoder
 
 MPEG2_VIDEO
@@ -508,7 +513,7 @@ MPEG2_VIDEO
     GStreamer-MPEG2_VIDEO-SW: GStreamer MPEG2_VIDEO SW decoder for GStreamer
     GStreamer-MPEG2_VIDEO-V4L2: GStreamer MPEG2_VIDEO V4L2 decoder for GStreamer
     GStreamer-MPEG2_VIDEO-V4L2SL: GStreamer MPEG2_VIDEO V4L2SL decoder for GStreamer
-    ISO-MPEG2-VIDEO: ISO MPEG2 Video reference decoder
+    ISO-MPEG2-VIDEO: ISO MPEG2 Video reference decoder [R]
 
 MPEG4_VIDEO
     FFmpeg-MPEG4_VIDEO: FFmpeg MPEG4_VIDEO SW decoder
@@ -516,7 +521,7 @@ MPEG4_VIDEO
     Fluendo-MPEG4_VIDEO-VAAPI: Fluendo MPEG4_VIDEO VAAPI decoder for GStreamer
     Fluendo-MPEG4_VIDEO-VDPAU: Fluendo MPEG4_VIDEO VDPAU decoder for GStreamer
     GStreamer-MPEG4_VIDEO-Libav: GStreamer MPEG4_VIDEO Libav decoder for GStreamer
-    ISO-MPEG4-VIDEO: ISO MPEG4 Video reference decoder
+    ISO-MPEG4-VIDEO: ISO MPEG4 Video reference decoder [R]
 
 VP8
     FFmpeg-VP8: FFmpeg VP8 SW decoder
@@ -533,7 +538,7 @@ VP8
     GStreamer-VP8-VAAPI: GStreamer VP8 VAAPI decoder for GStreamer
     GStreamer-VP8-libvpx: GStreamer VP8 libvpx decoder for GStreamer
     ccdec-VP8: VP8 cros-codecs decoder
-    libvpx-VP8: VP8 reference decoder
+    libvpx-VP8: VP8 reference decoder [R]
 
 VP9
     FFmpeg-VP9: FFmpeg VP9 SW decoder
@@ -555,16 +560,16 @@ VP9
     GStreamer-VP9-libvpx: GStreamer VP9 libvpx decoder for GStreamer
     VKVS-VP9: Vulkan Video Samples VP9 decoder
     ccdec-VP9: VP9 cros-codecs decoder
-    libvpx-VP9: VP9 reference decoder
+    libvpx-VP9: VP9 reference decoder [R]
 
 AAC
     Fluendo-AAC-SW: Fluendo AAC SW decoder for GStreamer
-    ISO-MPEG2-AAC: ISO MPEG2 AAC reference decoder
-    ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder
-    ISO-MPEG4-AAC-ER: ISO MPEG4 AAC ER reference decoder
+    ISO-MPEG2-AAC: ISO MPEG2 AAC reference decoder [R]
+    ISO-MPEG4-AAC: ISO MPEG4 AAC reference decoder [R]
+    ISO-MPEG4-AAC-ER: ISO MPEG4 AAC ER reference decoder [R]
 
 MPEGH_3DA
-    ISO-MPEGH-3DA: ISO MPEG-H 3D Audio reference decoder
+    ISO-MPEGH-3DA: ISO MPEG-H 3D Audio reference decoder [R]
 
 List of available profiles:
 
