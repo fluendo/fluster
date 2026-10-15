@@ -42,16 +42,24 @@ usage() {
 Usage: $0 [OPTIONS] [COMMAND]
 
 Build Options:
-  --ubuntu VERSION      Ubuntu version: 20.04, 22.04, or 24.04 (default: 24.04)
+  --ubuntu VERSION      Ubuntu version: 20.04, 22.04, 24.04, or 26.04 (default: 26.04)
   --build-ffmpeg        Build FFmpeg from source (VAAPI, VDPAU, QuickSync - no NVDEC/CUDA)
   --ffmpeg-static       Use static FFmpeg binary (latest version in https://johnvansickle.com/ffmpeg)
   --ffmpeg-version      Specify FFmpeg version for --build-ffmpeg
   --build-gstreamer     Build GStreamer from source (useful for new versions on old distros)
   --gstreamer-version   Specify GStreamer version for --build-gstreamer (default: 1.24.2)
+  --build-reference-decoders
+                        Build the ISO/reference decoders (JM, HM, VTM, VVdeC,
+                        MPEG-2/4 AAC, MPEG-2 video). Downloads the ISO reference
+                        software and accepts its licence agreement automatically,
+                        so it needs network access and increases build time/size
+  --build-libva-fake-driver
+                        Build the libva fake VA-API backend for headless testing
+                        (https://github.com/rgonzalezfluendo/libva-fake-driver)
   --rebuild             Force rebuilding of Docker image
   --intel               Optimize for Intel GPU (VAAPI, VDPAU, QuickSync)
   --amd                 Optimize for AMD GPU (VAAPI, VDPAU)
-  --nvidia              Optimize for NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU, VAAPI)
+  --nvidia              Optimize for NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04/26.04, VDPAU, VAAPI)
 
 Environment Variables:
   LIBVA_DRIVER_NAME     Override VAAPI driver (e.g., i965, iHD, radeonsi, nouveau)
@@ -96,13 +104,15 @@ fi
 
 
 # Parse options
-UBUNTU_VERSION="24.04"
+UBUNTU_VERSION="26.04"
 REBUILD=""
 GPU_TYPES=()
 FFMPEG_INSTALL_METHOD="system"
 FFMPEG_VERSION="8.0"
 GSTREAMER_INSTALL_METHOD="system"
 GSTREAMER_VERSION="1.24.2"
+BUILD_REFERENCE_DECODERS="false"
+BUILD_LIBVA_FAKE_DRIVER="false"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -132,6 +142,14 @@ while [[ $# -gt 0 ]]; do
         --gstreamer-version)
             GSTREAMER_VERSION="$2"
             shift 2
+            ;;
+        --build-reference-decoders)
+            BUILD_REFERENCE_DECODERS="true"
+            shift
+            ;;
+        --build-libva-fake-driver)
+            BUILD_LIBVA_FAKE_DRIVER="true"
+            shift
             ;;
         --rebuild)
             REBUILD="--no-cache"
@@ -191,12 +209,21 @@ if [[ "$(docker images -q $DOCKER_IMAGE 2> /dev/null)" == "" ]] || [ -n "$REBUIL
     else
         echo -e "${BLUE}Using system GStreamer packages...${NC}"
     fi
+    if [ "$BUILD_REFERENCE_DECODERS" = "true" ]; then
+        echo -e "${BLUE}Building the ISO/reference decoders...${NC}"
+        echo -e "${YELLOW}Note: this downloads the ISO reference software and automatically accepts its licence agreement.${NC}"
+    fi
+    if [ "$BUILD_LIBVA_FAKE_DRIVER" = "true" ]; then
+        echo -e "${BLUE}Building the libva fake VA-API backend...${NC}"
+    fi
     docker build \
         --build-arg UBUNTU_VERSION="$UBUNTU_VERSION" \
         --build-arg FFMPEG_INSTALL_METHOD="$FFMPEG_INSTALL_METHOD" \
         --build-arg FFMPEG_VERSION="$FFMPEG_VERSION" \
         --build-arg GSTREAMER_INSTALL_METHOD="$GSTREAMER_INSTALL_METHOD" \
         --build-arg GSTREAMER_VERSION="$GSTREAMER_VERSION" \
+        --build-arg BUILD_REFERENCE_DECODERS="$BUILD_REFERENCE_DECODERS" \
+        --build-arg BUILD_LIBVA_FAKE_DRIVER="$BUILD_LIBVA_FAKE_DRIVER" \
         $NVIDIA_DRIVER_ARG \
         $REBUILD \
         -t "$DOCKER_IMAGE" \
@@ -242,7 +269,7 @@ if [ $HAS_NVIDIA -eq 1 ]; then
         GPU_ENV="-e LIBVA_DRIVER_NAME=${LIBVA_DRIVER_NAME:-nouveau}"
     fi
     GPU_ENV="$GPU_ENV -e VDPAU_DRIVER=${VDPAU_DRIVER:-nvidia}"
-    echo -e "${BLUE}Enabling NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04, VDPAU, VAAPI)${NC}"
+    echo -e "${BLUE}Enabling NVIDIA GPU (NVDEC/CUDA on Ubuntu 24.04/26.04, VDPAU, VAAPI)${NC}"
 fi
 
 # Warn about dual GPU setups

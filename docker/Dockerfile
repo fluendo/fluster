@@ -18,10 +18,10 @@
 # Fluster Docker Image with Hardware Acceleration Support
 # Supports VAAPI, VDPAU, NVDEC, and Intel QuickSync
 
-ARG UBUNTU_VERSION=24.04
+ARG UBUNTU_VERSION=26.04
 FROM ubuntu:${UBUNTU_VERSION}
 
-# A user is required by Ubuntu 24.04 to install meson as non-root
+# A user is required by Ubuntu 24.04+ to install meson as non-root
 ARG USERNAME='mock'
 ARG PASSWORD='mock'
 
@@ -39,6 +39,12 @@ ARG FFMPEG_VERSION=8.0
 ARG GSTREAMER_INSTALL_METHOD=system
 # GStreamer version for "source" method
 ARG GSTREAMER_VERSION=1.24.2
+# Build the ISO/reference decoders (JM, HM, VTM, VVdeC, MPEG-2/4 AAC, MPEG-2 video)
+ARG BUILD_REFERENCE_DECODERS=false
+# Build the libva fake VA-API backend for headless testing
+ARG BUILD_LIBVA_FAKE_DRIVER=false
+# libva-fake-driver revision (commit, tag or branch) to build
+ARG LIBVA_FAKE_DRIVER_VERSION=04fce0c3260b293357689d21d601300197fb0a80
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TERM=xterm-256color \
@@ -81,9 +87,10 @@ RUN apt-get update && apt-get install -y \
         apt-get install -y intel-media-va-driver || true) \
     && rm -rf /var/lib/apt/lists/*
 
-# VAAPI driver for NVIDIA (Ubuntu 24.04+)
+# VAAPI driver for NVIDIA
 # apt's nvidia-vaapi-driver defaults to the broken EGL backend (driver >=525,
-# elFarto/nvidia-vaapi-driver#207). Build from source instead (direct backend).
+# elFarto/nvidia-vaapi-driver#207), so on Ubuntu 24.04 build from source instead
+# (direct backend). Ubuntu 26.04+ ships a fixed driver, use the distro package.
 RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         apt-get update && \
         apt-get install -y meson ninja-build git pkg-config \
@@ -95,6 +102,10 @@ RUN if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
         meson setup /tmp/nvidia-vaapi-driver/build /tmp/nvidia-vaapi-driver --prefix=/usr --libdir=lib/x86_64-linux-gnu && \
         ninja -C /tmp/nvidia-vaapi-driver/build install && \
         rm -rf /tmp/nv-codec-headers /tmp/nvidia-vaapi-driver && \
+        rm -rf /var/lib/apt/lists/*; \
+    elif dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then \
+        apt-get update && \
+        (apt-get install -y nvidia-vaapi-driver || true) && \
         rm -rf /var/lib/apt/lists/*; \
     fi
 
@@ -166,8 +177,12 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         libvpx-dev \
         libfdk-aac-dev \
         libopus-dev \
-        libmfx-dev \
         libunistring-dev \
+      && if dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then \
+           apt-get install -y libvpl-dev; \
+         else \
+           apt-get install -y libmfx-dev; \
+         fi \
       && rm -rf /var/lib/apt/lists/* && \
       mkdir /tmp/aom && \
       cd /tmp/aom && \
@@ -191,6 +206,7 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
       cd /tmp/ffmpeg && \
       export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib/${ARCH}-linux-gnu/pkgconfig:${PKG_CONFIG_PATH:-} && \
       export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib/${ARCH}-linux-gnu:${LD_LIBRARY_PATH:-} && \
+      if dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then QSV_OPT="--enable-libvpl"; else QSV_OPT="--enable-libmfx"; fi && \
       ./configure \
         --prefix=/usr/local \
         --pkg-config-flags="--static" \
@@ -205,7 +221,7 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
         --enable-nonfree \
         --enable-libx264 \
         --enable-libx265 \
-        --enable-libmfx \
+        ${QSV_OPT} \
         --enable-gnutls \
         --enable-libaom \
         --enable-libass \
@@ -242,7 +258,7 @@ RUN if [ "${FFMPEG_INSTALL_METHOD}" = "source" ]; then \
 
 # Update python packages depending on Ubuntu version
 RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
-      if [ "${UBUNTU_VERSION}" = "24.04" ]; then \
+      if dpkg --compare-versions "${UBUNTU_VERSION}" ge 24.04; then \
         pip3 install --upgrade pip setuptools; \
         apt update && apt install -y pipx ninja-build && rm -rf /var/lib/apt/lists/*; \
       else \
@@ -250,8 +266,8 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
       fi; \
     fi
 
-# Ubuntu 24.04: Remove default user
-RUN if [ "${UBUNTU_VERSION}" = "24.04" ] && id ubuntu >/dev/null 2>&1; then \
+# Ubuntu 24.04+: Remove default user
+RUN if dpkg --compare-versions "${UBUNTU_VERSION}" ge 24.04 && id ubuntu >/dev/null 2>&1; then \
       userdel -r ubuntu; \
     fi
 
@@ -263,11 +279,11 @@ RUN addgroup ${USERNAME} && \
 # Change to USERNAME user
 USER ${USERNAME}
 
-# Set PATH to include pipx bin directory - required for meson in Ubuntu 24.04
+# Set PATH to include pipx bin directory - required for meson in Ubuntu 24.04+
 ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
 
-# Ubuntu 24.04: install python packages for non-root user
-RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && [ "${UBUNTU_VERSION}" = "24.04" ]; then \
+# Ubuntu 24.04+: install python packages for non-root user
+RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ] && dpkg --compare-versions "${UBUNTU_VERSION}" ge 24.04; then \
       echo "export PATH=/home/${USERNAME}/.local/bin:\${PATH}" >> /home/${USERNAME}/.bashrc; \
       pipx install meson==1.6.1; \
     fi
@@ -294,7 +310,6 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libpthread-stubs0-dev \
         libva-dev \
         libvdpau-dev \
-        libmfx-dev \
         libx11-dev \
         libxext-dev \
         libxv-dev \
@@ -315,6 +330,11 @@ RUN if [ "${GSTREAMER_INSTALL_METHOD}" = "source" ]; then \
         libgles2-mesa-dev \
         libgl1-mesa-dev \
         libglu1-mesa-dev \
+      && if dpkg --compare-versions "${UBUNTU_VERSION}" ge 26.04; then \
+           sudo apt-get install -y libvpl-dev; \
+         else \
+           sudo apt-get install -y libmfx-dev; \
+         fi \
       && sudo rm -rf /var/lib/apt/lists/* \
       && mkdir -p /tmp/gstreamer && cd /tmp/gstreamer \
       && curl -L "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/${GSTREAMER_VERSION}/gstreamer-${GSTREAMER_VERSION}.tar.gz" | tar xz \
@@ -456,6 +476,54 @@ RUN pip3 install . --no-cache-dir --break-system-packages 2>/dev/null || \
     pip3 install . --no-cache-dir
 
 RUN mkdir -p /fluster/resources /fluster/test_suites
+
+# Optional: build the ISO/reference decoders used for conformance checking.
+# This downloads the ISO reference software (automatically accepting its licence)
+# and the wrap-based subprojects, so it needs network access at build time and
+# increases both build time and image size. Enable with
+# --build-arg BUILD_REFERENCE_DECODERS=true.
+# -D_DEFAULT_SOURCE exposes POSIX prototypes (e.g. fileno) that GCC 15 rejects
+# as implicit declarations under the decoders' -std=c99.
+RUN if [ "${BUILD_REFERENCE_DECODERS}" = "true" ]; then \
+      apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        cmake \
+        meson \
+        ninja-build \
+        pkg-config \
+        patch \
+      && rm -rf /var/lib/apt/lists/* \
+      && python3 build/download_deps.py --accept-license \
+      && meson setup builddir -Dc_args=-D_DEFAULT_SOURCE \
+      && ninja -C builddir; \
+    fi
+
+# Optional: build the libva fake VA-API backend
+# (https://github.com/rgonzalezfluendo/libva-fake-driver) for headless testing
+# without a real GPU. Enable with --build-arg BUILD_LIBVA_FAKE_DRIVER=true.
+# The driver is installed into LIBVA_DRIVERS_PATH and used with:
+#   LIBVA_DRIVER_NAME=fake LD_PRELOAD=<libdir>/dri/fake_gbm.so vainfo
+RUN if [ "${BUILD_LIBVA_FAKE_DRIVER}" = "true" ]; then \
+      apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        meson \
+        ninja-build \
+        pkg-config \
+        libgbm-dev \
+        libdrm-dev \
+        libdav1d-dev \
+        libvpx-dev \
+        libopenh264-dev \
+        libyuv-dev \
+      && rm -rf /var/lib/apt/lists/* \
+      && git clone https://github.com/rgonzalezfluendo/libva-fake-driver.git /tmp/libva-fake-driver \
+      && git -C /tmp/libva-fake-driver checkout ${LIBVA_FAKE_DRIVER_VERSION} \
+      && meson setup /tmp/libva-fake-driver/builddir /tmp/libva-fake-driver \
+           --prefix=/usr --libdir=lib/${ARCH}-linux-gnu/dri \
+      && ninja -C /tmp/libva-fake-driver/builddir \
+      && meson install -C /tmp/libva-fake-driver/builddir \
+      && rm -rf /tmp/libva-fake-driver; \
+    fi
 
 # Additional environment variables
 ENV PYTHONPATH=/fluster \
