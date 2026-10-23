@@ -153,6 +153,7 @@ class Main:
         subparsers = parser.add_subparsers(title="subcommands")
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
+        self._add_parse_cmd(subparsers)
         self._add_download_cmd(subparsers)
         self._add_reference_cmd(subparsers)
         return parser
@@ -161,7 +162,7 @@ class Main:
         subparser = subparsers.add_parser(
             "list",
             aliases=["l"],
-            help="show list of available test suites and decoders",
+            help="show list of available test suites, decoders and parsers",
         )
         subparser.add_argument(
             "-ts",
@@ -178,7 +179,7 @@ class Main:
         subparser.add_argument(
             "-c",
             "--check",
-            help="check which decoders can be run successfully. Reports ✔️ or ❌",
+            help="check which decoders and parsers can be run successfully. Reports ✔️ or ❌",
             action="store_true",
         )
         subparser.add_argument(
@@ -190,7 +191,7 @@ class Main:
         subparser.add_argument(
             "-d",
             "--codec",
-            help="show decoders and test suites of a codec",
+            help="show decoders, parsers and test suites of a codec",
             type=Codec,
             choices=list(Codec),
         )
@@ -300,6 +301,108 @@ class Main:
         )
         subparser.set_defaults(func=self._run_cmd)
 
+    def _add_parse_cmd(self, subparsers: Any) -> None:
+        subparser = subparsers.add_parser("parse", aliases=["p"], help="run test suites for GStreamer parsers")
+        subparser.add_argument(
+            "-j",
+            "--jobs",
+            help="number of parallel jobs to use (by default 1x logical cores, value 0 is interpreted as the same)",
+            type=int,
+            default=multiprocessing.cpu_count(),
+        )
+        subparser.add_argument(
+            "-t",
+            "--timeout",
+            help="timeout in secs for each parsing. Defaults to 30 secs",
+            type=int,
+            default=30,
+        )
+        subparser.add_argument(
+            "-ff",
+            "--failfast",
+            help="stop after first fail",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "-q",
+            "--quiet",
+            help="don't show every test run",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "-ts",
+            "--testsuites",
+            help="run only the specific test suites",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-tv",
+            "--testvectors",
+            help="run only the specific test vectors",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-sv",
+            "--skipvectors",
+            help="skip the specific test vectors",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-p",
+            "--parsers",
+            help="run only the specific parsers",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-s",
+            "--summary",
+            help="generate a summary in Markdown format for each test suite",
+            action="store_true",
+        )
+        subparser.add_argument("-so", "--summary-output", help="dump summary output to file")
+        subparser.add_argument(
+            "-f",
+            "--format",
+            help="specify the format for the summary file",
+            choices=[x.value for x in SummaryFormat],
+            default=SummaryFormat.MARKDOWN.value,
+        )
+        subparser.add_argument(
+            "-k",
+            "--keep",
+            help="keep output files generated during the test",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "-th",
+            "--threshold",
+            help="set exit code to 2 if threshold tests are not success. exit code is 0 otherwise",
+            type=int,
+        )
+        subparser.add_argument(
+            "-tth",
+            "--time-threshold",
+            help="set exit code to 3 if test suite takes longer than threshold seconds. exit code is 0 otherwise",
+            type=float,
+        )
+        subparser.add_argument(
+            "--profiles",
+            help="run only test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "--skip-profiles",
+            help="skip test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-v",
+            "--verbose",
+            help="show stdout and stderr of commands executed",
+            action="store_true",
+        )
+        subparser.set_defaults(func=self._parse_cmd)
+
     def _add_reference_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser(
             "reference",
@@ -390,6 +493,7 @@ class Main:
     def _list_cmd(args: Any, fluster: Fluster) -> None:
         fluster.list_test_suites(show_test_vectors=args.testvectors, test_suites=args.testsuites, codec=args.codec)
         fluster.list_decoders(check=args.check, verbose=args.verbose, codec=args.codec)
+        fluster.list_parsers(check=args.check, verbose=args.verbose, codec=args.codec)
         fluster.list_profiles(codec=args.codec)
 
     @staticmethod
@@ -400,6 +504,35 @@ class Main:
             test_suites=args.testsuites,
             timeout=args.timeout,
             decoders=args.decoders,
+            test_vectors=args.testvectors,
+            skip_vectors=args.skipvectors,
+            failfast=args.failfast,
+            quiet=args.quiet,
+            summary=args.summary or args.summary_output,
+            keep_files=args.keep,
+            threshold=args.threshold,
+            time_threshold=args.time_threshold,
+            verbose=args.verbose,
+            summary_output=args.summary_output,
+            summary_format=args.format,
+            profiles=args.profiles,
+            skip_profiles=args.skip_profiles,
+        )
+        try:
+            fluster.run_test_suites(context)
+        except SystemExit as exception:
+            sys.exit(exception.code)
+
+    @staticmethod
+    def _parse_cmd(args: Any, fluster: Fluster) -> None:
+        args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
+        context = Context(
+            jobs=args.jobs,
+            test_suites=args.testsuites,
+            timeout=args.timeout,
+            decoders=[],
+            parsers=args.parsers,
+            parse_mode=True,
             test_vectors=args.testvectors,
             skip_vectors=args.skipvectors,
             failfast=args.failfast,

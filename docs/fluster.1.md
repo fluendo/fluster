@@ -17,7 +17,7 @@ fluster – Testing framework for video decoder conformance
 
 # SYNOPSIS
 
-**fluster** [**-h**] [**-r** *RESOURCES*] [**-o** *OUTPUT*] [**-ne**] [**-tsd** *TEST_SUITES_DIR*] *{list,l,run,r,download,d,reference,f}*
+**fluster** [**-h**] [**-r** *RESOURCES*] [**-o** *OUTPUT*] [**-ne**] [**-tsd** *TEST_SUITES_DIR*] *{list,l,run,r,parse,p,download,d,reference,f}*
 
 # DESCRIPTION
 
@@ -26,7 +26,8 @@ conformance. It is composed of a command-line application that runs a number of
 test suites with the supported decoders. Its purpose is to check different
 decoder implementations against known test suites with known and proven results.
 It was originally designed to check the conformance of H.265/HEVC decoders, but
-it also supports H.264/AVC, H.266/VVC, VP8, VP9, AV1 and AAC.
+it also supports H.264/AVC, H.266/VVC, VP8, VP9, AV1 and AAC. It can also run
+GStreamer parsers over the test vectors.
 
 # OPTIONS
 
@@ -48,7 +49,7 @@ it also supports H.264/AVC, H.266/VVC, VP8, VP9, AV1 and AAC.
 # FLUSTER COMMANDS
 
 **list** **\(l\)**
-: Show a list of available test suites and decoders.
+: Show a list of available test suites, decoders and parsers.
 
 **run** **\(r\)**
 : Run test suites for decoders.
@@ -74,6 +75,61 @@ it also supports H.264/AVC, H.266/VVC, VP8, VP9, AV1 and AAC.
 
     : **\-d** *DECODERS*, **\-\-decoders** *DECODERS*
         : Run only the specific decoders.
+
+    : **\-s**, **\-\-summary**
+        : Generate a summary in Markdown format for each test suite.
+
+    : **\-so** *SUMMARY_OUTPUT*, **\-\-summary\-output** *SUMMARY_OUTPUT*
+        : Dump summary output to file.
+
+    : **\-f** *\{md,csv,junitxml\}*, **\-\-format** *\{md,csv,junitxml\}*
+        : Specify the format for the summary file.
+
+    : **\-k**, **\-\-keep**
+        : Keep output files generated during the test.
+
+    : **\-th** *THRESHOLD*, **\-\-threshold** *THRESHOLD*
+        : Set exit code to 2 if threshold tests are not success. Exit code is 0 otherwise.
+
+    : **\-tth** *TIME_THRESHOLD*, **\-\-time\-threshold** *TIME_THRESHOLD*
+        : Set exit code to 3 if test suite takes longer than threshold seconds.
+        : Exit code is 0 otherwise.
+
+    : **\-v**, **\-\-verbose**
+        : Show stdout and stderr of commands executed.
+
+**parse** **\(p\)**
+: Run test suites for GStreamer parsers.
+
+    Each test vector is run through a pipeline equivalent to
+    `gst-launch-1.0 filesrc location=<test-vector> ! <parser> ! fakesink`.
+    When the test suite provides a profile, a matching caps filter is added.
+    A test vector succeeds when the pipeline completes without errors.
+
+    Options:
+    : **\-j** *JOBS*, **\-\-jobs** *JOBS*
+        : Number of parallel jobs to use. 1x logical cores by default. 0 means all logical cores.
+
+    : **\-t** *TIMEOUT*, **\-\-timeout** *TIMEOUT*
+        : Timeout in secs for each parsing. Defaults to 30 secs.
+
+    : **\-ff**, **\-\-failfast**
+        : Stop after first fail.
+
+    : **\-q**, **\-\-quiet**
+        : Don't show every test run.
+
+    : **\-ts** *TESTSUITES*, **\-\-testsuites** *TESTSUITES*
+        : Run only the specific test suites.
+
+    : **\-tv** *TESTVECTORS*, **\-\-testvectors** *TESTVECTORS*
+        : Run only the specific test vectors.
+
+    : **\-sv** *SKIPVECTORS*, **\-\-skipvectors** *SKIPVECTORS*
+        : Skip the specific test vectors.
+
+    : **\-p** *PARSERS*, **\-\-parsers** *PARSERS*
+        : Run only the specific parsers.
 
     : **\-s**, **\-\-summary**
         : Generate a summary in Markdown format for each test suite.

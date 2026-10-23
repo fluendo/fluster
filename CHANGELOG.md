@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add run --skip-profiles CLI option
+- Add GStreamer parser testing for h264parse, h265parse and h266parse with a new
+  list section and a parse subcommand
+- Use test suite profiles as GStreamer caps filters when running parsers
 
 ## [0.8.0] - 2026-10-07
 
