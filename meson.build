@@ -46,6 +46,7 @@ build_mpeg4_aac = get_option('mpeg4_aac_decoder')
 build_mpeg4_aac_er = get_option('mpeg4_aac_er_decoder')
 build_mpeg2_video = get_option('mpeg2_video_decoder')
 build_mpegh = get_option('mpegh_decoder')
+build_mpeg4_video = get_option('mpeg4_video_decoder')
 
 missing_deps = []
 
@@ -70,6 +71,13 @@ endif
 if build_mpegh
   if not fs.is_dir(contrib_dir / 'MPEG-H_3DA_refSoft')
     missing_deps += ['contrib/MPEG-H_3DA_refSoft (MPEG-H 3D Audio decoder)']
+  endif
+endif
+
+# Check MPEG-4 Visual dependency
+if build_mpeg4_video
+  if not fs.is_dir(contrib_dir / 'MPEG-4_video_refSoft')
+    missing_deps += ['contrib/MPEG-4_video_refSoft (MPEG-4 Visual decoder)']
   endif
 endif
 
@@ -242,6 +250,23 @@ if build_mpeg2_aac
   endif
 endif
 
+# MPEG-4 Visual Reference Decoder (ISO/IEC 14496-5)
+mpeg4video_tgt = disabler()
+if build_mpeg4_video
+  # Check if the mpeg4video subproject directory exists (symlinked from contrib/MPEG-4_video_refSoft)
+  mpeg4video_dir = meson.current_source_dir() / 'subprojects' / 'mpeg4video'
+  if fs.is_dir(mpeg4video_dir) or fs.is_symlink(mpeg4video_dir)
+    mpeg4video_subproject = subproject('mpeg4video', required: false)
+    if mpeg4video_subproject.found()
+      mpeg4video_tgt = mpeg4video_subproject.get_variable('vm_dec')
+    else
+      warning('MPEG-4 Visual decoder subproject configuration failed')
+    endif
+  else
+    error('MPEG-4 Visual decoder: subprojects/mpeg4video symlink not found. Run: python3 build/download_deps.py')
+  endif
+endif
+
 # Extract compiler flags from meson's C compiler configuration
 # This ensures ISO decoders use the same architecture as the main build
 c_args_list = get_option('c_args')
@@ -382,6 +407,16 @@ if not is_disabler(aacdec_mc_tgt)
   )
 endif
 
+# MPEG-4 Visual decoder symlink (vm_dec)
+if not is_disabler(mpeg4video_tgt)
+  custom_target('link-vm_dec',
+    output: 'vm_dec.link',
+    input: mpeg4video_tgt,
+    command: ['sh', '-c', link_script, '_', meson.current_build_dir(), '@INPUT@', decoders_dir / 'vm_dec'],
+    build_by_default: true,
+  )
+endif
+
 run_target('clean-contrib',
   command: ['rm', '-rf', contrib_dir],
 )
@@ -408,6 +443,7 @@ summary({
   'MPEG-2 video decoder': build_mpeg2_video,
   'MPEG-2 AAC decoder': build_mpeg2_aac,
   'MPEG-H 3D Audio decoder': build_mpegh,
+  'MPEG-4 Visual decoder': build_mpeg4_video,
   'isobmff library': build_isobmff,
 }, section: 'Meson Subproject Decoders')
 

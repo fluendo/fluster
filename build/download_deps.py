@@ -3,7 +3,7 @@
 # Copyright (C) 2025, Fluendo, S.A.
 #
 # Helper script to download all ISO reference decoder dependencies
-# Downloads: MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, and libtsp
+# Downloads: MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, MPEG-H, MPEG-4 Visual, and libtsp
 
 import argparse
 import hashlib
@@ -172,6 +172,77 @@ def download_mpegh(contrib_dir):
     spatial_decoder.write_text(re.sub(r"^[ \t]*#pragma (end)?region.*\n", "", source, flags=re.M), encoding="utf-8")
 
 
+# Forward declarations that would clash with the std:: names brought in by the compat header
+MPEG4_VIDEO_FORWARD_DECLARATION = re.compile(
+    rb"^[ \t]*class[ \t]+(istream|ostream|ifstream|strstreambuf)[ \t]*;[ \t]*\r?\n", re.M
+)
+# "ios::bin" is the pre-standard spelling of "ios::binary"
+MPEG4_VIDEO_IOS_BIN = re.compile(rb"\bios::bin\b")
+
+
+def adapt_mpeg4_video_sources(source_dir):
+    """Adapt the MPEG-4 Visual reference software, which predates C++98, to build with current compilers"""
+    for path in source_dir.rglob("*"):
+        if not path.is_file() or path.suffix not in (".c", ".cpp", ".h", ".hpp"):
+            continue
+        original = path.read_bytes()
+        adapted = MPEG4_VIDEO_IOS_BIN.sub(b"ios::binary", MPEG4_VIDEO_FORWARD_DECLARATION.sub(b"", original))
+        if adapted != original:
+            path.write_bytes(adapted)
+
+
+def download_mpeg4_video(contrib_dir):
+    """Download the MPEG-4 Visual (ISO/IEC 14496-5) reference software, which builds vm_dec"""
+    print()
+    print("=== Downloading MPEG-4 Visual reference software ===")
+
+    mpeg4_video_dir = contrib_dir / "MPEG-4_video_refSoft"
+    mpeg4_video_zip = contrib_dir / "mpeg4_video_refsoft.zip"
+    mpeg4_video_url = (
+        "https://standards.iso.org/ittf/PubliclyAvailableStandards/"
+        "c039392_ISO_IEC_14496-5_2001_Amd%205_2004(E)_Reference_Software.zip"
+    )
+    # The zip holds several implementations, only this one produces vm_dec
+    implementation = "microsoft-v2.5-040207-NTU/"
+
+    if mpeg4_video_dir.exists():
+        print(f"Skipping download of MPEG-4 Visual: {mpeg4_video_dir} already exists")
+        # Re-apply the source rewrites, in case the tree was extracted before they were added
+        adapt_mpeg4_video_sources(mpeg4_video_dir)
+        return
+
+    # Get cookies first, then download with cookies and form data
+    cookie_jar = CookieJar()
+    build_opener(HTTPCookieProcessor(cookie_jar)).open(mpeg4_video_url)
+    download_with_cookies(mpeg4_video_url, mpeg4_video_zip, cookie_jar)
+    if not zipfile.is_zipfile(mpeg4_video_zip):
+        print(f"Error: {mpeg4_video_zip.name} is not a zip file, the download was probably refused")
+        sys.exit(1)
+
+    print(f"Extracting {implementation} from {mpeg4_video_zip.name}...")
+    # Extract into a temporary directory renamed once complete, so that an interrupted run
+    # never leaves a partial MPEG-4_video_refSoft behind
+    tmp_dir = contrib_dir / f".{mpeg4_video_dir.name}.tmp"
+    shutil.rmtree(tmp_dir, ignore_errors=True)
+    with zipfile.ZipFile(mpeg4_video_zip) as zip_ref:
+        for member in zip_ref.infolist():
+            _, found, relative_path = member.filename.partition(implementation)
+            if not found or not relative_path or ".." in Path(relative_path).parts:
+                continue
+            target = tmp_dir / relative_path
+            if member.is_dir():
+                target.mkdir(parents=True, exist_ok=True)
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(zip_ref.read(member))
+    mpeg4_video_zip.unlink()
+    if not tmp_dir.exists():
+        print(f"Error: {implementation} not found in the downloaded MPEG-4 Visual reference software")
+        sys.exit(1)
+    adapt_mpeg4_video_sources(tmp_dir)
+    tmp_dir.rename(mpeg4_video_dir)
+
+
 def download_libtsp(contrib_dir):
     """Download libtsp audio library"""
     print()
@@ -269,7 +340,8 @@ copyright@iso.org
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Download ISO reference decoder dependencies (MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, MPEG-H, libtsp)"
+        description="Download ISO reference decoder dependencies "
+        "(MPEG-2 AAC, MPEG-2 video, MPEG-4 AAC, MPEG-H, MPEG-4 Visual, libtsp)"
     )
     parser.add_argument(
         "dest_dir",
@@ -300,6 +372,7 @@ def main():
     print("  - MPEG-2 video decoder")
     print("  - MPEG-4 AAC decoders")
     print("  - MPEG-H 3D Audio decoder")
+    print("  - MPEG-4 Visual decoder")
     print("  - libtsp audio library")
     print()
 
@@ -314,6 +387,7 @@ def main():
     download_mpeg2(contrib_dir)
     download_mpeg4(contrib_dir)
     download_mpegh(contrib_dir)
+    download_mpeg4_video(contrib_dir)
     download_libtsp(contrib_dir)
 
     # Copy meson.build files to contrib directories
@@ -335,6 +409,9 @@ def main():
     print("Copying meson.build for libtsp")
     shutil.copy2(packagefiles_dir / "libtsp" / "meson.build", contrib_dir / "libtsp-v7r0" / "meson.build")
 
+    print("Copying meson.build for MPEG-4 Visual")
+    shutil.copy2(packagefiles_dir / "mpeg4video" / "meson.build", contrib_dir / "MPEG-4_video_refSoft" / "meson.build")
+
     # Create symlinks for meson subprojects
     print()
     print("=== Creating symlinks for meson subprojects ===")
@@ -342,6 +419,7 @@ def main():
     symlinks = [
         ("mpeg2video", "../contrib/video"),
         ("mpeg2aac", "../contrib/mpeg2aac"),
+        ("mpeg4video", "../contrib/MPEG-4_video_refSoft"),
         ("libtsp-v7r0", "../contrib/libtsp-v7r0"),
     ]
 
