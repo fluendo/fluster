@@ -98,7 +98,7 @@ welcome.
 
 ## Docker Support
 
-Fluster includes Docker support for testing decoders in isolated, reproducible environments with **hardware acceleration support** (VAAPI, VDPAU, NVDEC, QuickSync). Multiple Ubuntu versions are supported (20.04, 22.04, 24.04) with corresponding system FFmpeg and GStreamer packages.
+Fluster includes Docker support for testing decoders in isolated, reproducible environments with **hardware acceleration support** (VAAPI, VDPAU, NVDEC, QuickSync). Multiple Ubuntu versions are supported (20.04, 22.04, 24.04, 26.04) with corresponding system FFmpeg and GStreamer packages.
 
 **All Docker commands must be run from the `docker/` directory.**
 
