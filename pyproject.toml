@@ -48,7 +48,7 @@ classifiers = [
 "Github repository" = "https://github.com/fluendo/fluster/"
 
 [tool.setuptools]
-packages = ["fluster", "fluster.decoders", "fluster.gstreamer"]
+packages = ["fluster", "fluster.decoders", "fluster.gstreamer", "fluster.parsers"]
 
 [tool.setuptools.exclude-package-data]
 "*" = [
