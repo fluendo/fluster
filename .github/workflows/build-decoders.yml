@@ -99,6 +99,7 @@ jobs:
           mingw-w64-ucrt-x86_64-python
           mingw-w64-ucrt-x86_64-python-pip
           git
+          make
           unzip
           curl
 
