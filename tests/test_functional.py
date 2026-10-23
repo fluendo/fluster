@@ -36,6 +36,19 @@ IS_WINDOWS = platform.system() == "Windows"
 IS_LINUX = platform.system() == "Linux"
 
 
+def gst_element_available(element: str) -> bool:
+    """Return whether a GStreamer element is available in the system."""
+    try:
+        result = subprocess.run(
+            ["gst-inspect-1.0", "--exists", element],
+            capture_output=True,
+            check=False,
+        )
+    except FileNotFoundError:
+        return False
+    return result.returncode == 0
+
+
 def run_fluster(
     args: List[str],
     no_emoji: bool = False,
@@ -94,6 +107,54 @@ class TestList(unittest.TestCase):
         self.assertIn("dummy", result.stdout)
         self.assertIn("one", result.stdout)
 
+    def test_list_includes_parsers(self) -> None:
+        result = run_fluster(["list"])
+        self.assertIn("List of available parsers:", result.stdout)
+        for parser in ["h264parse", "h265parse", "h266parse"]:
+            self.assertIn(parser, result.stdout)
+
+    def test_list_parsers_filtered_by_codec(self) -> None:
+        result = run_fluster(["list", "-d", "H.266"])
+        self.assertIn("h266parse", result.stdout)
+        self.assertNotIn("h264parse", result.stdout)
+        self.assertNotIn("h265parse", result.stdout)
+
+    def test_decoders_list(self) -> None:
+        result = run_fluster(["decoders", "list"])
+        self.assertIn("List of available decoders:", result.stdout)
+        self.assertNotIn("List of available parsers:", result.stdout)
+
+    def test_parsers_list(self) -> None:
+        result = run_fluster(["parsers", "list"])
+        self.assertIn("List of available parsers:", result.stdout)
+        self.assertNotIn("List of available decoders:", result.stdout)
+
+    def test_decoders_list_with_check(self) -> None:
+        result = run_fluster(["decoders", "list", "-c"])
+        self.assertIn("dummy", result.stdout)
+
+    def test_parsers_list_with_check(self) -> None:
+        result = run_fluster(["parsers", "list", "-c"])
+        self.assertIn("h264parse", result.stdout)
+
+    def test_decoders_group_help(self) -> None:
+        result = run_fluster(["decoders"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("decoder commands", result.stdout)
+
+    def test_parsers_group_help(self) -> None:
+        result = run_fluster(["parsers"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("parser commands", result.stdout)
+
+    def test_parsers_run_help_shows_parsers_option(self) -> None:
+        result = run_fluster(["parsers", "run", "--help"])
+        self.assertIn("--parsers", result.stdout)
+
+    def test_parse_command_removed(self) -> None:
+        result = run_fluster(["parse"])
+        self.assertNotEqual(result.returncode, 0)
+
 
 class TestDownload(unittest.TestCase):
     def test_download_dummy_suites(self) -> None:
@@ -126,6 +187,11 @@ class TestReference(unittest.TestCase):
         self.assertIn("Reference run", result.stdout)
         self.assertEqual(result.returncode, 0)
 
+    def test_decoders_reference_dummy(self) -> None:
+        result = run_fluster(["decoders", "reference", "Dummy", "dummy"])
+        self.assertIn("Reference run", result.stdout)
+        self.assertEqual(result.returncode, 0)
+
 
 class TestRun(unittest.TestCase):
     def setUp(self) -> None:
@@ -133,6 +199,11 @@ class TestRun(unittest.TestCase):
 
     def test_run_single_vector(self) -> None:
         result = run_fluster(["run", "-ts", "dummy", "-tv", "one"])
+        self.assertIn("Success", result.stdout)
+        self.assertEqual(result.returncode, 0)
+
+    def test_decoders_run_single_vector(self) -> None:
+        result = run_fluster(["decoders", "run", "-ts", "dummy", "-tv", "one"])
         self.assertIn("Success", result.stdout)
         self.assertEqual(result.returncode, 0)
 
@@ -244,6 +315,28 @@ class TestRun(unittest.TestCase):
         run_fluster(["download", "VP9-min", "-k"])
         result = run_fluster(["run", "-ts", "VP9-min", "-d", "libvpx-VP9", "-s"])
         self.assertTrue("VP9-min" in result.stdout or "Skipping" in result.stdout or "cannot be run" in result.stdout)
+
+
+@unittest.skipUnless(gst_element_available("h264parse"), "h264parse is not available")
+class TestParsersRun(unittest.TestCase):
+    def setUp(self) -> None:
+        assert_fluster_success(["download", "H264-min", "H265-min", "-k"])
+
+    def test_parsers_run_h264(self) -> None:
+        result = run_fluster(["parsers", "run", "-ts", "H264-min", "-p", "h264parse"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("h264parse", result.stdout)
+        self.assertIn("1/1 tests successfully", result.stdout)
+
+    def test_parsers_run_all_by_default(self) -> None:
+        result = run_fluster(["parsers", "run", "-ts", "H264-min"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("h264parse", result.stdout)
+
+    def test_parsers_run_uses_profile_caps(self) -> None:
+        result = run_fluster(["parsers", "run", "-ts", "H265-min", "-p", "h265parse", "-v"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("video/x-h265,profile=main", result.stdout)
 
 
 if __name__ == "__main__":

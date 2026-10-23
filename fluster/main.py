@@ -23,7 +23,7 @@ import os
 import sys
 from importlib import util
 from tempfile import gettempdir
-from typing import Any, Tuple
+from typing import Any, List, Optional, Tuple
 
 from fluster import utils
 from fluster.codec import Codec
@@ -153,32 +153,49 @@ class Main:
         subparsers = parser.add_subparsers(title="subcommands")
         self._add_list_cmd(subparsers)
         self._add_run_cmd(subparsers)
+        self._add_decoders_cmd(subparsers)
+        self._add_parsers_cmd(subparsers)
         self._add_download_cmd(subparsers)
         self._add_reference_cmd(subparsers)
         return parser
 
-    def _add_list_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser(
-            "list",
-            aliases=["l"],
-            help="show list of available test suites and decoders",
-        )
-        subparser.add_argument(
-            "-ts",
-            "--testsuites",
-            help="show only the test suites given",
-            nargs="+",
-        )
-        subparser.add_argument(
-            "-tv",
-            "--testvectors",
-            help="show test vectors of test suites",
-            action="store_true",
-        )
+    def _add_list_cmd(
+        self,
+        subparsers: Any,
+        target: str = "all",
+        name: str = "list",
+        aliases: Optional[List[str]] = None,
+        help_text: str = "show list of available test suites, decoders and parsers",
+    ) -> Any:
+        if aliases is None:
+            aliases = ["l"]
+        subparser = subparsers.add_parser(name, aliases=aliases, help=help_text)
+        if target == "all":
+            subparser.add_argument(
+                "-ts",
+                "--testsuites",
+                help="show only the test suites given",
+                nargs="+",
+            )
+            subparser.add_argument(
+                "-tv",
+                "--testvectors",
+                help="show test vectors of test suites",
+                action="store_true",
+            )
+        if target == "parsers":
+            check_help = "check which parsers can be run successfully. Reports ✔️ or ❌"
+            codec_help = "show parsers of a codec"
+        elif target == "decoders":
+            check_help = "check which decoders can be run successfully. Reports ✔️ or ❌"
+            codec_help = "show decoders of a codec"
+        else:
+            check_help = "check which decoders and parsers can be run successfully. Reports ✔️ or ❌"
+            codec_help = "show decoders, parsers and test suites of a codec"
         subparser.add_argument(
             "-c",
             "--check",
-            help="check which decoders can be run successfully. Reports ✔️ or ❌",
+            help=check_help,
             action="store_true",
         )
         subparser.add_argument(
@@ -190,14 +207,23 @@ class Main:
         subparser.add_argument(
             "-d",
             "--codec",
-            help="show decoders and test suites of a codec",
+            help=codec_help,
             type=Codec,
             choices=list(Codec),
         )
-        subparser.set_defaults(func=self._list_cmd)
+        subparser.set_defaults(func=self._list_cmd, list_target=target)
+        return subparser
 
-    def _add_run_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser("run", aliases=["r"], help="run test suites for decoders")
+    def _add_run_cmd(
+        self,
+        subparsers: Any,
+        name: str = "run",
+        aliases: Optional[List[str]] = None,
+        help_text: str = "run test suites for decoders",
+    ) -> Any:
+        if aliases is None:
+            aliases = ["r"]
+        subparser = subparsers.add_parser(name, aliases=aliases, help=help_text)
         subparser.add_argument(
             "-j",
             "--jobs",
@@ -299,13 +325,149 @@ class Main:
             action="store_true",
         )
         subparser.set_defaults(func=self._run_cmd)
+        return subparser
 
-    def _add_reference_cmd(self, subparsers: Any) -> None:
-        subparser = subparsers.add_parser(
-            "reference",
-            aliases=["f"],
-            help="use a specific decoder to set its results for the test suites given",
+    def _add_parse_cmd(
+        self,
+        subparsers: Any,
+        name: str = "parse",
+        aliases: Optional[List[str]] = None,
+        help_text: str = "run test suites for GStreamer parsers",
+    ) -> Any:
+        if aliases is None:
+            aliases = ["p"]
+        subparser = subparsers.add_parser(name, aliases=aliases, help=help_text)
+        subparser.add_argument(
+            "-j",
+            "--jobs",
+            help="number of parallel jobs to use (by default 1x logical cores, value 0 is interpreted as the same)",
+            type=int,
+            default=multiprocessing.cpu_count(),
         )
+        subparser.add_argument(
+            "-t",
+            "--timeout",
+            help="timeout in secs for each parsing. Defaults to 30 secs",
+            type=int,
+            default=30,
+        )
+        subparser.add_argument(
+            "-ff",
+            "--failfast",
+            help="stop after first fail",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "-q",
+            "--quiet",
+            help="don't show every test run",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "-ts",
+            "--testsuites",
+            help="run only the specific test suites",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-tv",
+            "--testvectors",
+            help="run only the specific test vectors",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-sv",
+            "--skipvectors",
+            help="skip the specific test vectors",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-p",
+            "--parsers",
+            help="run only the specific parsers",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-s",
+            "--summary",
+            help="generate a summary in Markdown format for each test suite",
+            action="store_true",
+        )
+        subparser.add_argument("-so", "--summary-output", help="dump summary output to file")
+        subparser.add_argument(
+            "-f",
+            "--format",
+            help="specify the format for the summary file",
+            choices=[x.value for x in SummaryFormat],
+            default=SummaryFormat.MARKDOWN.value,
+        )
+        subparser.add_argument(
+            "-k",
+            "--keep",
+            help="keep output files generated during the test",
+            action="store_true",
+        )
+        subparser.add_argument(
+            "-th",
+            "--threshold",
+            help="set exit code to 2 if threshold tests are not success. exit code is 0 otherwise",
+            type=int,
+        )
+        subparser.add_argument(
+            "-tth",
+            "--time-threshold",
+            help="set exit code to 3 if test suite takes longer than threshold seconds. exit code is 0 otherwise",
+            type=float,
+        )
+        subparser.add_argument(
+            "--profiles",
+            help="run only test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "--skip-profiles",
+            help="skip test vectors for the given profiles (e.g. 'VP9 Profile 0')",
+            nargs="+",
+        )
+        subparser.add_argument(
+            "-v",
+            "--verbose",
+            help="show stdout and stderr of commands executed",
+            action="store_true",
+        )
+        subparser.set_defaults(func=self._parse_cmd)
+        return subparser
+
+    def _add_decoders_cmd(self, subparsers: Any) -> None:
+        subparser = subparsers.add_parser("decoders", help="list, run and reference decoders")
+        command_subparsers = subparser.add_subparsers(title="decoder commands")
+        self._add_list_cmd(command_subparsers, target="decoders", help_text="list available decoders")
+        self._add_run_cmd(command_subparsers)
+        self._add_reference_cmd(command_subparsers)
+        subparser.set_defaults(func=self._group_help_cmd, group_parser=subparser)
+
+    def _add_parsers_cmd(self, subparsers: Any) -> None:
+        subparser = subparsers.add_parser("parsers", help="list and run parsers")
+        command_subparsers = subparser.add_subparsers(title="parser commands")
+        self._add_list_cmd(command_subparsers, target="parsers", help_text="list available parsers")
+        self._add_parse_cmd(
+            command_subparsers,
+            name="run",
+            aliases=["r"],
+            help_text="run test suites for parsers",
+        )
+        subparser.set_defaults(func=self._group_help_cmd, group_parser=subparser)
+
+    def _add_reference_cmd(
+        self,
+        subparsers: Any,
+        name: str = "reference",
+        aliases: Optional[List[str]] = None,
+        help_text: str = "use a specific decoder to set its results for the test suites given",
+    ) -> Any:
+        if aliases is None:
+            aliases = ["f"]
+        subparser = subparsers.add_parser(name, aliases=aliases, help=help_text)
         subparser.add_argument(
             "-j",
             "--jobs",
@@ -345,6 +507,7 @@ class Main:
             nargs="+",
         )
         subparser.set_defaults(func=self._reference_cmd)
+        return subparser
 
     def _add_download_cmd(self, subparsers: Any) -> None:
         subparser = subparsers.add_parser("download", aliases=["d"], help="downloads test suites resources")
@@ -387,10 +550,24 @@ class Main:
         subparser.set_defaults(func=self._download_cmd)
 
     @staticmethod
+    def _group_help_cmd(args: Any, fluster: Fluster) -> None:
+        args.group_parser.print_help()
+
+    @staticmethod
     def _list_cmd(args: Any, fluster: Fluster) -> None:
-        fluster.list_test_suites(show_test_vectors=args.testvectors, test_suites=args.testsuites, codec=args.codec)
-        fluster.list_decoders(check=args.check, verbose=args.verbose, codec=args.codec)
-        fluster.list_profiles(codec=args.codec)
+        target = getattr(args, "list_target", "all")
+        if target == "all":
+            fluster.list_test_suites(
+                show_test_vectors=args.testvectors,
+                test_suites=args.testsuites,
+                codec=args.codec,
+            )
+        if target in ("all", "decoders"):
+            fluster.list_decoders(check=args.check, verbose=args.verbose, codec=args.codec)
+        if target in ("all", "parsers"):
+            fluster.list_parsers(check=args.check, verbose=args.verbose, codec=args.codec)
+        if target == "all":
+            fluster.list_profiles(codec=args.codec)
 
     @staticmethod
     def _run_cmd(args: Any, fluster: Fluster) -> None:
@@ -400,6 +577,35 @@ class Main:
             test_suites=args.testsuites,
             timeout=args.timeout,
             decoders=args.decoders,
+            test_vectors=args.testvectors,
+            skip_vectors=args.skipvectors,
+            failfast=args.failfast,
+            quiet=args.quiet,
+            summary=args.summary or args.summary_output,
+            keep_files=args.keep,
+            threshold=args.threshold,
+            time_threshold=args.time_threshold,
+            verbose=args.verbose,
+            summary_output=args.summary_output,
+            summary_format=args.format,
+            profiles=args.profiles,
+            skip_profiles=args.skip_profiles,
+        )
+        try:
+            fluster.run_test_suites(context)
+        except SystemExit as exception:
+            sys.exit(exception.code)
+
+    @staticmethod
+    def _parse_cmd(args: Any, fluster: Fluster) -> None:
+        args.jobs = args.jobs if args.jobs > 0 else multiprocessing.cpu_count()
+        context = Context(
+            jobs=args.jobs,
+            test_suites=args.testsuites,
+            timeout=args.timeout,
+            decoders=[],
+            parsers=args.parsers,
+            parse_mode=True,
             test_vectors=args.testvectors,
             skip_vectors=args.skipvectors,
             failfast=args.failfast,

@@ -18,17 +18,15 @@
 
 
 import os
-import subprocess
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
 from fluster.codec import Codec, OutputFormat
 from fluster.decoder import Decoder, register_decoder
 from fluster.decoders.dolby_pad import EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG
-from fluster.gstreamer import run_pipeline
+from fluster.gstreamer import gst_element_exists, run_pipeline
 from fluster.utils import (
     file_checksum,
-    normalize_binary_cmd,
 )
 
 PIPELINE_TPL = "filesrc location={} ! {} ! {} ! {} ! {} {}"
@@ -45,26 +43,6 @@ def _videocodectestsink_supports_format(gst_fmt: str) -> bool:
         run_pipeline(pipeline, verbose=False)
         return True
     except Exception:
-        return False
-
-
-@lru_cache(maxsize=None)
-def gst_element_exists(element: str) -> bool:
-    """Check if an element exists in current GStreamer installation"""
-    inspect_exe = normalize_binary_cmd("gst-inspect-1.0")
-
-    try:
-        subprocess.run(
-            [inspect_exe, "--exists", element],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=True,
-        )
-        return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return False
-    except Exception as error:  # pylint: disable=broad-except
-        print(f"An unexpected error occurred: {error}")
         return False
 
 

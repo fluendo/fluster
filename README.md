@@ -4,12 +4,12 @@
 
 Fluster is a testing framework written in Python for decoder conformance. It
 is composed of a [CLI](https://en.wikipedia.org/wiki/Command-line_interface)
-application that runs a number of test suites with the supported decoders. Its
-purpose is to check different decoder implementations against known test suites
-with known and proven results. It was originally designed to check the
-conformance of H.265/HEVC decoders, but it also supports H.264/AVC, H.266/VVC,
-VP8, VP9, AV1, MPEG2 video, AAC and AC-4. It can easily be extended to add more decoders and test
-suites.
+application that runs a number of test suites with the supported decoders and
+parsers. Its purpose is to check different decoder implementations against known
+test suites with known and proven results. It was originally designed to check
+the conformance of H.265/HEVC decoders, but it also supports H.264/AVC, H.266/VVC,
+VP8, VP9, AV1, MPEG2 video, AAC and AC-4. It can easily be extended to add more
+decoders, parsers and test suites.
 
 ## Table of Contents
 
@@ -25,6 +25,7 @@ suites.
   - [CLI usage](#cli-usage)
     - [List](#list)
     - [Run](#run)
+    - [Parsers](#parsers)
     - [Download](#download)
     - [Reference](#reference)
     - [Local Mirror](#local-mirror)
@@ -155,8 +156,10 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    meson setup builddir -Dmpegh_decoder=true
    ```
 
-3. List the test suites and the decoders available `./fluster.py list`.
-   Tip: You can list the decoders that can run in the current system with `./fluster.py list -c`.
+3. List the test suites, decoders and parsers available `./fluster.py list`.
+   Tip: You can list only the decoders or parsers with
+   `./fluster.py decoders list` and `./fluster.py parsers list`, and check
+   which ones can run in the current system with `-c`.
 
 
    The `[R]` mark identifies reference decoders, i.e. the decoders used to obtain
@@ -571,6 +574,17 @@ AAC
 MPEGH_3DA
     ISO-MPEGH-3DA: ISO MPEG-H 3D Audio reference decoder [R]
 
+List of available parsers:
+
+H.264
+    h264parse: GStreamer H.264 parser
+
+H.265
+    h265parse: GStreamer H.265 parser
+
+H.266
+    h266parse: GStreamer H.266 parser
+
 List of available profiles:
 
 AAC
@@ -640,16 +654,19 @@ VP9
    the `-j` option. You can pass `-d` to filter only the decoders that you want
    to run, `-ts` for the test suites and `-tv` for the test vectors. Examples:
 
-    - `./fluster.py run` runs all test suites for all decoders available that
-      match each test suite's codec.
-    - `./fluster.py run -ts JCT-VC-HEVC_V1` runs the *JCT-VC-HEVC_V1* test
-      suite for all decoders that support H.265/HEVC.
-    - `./fluster.py run -ts JCT-VC-HEVC_V1 -tv AMP_A_Samsung_7` runs only the
-      test vector *AMP_A_Samsung_7* of the *JCT-VC-HEVC_V1* test suite.
-    - `./fluster.py run -d FFmpeg-H.265` runs the *FFmpeg-H265* decoder on all
-      test suites for H.265/HEVC.
-    - `./fluster.py run -d FFmpeg-H.265 -j1` runs the *FFmpeg-H265* decoder on all
-      test suites for H.265/HEVC using one job.
+    - `./fluster.py decoders run` runs all test suites for all decoders
+      available that match each test suite's codec.
+    - `./fluster.py decoders run -ts JCT-VC-HEVC_V1` runs the *JCT-VC-HEVC_V1*
+      test suite for all decoders that support H.265/HEVC.
+    - `./fluster.py decoders run -ts JCT-VC-HEVC_V1 -tv AMP_A_Samsung_7` runs
+      only the test vector *AMP_A_Samsung_7* of the *JCT-VC-HEVC_V1* test suite.
+    - `./fluster.py decoders run -d FFmpeg-H.265` runs the *FFmpeg-H265* decoder
+      on all test suites for H.265/HEVC.
+    - `./fluster.py decoders run -d FFmpeg-H.265 -j1` runs the *FFmpeg-H265*
+      decoder on all test suites for H.265/HEVC using one job.
+
+   `./fluster.py run` remains available as an alias of
+   `./fluster.py decoders run`.
 
 ## Test Suites
 
@@ -697,7 +714,7 @@ VP9
 ```bash
 ./fluster.py --help
 
-usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR] {list,l,run,r,download,d,reference,f} ...
+usage: fluster.py [-h] [-r RESOURCES] [-o OUTPUT] [-ne] [-tsd TEST_SUITES_DIR] {list,l,run,r,decoders,parsers,download,d,reference,f} ...
 
 options:
   -h, --help            show this help message and exit
@@ -710,9 +727,11 @@ options:
                         set directory where test suite will be read from, multiple directories are supported with OS path separator (:)
 
 subcommands:
-  {list,l,run,r,download,d,reference,f}
-    list (l)            show list of available test suites and decoders
+  {list,l,run,r,decoders,parsers,download,d,reference,f}
+    list (l)            show list of available test suites, decoders and parsers
     run (r)             run test suites for decoders
+    decoders            list, run and reference decoders
+    parsers             list and run parsers
     download (d)        downloads test suites resources
     reference (f)       use a specific decoder to set its results for the test suites given
 ```
@@ -730,18 +749,28 @@ optional arguments:
   -ts TESTSUITES [TESTSUITES ...], --testsuites TESTSUITES [TESTSUITES ...]
                         show only the test suites given
   -tv, --testvectors    show test vectors of test suites
-  -c, --check           check which decoders can be run successfully. Reports ✔️ or ❌
+  -c, --check           check which decoders and parsers can be run successfully. Reports ✔️ or ❌
   -v, --verbose         show stdout and stderr of commands executed
   -d {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO,MPEG4_VIDEO}, --codec {None,Dummy,H.264,H.265,H.266,VP8,VP9,AAC,AV1,MPEG2_VIDEO,MPEG4_VIDEO}
-                        show decoders and test suites of a codec
+                        show decoders, parsers and test suites of a codec
+```
+
+`./fluster.py list` shows everything. Use the scoped list commands to show
+only one section:
+
+```bash
+./fluster.py decoders list
+./fluster.py decoders list -c
+./fluster.py parsers list
+./fluster.py parsers list -c
 ```
 
 ### Run
 
 ```bash
-./fluster.py run --help
+./fluster.py decoders run --help
 
-usage: fluster.py run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
+usage: fluster.py decoders run [-h] [-j JOBS] [-t TIMEOUT] [-ff] [-q]
 [-ts TESTSUITES [TESTSUITES ...]] [-tv TESTVECTORS [TESTVECTORS ...]]
 [-sv SKIPVECTORS [SKIPVECTORS ...]] [-d DECODERS [DECODERS ...]] [-s]
 [-so SUMMARY_OUTPUT] [-f {md,csv,junitxml}] [-k] [-p PROFILES [PROFILES ...]]
@@ -783,6 +812,9 @@ optional arguments:
   -v, --verbose         show stdout and stderr of commands executed
 ```
 
+`./fluster.py run` remains available as an alias of
+`./fluster.py decoders run`.
+
 **Profile Filtering:**
 - The `-p/--profiles` option filters test vectors by their codec profile. Only vectors
   with a matching profile are run; vectors without profile metadata are excluded.
@@ -796,10 +828,48 @@ optional arguments:
   It accepts the same names as `-p/--profiles` (case-insensitive) and can be
   combined with it; when a profile is both included and skipped, it is skipped.
 - Examples:
-  - `./fluster.py run -ts JVT-AVC_V1 -p Baseline` runs only Baseline profile vectors
-  - `./fluster.py run -ts VP9-TEST-VECTORS -p "VP9 Profile 0"` runs only Profile 0 vectors
-  - `./fluster.py run -ts JVT-AVC_V1 -p Baseline Main High` runs vectors matching any of the three profiles
-  - `./fluster.py run -ts JVT-AVC_V1 -sp Main` runs every vector except Main profile ones
+  - `./fluster.py decoders run -ts JVT-AVC_V1 -p Baseline` runs only Baseline profile vectors
+  - `./fluster.py decoders run -ts VP9-TEST-VECTORS -p "VP9 Profile 0"` runs only Profile 0 vectors
+  - `./fluster.py decoders run -ts JVT-AVC_V1 -p Baseline Main High` runs vectors matching any of the three profiles
+  - `./fluster.py decoders run -ts JVT-AVC_V1 -sp Main` runs every vector except Main profile ones
+
+### Parsers
+
+```bash
+./fluster.py parsers run --help
+```
+
+The `parsers run` subcommand runs GStreamer parsers instead of decoders. Use
+`./fluster.py parsers list` to list the available parsers. Each test vector is
+passed through a pipeline equivalent to:
+
+```bash
+gst-launch-1.0 filesrc location=<test-vector> ! <parser> ! fakesink
+```
+
+Fluster uses its own GStreamer runner internally rather than invoking
+`gst-launch-1.0`, but the pipeline is the same. A test vector succeeds when the
+pipeline completes without errors; parsers do not produce a decoded output to
+compare against the expected result.
+
+When the test suite provides a profile for a test vector, Fluster adds a caps
+filter using the matching GStreamer profile. For example, a vector with profile
+`Main` runs:
+
+```bash
+gst-launch-1.0 filesrc location=<test-vector> ! h265parse ! video/x-h265,profile=main ! fakesink
+```
+
+Vectors without profile metadata use the pipeline without the caps filter.
+
+Examples:
+
+- `./fluster.py parsers run -ts JVET-VVC_draft6 -p h266parse` runs every test
+  vector in the suite through `h266parse`.
+- `./fluster.py parsers run -ts JVT-AVC_V1 -p h264parse` runs every test vector
+  in the suite through `h264parse`.
+- If `-p/--parsers` is omitted, all parsers whose codec matches the selected
+  test suites are run.
 
 ### Download
 
@@ -909,10 +979,10 @@ options:
 ### Reference
 
 ```bash
-./fluster.py reference --help
+./fluster.py decoders reference --help
 
-usage: fluster.py reference [-h] [-j JOBS] [-t TIMEOUT] [-q] [-v]
-                            [-p PROFILES [PROFILES ...]]
+usage: fluster.py decoders reference [-h] [-j JOBS] [-t TIMEOUT] [-q] [-v]
+                                     [-p PROFILES [PROFILES ...]]
 decoder testsuites [testsuites ...]
 
 positional arguments:
@@ -931,6 +1001,9 @@ optional arguments:
                         run only test vectors for the given profiles (e.g.
                         'VP9 Profile 0')
 ```
+
+`./fluster.py reference` remains available as an alias of
+`./fluster.py decoders reference`.
 
 ## Report
 
