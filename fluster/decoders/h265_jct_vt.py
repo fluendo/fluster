@@ -30,6 +30,7 @@ class H265JCTVTDecoder(Decoder):
     description = "JCT-VT H.265/HEVC reference decoder"
     codec = Codec.H265
     binary = "TAppDecoder"
+    is_reference = True
 
     def decode(
         self,
