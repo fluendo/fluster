@@ -46,6 +46,7 @@ build_mpeg4_aac = get_option('mpeg4_aac_decoder')
 build_mpeg4_aac_er = get_option('mpeg4_aac_er_decoder')
 build_mpeg2_video = get_option('mpeg2_video_decoder')
 build_mpegh = get_option('mpegh_decoder')
+build_mpeg4_video = get_option('mpeg4_video_decoder')
 
 missing_deps = []
 
@@ -70,6 +71,13 @@ endif
 if build_mpegh
   if not fs.is_dir(contrib_dir / 'MPEG-H_3DA_refSoft')
     missing_deps += ['contrib/MPEG-H_3DA_refSoft (MPEG-H 3D Audio decoder)']
+  endif
+endif
+
+# Check MPEG-4 Visual dependency
+if build_mpeg4_video
+  if not fs.is_dir(contrib_dir / 'MPEG-4_video_refSoft')
+    missing_deps += ['contrib/MPEG-4_video_refSoft (MPEG-4 Visual decoder)']
   endif
 endif
 
@@ -306,6 +314,17 @@ if build_mpegh
   )
 endif
 
+# MPEG-4 Visual reference decoder (ISO/IEC 14496-5): it has its own Makefile and needs its sources adapted to
+# current compilers, which is done by a script
+if build_mpeg4_video
+  custom_target('mpeg4-video-reference-decoder',
+    output: 'mpeg4-video.stamp',
+    command: [python, build_dir / 'build_mpeg4_video_decoder.py', '@OUTPUT@'],
+    build_by_default: true,
+    console: true,
+  )
+endif
+
 # =============================================================================
 # Create symlinks for decoders in decoders/ directory to be usable by fluster
 # =============================================================================
@@ -408,6 +427,7 @@ summary({
   'MPEG-2 video decoder': build_mpeg2_video,
   'MPEG-2 AAC decoder': build_mpeg2_aac,
   'MPEG-H 3D Audio decoder': build_mpegh,
+  'MPEG-4 Visual decoder': build_mpeg4_video,
   'isobmff library': build_isobmff,
 }, section: 'Meson Subproject Decoders')
 

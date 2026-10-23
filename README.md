@@ -155,6 +155,16 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    meson setup builddir -Dmpegh_decoder=true
    ```
 
+   The MPEG-4 Visual reference decoder (ISO/IEC 14496-5, `vm_dec`), used by the
+   `MPEG4_VIDEO-*` test suites, is not built by default either. Its sources are
+   very old C++, so the build adapts them for current compilers before running
+   their Makefile; it has only been tested on Linux x86_64 with GCC (`g++`, or
+   the compiler in the `CXX` environment variable):
+
+   ```bash
+   meson setup builddir -Dmpeg4_video_decoder=true
+   ```
+
 3. List the test suites and the decoders available `./fluster.py list`.
    Tip: You can list the decoders that can run in the current system with `./fluster.py list -c`.
 
