@@ -36,6 +36,19 @@ IS_WINDOWS = platform.system() == "Windows"
 IS_LINUX = platform.system() == "Linux"
 
 
+def gst_element_available(element: str) -> bool:
+    """Return whether a GStreamer element is available in the system."""
+    try:
+        result = subprocess.run(
+            ["gst-inspect-1.0", "--exists", element],
+            capture_output=True,
+            check=False,
+        )
+    except FileNotFoundError:
+        return False
+    return result.returncode == 0
+
+
 def run_fluster(
     args: List[str],
     no_emoji: bool = False,
@@ -93,6 +106,22 @@ class TestList(unittest.TestCase):
         result = run_fluster(["list", "-ts", "dummy", "-tv"])
         self.assertIn("dummy", result.stdout)
         self.assertIn("one", result.stdout)
+
+    def test_list_includes_parsers(self) -> None:
+        result = run_fluster(["list"])
+        self.assertIn("List of available parsers:", result.stdout)
+        for parser in ["h264parse", "h265parse", "h266parse"]:
+            self.assertIn(parser, result.stdout)
+
+    def test_list_parsers_filtered_by_codec(self) -> None:
+        result = run_fluster(["list", "-d", "H.266"])
+        self.assertIn("h266parse", result.stdout)
+        self.assertNotIn("h264parse", result.stdout)
+        self.assertNotIn("h265parse", result.stdout)
+
+    def test_parse_help_shows_parsers_option(self) -> None:
+        result = run_fluster(["parse", "--help"])
+        self.assertIn("--parsers", result.stdout)
 
 
 class TestDownload(unittest.TestCase):
@@ -244,6 +273,28 @@ class TestRun(unittest.TestCase):
         run_fluster(["download", "VP9-min", "-k"])
         result = run_fluster(["run", "-ts", "VP9-min", "-d", "libvpx-VP9", "-s"])
         self.assertTrue("VP9-min" in result.stdout or "Skipping" in result.stdout or "cannot be run" in result.stdout)
+
+
+@unittest.skipUnless(gst_element_available("h264parse"), "h264parse is not available")
+class TestParse(unittest.TestCase):
+    def setUp(self) -> None:
+        assert_fluster_success(["download", "H264-min", "H265-min", "-k"])
+
+    def test_parse_h264(self) -> None:
+        result = run_fluster(["parse", "-ts", "H264-min", "-p", "h264parse"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("h264parse", result.stdout)
+        self.assertIn("1/1 tests successfully", result.stdout)
+
+    def test_parse_runs_all_parsers_by_default(self) -> None:
+        result = run_fluster(["parse", "-ts", "H264-min"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("h264parse", result.stdout)
+
+    def test_parse_uses_profile_caps(self) -> None:
+        result = run_fluster(["parse", "-ts", "H265-min", "-p", "h265parse", "-v"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("video/x-h265,profile=main", result.stdout)
 
 
 if __name__ == "__main__":

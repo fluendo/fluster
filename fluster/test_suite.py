@@ -30,7 +30,14 @@ from unittest.result import TestResult
 from fluster.codec import Codec, Profile
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.download_manager import DownloadManager
-from fluster.test import MD5ComparisonTest, PixelComparisonTest, ReferenceComparisonTest, SampleComparisonTest, Test
+from fluster.test import (
+    MD5ComparisonTest,
+    ParserTest,
+    PixelComparisonTest,
+    ReferenceComparisonTest,
+    SampleComparisonTest,
+    Test,
+)
 from fluster.test_vector import TestVector, TestVectorResult
 
 
@@ -87,6 +94,7 @@ class TestSuite:
 
     TEST_SUITE_NAME = "TEST SUITE"
     DECODER_NAME = "DECODER"
+    PARSER_NAME = "PARSER"
     TEST_VECTOR_NAME = "TEST VECTOR"
     RESULT_NAME = "RESULT"
 
@@ -237,7 +245,7 @@ class TestSuite:
 
         self._collect_results(test_result)
 
-        if self.negative_test and not test.skip:
+        if self.negative_test and not test.skip and not test.decoder.is_parser:
             if test.test_vector.test_result == TestVectorResult.SUCCESS:
                 test.test_vector.test_result = TestVectorResult.FAIL
             elif test.test_vector.test_result == TestVectorResult.FAIL:
@@ -281,10 +289,11 @@ class TestSuite:
         test_vector_results: List[TestVector] = []
         decoder = tests[0].decoder
 
+        tool_name = TestSuite.PARSER_NAME if decoder.is_parser else TestSuite.DECODER_NAME
         print(
             self._get_result_line(
                 TestSuite.TEST_SUITE_NAME,
-                TestSuite.DECODER_NAME,
+                tool_name,
                 TestSuite.TEST_VECTOR_NAME,
                 TestSuite.RESULT_NAME,
                 decoder.name,
@@ -361,7 +370,7 @@ class TestSuite:
             )
             return None
 
-        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE):
+        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE) and not ctx.decoder.is_parser:
             ctx.reference_decoder = get_reference_decoder_for_codec(ctx.decoder.codec)
             if ctx.reference_decoder is None or not ctx.reference_decoder.check(ctx.verbose):
                 print(f"Skipping test suite {self.name}: no reference decoder for codec {ctx.decoder.codec.name}")
@@ -388,7 +397,8 @@ class TestSuite:
             return None
 
         print("*" * 100)
-        string = f"Running test suite {self.name} with decoder {ctx.decoder.name}\n"
+        tool = "parser" if ctx.decoder.is_parser else "decoder"
+        string = f"Running test suite {self.name} with {tool} {ctx.decoder.name}\n"
         if ctx.test_vectors:
             string += f"Test vectors {' '.join(ctx.test_vectors)}\n"
         if ctx.skip_vectors:
@@ -429,7 +439,21 @@ class TestSuite:
             if ctx.skip_vectors and name_lower in ctx.skip_vectors:
                 skip = True
 
-            if self.test_method in reference_test_classes:
+            if ctx.decoder.is_parser:
+                tests.append(
+                    ParserTest(
+                        ctx.decoder,
+                        self,
+                        test_vector,
+                        skip,
+                        ctx.output_dir,
+                        ctx.reference,
+                        ctx.timeout,
+                        ctx.keep_files,
+                        ctx.verbose,
+                    )
+                )
+            elif self.test_method in reference_test_classes:
                 assert ctx.reference_decoder is not None
                 test_cls = reference_test_classes[self.test_method]
                 tests.append(
