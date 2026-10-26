@@ -141,6 +141,18 @@ class TestExtractArchive(_ZipTestCase):
         with self.assertRaises(utils.ArchiveError):
             utils.extract_archive(tp, [("nope.bits", out)])
 
+    def test_tar_slip_rejected(self) -> None:
+        tp = os.path.join(self.tmp, "slip.tar.gz")
+        with tarfile.open(tp, "w:gz") as tar_file:
+            info = tarfile.TarInfo("../escaped.txt")
+            info.size = 1
+            tar_file.addfile(info, io.BytesIO(b"x"))
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        with self.assertRaises(utils.ArchiveError):
+            utils.extract_archive(tp, [(None, out)])
+        self.assertFalse(os.path.exists(os.path.join(self.tmp, "escaped.txt")))
+
     def test_tar_corrupt_archive_raises_archive_error(self) -> None:
         tp = os.path.join(self.tmp, "corrupt.tar.gz")
         with open(tp, "wb") as handle:

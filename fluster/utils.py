@@ -390,7 +390,8 @@ def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]
     seccomp profile denies the ``openat2`` syscall that tar relies on, so every
     extraction fails with "Cannot open: Operation not permitted". The ``data``
     filter (Python 3.12+) is used when available to reject unsafe members;
-    older Pythons fall back to the default extraction.
+    on older Pythons each member path is validated with ``_safe_join`` so
+    members escaping ``output_dir`` are rejected regardless of the filter.
 
     A falsy member extracts everything into its ``output_dir``. Raises
     ``ArchiveError`` on corrupt archives, missing members or unsafe members.
@@ -407,13 +408,17 @@ def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]
         with tarfile.open(filepath) as tar:
             names = set(tar.getnames())
             for output_dir, members in members_by_dir.items():
-                os.makedirs(output_dir, exist_ok=True)
                 if members:
                     for member in members:
                         if member not in names:
                             raise ArchiveError(f"{filepath} does not contain member {member}")
+                        # Reject members escaping output_dir even when the data
+                        # filter is unavailable (Python < 3.12).
+                        _safe_join(output_dir, member)
                         tar.extract(member, output_dir, **filter_kwargs)  # type: ignore[arg-type]
                 else:
+                    for info in tar.getmembers():
+                        _safe_join(output_dir, info.name)
                     tar.extractall(output_dir, **filter_kwargs)  # type: ignore[arg-type]
     except ArchiveError:
         raise
