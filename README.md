@@ -130,7 +130,7 @@ For complete setup, usage examples, hardware acceleration configuration, and tro
    - `./fluster.py download` downloads all available test suites
 
 2. (Optional) Build the reference decoders for AAC, H.264/AVC, H.265/HEVC,
-   H.266/VVC. First, download the ISO reference software:
+   H.266/VVC, MPEG-4 Visual. First, download the ISO reference software:
 
    ```bash
    python3 build/download_deps.py
