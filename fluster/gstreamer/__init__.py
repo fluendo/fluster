@@ -28,14 +28,36 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+from functools import lru_cache
 from typing import Optional
 
 from fluster.decoder import NotSupportedError
 from fluster.gstreamer.gst_ctypes import GStreamerInstallation
+from fluster.utils import normalize_binary_cmd
 
 # Extra seconds added to the pipeline timeout of the subprocess call, so the
 # runner can enforce and report the timeout itself before its parent gives up.
 SUBPROCESS_TIMEOUT_GRACE = 30
+
+
+@lru_cache(maxsize=None)
+def gst_element_exists(element: str) -> bool:
+    """Check if an element exists in current GStreamer installation"""
+    inspect_exe = normalize_binary_cmd("gst-inspect-1.0")
+
+    try:
+        subprocess.run(
+            [inspect_exe, "--exists", element],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+    except Exception as error:  # pylint: disable=broad-except
+        print(f"An unexpected error occurred: {error}")
+        return False
 
 
 def run_pipeline(

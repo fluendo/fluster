@@ -32,6 +32,10 @@ from fluster.decoder import DECODERS, Decoder
 from fluster.decoders import *  # noqa: F403
 from fluster.decoders.av1_aom import AV1AOMDecoder
 from fluster.download_manager import DownloadManager
+
+# Import parsers that will auto-register
+from fluster.parsers import *  # noqa: F403
+from fluster.parsers.base import PARSERS, Parser
 from fluster.system_info import SystemInfo
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
@@ -39,7 +43,7 @@ from fluster.test_vector import TestVector, TestVectorResult
 
 
 class Context:
-    """Context for run and reference command"""
+    """Context for run, parse and reference commands"""
 
     def __init__(
         self,
@@ -61,6 +65,8 @@ class Context:
         summary_format: str = "",
         profiles: Optional[List[str]] = None,
         skip_profiles: Optional[List[str]] = None,
+        parsers: Optional[List[str]] = None,
+        parse_mode: bool = False,
     ):
         self.jobs = jobs
         self.timeout = timeout
@@ -84,6 +90,9 @@ class Context:
         self.profiles: Set[Profile] = set()
         self.skip_profiles_names = skip_profiles
         self.skip_profiles: Set[Profile] = set()
+        self.parsers_names = parsers
+        self.parsers: List[Parser] = []
+        self.parse_mode = parse_mode
 
     def to_test_suite_context(
         self,
@@ -166,6 +175,7 @@ class Fluster:
         self.verbose = verbose
         self.test_suites: List[TestSuite] = []
         self.decoders = DECODERS
+        self.parsers = PARSERS
         self.emoji = EMOJI_RESULT if use_emoji else TEXT_RESULT
         if self.verbose:
             print(
@@ -216,6 +226,29 @@ class Fluster:
                     string += "... " + (
                         self.emoji[TestVectorResult.SUCCESS]
                         if decoder.check(verbose)
+                        else self.emoji[TestVectorResult.FAIL]
+                    )
+                print(string)
+
+    def list_parsers(self, check: bool, verbose: bool, codec: Optional[Codec] = None) -> None:
+        """List all the available parsers"""
+        print("\nList of available parsers:")
+        parsers_dict: Dict[Codec, List[Parser]] = {}
+        for parser in self.parsers:
+            if parser.codec not in parsers_dict:
+                parsers_dict[parser.codec] = []
+            parsers_dict[parser.codec].append(parser)
+
+        for current_codec, parser_list in parsers_dict.items():
+            if codec and codec != current_codec:
+                continue
+            print(f"\n{current_codec}")
+            for parser in parser_list:
+                string = f"{parser}"
+                if check:
+                    string += "... " + (
+                        self.emoji[TestVectorResult.SUCCESS]
+                        if parser.check(verbose)
                         else self.emoji[TestVectorResult.FAIL]
                     )
                 print(string)
@@ -291,10 +324,13 @@ class Fluster:
         return profiles
 
     def _normalize_context(self, ctx: Context) -> None:
-        # Convert all test suites and decoders to lowercase to make the filter greedy
+        # Convert all test suites, decoders and parsers to lowercase to make the filter greedy
         if ctx.test_suites:
             ctx.test_suites_names = [x.lower() for x in ctx.test_suites_names]
-        if ctx.decoders_names:
+        if ctx.parse_mode:
+            if ctx.parsers_names:
+                ctx.parsers_names = [x.lower() for x in ctx.parsers_names]
+        elif ctx.decoders_names:
             ctx.decoders_names = [x.lower() for x in ctx.decoders_names]
             # Workaround to avoid BC break. Delete when next MAJOR version
             ctx.decoders_names = [x[0:-7] if "-gst1.0" in x else x for x in ctx.decoders_names]
@@ -305,7 +341,10 @@ class Fluster:
         ctx.profiles = self._parse_profiles(ctx.profiles_names)
         ctx.skip_profiles = self._parse_profiles(ctx.skip_profiles_names)
         ctx.test_suites = self._get_matches(ctx.test_suites_names, self.test_suites, "test suite")
-        ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
+        if ctx.parse_mode:
+            ctx.parsers = self._get_matches(ctx.parsers_names or [], self.parsers, "parsers")
+        else:
+            ctx.decoders = self._get_matches(ctx.decoders_names, self.decoders, "decoders")
 
     def run_test_suites(self, ctx: Context) -> None:
         """Run a group of test suites"""
@@ -324,13 +363,17 @@ class Fluster:
 
         if ctx.reference:
             print("\n=== Reference mode ===\n")
+        elif ctx.parse_mode:
+            print("\n=== Parser mode ===\n")
 
         error = False
         no_test_run = True
+        tools: List[Decoder] = []
+        tools.extend(ctx.parsers if ctx.parse_mode else ctx.decoders)
         results: Dict[str, List[Tuple[Decoder, TestSuite]]] = {}
         for test_suite in ctx.test_suites:
             test_suite_results: List[Tuple[Decoder, TestSuite]] = []
-            for decoder in ctx.decoders:
+            for decoder in tools:
                 if isinstance(decoder, AV1AOMDecoder) and decoder.name == "libaom-AV1":
                     if any(keyword in test_suite.name for keyword in ["CORE", "STRESS"]):
                         decoder.annexb = True
@@ -871,7 +914,8 @@ class Fluster:
         for test_suite_name, test_suite_results in results.items():
             decoders_names = [decoder.name for decoder, _ in test_suite_results]
             test_suites = [res[1] for res in test_suite_results]
-            print(f"Generating summary for test suite {test_suite_name} and decoders {', '.join(decoders_names)}:\n")
+            tool = "parsers" if ctx.parse_mode else "decoders"
+            print(f"Generating summary for test suite {test_suite_name} and {tool} {', '.join(decoders_names)}:\n")
             output += _global_stats(test_suite_results, test_suites)
             output += "\n\n"
 
