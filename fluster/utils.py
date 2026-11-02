@@ -339,6 +339,21 @@ def _safe_join(base_dir: str, name: str) -> str:
     return target
 
 
+def _check_tar_member(output_dir: str, info: tarfile.TarInfo) -> None:
+    """Reject a tar member whose path or link target escapes ``output_dir``.
+
+    ``_safe_join`` alone misses links: a symlink only exists once it has been
+    extracted, so the members written through it cannot be resolved yet.
+    """
+    _safe_join(output_dir, info.name)
+    if info.issym():
+        # A symlink target resolves relative to the member's own directory.
+        _safe_join(output_dir, os.path.join(os.path.dirname(info.name), info.linkname))
+    elif info.islnk():
+        # A hard link target resolves relative to the extraction root.
+        _safe_join(output_dir, info.linkname)
+
+
 def _write_zip_member(zip_file: zipfile.ZipFile, item: str, target_path: str) -> None:
     """Write via a temporary file so an interrupted extraction never leaves a truncated target."""
     os.makedirs(os.path.dirname(target_path), exist_ok=True)
@@ -390,8 +405,9 @@ def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]
     seccomp profile denies the ``openat2`` syscall that tar relies on, so every
     extraction fails with "Cannot open: Operation not permitted". The ``data``
     filter (Python 3.12+) is used when available to reject unsafe members;
-    on older Pythons each member path is validated with ``_safe_join`` so
-    members escaping ``output_dir`` are rejected regardless of the filter.
+    on older Pythons each member path and link target is validated with
+    ``_safe_join`` so members escaping ``output_dir`` are rejected regardless
+    of the filter.
 
     A falsy member extracts everything into its ``output_dir``. Raises
     ``ArchiveError`` on corrupt archives, missing members or unsafe members.
@@ -412,13 +428,11 @@ def _extract_tar_members(filepath: str, entries: List[Tuple[Optional[str], str]]
                     for member in members:
                         if member not in names:
                             raise ArchiveError(f"{filepath} does not contain member {member}")
-                        # Reject members escaping output_dir even when the data
-                        # filter is unavailable (Python < 3.12).
-                        _safe_join(output_dir, member)
+                        _check_tar_member(output_dir, tar.getmember(member))
                         tar.extract(member, output_dir, **filter_kwargs)  # type: ignore[arg-type]
                 else:
                     for info in tar.getmembers():
-                        _safe_join(output_dir, info.name)
+                        _check_tar_member(output_dir, info)
                     tar.extractall(output_dir, **filter_kwargs)  # type: ignore[arg-type]
     except ArchiveError:
         raise

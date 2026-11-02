@@ -153,6 +153,64 @@ class TestExtractArchive(_ZipTestCase):
             utils.extract_archive(tp, [(None, out)])
         self.assertFalse(os.path.exists(os.path.join(self.tmp, "escaped.txt")))
 
+    def test_tar_symlink_escape_rejected(self) -> None:
+        """A symlink member must not let later members escape ``output_dir``."""
+        outside = os.path.join(self.tmp, "outside")
+        os.makedirs(outside)
+        for linkname in (outside, "../outside"):
+            with self.subTest(linkname=linkname):
+                out = os.path.join(self.tmp, "out")
+                os.makedirs(out, exist_ok=True)
+                tp = os.path.join(self.tmp, "symlink.tar.gz")
+                with tarfile.open(tp, "w:gz") as tar_file:
+                    link = tarfile.TarInfo("d")
+                    link.type = tarfile.SYMTYPE
+                    link.linkname = linkname
+                    tar_file.addfile(link)
+                    info = tarfile.TarInfo("d/escaped.txt")
+                    info.size = 1
+                    tar_file.addfile(info, io.BytesIO(b"x"))
+                with self.assertRaises(utils.ArchiveError):
+                    utils.extract_archive(tp, [(None, out)])
+                self.assertFalse(os.path.exists(os.path.join(outside, "escaped.txt")))
+
+    def test_tar_named_hardlink_escape_rejected(self) -> None:
+        target = os.path.join(self.tmp, "outside.txt")
+        with open(target, "wb") as handle:
+            handle.write(b"x")
+        tp = os.path.join(self.tmp, "hardlink.tar.gz")
+        with tarfile.open(tp, "w:gz") as tar_file:
+            link = tarfile.TarInfo("h")
+            link.type = tarfile.LNKTYPE
+            link.linkname = target
+            tar_file.addfile(link)
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        with self.assertRaises(utils.ArchiveError):
+            utils.extract_archive(tp, [("h", out)])
+        self.assertFalse(os.path.exists(os.path.join(out, "h")))
+
+    def test_tar_links_inside_destination_allowed(self) -> None:
+        tp = os.path.join(self.tmp, "links.tar.gz")
+        with tarfile.open(tp, "w:gz") as tar_file:
+            info = tarfile.TarInfo("real/payload.bits")
+            info.size = 2
+            tar_file.addfile(info, io.BytesIO(b"ok"))
+            symlink = tarfile.TarInfo("sym")
+            symlink.type = tarfile.SYMTYPE
+            symlink.linkname = "real/payload.bits"
+            tar_file.addfile(symlink)
+            hardlink = tarfile.TarInfo("hard")
+            hardlink.type = tarfile.LNKTYPE
+            hardlink.linkname = "real/payload.bits"
+            tar_file.addfile(hardlink)
+        out = os.path.join(self.tmp, "out")
+        os.makedirs(out)
+        self.assertEqual(utils.extract_archive(tp, [(None, out)]), [])
+        self.assertTrue(os.path.islink(os.path.join(out, "sym")))
+        with open(os.path.join(out, "hard"), "rb") as handle:
+            self.assertEqual(handle.read(), b"ok")
+
     def test_tar_corrupt_archive_raises_archive_error(self) -> None:
         tp = os.path.join(self.tmp, "corrupt.tar.gz")
         with open(tp, "wb") as handle:
