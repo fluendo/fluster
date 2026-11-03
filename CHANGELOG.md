@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add run --skip-profiles CLI option
+- Add GStreamer parser testing for h264parse, h265parse and h266parse with a new
+  list section and parsers run subcommand
+- Use test suite profiles as GStreamer caps filters when running parsers
+
+### Changed
+- Group decoder and parser commands under `fluster decoders` and
+  `fluster parsers`
+- Keep `fluster run` and `fluster reference` as aliases of their decoder
+  subcommands
+
+### Removed
+- Remove the `fluster parse` subcommand in favor of `fluster parsers run`
 
 ## [0.8.0] - 2026-10-07
 
