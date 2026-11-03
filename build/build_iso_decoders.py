@@ -54,6 +54,25 @@ def run_make(target, cwd, env):
         return False
 
 
+def copy_built_decoder(source_dir, name, decoders_dir):
+    """Copy a built decoder to decoders/, including the platform suffix.
+
+    MinGW appends .exe to the binaries, while the Makefile target and the
+    Fluster decoder name do not include it.
+    """
+    candidates = [path for path in source_dir.rglob(name) if path.is_file()]
+    candidates += [path for path in source_dir.rglob(name + ".exe") if path.is_file()]
+    if not candidates:
+        print(f"Error: built decoder {name} not found under {source_dir}")
+        return False
+
+    binary = candidates[0]
+    destination = decoders_dir / (name + (".exe" if binary.suffix.lower() == ".exe" else ""))
+    shutil.copy2(binary, destination)
+    print(f"Copied {binary} to {destination}")
+    return True
+
+
 def build_mpeg4_aac(mpeg4_dir, decoders_dir, env):
     """Build MPEG-4 AAC decoder (mp4audec_mc)"""
     print()
@@ -61,11 +80,8 @@ def build_mpeg4_aac(mpeg4_dir, decoders_dir, env):
     mp4mcdec_dir = mpeg4_dir / "mp4mcDec"
     env["MAKELEVEL"] = "0"
     if run_make("mp4audec_mc", mp4mcdec_dir, env):
-        # Binary location varies by platform
-        for binary in (mpeg4_dir / "bin").rglob("mp4audec_mc"):
-            if binary.is_file():
-                shutil.copy2(binary, decoders_dir / "mp4audec_mc")
-                break
+        if not copy_built_decoder(mpeg4_dir / "bin", "mp4audec_mc", decoders_dir):
+            return False
         print("mp4audec_mc built successfully!")
         return True
     else:
@@ -80,11 +96,8 @@ def build_mpeg4_aac_er(mpeg4_dir, decoders_dir, env):
     mp4audvm_dir = mpeg4_dir / "mp4AudVm_Rewrite"
     env["MAKELEVEL"] = "0"
     if run_make("mp4audec", mp4audvm_dir, env):
-        # Binary location varies by platform
-        for binary in (mpeg4_dir / "bin").rglob("mp4audec"):
-            if binary.is_file():
-                shutil.copy2(binary, decoders_dir / "mp4audec")
-                break
+        if not copy_built_decoder(mpeg4_dir / "bin", "mp4audec", decoders_dir):
+            return False
         print("mp4audec built successfully!")
         return True
     else:

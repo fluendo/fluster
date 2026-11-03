@@ -298,6 +298,55 @@ def _fix_libtsp_permissions(libtsp_dir):
         subprocess.run(["chmod", "-R", "u+rwx", str(libtsp_dir)], check=True)
 
 
+def create_subproject_link(link_path, target):
+    """Create a directory link from subprojects/ to a local source tree.
+
+    Windows distinguishes file and directory links. ``symlink_to`` defaults to
+    a file symlink there, which Meson cannot use as a subproject directory; it
+    then falls back to the stub .wrap file, which has no source_filename to
+    download. Use a junction on Windows and a symlink elsewhere.
+    """
+    # Remove an existing broken or wrong-type link, but leave a valid directory
+    # (including a junction) in place.
+    if link_path.is_symlink() and not link_path.is_dir():
+        print(f"Removing invalid subproject link: {link_path}")
+        link_path.unlink()
+
+    if link_path.exists():
+        if not link_path.is_dir():
+            print(f"Error: {link_path} exists but is not a directory")
+            sys.exit(1)
+        return
+
+    print(f"Creating subproject link: {link_path} -> {target}")
+    if os.name == "nt":
+        # Junctions do not need developer mode or SeCreateSymbolicLinkPrivilege
+        # and are always treated as directories by Meson. cmd.exe needs native
+        # Windows paths, so normalize the separators before invoking mklink.
+        # cmd.exe treats forward slashes in paths as switches (e.g. D:/a/...),
+        # so force native separators even if pathlib produced a POSIX-looking
+        # path under MSYS2.
+        link_arg = os.path.normpath(str(link_path)).replace("/", "\\")
+        target_arg = os.path.normpath(str((link_path.parent / target).resolve())).replace("/", "\\")
+        result = subprocess.run(
+            ["cmd.exe", "/d", "/c", "mklink", "/J", link_arg, target_arg],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            print(result.stdout)
+            print(result.stderr)
+            print(f"Error: could not create junction {link_arg} -> {target_arg}")
+            sys.exit(1)
+    else:
+        link_path.symlink_to(target)
+
+    if not link_path.is_dir():
+        print(f"Error: {link_path} was not created as a directory")
+        sys.exit(1)
+
+
 def prompt_iso_license(auto_accept=False):
     """Prompt the user to accept the ISO licence agreement before downloading.
 
@@ -424,25 +473,7 @@ def main():
     ]
 
     for link_name, target in symlinks:
-        link_path = subprojects_dir / link_name
-        # Remove existing symlink if it's broken
-        if link_path.is_symlink() and not link_path.exists():
-            print(f"Removing broken symlink: subprojects/{link_name}")
-            link_path.unlink()
-
-        if not link_path.exists():
-            print(f"Creating symlink: subprojects/{link_name} -> {target}")
-            # On Windows, try symlink first, fall back to junction
-            try:
-                link_path.symlink_to(target)
-            except (OSError, NotImplementedError):
-                if os.name == "nt":
-                    # Use junction on Windows if symlink fails
-                    subprocess.run(
-                        ["mklink", "/J", str(link_path), str(link_path.parent / target)], shell=True, check=True
-                    )
-                else:
-                    raise
+        create_subproject_link(subprojects_dir / link_name, target)
 
     # Apply patches to MPEG-4 AAC
     print()
