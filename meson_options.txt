@@ -15,6 +15,8 @@ option('mpeg4_aac_decoder', type: 'boolean', value: true,
   description: 'Build MPEG-4 AAC reference decoder')
 option('mpeg4_aac_er_decoder', type: 'boolean', value: true,
   description: 'Build MPEG-4 AAC Error Resilient reference decoder')
+option('mpeg4_video_decoder', type: 'boolean', value: true,
+  description: 'Build MPEG-4 Visual reference decoder (ISO/IEC 14496-5, vm_dec)')
 
 # MPEG-H 3D Audio reference decoder (disabled by default, needs build/download_deps.py)
 option('mpegh_decoder', type: 'boolean', value: false,

@@ -1,0 +1,6 @@
+[wrap-file]
+directory = mpeg4video
+patch_directory = mpeg4video
+
+[provide]
+program_names = vm_dec
