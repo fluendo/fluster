@@ -106,14 +106,7 @@ jobs:
     - name: Download dependencies
       run: python3 build/download_deps.py --accept-license
 
-    # The MPEG-4 AAC ER reference build still fails on Windows (sys/wait.h);
-    # skip it so this job can verify the subproject links instead.
-    - name: Configure Meson (Windows)
-      if: runner.os == 'Windows'
-      run: meson setup builddir -Dmpeg4_aac_er_decoder=false
-
     - name: Configure Meson
-      if: runner.os != 'Windows'
       run: meson setup builddir
 
     - name: Build decoders
@@ -121,12 +114,7 @@ jobs:
 
     - name: Verify decoders
       run: |
-        # JM's patch does not apply on Windows, and MPEG-4 AAC ER is skipped
-        # there because of the separate sys/wait.h failure.
-        expected=(TAppDecoder DecoderApp vvdecapp mpeg2decode aacdec_mc mp4audec_mc vm_dec)
-        if [ "${{ runner.os }}" != "Windows" ]; then
-          expected+=(ldecod mp4audec)
-        fi
+        expected=(TAppDecoder DecoderApp vvdecapp mpeg2decode aacdec_mc mp4audec_mc mp4audec vm_dec ldecod)
 
         missing=()
         for decoder in "${expected[@]}"; do

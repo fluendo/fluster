@@ -1,19 +1,34 @@
 --- a/audio/natural/mp4AudVm_Rewrite/src_frame/plotmtv_interf_dummy.c
 +++ b/audio/natural/mp4AudVm_Rewrite/src_frame/plotmtv_interf_dummy.c
-@@ -33,11 +33,11 @@
+@@ -30,12 +30,12 @@
+ #define D(a) {const void *dummyfilepointer; dummyfilepointer = &a;}
  #include <stdio.h>
  #include <string.h>
- #ifndef WIN32
- #include <unistd.h>
--#endif
--#include <stdarg.h>          /* variable artgument list */
--#include <stdlib.h>
 -#ifndef WIN32
++#if !defined(WIN32) && !defined(_WIN32)
+ #include <unistd.h>
+ #endif
+ #include <stdarg.h>          /* variable artgument list */
+ #include <stdlib.h>
+-#ifndef WIN32
++#if !defined(WIN32) && !defined(_WIN32)
  #include <sys/wait.h>
  #include <sys/stat.h>
  #endif
-+#include <stdarg.h>          /* variable artgument list */
-+#include <stdlib.h>
- #include <fcntl.h>
- #include <math.h>
- #include <time.h>
+--- a/audio/natural/mp4AudVm_Rewrite/src_frame/plotmtv_interf.c
++++ b/audio/natural/mp4AudVm_Rewrite/src_frame/plotmtv_interf.c
+@@ -55,12 +55,12 @@
+ /* the source is available from ftp://ftp.th-darmstadt.de/pub/X11/contrib/applications/Plotmtv1.4.1.tar.Z and other ftp sites */
+ #include <stdio.h>
+ #include <string.h>
+-#ifndef WIN32
++#if !defined(WIN32) && !defined(_WIN32)
+ #include <unistd.h>
+ #endif
+ #include <stdarg.h>          /* variable artgument list */
+ #include <stdlib.h>
+-#ifndef WIN32
++#if !defined(WIN32) && !defined(_WIN32)
+ #include <sys/wait.h>
+ #include <sys/stat.h>
+ #endif
