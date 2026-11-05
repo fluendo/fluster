@@ -21,12 +21,19 @@ from __future__ import annotations
 
 import functools
 import http.server
+import importlib.util
 import os
 import tempfile
 import threading
 import unittest
+import urllib.parse
 
 from fluster import utils
+
+_MIRROR_SYNC_PATH = os.path.join(os.path.dirname(__file__), "..", "scripts", "mirror_sync.py")
+_spec = importlib.util.spec_from_file_location("mirror_sync", _MIRROR_SYNC_PATH)
+mirror_sync = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(mirror_sync)
 
 
 class TestRewriteUrl(unittest.TestCase):
@@ -164,6 +171,124 @@ class TestDownloadWithMirror(unittest.TestCase):
                     self.assertEqual(f.read(), content)
             finally:
                 server.shutdown()
+
+
+def _key_to_fs_path(root: str, key: str) -> str:
+    """Maps an object key (URL path) to a filesystem path under ``root``.
+
+    Object keys can contain characters that are illegal in Windows paths (most
+    notably ':' from ``host:port``) and may be percent-encoded. Decode them and
+    replace ':' so the fake bucket can store them on any platform."""
+    key = urllib.parse.unquote(key).lstrip("/")
+    parts = [part.replace(":", "_") for part in key.split("/")]
+    return os.path.join(root, *parts)
+
+
+class _BucketHandler(http.server.BaseHTTPRequestHandler):
+    """Minimal radosgw-like handler storing objects under a root dir."""
+
+    root: str = ""
+
+    def log_message(self, fmt, *args):
+        pass
+
+    def _object_path(self) -> str:
+        return _key_to_fs_path(self.root, self.path)
+
+    def do_HEAD(self):  # noqa: N802
+        if os.path.isfile(self._object_path()):
+            self.send_response(200)
+        else:
+            self.send_response(404)
+        self.end_headers()
+
+    def do_PUT(self):  # noqa: N802
+        length = int(self.headers.get("Content-Length", 0))
+        data = self.rfile.read(length)
+        path = self._object_path()
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as f:
+            f.write(data)
+        self.send_response(200)
+        self.end_headers()
+
+
+class TestBucketUpload(unittest.TestCase):
+    def _serve_bucket(self, root: str) -> tuple:
+        handler = type("_Handler", (_BucketHandler,), {"root": root})
+        server = http.server.HTTPServer(("127.0.0.1", 0), handler)
+        port = server.server_address[1]
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        return server, port
+
+    def test_upload_puts_object_with_mirror_key(self) -> None:
+        test_content = b"bucket upload content"
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Source HTTP server.
+            source_root = os.path.join(tmpdir, "source")
+            src_sub = os.path.join(source_root, "data")
+            os.makedirs(src_sub, exist_ok=True)
+            with open(os.path.join(src_sub, "vector.bin"), "wb") as f:
+                f.write(test_content)
+            src_handler = functools.partial(_SilentHandler, directory=source_root)
+            src_server = http.server.HTTPServer(("127.0.0.1", 0), src_handler)
+            src_port = src_server.server_address[1]
+            threading.Thread(target=src_server.serve_forever, daemon=True).start()
+
+            # Bucket server.
+            bucket_root = os.path.join(tmpdir, "bucket")
+            os.makedirs(bucket_root, exist_ok=True)
+            bucket_server, bucket_port = self._serve_bucket(bucket_root)
+
+            try:
+                url = f"http://127.0.0.1:{src_port}/data/vector.bin"
+                mirror_sync._upload_one(  # noqa: SLF001
+                    url,
+                    rgw_host=f"127.0.0.1:{bucket_port}",
+                    bucket="test-bucket",
+                    retries=1,
+                )
+                expected = _key_to_fs_path(bucket_root, f"test-bucket/127.0.0.1:{src_port}/data/vector.bin")
+                self.assertTrue(os.path.exists(expected), f"missing {expected}")
+                with open(expected, "rb") as f:
+                    self.assertEqual(f.read(), test_content)
+            finally:
+                src_server.shutdown()
+                bucket_server.shutdown()
+
+    def test_upload_skips_existing_object(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            bucket_root = os.path.join(tmpdir, "bucket")
+            existing = _key_to_fs_path(bucket_root, "test-bucket/127.0.0.1:9/data/vector.bin")
+            os.makedirs(os.path.dirname(existing), exist_ok=True)
+            with open(existing, "wb") as f:
+                f.write(b"already here")
+
+            bucket_server, bucket_port = self._serve_bucket(bucket_root)
+            try:
+                # Source points at an unreachable port; if not skipped, it would fail.
+                url = "http://127.0.0.1:9/data/vector.bin"
+                mirror_sync._upload_one(  # noqa: SLF001
+                    url,
+                    rgw_host=f"127.0.0.1:{bucket_port}",
+                    bucket="test-bucket",
+                    retries=0,
+                )
+                with open(existing, "rb") as f:
+                    self.assertEqual(f.read(), b"already here")
+            finally:
+                bucket_server.shutdown()
+
+
+class TestBucketObjectUrl(unittest.TestCase):
+    def test_host_without_scheme(self) -> None:
+        result = mirror_sync._bucket_object_url("rgw.example.com", "mybucket", "example.com/a/b.bin")  # noqa: SLF001
+        self.assertEqual(result, "http://rgw.example.com/mybucket/example.com/a/b.bin")
+
+    def test_host_with_scheme(self) -> None:
+        result = mirror_sync._bucket_object_url("http://rgw.example.com/", "bucket", "/host/file.bin")  # noqa: SLF001
+        self.assertEqual(result, "http://rgw.example.com/bucket/host/file.bin")
 
 
 if __name__ == "__main__":
