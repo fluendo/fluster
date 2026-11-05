@@ -62,13 +62,23 @@ def apply_patch(patch_file, target_dir):
     except (subprocess.CalledProcessError, FileNotFoundError):
         pass
 
-    # Try git apply as fallback
+    # Try git apply as fallback. Run it from target_dir: --directory with an
+    # absolute path is rejected by git apply on Windows ("invalid path").
     try:
         subprocess.run(
-            ["git", "apply", "--directory", str(target_dir), str(patch_file)], check=True, capture_output=True
+            ["git", "apply", str(patch_file)],
+            cwd=target_dir,
+            check=True,
+            capture_output=True,
+            text=True,
         )
         return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    except subprocess.CalledProcessError as exc:
+        if exc.stderr:
+            print(exc.stderr.rstrip())
+        print(f"Warning: Could not apply patch {patch_file.name}")
+        return False
+    except FileNotFoundError:
         print(f"Warning: Could not apply patch {patch_file.name}")
         return False
 
