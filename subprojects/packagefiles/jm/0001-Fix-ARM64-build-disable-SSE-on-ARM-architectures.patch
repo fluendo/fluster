@@ -9,7 +9,7 @@ This patch conditionally applies it only on non-ARM systems.
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -96,8 +96,10 @@ bb_enable_warnings( msvc warnings-as-errors "/wd4996 /wd5105 /wd5103" )
+@@ -96,7 +96,9 @@ bb_enable_warnings( msvc warnings-as-errors "/wd4996 /wd5105 /wd5103" )
 
  # enable sse4.1 build for all source files for gcc and clang
  if( UNIX OR MINGW )
