@@ -51,9 +51,32 @@ def extract_tar_gz(tar_file, dest_dir):
         tar_ref.extractall(dest_dir)  # noqa: S202
 
 
+def is_patch_applied(patch_file, target_dir):
+    """Check if a patch is already applied, so the script can be run again.
+
+    A patch is applied when its reverse applies cleanly. This is always checked
+    with git apply, since patch may ask questions about reversed patches.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "apply", "--reverse", "--check", str(patch_file)], cwd=target_dir, capture_output=True, check=False
+        )
+    except FileNotFoundError:
+        return False
+    return result.returncode == 0
+
+
 def apply_patch(patch_file, target_dir):
-    """Apply a patch file using patch command or git apply"""
+    """Apply a patch file using patch command or git apply.
+
+    Returns True if the patch is applied afterwards, either by this call or by a
+    previous run of the script, and False if it could not be applied.
+    """
     print(f"Applying patch: {patch_file.name}")
+
+    if is_patch_applied(patch_file, target_dir):
+        print(f"Patch already applied: {patch_file.name}")
+        return True
 
     # Try patch command first
     try:
@@ -76,19 +99,33 @@ def apply_patch(patch_file, target_dir):
     except subprocess.CalledProcessError as exc:
         if exc.stderr:
             print(exc.stderr.rstrip())
-        print(f"Warning: Could not apply patch {patch_file.name}")
+        print(f"Error: Could not apply patch {patch_file.name}")
         return False
     except FileNotFoundError:
-        print(f"Warning: Could not apply patch {patch_file.name}")
+        print(f"Error: Could not apply patch {patch_file.name}")
         return False
 
 
-def check_patch_applied(file_path, marker):
-    """Check if a patch has already been applied"""
-    if not file_path.exists():
-        return False
-    with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-        return marker in f.read()
+def apply_mpeg4_aac_patches(contrib_dir, patches_dir):
+    """Apply the patches needed to build the MPEG-4 AAC reference decoders.
+
+    All the patches are tried, so every failure is reported at once, and the
+    script exits with an error if any of them could not be applied.
+    """
+    iso_dir = contrib_dir / "C050470e_Electronic_inserts"
+    mpeg4_dir = iso_dir / "audio" / "natural"
+
+    patches = [
+        ("mpeg4aac-windows-headers.patch", iso_dir),
+        ("mpeg4aac-darwin.patch", mpeg4_dir),
+        ("mpeg4aac-ar-fix.patch", mpeg4_dir),
+        ("mpeg4aac-sed-fix.patch", mpeg4_dir),
+    ]
+
+    failed = [name for name, target_dir in patches if not apply_patch(patches_dir / name, target_dir)]
+    if failed:
+        print(f"Error: Could not apply the MPEG-4 AAC patches: {', '.join(failed)}")
+        sys.exit(1)
 
 
 def download_mpeg2(contrib_dir):
@@ -489,13 +526,7 @@ def main():
     print()
     print("=== Patching MPEG-4 AAC ===")
 
-    mpeg4_dir = contrib_dir / "C050470e_Electronic_inserts" / "audio" / "natural"
-    patches_dir = script_dir / "patches"
-
-    apply_patch(patches_dir / "mpeg4aac-windows-headers.patch", contrib_dir / "C050470e_Electronic_inserts")
-    apply_patch(patches_dir / "mpeg4aac-darwin.patch", mpeg4_dir)
-    apply_patch(patches_dir / "mpeg4aac-ar-fix.patch", mpeg4_dir)
-    apply_patch(patches_dir / "mpeg4aac-sed-fix.patch", mpeg4_dir)
+    apply_mpeg4_aac_patches(contrib_dir, script_dir / "patches")
 
     print()
     print("=== All dependencies downloaded successfully! ===")
