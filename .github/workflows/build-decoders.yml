@@ -56,8 +56,9 @@ jobs:
             artifact: decoders-windows-x86_64
             shell: msys2 {0}
 
+          # macos-15 is the arm64 image, the Intel one is macos-15-intel
           - name: macOS ARM64
-            os: macos-14
+            os: macos-15
             arch: arm64
             artifact: decoders-macos-arm64
             shell: bash
