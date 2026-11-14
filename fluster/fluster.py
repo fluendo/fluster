@@ -95,7 +95,7 @@ class Context:
 
     def to_test_suite_context(
         self,
-        decoder: Tool,
+        tool: Tool,
         output_dir: str,
         test_vectors: List[str],
         skip_vectors: List[str],
@@ -103,7 +103,7 @@ class Context:
         """Create a TestSuite's Context from this"""
         ts_context = TestSuiteContext(
             jobs=self.jobs,
-            decoder=decoder,
+            tool=tool,
             timeout=self.timeout,
             failfast=self.failfast,
             quiet=self.quiet,

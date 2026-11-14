@@ -47,7 +47,7 @@ class Context:
     def __init__(
         self,
         jobs: int,
-        decoder: Tool,
+        tool: Tool,
         timeout: int,
         failfast: bool,
         quiet: bool,
@@ -64,7 +64,7 @@ class Context:
         skip_profiles: Optional[Set[Profile]] = None,
     ):
         self.jobs = jobs
-        self.decoder = decoder
+        self.tool = tool
         self.timeout = timeout
         self.failfast = failfast
         self.quiet = quiet
@@ -287,16 +287,16 @@ class TestSuite:
     def run_test_suite_in_parallel(self, jobs: int, tests: List[Test], failfast: bool) -> None:
         """Run the test suite in parallel"""
         test_vector_results: List[TestVector] = []
-        decoder = tests[0].decoder
+        tool = tests[0].decoder
 
-        tool_name = TestSuite.PARSER_NAME if isinstance(decoder, Parser) else TestSuite.DECODER_NAME
+        tool_name = TestSuite.PARSER_NAME if isinstance(tool, Parser) else TestSuite.DECODER_NAME
         print(
             self._get_result_line(
                 TestSuite.TEST_SUITE_NAME,
                 tool_name,
                 TestSuite.TEST_VECTOR_NAME,
                 TestSuite.RESULT_NAME,
-                decoder.name,
+                tool.name,
             )
             + f"\n{'-' * 70}"
         )
@@ -306,7 +306,7 @@ class TestSuite:
                 print(
                     self._get_result_line(
                         self.name,
-                        decoder.name,
+                        tool.name,
                         test_result.name,
                         test_result.test_result.value,
                     ),
@@ -359,8 +359,8 @@ class TestSuite:
         Returns a new copy of the test suite with the result of the test
         """
 
-        if not ctx.decoder.check(ctx.verbose):
-            print(f"Skipping decoder {ctx.decoder.name} because it cannot be run")
+        if not ctx.tool.check(ctx.verbose):
+            print(f"Skipping decoder {ctx.tool.name} because it cannot be run")
             return None
 
         if not os.path.exists(os.path.join(self.resources_dir, self.name)):
@@ -370,10 +370,10 @@ class TestSuite:
             )
             return None
 
-        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE) and not isinstance(ctx.decoder, Parser):
-            ctx.reference_decoder = get_reference_decoder_for_codec(ctx.decoder.codec)
+        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE) and not isinstance(ctx.tool, Parser):
+            ctx.reference_decoder = get_reference_decoder_for_codec(ctx.tool.codec)
             if ctx.reference_decoder is None or not ctx.reference_decoder.check(ctx.verbose):
-                print(f"Skipping test suite {self.name}: no reference decoder for codec {ctx.decoder.codec.name}")
+                print(f"Skipping test suite {self.name}: no reference decoder for codec {ctx.tool.codec.name}")
                 return None
 
         ctx.output_dir = os.path.join(ctx.output_dir, self.name)
@@ -397,8 +397,8 @@ class TestSuite:
             return None
 
         print("*" * 100)
-        tool = "parser" if isinstance(ctx.decoder, Parser) else "decoder"
-        string = f"Running test suite {self.name} with {tool} {ctx.decoder.name}\n"
+        tool_kind = "parser" if isinstance(ctx.tool, Parser) else "decoder"
+        string = f"Running test suite {self.name} with {tool_kind} {ctx.tool.name}\n"
         if ctx.test_vectors:
             string += f"Test vectors {' '.join(ctx.test_vectors)}\n"
         if ctx.skip_vectors:
@@ -439,10 +439,10 @@ class TestSuite:
             if ctx.skip_vectors and name_lower in ctx.skip_vectors:
                 skip = True
 
-            if isinstance(ctx.decoder, Parser):
+            if isinstance(ctx.tool, Parser):
                 tests.append(
                     ParserTest(
-                        ctx.decoder,
+                        ctx.tool,
                         self,
                         test_vector,
                         skip,
@@ -458,7 +458,7 @@ class TestSuite:
                 test_cls = reference_test_classes[self.test_method]
                 tests.append(
                     test_cls(
-                        ctx.decoder,
+                        ctx.tool,
                         self,
                         test_vector,
                         skip,
@@ -473,7 +473,7 @@ class TestSuite:
             else:
                 tests.append(
                     MD5ComparisonTest(
-                        ctx.decoder,
+                        ctx.tool,
                         self,
                         test_vector,
                         skip,

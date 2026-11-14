@@ -51,7 +51,7 @@ def _make_context(
 ) -> Context:
     return Context(
         jobs=1,
-        decoder=Dummy(),
+        tool=Dummy(),
         timeout=30,
         failfast=False,
         quiet=True,

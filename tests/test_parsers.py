@@ -181,7 +181,7 @@ class TestParserExecution(unittest.TestCase):
         self.test_suite.test_method = test_method
         ctx = TestSuiteContext(
             jobs=1,
-            decoder=parser,
+            tool=parser,
             timeout=10,
             failfast=False,
             quiet=True,
@@ -206,7 +206,7 @@ class TestParserExecution(unittest.TestCase):
         parser = H264Parse()
         ctx = TestSuiteContext(
             jobs=1,
-            decoder=parser,
+            tool=parser,
             timeout=10,
             failfast=False,
             quiet=True,
