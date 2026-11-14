@@ -20,7 +20,7 @@ from typing import Optional
 
 from fluster.codec import Codec, Profile
 from fluster.gstreamer import gst_element_exists, run_pipeline
-from fluster.parsers.base import Parser, register_parser
+from fluster.parser import Parser, register_parser
 
 PARSER_PIPELINE_TPL = "filesrc location={} ! {} ! fakesink"
 PARSER_PROFILE_PIPELINE_TPL = "filesrc location={} ! {} ! {},profile={} ! fakesink"
@@ -45,6 +45,13 @@ class GStreamerParser(Parser):
     """Base class for GStreamer parsers"""
 
     provider = "GStreamer"
+    element = ""
+
+    def __init__(self) -> None:
+        if not self.name:
+            self.name = self.element
+        self.description = f"{self.provider} {self.codec.value} parser"
+        super().__init__()
 
     def gen_pipeline(self, input_filepath: str, profile: Optional[Profile] = None) -> str:
         """Generate the GStreamer pipeline used to parse the test vector"""

@@ -30,6 +30,7 @@ from unittest.result import TestResult
 from fluster.codec import Codec, Profile
 from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.download_manager import DownloadManager
+from fluster.parser import Parser
 from fluster.test import (
     MD5ComparisonTest,
     ParserTest,
@@ -39,6 +40,7 @@ from fluster.test import (
     Test,
 )
 from fluster.test_vector import TestVector, TestVectorResult
+from fluster.tool import Tool
 
 
 class Context:
@@ -47,7 +49,7 @@ class Context:
     def __init__(
         self,
         jobs: int,
-        decoder: Decoder,
+        decoder: Tool,
         timeout: int,
         failfast: bool,
         quiet: bool,
@@ -245,7 +247,7 @@ class TestSuite:
 
         self._collect_results(test_result)
 
-        if self.negative_test and not test.skip and not test.decoder.is_parser:
+        if self.negative_test and not test.skip and not isinstance(test.decoder, Parser):
             if test.test_vector.test_result == TestVectorResult.SUCCESS:
                 test.test_vector.test_result = TestVectorResult.FAIL
             elif test.test_vector.test_result == TestVectorResult.FAIL:
@@ -289,7 +291,7 @@ class TestSuite:
         test_vector_results: List[TestVector] = []
         decoder = tests[0].decoder
 
-        tool_name = TestSuite.PARSER_NAME if decoder.is_parser else TestSuite.DECODER_NAME
+        tool_name = TestSuite.PARSER_NAME if isinstance(decoder, Parser) else TestSuite.DECODER_NAME
         print(
             self._get_result_line(
                 TestSuite.TEST_SUITE_NAME,
@@ -370,7 +372,7 @@ class TestSuite:
             )
             return None
 
-        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE) and not ctx.decoder.is_parser:
+        if self.test_method in (TestMethod.PIXEL, TestMethod.SAMPLE) and not isinstance(ctx.decoder, Parser):
             ctx.reference_decoder = get_reference_decoder_for_codec(ctx.decoder.codec)
             if ctx.reference_decoder is None or not ctx.reference_decoder.check(ctx.verbose):
                 print(f"Skipping test suite {self.name}: no reference decoder for codec {ctx.decoder.codec.name}")
@@ -397,7 +399,7 @@ class TestSuite:
             return None
 
         print("*" * 100)
-        tool = "parser" if ctx.decoder.is_parser else "decoder"
+        tool = "parser" if isinstance(ctx.decoder, Parser) else "decoder"
         string = f"Running test suite {self.name} with {tool} {ctx.decoder.name}\n"
         if ctx.test_vectors:
             string += f"Test vectors {' '.join(ctx.test_vectors)}\n"
@@ -439,7 +441,7 @@ class TestSuite:
             if ctx.skip_vectors and name_lower in ctx.skip_vectors:
                 skip = True
 
-            if ctx.decoder.is_parser:
+            if isinstance(ctx.decoder, Parser):
                 tests.append(
                     ParserTest(
                         ctx.decoder,

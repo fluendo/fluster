@@ -32,14 +32,15 @@ from fluster.decoder import DECODERS, Decoder
 from fluster.decoders import *  # noqa: F403
 from fluster.decoders.av1_aom import AV1AOMDecoder
 from fluster.download_manager import DownloadManager
+from fluster.parser import PARSERS, Parser
 
 # Import parsers that will auto-register
 from fluster.parsers import *  # noqa: F403
-from fluster.parsers.base import PARSERS, Parser
 from fluster.system_info import SystemInfo
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
+from fluster.tool import Tool
 
 
 class Context:
@@ -96,7 +97,7 @@ class Context:
 
     def to_test_suite_context(
         self,
-        decoder: Decoder,
+        decoder: Tool,
         output_dir: str,
         test_vectors: List[str],
         skip_vectors: List[str],
@@ -368,18 +369,18 @@ class Fluster:
 
         error = False
         no_test_run = True
-        tools: List[Decoder] = []
+        tools: List[Tool] = []
         tools.extend(ctx.parsers if ctx.parse_mode else ctx.decoders)
-        results: Dict[str, List[Tuple[Decoder, TestSuite]]] = {}
+        results: Dict[str, List[Tuple[Tool, TestSuite]]] = {}
         for test_suite in ctx.test_suites:
-            test_suite_results: List[Tuple[Decoder, TestSuite]] = []
+            test_suite_results: List[Tuple[Tool, TestSuite]] = []
             for decoder in tools:
                 if isinstance(decoder, AV1AOMDecoder) and decoder.name == "libaom-AV1":
                     if any(keyword in test_suite.name for keyword in ["CORE", "STRESS"]):
                         decoder.annexb = True
                 if decoder.codec != test_suite.codec:
                     continue
-                if test_suite.test_method == TestMethod.PIXEL and decoder.is_reference:
+                if test_suite.test_method == TestMethod.PIXEL and isinstance(decoder, Decoder) and decoder.is_reference:
                     continue
                 test_suite_res = test_suite.run(
                     ctx.to_test_suite_context(
@@ -432,7 +433,7 @@ class Fluster:
         if (error and (not ctx.threshold and not ctx.time_threshold)) or no_test_run:
             sys.exit(1)
 
-    def _show_summary_if_needed(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _show_summary_if_needed(self, ctx: Context, results: Dict[str, List[Tuple[Tool, TestSuite]]]) -> None:
         if ctx.summary and results:
             if ctx.summary_format == SummaryFormat.JUNITXML.value:
                 self._generate_junit_summary(ctx, results)
@@ -484,7 +485,7 @@ class Fluster:
         }
 
     def _collect_global_stats(
-        self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]
+        self, ctx: Context, results: Dict[str, List[Tuple[Tool, TestSuite]]]
     ) -> Dict[str, Dict[str, Any]]:
         """Accumulate suite stats across all test suites, grouped by decoder name."""
         global_stats: Dict[str, Dict[str, Any]] = {}
@@ -511,7 +512,7 @@ class Fluster:
                     p["total"] += data["total"]
         return global_stats
 
-    def _generate_junit_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_junit_summary(self, ctx: Context, results: Dict[str, List[Tuple[Tool, TestSuite]]]) -> None:
         try:
             import junitparser as junitp  # type: ignore
         except ImportError:
@@ -537,7 +538,7 @@ class Fluster:
             return jerrors
 
         def _parse_suite_results(
-            test_suite_tuple: Tuple[str, List[Tuple[Decoder, TestSuite]]],
+            test_suite_tuple: Tuple[str, List[Tuple[Tool, TestSuite]]],
         ) -> junitp.TestSuite:
             jsuites = []
 
@@ -586,7 +587,7 @@ class Fluster:
             with open(ctx.summary_output, "w+", encoding="utf-8") as summary_file:
                 xml.write(summary_file.name, pretty=True)
 
-    def _generate_csv_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_csv_summary(self, ctx: Context, results: Dict[str, List[Tuple[Tool, TestSuite]]]) -> None:
         """Generate CSV summary with system info and comprehensive test results"""
         system_info = SystemInfo()
         rows: List[List[str]] = [
@@ -689,7 +690,7 @@ class Fluster:
         else:
             csv.writer(sys.stdout).writerows(formatted_rows)
 
-    def _generate_json_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_json_summary(self, ctx: Context, results: Dict[str, List[Tuple[Tool, TestSuite]]]) -> None:
         """Generate JSON summary report with system information"""
         system_info = SystemInfo()
         test_suites_data: Dict[str, Any] = {}
@@ -763,11 +764,11 @@ class Fluster:
         else:
             print(json.dumps(json_output, indent=2))
 
-    def _generate_md_summary(self, ctx: Context, results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> None:
+    def _generate_md_summary(self, ctx: Context, results: Dict[str, List[Tuple[Tool, TestSuite]]]) -> None:
         system_info = SystemInfo()
 
         def _global_stats(
-            results: List[Tuple[Decoder, TestSuite]],
+            results: List[Tuple[Tool, TestSuite]],
             test_suites: List[TestSuite],
         ) -> str:
             separator = f"|-|{'-|' * len(results)}"
@@ -814,7 +815,7 @@ class Fluster:
             return output
 
         def _profile_stats(
-            results: List[Tuple[Decoder, TestSuite]],
+            results: List[Tuple[Tool, TestSuite]],
         ) -> str:
             separator = f"|-|{'-|' * len(results)}"
             output = ""
@@ -856,7 +857,7 @@ class Fluster:
 
             return output
 
-        def _generate_global_summary(results: Dict[str, List[Tuple[Decoder, TestSuite]]]) -> str:
+        def _generate_global_summary(results: Dict[str, List[Tuple[Tool, TestSuite]]]) -> str:
             if not results:
                 return ""
 
