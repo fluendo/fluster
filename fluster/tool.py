@@ -1,6 +1,6 @@
 # Fluster - testing framework for decoders conformance
-# Copyright (C) 2026, Fluendo, S.A.
-#  Author: Ruben Gonzalez Gonzalez <rgonzalez@fluendo.com>, Fluendo, S.A.
+# Copyright (C) 2020, Fluendo, S.A.
+#  Author: Pablo Marcos Oltra <pmarcos@fluendo.com>, Fluendo, S.A.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public License
@@ -15,9 +15,117 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Union
+from abc import ABC, abstractmethod
+from functools import lru_cache
+from shutil import which
+from typing import Any, Dict, List, Optional, Type
 
-from fluster.decoder import Decoder
-from fluster.parser import Parser
+from fluster.codec import Codec, OutputFormat, Profile
+from fluster.utils import normalize_binary_cmd
 
-Tool = Union[Decoder, Parser]
+
+class NotSupportedError(Exception):
+    """Tool cannot handle the media."""
+
+    def __init__(self, message: str = "Media not supported by tool"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class Tool(ABC):
+    """Base class for decoders and parsers"""
+
+    name = ""
+    codec = Codec.NONE
+    description = ""
+    binary = ""
+
+    def __init__(self) -> None:
+        if self.binary:
+            self.binary = normalize_binary_cmd(self.binary)
+
+    @lru_cache(maxsize=128)
+    def check(self, verbose: bool) -> bool:
+        """Checks whether the tool can be run"""
+        if hasattr(self, "binary") and self.binary:
+            try:
+                path = which(self.binary)
+                if verbose and not path:
+                    print(f"Binary {self.binary} can't be found to be executed")
+
+                return path is not None
+            except Exception:
+                return False
+        return True
+
+    def __str__(self) -> str:
+        return f"    {self.name}: {self.description}"
+
+
+class Decoder(Tool):
+    """Base class for decoders"""
+
+    hw_acceleration = False
+    is_reference = False
+
+    @abstractmethod
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Decodes input_filepath in output_filepath"""
+        raise Exception("Not implemented")
+
+
+class Parser(Tool):
+    """Base class for parsers"""
+
+    @abstractmethod
+    def parse(
+        self,
+        input_filepath: str,
+        timeout: int,
+        verbose: bool,
+        profile: Optional[Profile] = None,
+    ) -> str:
+        """Parses input_filepath"""
+        raise Exception("Not implemented")
+
+
+DECODERS: List[Decoder] = []
+
+
+def register_decoder(cls: Type[Decoder]) -> Type[Decoder]:
+    """Register a new decoder implementation"""
+    DECODERS.append(cls())
+    DECODERS.sort(key=lambda dec: dec.name)
+    return cls
+
+
+PARSERS: List[Parser] = []
+
+
+def register_parser(cls: Type[Parser]) -> Type[Parser]:
+    """Register a new parser implementation"""
+    PARSERS.append(cls())
+    PARSERS.sort(key=lambda parser: parser.name)
+    return cls
+
+
+def get_reference_decoder_for_codec(codec: Codec) -> Optional["Decoder"]:
+    """Find the reference decoder for a specific codec"""
+
+    reference_decoders = [d for d in DECODERS if d.codec == codec and d.is_reference]
+
+    if not reference_decoders:
+        return None
+    if len(reference_decoders) > 1:
+        print(f"Multiple reference decoders found for codec {codec.name}")
+
+    return reference_decoders[0]

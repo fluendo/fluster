@@ -19,7 +19,7 @@ from functools import lru_cache
 from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.tool import Decoder, register_decoder
 
 try:
     from fluster_chromium import main  # type: ignore

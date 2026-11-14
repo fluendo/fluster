@@ -20,7 +20,7 @@ from typing import Optional
 
 from fluster.codec import Codec, Profile
 from fluster.gstreamer import gst_element_exists, run_pipeline
-from fluster.parser import Parser, register_parser
+from fluster.tool import Parser, register_parser
 
 PARSER_PIPELINE_TPL = "filesrc location={} ! {} ! fakesink"
 PARSER_PROFILE_PIPELINE_TPL = "filesrc location={} ! {} ! {},profile={} ! fakesink"

@@ -22,7 +22,7 @@ from functools import lru_cache
 from typing import Any, Dict, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.tool import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command_with_output
 
 

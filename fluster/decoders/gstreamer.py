@@ -22,9 +22,9 @@ from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
 from fluster.decoders.dolby_pad import EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG
 from fluster.gstreamer import gst_element_exists, run_pipeline
+from fluster.tool import Decoder, register_decoder
 from fluster.utils import (
     file_checksum,
 )

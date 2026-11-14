@@ -14,10 +14,8 @@ from subprocess import TimeoutExpired
 from time import perf_counter
 from typing import Any
 
-from fluster.decoder import Decoder, NotSupportedError
-from fluster.parser import Parser
 from fluster.test_vector import TestVector, TestVectorResult
-from fluster.tool import Tool
+from fluster.tool import Decoder, NotSupportedError, Parser, Tool
 from fluster.utils import compare_wav_files, compare_yuv_files, normalize_path
 
 
@@ -87,6 +85,7 @@ class Test(unittest.TestCase):
                 self.test_vector.profile,
             )
 
+        assert isinstance(self.decoder, Decoder)
         return self.decoder.decode(
             self.input_filepath,
             self.output_filepath,

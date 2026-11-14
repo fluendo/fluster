@@ -34,13 +34,12 @@ from unittest import mock
 
 from fluster import test as fluster_test
 from fluster.codec import Codec, OutputFormat, Profile
-from fluster.decoder import Decoder, NotSupportedError
 from fluster.fluster import Context, Fluster
-from fluster.parser import PARSERS, Parser
 from fluster.parsers.gstreamer import H264Parse, H265Parse, H266Parse, profile_to_gst
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
+from fluster.tool import PARSERS, Decoder, NotSupportedError, Parser, Tool
 
 
 class TestParserRegistry(unittest.TestCase):
@@ -55,13 +54,17 @@ class TestParserRegistry(unittest.TestCase):
         self.assertEqual(parsers["h266parse"].codec, Codec.H266)
 
     def test_parsers_are_independent_from_decoders(self) -> None:
+        self.assertTrue(issubclass(Decoder, Tool))
+        self.assertTrue(issubclass(Parser, Tool))
         self.assertFalse(issubclass(Parser, Decoder))
+        self.assertFalse(issubclass(Decoder, Parser))
         self.assertNotIn("is_parser", Decoder.__dict__)
         self.assertNotIn("is_parser", Parser.__dict__)
         self.assertFalse(hasattr(Parser, "decode"))
         for parser in PARSERS:
             with self.subTest(parser=parser.name):
                 self.assertIsInstance(parser, Parser)
+                self.assertIsInstance(parser, Tool)
                 self.assertNotIsInstance(parser, Decoder)
 
 

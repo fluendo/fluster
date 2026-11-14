@@ -31,8 +31,8 @@ import sys
 from functools import lru_cache
 from typing import Optional
 
-from fluster.decoder import NotSupportedError
 from fluster.gstreamer.gst_ctypes import GStreamerInstallation
+from fluster.tool import NotSupportedError
 from fluster.utils import normalize_binary_cmd
 
 # Extra seconds added to the pipeline timeout of the subprocess call, so the

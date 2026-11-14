@@ -54,7 +54,7 @@ directory.
 
 The decoders are the ones in charge of doing the decoding given an input file.
 They implement two methods: `decode` which is mandatory and `check` which is
-optional. Check out the [decoder class](https://github.com/fluendo/fluster/blob/master/fluster/decoder.py) for reference. The
+optional. Check out the [tool class](https://github.com/fluendo/fluster/blob/master/fluster/tool.py) for reference. The
 `@register_decoder` decorator is used to ensure the framework takes them into
 account. Fluster is agnostic as to how the decoding itself is done. So far, all
 decoders are external processes that need to run with a number of parameters,

@@ -26,13 +26,11 @@ from shutil import rmtree
 from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
 
 from fluster.codec import Codec, Profile
-from fluster.decoder import DECODERS, Decoder
 
 # Import decoders that will auto-register
 from fluster.decoders import *  # noqa: F403
 from fluster.decoders.av1_aom import AV1AOMDecoder
 from fluster.download_manager import DownloadManager
-from fluster.parser import PARSERS, Parser
 
 # Import parsers that will auto-register
 from fluster.parsers import *  # noqa: F403
@@ -40,7 +38,7 @@ from fluster.system_info import SystemInfo
 from fluster.test_suite import Context as TestSuiteContext
 from fluster.test_suite import TestMethod, TestSuite
 from fluster.test_vector import TestVector, TestVectorResult
-from fluster.tool import Tool
+from fluster.tool import DECODERS, PARSERS, Decoder, Parser, Tool
 
 
 class Context:

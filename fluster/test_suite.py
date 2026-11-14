@@ -28,9 +28,7 @@ from typing import Dict, List, Optional, Set, Type, cast
 from unittest.result import TestResult
 
 from fluster.codec import Codec, Profile
-from fluster.decoder import Decoder, get_reference_decoder_for_codec
 from fluster.download_manager import DownloadManager
-from fluster.parser import Parser
 from fluster.test import (
     MD5ComparisonTest,
     ParserTest,
@@ -40,7 +38,7 @@ from fluster.test import (
     Test,
 )
 from fluster.test_vector import TestVector, TestVectorResult
-from fluster.tool import Tool
+from fluster.tool import Decoder, Parser, Tool, get_reference_decoder_for_codec
 
 
 class Context:
