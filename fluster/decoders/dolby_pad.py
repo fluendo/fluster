@@ -30,13 +30,31 @@ EAC3_CHANNELS_LAYOUT_TO_SPEAKER_CONFIG: Dict[int, int] = {
     7: 1,  # 5.1   → 5.1
 }
 
+# Dolby ships the reference application binary per platform and architecture,
+# e.g. "decoder_reference_app_linux_x86_64" and
+# "decoder_reference_app_linux_armv8". Dolby names 64-bit ARM builds "armv8",
+# so translate the values platform.machine() may report.
+_REFERENCE_APP_ARCH: Dict[str, str] = {
+    "x86_64": "x86_64",
+    "amd64": "x86_64",
+    "aarch64": "armv8",
+    "arm64": "armv8",
+}
+
+
+def _reference_app_binary() -> str:
+    """Return the Dolby reference application binary name for this host."""
+    machine = platform.machine().lower()
+    arch = _REFERENCE_APP_ARCH.get(machine, machine)
+    return f"decoder_reference_app_{platform.system().lower()}_{arch}"
+
 
 class DolbyPADDecoder(Decoder):
     """Generic class for Dolby Pro Audio Decoder reference decoder"""
 
     name = ""
     description = ""
-    binary = f"decoder_reference_app_{platform.system().lower()}_x86_64"
+    binary = _reference_app_binary()
     codec = Codec.NONE
     is_reference = True
     _speaker_config_map: Dict[int, int] = {}
