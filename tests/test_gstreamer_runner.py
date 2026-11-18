@@ -296,6 +296,27 @@ class TestWindowsLibraryLookup(unittest.TestCase):
                 self.assertEqual(self.installation.find_library("glib-2.0"), mingw)
 
 
+class TestWindowsDetection(unittest.TestCase):
+    """The MSVC and MinGW installers export different GStreamer root variables."""
+
+    @staticmethod
+    def _detect(**env: str) -> bool:
+        with mock.patch("fluster.gstreamer.gst_ctypes.platform.system", return_value="Windows"):
+            with mock.patch.dict(os.environ, env, clear=True):
+                return GStreamerInstallation()._detect_windows()  # noqa: SLF001
+
+    def test_msvc_and_mingw_roots_are_detected(self) -> None:
+        with tempfile.TemporaryDirectory() as gst_root:
+            os.mkdir(os.path.join(gst_root, "bin"))
+            for var in ("GSTREAMER_1_0_ROOT_MSVC_X86_64", "GSTREAMER_1_0_ROOT_MINGW_X86_64"):
+                with self.subTest(var=var):
+                    self.assertTrue(self._detect(**{var: gst_root}))
+
+    def test_root_without_bin_is_ignored(self) -> None:
+        with tempfile.TemporaryDirectory() as gst_root:
+            self.assertFalse(self._detect(GSTREAMER_1_0_ROOT_MINGW_X86_64=gst_root))
+
+
 class TestMessageLoop(unittest.TestCase):
     def test_timeout_after_continuous_messages(self) -> None:
         # Even if messages keep arriving, the loop must honour the timeout.
