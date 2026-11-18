@@ -199,31 +199,49 @@ class GStreamerInstallation:
 
         return False
 
+    # The installers put the DLLs in <root>\bin. MSVC ships
+    # "gstreamer-1.0-0.dll" while MinGW ships "libgstreamer-1.0-0.dll".
+    _WINDOWS_GST_DLLS = ("libgstreamer-1.0-0.dll", "gstreamer-1.0-0.dll")
+
+    # Root variables exported by the installers, used when GStreamer is not on
+    # PATH.
+    _WINDOWS_GST_ROOT_VARS = (
+        "GSTREAMER_1_0_ROOT_MSVC_X86_64",
+        "GSTREAMER_1_0_ROOT_MINGW_X86_64",
+        "GSTREAMER_1_0_ROOT_X86_64",
+        "GSTREAMER_1_0_ROOT_MSVC_X86",
+        "GSTREAMER_1_0_ROOT_MINGW_X86",
+    )
+
     def _detect_windows(self) -> bool:
-        """Detect GStreamer on Windows."""
-        gst_root = (
-            os.environ.get("GSTREAMER_1_0_ROOT_MSVC_X86_64")
-            or os.environ.get("GSTREAMER_1_0_ROOT_MINGW_X86_64")
-            or os.environ.get("GSTREAMER_1_0_ROOT_X86_64")
-        )
-        if gst_root and os.path.exists(gst_root):
-            self._bin_path = os.path.join(gst_root, "bin")
-            self._lib_path = self._bin_path  # On Windows, DLLs are in bin
-            self._plugin_path = os.path.join(gst_root, "lib", "gstreamer-1.0")
-            return True
+        """Detect GStreamer on Windows (MSVC and MinGW installers)."""
+        for directory in os.environ.get("PATH", "").split(os.pathsep):
+            if any(os.path.isfile(os.path.join(directory, dll)) for dll in self._WINDOWS_GST_DLLS):
+                self._set_windows_root(os.path.dirname(os.path.normpath(directory)))
+                return True
+
+        for var in self._WINDOWS_GST_ROOT_VARS:
+            gst_root = os.environ.get(var)
+            if gst_root and os.path.isdir(os.path.join(gst_root, "bin")):
+                self._set_windows_root(gst_root)
+                return True
 
         # Try common installation paths
         for path in [
             "C:\\gstreamer\\1.0\\msvc_x86_64",
+            "C:\\gstreamer\\1.0\\mingw_x86_64",
             "C:\\gstreamer\\1.0\\x86_64",
         ]:
-            if os.path.exists(path):
-                self._bin_path = os.path.join(path, "bin")
-                self._lib_path = self._bin_path
-                self._plugin_path = os.path.join(path, "lib", "gstreamer-1.0")
+            if os.path.isdir(os.path.join(path, "bin")):
+                self._set_windows_root(path)
                 return True
 
         return False
+
+    def _set_windows_root(self, gst_root: str) -> None:
+        self._bin_path = os.path.join(gst_root, "bin")
+        self._lib_path = self._bin_path  # On Windows, DLLs are in bin
+        self._plugin_path = os.path.join(gst_root, "lib", "gstreamer-1.0")
 
     def _detect_linux(self) -> bool:
         """Detect GStreamer on Linux (uses system paths)."""
