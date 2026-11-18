@@ -201,7 +201,11 @@ class GStreamerInstallation:
 
     def _detect_windows(self) -> bool:
         """Detect GStreamer on Windows."""
-        gst_root = os.environ.get("GSTREAMER_1_0_ROOT_MSVC_X86_64") or os.environ.get("GSTREAMER_1_0_ROOT_X86_64")
+        gst_root = (
+            os.environ.get("GSTREAMER_1_0_ROOT_MSVC_X86_64")
+            or os.environ.get("GSTREAMER_1_0_ROOT_MINGW_X86_64")
+            or os.environ.get("GSTREAMER_1_0_ROOT_X86_64")
+        )
         if gst_root and os.path.exists(gst_root):
             self._bin_path = os.path.join(gst_root, "bin")
             self._lib_path = self._bin_path  # On Windows, DLLs are in bin
