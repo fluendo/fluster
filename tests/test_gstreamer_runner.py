@@ -296,6 +296,44 @@ class TestWindowsLibraryLookup(unittest.TestCase):
                 self.assertEqual(self.installation.find_library("glib-2.0"), mingw)
 
 
+class TestWindowsDetection(unittest.TestCase):
+    """GStreamer is detected from PATH first, then from the installer variables."""
+
+    @staticmethod
+    def _detect(**env: str) -> GStreamerInstallation:
+        with mock.patch("fluster.gstreamer.gst_ctypes.platform.system", return_value="Windows"):
+            with mock.patch.dict(os.environ, env, clear=True):
+                with mock.patch.object(GStreamerInstallation, "_instance", None):
+                    return GStreamerInstallation()
+
+    @staticmethod
+    def _make_install(root: str, dll: str) -> None:
+        os.makedirs(os.path.join(root, "bin"))
+        with open(os.path.join(root, "bin", dll), "w"):
+            pass
+
+    def test_path_wins_when_both_installers_are_installed(self) -> None:
+        with tempfile.TemporaryDirectory() as mingw, tempfile.TemporaryDirectory() as msvc:
+            self._make_install(mingw, "libgstreamer-1.0-0.dll")
+            self._make_install(msvc, "gstreamer-1.0-0.dll")
+
+            installation = self._detect(
+                PATH=os.path.join(mingw, "bin"),
+                GSTREAMER_1_0_ROOT_MSVC_X86_64=msvc,
+                GSTREAMER_1_0_ROOT_MINGW_X86_64=mingw,
+            )
+
+            self.assertEqual(installation._lib_path, os.path.join(mingw, "bin"))  # noqa: SLF001
+
+    def test_installer_variable_is_used_without_gstreamer_in_path(self) -> None:
+        with tempfile.TemporaryDirectory() as gst_root:
+            os.mkdir(os.path.join(gst_root, "bin"))
+
+            installation = self._detect(PATH="", GSTREAMER_1_0_ROOT_MINGW_X86_64=gst_root)
+
+            self.assertEqual(installation._lib_path, os.path.join(gst_root, "bin"))  # noqa: SLF001
+
+
 class TestMessageLoop(unittest.TestCase):
     def test_timeout_after_continuous_messages(self) -> None:
         # Even if messages keep arriving, the loop must honour the timeout.
