@@ -56,6 +56,9 @@ class Main:
         if is_installed:
             self.resources_dir, self.test_suites_dir = self._get_installed_dirs()
 
+        if os.environ.get("FLUSTER_RESOURCES_DIR"):
+            self.resources_dir = os.environ.get("FLUSTER_RESOURCES_DIR")
+
         self.parser = self._create_parser()
 
         # Prepend to the PATH the decoders_dir so that we can run them
