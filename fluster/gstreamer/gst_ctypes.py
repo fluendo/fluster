@@ -213,16 +213,32 @@ class GStreamerInstallation:
         "GSTREAMER_1_0_ROOT_MINGW_X86",
     )
 
+    def _windows_dll(self, directory: str) -> Optional[str]:
+        """Return the GStreamer DLL in *directory*, if this process can load it.
+
+        Loading is the only reliable way to know whether the installation matches
+        the interpreter (a 32-bit Python cannot load a 64-bit GStreamer), and it
+        also discards broken installations.
+        """
+        for dll in self._WINDOWS_GST_DLLS:
+            path = os.path.join(directory, dll)
+            try:
+                ctypes.CDLL(path)
+            except OSError:
+                continue
+            return path
+        return None
+
     def _detect_windows(self) -> bool:
         """Detect GStreamer on Windows (MSVC and MinGW installers)."""
         for directory in os.environ.get("PATH", "").split(os.pathsep):
-            if any(os.path.isfile(os.path.join(directory, dll)) for dll in self._WINDOWS_GST_DLLS):
+            if self._windows_dll(directory):
                 self._set_windows_root(os.path.dirname(os.path.normpath(directory)))
                 return True
 
         for var in self._WINDOWS_GST_ROOT_VARS:
             gst_root = os.environ.get(var)
-            if gst_root and os.path.isdir(os.path.join(gst_root, "bin")):
+            if gst_root and self._windows_dll(os.path.join(gst_root, "bin")):
                 self._set_windows_root(gst_root)
                 return True
 
@@ -232,7 +248,7 @@ class GStreamerInstallation:
             "C:\\gstreamer\\1.0\\mingw_x86_64",
             "C:\\gstreamer\\1.0\\x86_64",
         ]:
-            if os.path.isdir(os.path.join(path, "bin")):
+            if self._windows_dll(os.path.join(path, "bin")):
                 self._set_windows_root(path)
                 return True
 
