@@ -14,8 +14,8 @@ from subprocess import TimeoutExpired
 from time import perf_counter
 from typing import Any
 
-from fluster.decoder import Decoder, NotSupportedError
 from fluster.test_vector import TestVector, TestVectorResult
+from fluster.tool import Decoder, NotSupportedError, Parser, Tool
 from fluster.utils import compare_wav_files, compare_yuv_files, normalize_path
 
 
@@ -24,7 +24,7 @@ class Test(unittest.TestCase):
 
     def __init__(
         self,
-        decoder: Decoder,
+        decoder: Tool,
         test_suite: Any,  # can't use TestSuite type because of circular dependency
         test_vector: TestVector,
         skip: bool,
@@ -74,9 +74,18 @@ class Test(unittest.TestCase):
         self.input_filepath = self._find_input_path(self.test_vector.input_file)
 
     def _execute_decode(self) -> str:
-        """Execute the decoder and return the result."""
+        """Execute the decoder or parser and return the result."""
         keep_files_for_decode = self._keep_files_during_test or self.keep_files
 
+        if isinstance(self.decoder, Parser):
+            return self.decoder.parse(
+                self.input_filepath,
+                self.timeout,
+                self.verbose,
+                self.test_vector.profile,
+            )
+
+        assert isinstance(self.decoder, Decoder)
         return self.decoder.decode(
             self.input_filepath,
             self.output_filepath,
@@ -155,6 +164,18 @@ class MD5ComparisonTest(Test):
         self.assertEqual(expected, actual, self.test_vector.name)
 
 
+class ParserTest(Test):
+    """Test class for parsers.
+
+    Parsers do not produce a decoded output that can be compared against the
+    expected result, so a test vector passes when the parser pipeline completes
+    without errors.
+    """
+
+    def compare_result(self, result: str) -> None:
+        """Parsers have no expected output to compare."""
+
+
 class ReferenceComparisonTest(Test):
     """Base class for tests that compare decoded output against a reference decoder, byte-wise."""
 
@@ -162,7 +183,7 @@ class ReferenceComparisonTest(Test):
 
     def __init__(
         self,
-        decoder: Decoder,
+        decoder: Tool,
         test_suite: Any,  # can't use TestSuite type because of circular dependency
         test_vector: TestVector,
         skip: bool,

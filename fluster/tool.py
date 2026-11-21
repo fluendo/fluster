@@ -20,49 +20,33 @@ from functools import lru_cache
 from shutil import which
 from typing import Any, Dict, List, Optional, Type
 
-from fluster.codec import Codec, OutputFormat
+from fluster.codec import Codec, OutputFormat, Profile
 from fluster.utils import normalize_binary_cmd
 
 
 class NotSupportedError(Exception):
-    """Decoder cannot handle the media."""
+    """Tool cannot handle the media."""
 
-    def __init__(self, message: str = "Media not supported by decoder"):
+    def __init__(self, message: str = "Media not supported by tool"):
         self.message = message
         super().__init__(self.message)
 
 
-class Decoder(ABC):
-    """Base class for decoders"""
+class Tool(ABC):
+    """Base class for decoders and parsers"""
 
     name = ""
     codec = Codec.NONE
-    hw_acceleration = False
     description = ""
     binary = ""
-    is_reference = False
 
     def __init__(self) -> None:
         if self.binary:
             self.binary = normalize_binary_cmd(self.binary)
 
-    @abstractmethod
-    def decode(
-        self,
-        input_filepath: str,
-        output_filepath: str,
-        output_format: OutputFormat,
-        timeout: int,
-        verbose: bool,
-        keep_files: bool,
-        optional_params: Optional[Dict[str, Any]] = None,
-    ) -> str:
-        """Decodes input_filepath in output_filepath"""
-        raise Exception("Not implemented")
-
     @lru_cache(maxsize=128)
     def check(self, verbose: bool) -> bool:
-        """Checks whether the decoder can be run"""
+        """Checks whether the tool can be run"""
         if hasattr(self, "binary") and self.binary:
             try:
                 path = which(self.binary)
@@ -78,6 +62,42 @@ class Decoder(ABC):
         return f"    {self.name}: {self.description}"
 
 
+class Decoder(Tool):
+    """Base class for decoders"""
+
+    hw_acceleration = False
+    is_reference = False
+
+    @abstractmethod
+    def decode(
+        self,
+        input_filepath: str,
+        output_filepath: str,
+        output_format: OutputFormat,
+        timeout: int,
+        verbose: bool,
+        keep_files: bool,
+        optional_params: Optional[Dict[str, Any]] = None,
+    ) -> str:
+        """Decodes input_filepath in output_filepath"""
+        raise Exception("Not implemented")
+
+
+class Parser(Tool):
+    """Base class for parsers"""
+
+    @abstractmethod
+    def parse(
+        self,
+        input_filepath: str,
+        timeout: int,
+        verbose: bool,
+        profile: Optional[Profile] = None,
+    ) -> str:
+        """Parses input_filepath"""
+        raise Exception("Not implemented")
+
+
 DECODERS: List[Decoder] = []
 
 
@@ -85,6 +105,16 @@ def register_decoder(cls: Type[Decoder]) -> Type[Decoder]:
     """Register a new decoder implementation"""
     DECODERS.append(cls())
     DECODERS.sort(key=lambda dec: dec.name)
+    return cls
+
+
+PARSERS: List[Parser] = []
+
+
+def register_parser(cls: Type[Parser]) -> Type[Parser]:
+    """Register a new parser implementation"""
+    PARSERS.append(cls())
+    PARSERS.sort(key=lambda parser: parser.name)
     return cls
 
 

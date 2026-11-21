@@ -19,7 +19,7 @@ import subprocess
 from typing import Any, Dict, Optional, Tuple
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.tool import Decoder, register_decoder
 from fluster.utils import normalize_binary_cmd, run_command
 
 

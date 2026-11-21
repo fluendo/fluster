@@ -19,7 +19,7 @@ import platform
 from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.tool import Decoder, register_decoder
 from fluster.utils import file_checksum, run_command
 
 # Mapping from test suite channels_layout to decoder speaker_config.

@@ -34,7 +34,6 @@ from contextlib import redirect_stderr, redirect_stdout
 from typing import Any, Optional, Tuple, cast
 from unittest import mock
 
-from fluster.decoder import NotSupportedError
 from fluster.gstreamer import SUBPROCESS_TIMEOUT_GRACE, run_pipeline
 from fluster.gstreamer.gst_ctypes import (
     GST_CLOCK_TIME_NONE,
@@ -57,6 +56,7 @@ from fluster.gstreamer.gst_ctypes import (
     _GstMiniObject,
 )
 from fluster.gstreamer.runner import ExitCode, GStreamerRunner, main
+from fluster.tool import NotSupportedError
 
 DUMMY_MSG = ctypes.c_void_p(1)
 DUMMY_BUS = ctypes.c_void_p(2)

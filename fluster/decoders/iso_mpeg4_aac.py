@@ -19,7 +19,7 @@ import glob
 from typing import Any, Dict, Optional
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, register_decoder
+from fluster.tool import Decoder, register_decoder
 from fluster.utils import file_checksum, interleave_pcm_files, run_command
 
 

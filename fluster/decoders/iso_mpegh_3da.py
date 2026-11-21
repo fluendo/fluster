@@ -21,7 +21,7 @@ import tempfile
 from typing import Any, Dict, List, Optional
 
 from fluster.codec import Codec, OutputFormat
-from fluster.decoder import Decoder, NotSupportedError, register_decoder
+from fluster.tool import Decoder, NotSupportedError, register_decoder
 from fluster.utils import file_checksum
 
 # Bits per sample of the decoded WAV, fluster compares 16 bit WAV files
